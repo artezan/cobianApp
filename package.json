@@ -5,7 +5,7 @@
   "homepage": "http://ionicframework.com/",
   "scripts": {
     "ng": "ng",
-    "start": "node server.js",
+    "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -31,6 +31,7 @@
     "zone.js": "^0.8.26",
     "express": "^4.16.3",
     "path": "^0.12.7"
+
   },
   "devDependencies": {
     "@angular/cli": "~6.1.1",
