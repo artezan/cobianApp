@@ -12,6 +12,15 @@ $mdc-theme-primary: #000000; // primary color
 $mdc-theme-secondary: #F5811E; // secondary color
 @import "~@angular-mdc/theme/material";
 
-.split-pane-ios.split-pane-visible>.split-pane-side {
-    max-width: 15% !important;
+.split-pane-md.split-pane-visible>.split-pane-side {
+    max-width: 10% !important;
+}
+
+body,
+html {
+    height: 100%
+}
+
+.space-buttons {
+    min-height: 100px !important;
 }

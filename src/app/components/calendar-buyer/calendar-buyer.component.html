@@ -1,16 +1,35 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar translucent color="primary">
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button style="color: white !important"></ion-menu-button>
     </ion-buttons>
     <ion-title>
       Calendario
     </ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-button (click)="backOne()" slot="start">
+        <ion-icon mode="ios" slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title style="text-align: center">{{month[monthNumber]}} {{year}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="fowardOne()" slot="end">
+        <ion-icon mode="ios" slot="icon-only" name="arrow-forward"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content padding>
-  <ion-grid fixed>
-    <div id="calendar"></div>
+  <ion-grid fixed style="height: 100%;">
+    <span *ngIf="isLoad">
+      <app-general-calendar [year]="year" [month]="monthNumber" [schedules]="schedule"></app-general-calendar>
+    </span>
+
   </ion-grid>
 
 </ion-content>

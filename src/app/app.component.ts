@@ -50,9 +50,11 @@ export class AppComponent {
       if (user.name) {
         this.isLoggin = true;
         this.user = user;
+        // no hay en local manda a login
       } else {
         this.isLoggin = false;
         this.user = undefined;
+        this.navController.navigateRoot('login', false);
       }
     });
   }
@@ -64,7 +66,8 @@ export class AppComponent {
     });
   }
   logout() {
-    // this.router.navigate(['login']);
-    this.navController.goRoot('login', false);
+    this.storage.remove('userSession').then(() => {
+      this.navController.navigateRoot('login', false);
+    });
   }
 }
