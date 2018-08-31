@@ -17,6 +17,9 @@
     </ion-buttons>
     <ion-title style="text-align: center">{{month[monthNumber]}} {{year}}</ion-title>
     <ion-buttons slot="end">
+      <ion-button (click)="getEvents()" slot="end">
+        <ion-icon mode="md" slot="icon-only" name="clipboard"></ion-icon>
+      </ion-button>
       <ion-button (click)="fowardOne()" slot="end">
         <ion-icon mode="ios" slot="icon-only" name="arrow-forward"></ion-icon>
       </ion-button>
@@ -27,7 +30,7 @@
 <ion-content padding>
   <ion-grid fixed style="height: 100%;">
     <span *ngIf="isLoad">
-      <app-general-calendar [year]="year" [month]="monthNumber" [schedules]="schedule"></app-general-calendar>
+      <app-general-calendar [year]="year" [month]="monthNumber" [schedules]="schedule" (calendarSelect)="calendarSelect($event)"></app-general-calendar>
     </span>
 
   </ion-grid>

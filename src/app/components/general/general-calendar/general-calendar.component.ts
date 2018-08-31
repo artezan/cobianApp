@@ -5,6 +5,8 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { ISchedule } from '../../../models/schedule.model';
 import { ToastController } from '@ionic/angular';
@@ -22,7 +24,9 @@ export class GeneralCalendarComponent implements OnInit, OnChanges {
   year: number = new Date().getFullYear();
   @Input()
   schedules: ISchedule[] = [];
-
+  @Output()
+  calendarSelect = new EventEmitter<any>();
+  flag = false;
   constructor(public toastController: ToastController) {}
   // tslint:disable:no-var-keyword
   // tslint:disable:quotemark
@@ -32,29 +36,51 @@ export class GeneralCalendarComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.calendar2(new Date().getMonth(), new Date().getFullYear());
   }
+  click(event) {
+    this.calendarSelect.emit({
+      year: this.year,
+      month: this.month,
+      day: +event.srcElement.id,
+    });
+  }
   getScheduleEvents(year, month, day): string {
+    let numOfEvent = 0;
     let str = '';
     const events = this.schedules.filter(
       s => s.day === day && s.month === month && s.year === year,
     );
     if (events.length > 0) {
-      events.forEach((event: any) => {
-        str += '<div class="event-of-day">' + event.property.name + '</div>';
-        // str += '<div class="event-of-day">' + event.property.name + '</div>';
-      });
+      if (events.length === 1) {
+        str +=
+          '<div class="event-of-day" id="' +
+          day +
+          '">' +
+          events.length +
+          ' Evento </div>';
+      } else {
+        str +=
+          '<div class="event-of-day" id="' +
+          day +
+          '">' +
+          events.length +
+          ' Eventos </div>';
+      }
     }
     return str;
   }
   async presentToast() {
-    const toast = await this.toastController.create({
-      message: 'Eventos pendientes hoy',
-      showCloseButton: true,
-      position: 'bottom',
-      closeButtonText: 'OK',
-      cssClass: 'toast-alert',
-      duration: 50000,
-    });
-    toast.present();
+    if (this.flag === false) {
+      const toast = await this.toastController.create({
+        message: 'Eventos pendientes hoy',
+        showCloseButton: true,
+        position: 'bottom',
+        closeButtonText: 'OK',
+        cssClass: 'toast-alert',
+        duration: 50000,
+      });
+      toast.present();
+      this.flag = true;
+    }
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes.month) {
@@ -155,23 +181,33 @@ export class GeneralCalendarComponent implements OnInit, OnChanges {
       if (eventsOfDay !== '') {
         if (i === day && month === cmonth) {
           padding +=
-            '<td class=" row-number-day2 " ><div class="current-day">' +
+            '<td class="row-number-day2" id="' +
+            i +
+            '"><div class="current-day">' +
             i +
             eventsOfDay +
             '</div></td>';
           this.presentToast();
         } else {
           padding +=
-            '<td class="row-number-day2" >' + i + eventsOfDay + '</td>';
+            '<td class="row-number-day2" id="' +
+            i +
+            '" >' +
+            i +
+            eventsOfDay +
+            '</td>';
         }
       } else {
         if (i === day && month === cmonth) {
           padding +=
-            '<td class=" row-number-day " ><div class="current-day">' +
+            '<td class=" row-number-day " id="' +
+            i +
+            '" ><div class="current-day">' +
             i +
             '</div></td>';
         } else {
-          padding += '<td class="row-number-day" >' + i + '</td>';
+          padding +=
+            '<td class="row-number-day" id="' + i + '" >' + i + '</td>';
         }
       }
 

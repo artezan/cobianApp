@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button style="color: white !important"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Propiedades
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <h1>Propiedades Sugeridas</h1>
+
+  <ng-container *ngIf="isLoad; then thenTemplate; else elseTemplate"></ng-container>
+  <ng-template #thenTemplate>
+
+    <ion-list lines="full">
+      <ion-item lines="inset" detail *ngFor="let property of properties" (click)="itemDetail(property)">
+        <ion-icon *ngIf="property.typeOfProperty === 'departamento'" style="color: #F5811E" name="business" slot="start"></ion-icon>
+        <ion-icon *ngIf="property.typeOfProperty === 'casa'" style="color: #F5811E" name="home" slot="start"></ion-icon>
+        <ion-label text-wrap>
+          <h2>{{property.name}}</h2>
+          <p>{{property.zone}}</p>
+          <ion-chip *ngIf="property.percentage > 60" class="high">
+            <ion-label>Alta</ion-label>
+          </ion-chip>
+          <ion-chip *ngIf="property.percentage <= 60" class="medium">
+            <ion-label>Medio</ion-label>
+          </ion-chip>
+          <ion-chip *ngIf="property.percentage <= 30" class="low">
+            <ion-label>bajo</ion-label>
+          </ion-chip>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-template>
+  <ng-template #elseTemplate>
+    <ion-spinner name="bubbles"></ion-spinner>
+  </ng-template>
+
+</ion-content>

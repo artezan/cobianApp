@@ -1,4 +1,6 @@
 import { IBuyer } from './buyer.model';
+import { IProperty } from './property.model';
+import { IAdviser } from './adviser.model';
 
 export interface ISchedule {
   /**
@@ -21,7 +23,7 @@ export interface ISchedule {
   /**
    *  propiedad
    */
-  // property: IProperty;
+  property: IProperty;
   /**
    * Comprador
    */
@@ -29,7 +31,7 @@ export interface ISchedule {
   /**
    *  Asesor
    */
-  // adviser: IAdviser;
+  adviser: IAdviser;
   /**
    *  Asesor
    */

@@ -1,4 +1,6 @@
 import { ISchedule } from './schedule.model';
+import { IAdviser } from './adviser.model';
+import { IProperty } from './property.model';
 
 export interface IBuyer {
   name: string;
@@ -52,7 +54,7 @@ export interface IBuyer {
   /**
    * Lista de sugerencias
    */
-  // property: IProperty[];
+  property: IProperty[];
   /**
    * Lista Propiedades guardadas o que le interesan
    */
@@ -60,7 +62,7 @@ export interface IBuyer {
   /**
    * Asesores
    */
-  // adviser: IAdviser[];
+  adviser: IAdviser[];
   /**
    * Notificaciones guardadas
    */

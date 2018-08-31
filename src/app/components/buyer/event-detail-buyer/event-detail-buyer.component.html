@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar translucent color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" style="color: white !important"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Eventos
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <!-- Toggles in a List -->
+  <ion-list lines="none" *ngIf="!isOne">
+    <ion-item lines="none">
+      <ion-label>Mostrar Todos</ion-label>
+      <ion-toggle [(ngModel)]="isAll" (ionChange)="getAllSchedule();getActualSchedule()"></ion-toggle>
+    </ion-item>
+    <ion-item lines="none" *ngIf="!isAll">
+      <ion-chip color="secondary">
+        <ion-label>Mostrando Actuales
+        </ion-label>
+      </ion-chip>
+    </ion-item>
+
+  </ion-list>
+  <!-- eventos -->
+  <ng-container *ngIf="scheduleToShow.length > 0; then data; else noData"></ng-container>
+  <ng-template #data>
+    <ion-card *ngFor="let schedule of scheduleToShow">
+      <ion-card-header>
+        <ion-card-subtitle>Cita: {{schedule.day}}/{{schedule.month}}/{{schedule.year}}</ion-card-subtitle>
+        <ion-card-subtitle *ngIf="schedule.minute === 0">Hora: {{schedule.hour}}:{{schedule.minute}}0</ion-card-subtitle>
+        <ion-card-subtitle *ngIf="schedule.minute !== 0">Hora: {{schedule.hour}}:{{schedule.minute}}</ion-card-subtitle>
+        <ion-card-title>{{schedule.property.name}}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-label>
+          <ion-icon name="person"></ion-icon>
+          <b>Tiene una cita con {{schedule.adviser.name}}</b>
+        </ion-label>
+        <ion-icon name="pin"></ion-icon>
+        Direccion {{schedule.property.zone}}
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+  <!-- sin evento -->
+  <ng-template #noData>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>No hay eventos</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+
+  </ng-template>
+
+</ion-content>

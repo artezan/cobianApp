@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { BuyerService } from '../../services/buyer.service';
-import { UserSessionService } from '../../services/user-session.service';
-import { ISchedule } from '../../models/schedule.model';
+import { ISchedule } from '../../../models/schedule.model';
+import { BuyerService } from '../../../services/buyer.service';
+import { UserSessionService } from '../../../services/user-session.service';
+import { NavController } from '@ionic/angular';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-calendar-buyer',
@@ -30,6 +32,8 @@ export class CalendarBuyerComponent implements OnInit {
   constructor(
     private buyerService: BuyerService,
     private userSessionService: UserSessionService,
+    private navController: NavController,
+    private router: Router,
   ) {
     this.monthNumber = new Date().getMonth();
     this.year = new Date().getFullYear();
@@ -40,6 +44,21 @@ export class CalendarBuyerComponent implements OnInit {
       this.schedule = b.schedule;
       this.isLoad = true;
     });
+  }
+  calendarSelect(item: { year: number; month: number; day: number }) {
+    if (item.day !== 0) {
+      const isFinded = this.schedule.filter(
+        s =>
+          s.day === item.day && s.month === item.month && s.year === item.year,
+      );
+      if (isFinded.length > 0) {
+        const data: NavigationExtras = { queryParams: item };
+        this.router.navigate(['event-detail-buyer'], data);
+      }
+    }
+  }
+  getEvents() {
+    this.router.navigate(['event-detail-buyer']);
   }
   backOne() {
     if (this.monthNumber === 0) {

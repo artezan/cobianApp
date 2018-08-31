@@ -13,10 +13,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './components/login/login.component';
 import { AppMaterialModule } from './material.module';
 import { IonicStorageModule } from '@ionic/storage';
-import { ListPropBuyerComponent } from './components/list-prop-buyer/list-prop-buyer.component';
-import { CalendarBuyerComponent } from './components/calendar-buyer/calendar-buyer.component';
 import { UserSessionService } from './services/user-session.service';
 import { GeneralCalendarComponent } from './components/general/general-calendar/general-calendar.component';
+import { ListPropBuyerComponent } from './components/buyer/list-prop-buyer/list-prop-buyer.component';
+import { CalendarBuyerComponent } from './components/buyer/calendar-buyer/calendar-buyer.component';
+import { EventDetailBuyerComponent } from './components/buyer/event-detail-buyer/event-detail-buyer.component';
+import { DetailPropBuyerComponent } from './components/buyer/detail-prop-buyer/detail-prop-buyer.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { GeneralCalendarComponent } from './components/general/general-calendar/
     ListPropBuyerComponent,
     CalendarBuyerComponent,
     GeneralCalendarComponent,
+    EventDetailBuyerComponent,
+    DetailPropBuyerComponent,
   ],
   entryComponents: [],
   imports: [
