@@ -14,10 +14,15 @@
     <h1> Característica </h1>
 
     <ion-card>
-      <ion-item lines="none">
+      <ion-item lines="none" *ngIf="!isLiked">
 
-        <ion-button color="secondary" fill="outline" slot="end">
+        <ion-button (click)="setLikeProperty(property._id)" color="secondary" fill="outline" slot="end">
           <ion-icon name="heart-empty"></ion-icon>Me gusta
+        </ion-button>
+      </ion-item>
+      <ion-item lines="none" *ngIf="isLiked">
+        <ion-button (click)="setLikeProperty(property._id)" color="secondary" fill="solid" slot="end">
+          <ion-icon color="dark" name="heart"></ion-icon>Te gusta
         </ion-button>
       </ion-item>
 

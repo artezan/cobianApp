@@ -19,6 +19,7 @@ import { ListPropBuyerComponent } from './components/buyer/list-prop-buyer/list-
 import { CalendarBuyerComponent } from './components/buyer/calendar-buyer/calendar-buyer.component';
 import { EventDetailBuyerComponent } from './components/buyer/event-detail-buyer/event-detail-buyer.component';
 import { DetailPropBuyerComponent } from './components/buyer/detail-prop-buyer/detail-prop-buyer.component';
+import { GeneralFiltersComponent } from './general/general-filters/general-filters.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { DetailPropBuyerComponent } from './components/buyer/detail-prop-buyer/d
     GeneralCalendarComponent,
     EventDetailBuyerComponent,
     DetailPropBuyerComponent,
+    GeneralFiltersComponent,
   ],
   entryComponents: [],
   imports: [

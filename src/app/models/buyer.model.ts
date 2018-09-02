@@ -3,140 +3,141 @@ import { IAdviser } from './adviser.model';
 import { IProperty } from './property.model';
 
 export interface IBuyer {
-  name: string;
-  fatherLastName: string;
-  motherLastName: string;
-  password: any;
-  timestamp: Date;
-  email: string;
-  phone: number;
+  name?: string;
+  fatherLastName?: string;
+  motherLastName?: string;
+  password?: any;
+  timestamp?: Date;
+  email?: string;
+  phone?: number;
   /**
    * Edad
    */
-  years: number;
+  years?: number;
   /**
    * Sexo
    */
-  isMale: boolean;
+  isMale?: boolean;
   /**
    * Número de miembros de familia
    */
-  numOfFamily: number;
+  numOfFamily?: number;
   /**
    * estado civil
    */
-  isSingle: boolean;
+  isSingle?: boolean;
   /**
    * Tipos de Vivienda casa, departamento, terreno,
    * nave industrial, etc., con la posibilidad de agregar alguna opción que no aparezca dentro del listado.
    */
-  typeOfProperty: string;
+  typeOfProperty?: string;
   /**
    * Espacio de vivienda
    */
-  space: number;
+  space?: number;
   /**
    * Etiquetas
    */
-  tag: string[];
+  tag?: string[];
   /**
    *  eventos programados
    */
-  schedule: ISchedule[];
+  schedule?: ISchedule[];
   /**
    * Creditos
    */
-  // credit: ICredit[];
+  // credit?: ICredit[];
   /**
    * Documentos
    */
-  files: string[];
+  files?: string[];
   /**
    * Lista de sugerencias
    */
-  property: IProperty[];
+  property?: IProperty[];
   /**
    * Lista Propiedades guardadas o que le interesan
    */
-  // propertySave: IProperty[];
+  propertySave?: any[];
   /**
    * Asesores
    */
-  adviser: IAdviser[];
+  adviser?: IAdviser[];
   /**
    * Notificaciones guardadas
    */
-  // notification: INotification[];
+  // notification?: INotification[];
   /**
    * es Renta?
    */
-  isRenter: boolean;
+  isRenter?: boolean;
   /**
    * Fecha posible
    */
-  dateToBuy: Date;
+  dateToBuy?: Date;
   /**
    * Zona de compra/renta
    */
-  zone: string;
+  zone?: string;
   /**
    * Costo minimo
    */
-  minPrice: number;
+  minPrice?: number;
   /**
    * Costo maximo
    */
-  maxPrice: number;
+  maxPrice?: number;
   /**
    * num recamaras
    */
-  numRooms: number;
+  numRooms?: number;
   /**
    * num de lugares para estacionaminto
    */
-  numCars: number;
+  numCars?: number;
   /**
    * Nueva o usada
    */
-  isOld: boolean;
+  isOld?: boolean;
   /**
    * un fraccionamiento cerrado
    */
-  isClose: boolean;
+  isClose?: boolean;
   /**
    * numero de banos
    */
-  numBathrooms: number;
+  numBathrooms?: number;
   /**
    * jardin
    */
-  hasGarden: boolean;
+  hasGarden?: boolean;
   /**
    * Si se desea recámara en planta baja
    */
-  isLowLevel: boolean;
+  isLowLevel?: boolean;
   /**
    * Elevador
    */
-  hasElevator: boolean;
+  hasElevator?: boolean;
   /**
    * todos servicios
    */
-  allServices: boolean;
+  allServices?: boolean;
   /**
    * Forma de compra FOVISSTE, IMSS, contado, PEMEX, Infonavit, aliados, otros
    */
-  wayToBuy: string;
+  wayToBuy?: string;
   /**
    * Ofertas
    */
-  // ofert: IOfert[];
+  // ofert?: IOfert[];
   /**
    * Estado buyer/property
    */
-  // statusBuyerProperty: IStatusBuyerProperty[];
+  // statusBuyerProperty?: IStatusBuyerProperty[];
   /**
    * ciudad
    */
-  city: string;
+  city?: string;
+  _id?: string;
 }

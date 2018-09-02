@@ -15,7 +15,9 @@ export const END_POINT = {
   USER_SESSION: apiUrl + userSession,
   // buyer
   BUYER_ID: apiUrl + buyer + buyerId,
+  BUYER: apiUrl + buyer,
   // properties
   PROPERTY_MATCH_SEARCH: apiUrl + property + propertybyBuyer,
   PROPERTY_BY_ID: apiUrl + property + bypropertyid,
+  PROPERTY: apiUrl + property
 };

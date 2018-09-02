@@ -6,13 +6,19 @@ import { END_POINT } from '../_config/api.end-points';
 import { map } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class BuyerService {
   constructor(private http: HttpClient) {}
   public getBuyerById(id: string): Observable<IBuyer> {
     return this.http
       .get(END_POINT.BUYER_ID + id)
+      .pipe(map((data: any) => data.data));
+  }
+
+  public putBuyer(buyer: IBuyer): Observable<boolean> {
+    return this.http
+      .put(END_POINT.BUYER + buyer._id, buyer)
       .pipe(map((data: any) => data.data));
   }
 }

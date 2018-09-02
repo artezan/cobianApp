@@ -21,4 +21,8 @@ export class PropertyService {
       .get(END_POINT.PROPERTY_BY_ID + id)
       .pipe(map((data: any) => data.data));
   }
+  public getAll(): Observable<IProperty[]>{
+    return this.http.get(END_POINT.PROPERTY)
+    .pipe(map((data: any) => data.data));
+  }
 }

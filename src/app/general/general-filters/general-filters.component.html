@@ -1,0 +1,138 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()" slot="start">
+        <ion-icon mode="md" slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Filtros</ion-title>
+    <ion-buttons slot="end">
+      <ion-button slot="end">
+        <ion-icon mode="md" slot="icon-only" name="trash"></ion-icon>(1)
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+  <ng-container *ngIf="!isFilterApply; then thenTemplate; else elseTemplate"></ng-container>
+  <ng-template #thenTemplate>
+
+    <ion-list lines="none">
+      <ion-item lines="none" (click)=" caseFilter = 'Precio';isFilterApply = !isFilterApply; ">
+        <ion-label>
+          Precio
+        </ion-label>
+        <ion-note>Cualquiera</ion-note>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Renta
+        </ion-label>
+        <ion-toggle mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Tipo de Vivienda
+        </ion-label>
+        <ion-note>Cualquiera</ion-note>
+      </ion-item>
+      <ion-item lines="none" (click)="isFilterApply = !isFilterApply; caseFilter = 'Espacio'">
+        <ion-label>
+          Espacio
+        </ion-label>
+        <ion-note>1000</ion-note>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Zona
+        </ion-label>
+        <ion-note>1000</ion-note>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Número de Cuartos
+        </ion-label>
+        <ion-note>1000</ion-note>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Espacio para carros
+        </ion-label>
+        <ion-input slot="end"></ion-input>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Nuevo
+        </ion-label>
+        <ion-toggle mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Cerrado
+        </ion-label>
+        <ion-toggle mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Numero de baños
+        </ion-label>
+        <ion-note>1000</ion-note>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Jardin
+        </ion-label>
+        <ion-toggle mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Plata baja
+        </ion-label>
+        <ion-toggle mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Elevador
+        </ion-label>
+        <ion-toggle mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Todos los servicios
+        </ion-label>
+        <ion-toggle mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Forma de compra
+        </ion-label>
+        <ion-note>1000</ion-note>
+      </ion-item>
+    </ion-list>
+    <ion-button expand="block" color="secondary">Aplicar</ion-button>
+  </ng-template>
+  <ng-template #elseTemplate>
+    <!-- Filtros aplicar -->
+    <span [ngSwitch]="caseFilter">
+      <span *ngSwitchCase="'Precio'">
+        <ion-item>
+          <ion-label>Maximo</ion-label>
+          <ion-input></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Minimo</ion-label>
+          <ion-input></ion-input>
+        </ion-item>
+        <ion-button expand="block" color="secondary">Aplicar</ion-button>
+      </span>
+      <p *ngSwitchCase="'Espacio'">
+        espacio
+      </p>
+      <!--  <p *ngSwitchDefault>
+  
+  </p> -->
+    </span>
+  </ng-template>
+
+
+</ion-content>
