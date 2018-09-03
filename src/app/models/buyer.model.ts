@@ -1,6 +1,7 @@
 import { ISchedule } from './schedule.model';
 import { IAdviser } from './adviser.model';
 import { IProperty } from './property.model';
+import { IStatusBuyerProperty } from './statusBuyerProperty.model';
 
 export interface IBuyer {
   name?: string;
@@ -55,10 +56,6 @@ export interface IBuyer {
    * Lista de sugerencias
    */
   property?: IProperty[];
-  /**
-   * Lista Propiedades guardadas o que le interesan
-   */
-  propertySave?: any[];
   /**
    * Asesores
    */
@@ -134,7 +131,7 @@ export interface IBuyer {
   /**
    * Estado buyer/property
    */
-  // statusBuyerProperty?: IStatusBuyerProperty[];
+  statusBuyerProperty?: any[];
   /**
    * ciudad
    */

@@ -1,0 +1,17 @@
+.user-select-contenet {
+    margin: 3% 30% 2% 30%;
+}
+
+.user-select-card {
+    border-left: 4px solid var(--ion-color-secondary);
+}
+
+.user-select-card:hover {
+    background-color: var(--ion-color-light)
+}
+
+@media(max-width: 900px) {
+    .user-select-contenet {
+        margin: 1% 1% 1% 1%;
+    }
+}

@@ -1,0 +1,300 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()" slot="start">
+        <ion-icon mode="md" slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Filtros</ion-title>
+    <ion-buttons slot="end">
+      <ion-button slot="end" (click)="reset()">
+        <ion-icon mode="md" slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen>
+  <ng-container *ngIf="!isFilterApply; then thenTemplate; else elseTemplate"></ng-container>
+  <ng-template #thenTemplate>
+
+    <ion-list lines="none">
+      <ion-item lines="none" (click)=" caseFilter = 'Precio';isFilterApply = !isFilterApply; ">
+        <ion-label>
+          Precio
+        </ion-label>
+        <ion-note *ngIf="hopeProperty.minPrice === 0 && !hopeProperty.maxPrice">Cualquiera</ion-note>
+        <ion-note *ngIf="hopeProperty.minPrice !== 0 && !hopeProperty.maxPrice">{{hopeProperty.minPrice}}+</ion-note>
+        <ion-note *ngIf="hopeProperty.minPrice === 0 && hopeProperty.maxPrice">{{hopeProperty.maxPrice}}</ion-note>
+        <ion-note *ngIf="hopeProperty.minPrice !== 0 && hopeProperty.maxPrice"> {{hopeProperty.minPrice }}-{{
+          hopeProperty.maxPrice}}</ion-note>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Renta
+        </ion-label>
+        <ion-toggle [(ngModel)]="rent" mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Venta
+        </ion-label>
+        <ion-toggle [(ngModel)]="sell" mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none" (click)=" caseFilter = 'Tipo de Vivienda';isFilterApply = !isFilterApply; ">
+        <ion-label>
+          Tipo de Vivienda
+        </ion-label>
+        <ion-note *ngIf="!hopeProperty.typeOfProperty">Cualquiera</ion-note>
+        <ion-note *ngIf="hopeProperty.typeOfProperty">{{hopeProperty.typeOfProperty}}</ion-note>
+      </ion-item>
+      <ion-item lines="none" (click)="isFilterApply = !isFilterApply; caseFilter = 'Espacio'">
+        <ion-label>
+          Espacio
+        </ion-label>
+        <ion-note *ngIf="hopeProperty.space === 0">Cualquiera</ion-note>
+        <ion-note *ngIf="hopeProperty.space !== 0">{{hopeProperty.space}}</ion-note>
+      </ion-item>
+      <ion-item lines="none" (click)="isFilterApply = !isFilterApply; caseFilter = 'Zona'">
+        <ion-label>
+          Zona
+        </ion-label>
+        <ion-note *ngIf="!hopeProperty.zone">Cualquiera</ion-note>
+        <ion-note *ngIf="hopeProperty.zone">{{hopeProperty.zone}}</ion-note>
+      </ion-item>
+      <ion-item lines="none" (click)="isFilterApply = !isFilterApply; caseFilter = 'Cuartos'">
+        <ion-label>
+          Número de Cuartos
+        </ion-label>
+        <ion-note *ngIf="hopeProperty.numRooms === 0">Cualquiera</ion-note>
+        <ion-note *ngIf="hopeProperty.numRooms !== 0">{{hopeProperty.numRooms}}</ion-note>
+      </ion-item>
+      <ion-item lines="none" (click)="isFilterApply = !isFilterApply; caseFilter = 'Carros'">
+        <ion-label>
+          Espacio para carros
+        </ion-label>
+        <ion-note *ngIf="hopeProperty.numCars === 0">Cualquiera</ion-note>
+        <ion-note *ngIf="hopeProperty.numCars !== 0">{{hopeProperty.numCars}}</ion-note>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Usado
+        </ion-label>
+        <ion-toggle [(ngModel)]="old" mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Nuevo
+        </ion-label>
+        <ion-toggle [(ngModel)]="notOld" mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Cerrado
+        </ion-label>
+        <ion-toggle [(ngModel)]="close" mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Abierto
+        </ion-label>
+        <ion-toggle [(ngModel)]="open" mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none" (click)="isFilterApply = !isFilterApply; caseFilter = 'Bathrooms'">
+        <ion-label>
+          Numero de baños
+        </ion-label>
+        <ion-note *ngIf="hopeProperty.numBathrooms === 0">Cualquiera</ion-note>
+        <ion-note *ngIf="hopeProperty.numBathrooms !== 0">{{hopeProperty.numBathrooms}}</ion-note>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Con Jardin
+        </ion-label>
+        <ion-toggle [(ngModel)]="garden" mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Sin Jardin
+        </ion-label>
+        <ion-toggle [(ngModel)]="noGarden" mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          En plata baja
+        </ion-label>
+        <ion-toggle [(ngModel)]="lowLevel" mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Cualquier Nivel
+        </ion-label>
+        <ion-toggle [(ngModel)]="noMatterLevel" mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Con Elevador
+        </ion-label>
+        <ion-toggle [(ngModel)]="elevator" mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Sin Elevador
+        </ion-label>
+        <ion-toggle [(ngModel)]="noElevator" mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Todos los servicios
+        </ion-label>
+        <ion-toggle [(ngModel)]="allServices" mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>
+          Sin Servicios
+        </ion-label>
+        <ion-toggle [(ngModel)]="notAllServices" mode="md" slot="end"></ion-toggle>
+      </ion-item>
+      <ion-item lines="none" (click)="isFilterApply = !isFilterApply; caseFilter = 'Forma de compra'">
+        <ion-label>
+          Forma de compra
+        </ion-label>
+        <ion-note *ngIf="!hopeProperty.wayToBuy">Cualquiera</ion-note>
+        <ion-note *ngIf="hopeProperty.wayToBuy">{{hopeProperty.wayToBuy}}</ion-note>
+      </ion-item>
+    </ion-list>
+    <ion-button expand="block" color="secondary" (click)="sendFilters();goBack()">Aplicar</ion-button>
+  </ng-template>
+  <ng-template #elseTemplate>
+    <!-- Filtros aplicar -->
+    <span [ngSwitch]="caseFilter">
+      <span *ngSwitchCase="'Precio'">
+        <ion-item>
+          <ion-label>Minimo</ion-label>
+          <ion-input type="number" [(ngModel)]="hopeProperty.minPrice" #minPrice="ngModel" id="minPrice" name="minPrice"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Maximo</ion-label>
+          <ion-input type="number" [(ngModel)]="hopeProperty.maxPrice" #maxPrice="ngModel" id="maxPrice" name="maxPrice"></ion-input>
+        </ion-item>
+        <ion-button expand="block" color="secondary" (click)="goBack()">Aplicar</ion-button>
+      </span>
+      <span *ngSwitchCase="'Tipo de Vivienda'">
+        Seleccione uno
+        <ion-list>
+          <ion-radio-group [(ngModel)]="hopeProperty.typeOfProperty">
+            <ion-list-header>
+              <ion-label>Tipo de Vivienda</ion-label>
+            </ion-list-header>
+
+            <ion-item>
+              <ion-label>Casa</ion-label>
+              <ion-radio slot="start" value="casa"></ion-radio>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Departamento</ion-label>
+              <ion-radio slot="start" value="departamento"></ion-radio>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Terreno</ion-label>
+              <ion-radio slot="start" value="terreno"></ion-radio>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Nave Industrial</ion-label>
+              <ion-radio slot="start" value="nave industrial"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+        <ion-button expand="block" color="secondary" (click)="goBack()">Aplicar</ion-button>
+      </span>
+      <span *ngSwitchCase="'Espacio'">
+        <ion-item>
+          <ion-label>Espacio</ion-label>
+          <ion-input type="number" [(ngModel)]="hopeProperty.space" #space="ngModel" id="space" name="space"></ion-input>
+        </ion-item>
+        <ion-button expand="block" color="secondary" (click)="goBack()">Aplicar</ion-button>
+
+      </span>
+      <span *ngSwitchCase="'Zona'">
+        <ion-item>
+          <ion-label>Zona</ion-label>
+          <ion-input [(ngModel)]="hopeProperty.zone" #zone="ngModel" id="zone" name="zone"></ion-input>
+        </ion-item>
+        <ion-button expand="block" color="secondary" (click)="goBack()">Aplicar</ion-button>
+
+      </span>
+      <span *ngSwitchCase="'Cuartos'">
+        <ion-item>
+          <ion-label>Minimo num. de cuartos </ion-label>
+          <ion-input type="number" [(ngModel)]="hopeProperty.numRooms" #numRooms="ngModel" id="numRooms" name="numRooms"></ion-input>
+        </ion-item>
+        <ion-button expand="block" color="secondary" (click)="goBack()">Aplicar</ion-button>
+
+      </span>
+      <span *ngSwitchCase="'Carros'">
+        <ion-item>
+          <ion-label>Minimo num. de carros </ion-label>
+          <ion-input type="number" [(ngModel)]="hopeProperty.numCars" #numCars="ngModel" id="numCars" name="numCars"></ion-input>
+        </ion-item>
+        <ion-button expand="block" color="secondary" (click)="goBack()">Aplicar</ion-button>
+
+      </span>
+      <span *ngSwitchCase="'Bathrooms'">
+        <ion-item>
+          <ion-label>Minimo num. de baños </ion-label>
+          <ion-input type="number" [(ngModel)]="hopeProperty.numBathrooms" #numBathrooms="ngModel" id="numBathrooms"
+            name="numBathrooms"></ion-input>
+        </ion-item>
+        <ion-button expand="block" color="secondary" (click)="goBack()">Aplicar</ion-button>
+
+      </span>
+      <span *ngSwitchCase="'Forma de compra'">
+        Seleccione uno
+        <ion-list>
+          <ion-radio-group [(ngModel)]="hopeProperty.wayToBuy">
+            <ion-list-header>
+              <ion-label>Forma de compra</ion-label>
+            </ion-list-header>
+
+            <ion-item>
+              <ion-label>FOVISSTE</ion-label>
+              <ion-radio slot="start" value="FOVISSTE"></ion-radio>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>IMSS</ion-label>
+              <ion-radio slot="start" value="IMSS"></ion-radio>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>Contado</ion-label>
+              <ion-radio slot="start" value="contado"></ion-radio>
+            </ion-item>
+
+            <ion-item>
+              <ion-label>PEMEX</ion-label>
+              <ion-radio slot="start" value="PEMEX"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Infonavit</ion-label>
+              <ion-radio slot="start" value="infonavit"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Aliados</ion-label>
+              <ion-radio slot="start" value="aliados"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+        <ion-button expand="block" color="secondary" (click)="goBack()">Aplicar</ion-button>
+      </span>
+
+      <!--   <p *ngSwitchDefault>
+  
+  </p> -->
+    </span>
+  </ng-template>
+
+
+</ion-content>

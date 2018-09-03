@@ -5,6 +5,8 @@ import { ListPropBuyerComponent } from './components/buyer/list-prop-buyer/list-
 import { CalendarBuyerComponent } from './components/buyer/calendar-buyer/calendar-buyer.component';
 import { EventDetailBuyerComponent } from './components/buyer/event-detail-buyer/event-detail-buyer.component';
 import { DetailPropBuyerComponent } from './components/buyer/detail-prop-buyer/detail-prop-buyer.component';
+import { UserSelectComponent } from './components/login/user-select/user-select.component';
+import { NewBuyerComponent } from './components/buyer/new-buyer/new-buyer.component';
 
 const routes: Routes = [
   // Rutas
@@ -14,6 +16,8 @@ const routes: Routes = [
   { path: 'calendar-buyer', component: CalendarBuyerComponent },
   { path: 'event-detail-buyer', component: EventDetailBuyerComponent },
   { path: 'buyer-property-detail', component: DetailPropBuyerComponent },
+  { path: 'login-select-user', component: UserSelectComponent },
+  { path: 'new-buyer', component: NewBuyerComponent },
 ];
 
 @NgModule({

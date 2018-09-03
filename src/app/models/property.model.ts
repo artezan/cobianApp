@@ -2,88 +2,88 @@ export interface IProperty {
   /**
    * ya sea compra o renta.
    */
-  isRent: boolean;
-  timestamp: Date;
-  name: string;
+  isRent?: boolean;
+  timestamp?: Date;
+  name?: string;
   /**
    * tipo de propiedad departamento casa
    */
-  typeOfProperty: string;
+  typeOfProperty?: string;
   /**
    * num de Visitas
    */
-  numVisit: number;
+  numVisit?: number;
   /**
    * Espacio de vivienda
    */
-  space: number;
+  space?: number;
   /**
    * Etiquetas
    */
-  tag: string[];
+  tag?: string[];
   /**
    * Documentos
    */
-  files: string[];
+  files?: string[];
   /**
    * Fecha posible
    */
-  dateToBuy: Date;
+  dateToBuy?: Date;
   /**
    * Zona de compra/renta
    */
-  zone: string;
+  zone?: string;
   /**
    * Costo minimo
    */
-  minPrice: number;
+  minPrice?: number;
   /**
    * Costo maximo
    */
-  maxPrice: number;
+  maxPrice?: number;
   /**
    * num recamaras
    */
-  numRooms: number;
+  numRooms?: number;
   /**
    * num de lugares para estacionaminto
    */
-  numCars: number;
+  numCars?: number;
   /**
    * Nueva o usada
    */
-  isOld: boolean;
+  isOld?: boolean;
   /**
    * un fraccionamiento cerrado
    */
-  isClose: boolean;
+  isClose?: boolean;
   /**
    * numero de banos
    */
-  numBathrooms: number;
+  numBathrooms?: number;
   /**
    * jardin
    */
-  hasGarden: boolean;
+  hasGarden?: boolean;
   /**
    * Si se desea recámara en planta baja
    */
-  isLowLevel: boolean;
+  isLowLevel?: boolean;
   /**
    * Elevador
    */
-  hasElevator: boolean;
+  hasElevator?: boolean;
   /**
    * todos servicios
    */
-  allServices: boolean;
+  allServices?: boolean;
   /**
    * Forma de compra FOVISSTE, IMSS, contado, PEMEX, Infonavit, aliados, otros
    */
-  wayToBuy: string;
+  wayToBuy?: string;
   /**
    * % Con buyer
    */
-  percentage: number;
-  _id: string;
+  percentage?: number;
+  _id?: string;
 }

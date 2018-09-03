@@ -80,4 +80,7 @@ export class LoginComponent implements OnInit {
     });
     return await loading;
   }
+  newUser() {
+    this.navController.navigateRoot('login-select-user', false);
+  }
 }

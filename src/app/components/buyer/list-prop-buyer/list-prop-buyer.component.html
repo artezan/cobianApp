@@ -53,7 +53,7 @@
 
       <!-- menu end -->
       <ion-menu contentId="menu-end" menuId="filters" side="end" type="push">
-        <app-general-filters></app-general-filters>
+        <app-general-filters (filters)="getFilters($event)"></app-general-filters>
       </ion-menu>
 
 
@@ -62,24 +62,33 @@
         <h1>Todas las Propiedades </h1>
         <ion-item lines="none">
           <ion-button (click)="menuCtr.open('filters')" color="secondary" fill="outline" slot="end">
-            <ion-icon name="funnel"></ion-icon>Filtros (0)
+            <ion-icon name="funnel"></ion-icon>Filtros({{numOfFilers}})
           </ion-button>
         </ion-item>
-        <ion-list lines="full">
-          <ion-item lines="inset" detail *ngFor="let property of allProperties" (click)="itemDetail(property)">
-            <ion-icon *ngIf="property.typeOfProperty === 'departamento'" style="color: #F5811E" name="business" slot="start"></ion-icon>
-            <ion-icon *ngIf="property.typeOfProperty === 'casa'" style="color: #F5811E" name="home" slot="start"></ion-icon>
-            <ion-label text-wrap>
-              <h2>{{property.name}}</h2>
-              <p>{{property.zone}}</p>
-              <p>
-                <span *ngFor="let tag of property.tag">
-                  {{'#'+tag+ ' '}}
-                </span>
-              </p>
-            </ion-label>
-          </ion-item>
-        </ion-list>
+        <ng-container *ngIf=" (allProperties | async)?.length ; then dataDisplay; else noDataDisplay "></ng-container>
+        <ng-template #dataDisplay>
+          <ion-list lines="full">
+            <ion-item lines="inset" detail *ngFor="let property of allProperties | async" (click)="itemDetail(property)">
+              <ion-icon *ngIf="property.typeOfProperty === 'departamento'" style="color: #F5811E" name="business" slot="start"></ion-icon>
+              <ion-icon *ngIf="property.typeOfProperty === 'casa'" style="color: #F5811E" name="home" slot="start"></ion-icon>
+              <ion-label text-wrap>
+                <h2>{{property.name}}</h2>
+                <p>{{property.zone}}</p>
+                <p>
+                  <span *ngFor="let tag of property.tag">
+                    {{'#'+tag+ ' '}}
+                  </span>
+                </p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </ng-template>
+        <ng-template #noDataDisplay>
+          <ion-label>No hay datos con los filtros aplicados</ion-label>
+
+        </ng-template>
+
+
       </div>
 
 

@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" style="color: white !important"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Registro
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <form #loginForm="ngForm">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title> Ingrese sus datos</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <!-- nombre -->
+        <mdc-text-field label="Nombre" [(ngModel)]="newBuyer.name" #name="ngModel" id="name" name="name" required [box]="true"
+          [required]="true" [helperText]="weightHelper"></mdc-text-field>
+        <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+          <span *ngIf="name.dirty || name.touched">Anota nombre</span>
+        </mdc-text-field-helper-text>
+        <!-- 1 apellido -->
+        <mdc-text-field label="Apellido Paterno" [(ngModel)]="newBuyer.fatherLastName" #fatherLastName="ngModel" id="fatherLastName"
+          name="fatherLastName" required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+        <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+          <span *ngIf="fatherLastName.dirty || fatherLastName.touched">Anota Apellido</span>
+        </mdc-text-field-helper-text>
+        <!-- 2 apellido -->
+
+        <mdc-text-field label="Apellido Materno" [(ngModel)]="newBuyer.motherLastName" #motherLastName="ngModel" id="motherLastName"
+          name="motherLastName" required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+        <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+          <span *ngIf="motherLastName.dirty || motherLastName.touched">Anota Apellido</span>
+        </mdc-text-field-helper-text>
+        <!-- email -->
+        <!--  <mdc-text-field label="Correo" [(ngModel)]="newBuyer.email" #email="ngModel" id="email" name="email" required
+          [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+        <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+          <span *ngIf="email.dirty || email.touched">Anota email</span>
+        </mdc-text-field-helper-text> -->
+        <!-- telefono -->
+        <mdc-text-field label="Telefono" type="number" [(ngModel)]="newBuyer.phone" #phone="ngModel" id="phone" name="phone"
+          required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+        <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+          <span *ngIf="phone.dirty || phone.touched">Anota telefono</span>
+        </mdc-text-field-helper-text>
+
+      </ion-card-content>
+      <ion-button *ngIf="isCorrect === false" color="warning">Usuario Repetido Verifique
+        los datos</ion-button>
+      <div style="text-align: right">
+        <ion-button [disabled]="!loginForm.form.valid" *ngIf="!isCorrect" color="primary" (click)="check()" slot="end">Verificar</ion-button>
+        <ion-button *ngIf="isCorrect === true" color="success" (click)="check()" slot="end">Correcto, puede
+          continuar</ion-button>
+
+
+      </div>
+    </ion-card>
+  </form>
+</ion-content>
