@@ -22,6 +22,9 @@ import { DetailPropBuyerComponent } from './components/buyer/detail-prop-buyer/d
 import { GeneralFiltersComponent } from './components/general/general-filters/general-filters.component';
 import { UserSelectComponent } from './components/login/user-select/user-select.component';
 import { NewBuyerComponent } from './components/buyer/new-buyer/new-buyer.component';
+import { OfertBuyerComponent } from './components/buyer/ofert-buyer/ofert-buyer.component';
+import { InterPropBuyerComponent } from './components/buyer/inter-prop-buyer/inter-prop-buyer.component';
+import { CreditEventBuyerComponent } from './components/buyer/credit-event-buyer/credit-event-buyer.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +38,9 @@ import { NewBuyerComponent } from './components/buyer/new-buyer/new-buyer.compon
     GeneralFiltersComponent,
     UserSelectComponent,
     NewBuyerComponent,
+    OfertBuyerComponent,
+    InterPropBuyerComponent,
+    CreditEventBuyerComponent,
   ],
   entryComponents: [],
   imports: [

@@ -45,6 +45,7 @@ export class ListPropBuyerComponent implements OnInit {
   }
   getBuyer(id) {
     this.buyerService.getBuyerById(id).subscribe(buyer => {
+      console.log(buyer);
       this.properties = CalcPercentage(buyer, buyer.property, 10);
       this.isLoad = true;
     });

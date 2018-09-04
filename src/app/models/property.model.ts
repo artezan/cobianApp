@@ -28,7 +28,7 @@ export interface IProperty {
   /**
    * Fecha posible
    */
-  dateToBuy?: Date;
+  dateToBuy?: string;
   /**
    * Zona de compra/renta
    */

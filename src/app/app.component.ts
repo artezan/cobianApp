@@ -27,6 +27,18 @@ export class AppComponent {
       userType: 'buyer',
     },
     {
+      title: 'Lista de deseos',
+      url: '/inter-prop-buyer',
+      icon: 'heart',
+      userType: 'buyer',
+    },
+    {
+      title: 'Editar Perfil',
+      url: '/new-buyer',
+      icon: 'contact',
+      userType: 'buyer',
+    },
+    {
       title: 'List',
       url: '/list',
       icon: 'list',

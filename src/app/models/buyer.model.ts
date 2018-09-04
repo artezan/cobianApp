@@ -2,6 +2,7 @@ import { ISchedule } from './schedule.model';
 import { IAdviser } from './adviser.model';
 import { IProperty } from './property.model';
 import { IStatusBuyerProperty } from './statusBuyerProperty.model';
+import { ICredit } from './credit.model';
 
 export interface IBuyer {
   name?: string;
@@ -47,7 +48,7 @@ export interface IBuyer {
   /**
    * Creditos
    */
-  // credit?: ICredit[];
+  credit?: ICredit[];
   /**
    * Documentos
    */
@@ -71,7 +72,7 @@ export interface IBuyer {
   /**
    * Fecha posible
    */
-  dateToBuy?: Date;
+  dateToBuy?: string;
   /**
    * Zona de compra/renta
    */

@@ -48,7 +48,7 @@ export class DetailPropBuyerComponent implements OnInit {
   }
   getlikeProperty(id: string) {
     const buyer = this.userSessionService.userSession.value;
-    this.buyerService.getBuyerById(buyer.id).subscribe(b => {
+    this.buyerService.getBuyerById(buyer.id).subscribe((b: any) => {
       console.log(b);
       if (b.statusBuyerProperty && b.statusBuyerProperty.length > 0) {
         this.arrSBP = b.statusBuyerProperty.map(

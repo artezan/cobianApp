@@ -1,0 +1,129 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" style="color: white !important"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Detalles
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <!-- cargar -->
+  <ng-container *ngIf="isLoad; then thenTemplate; else elseTemplate"></ng-container>
+  <!-- si cargado -->
+  <ng-template #thenTemplate>
+    <!-- credito -->
+    <ng-container *ngIf="hasCredit; then Credit; else noCredit"></ng-container>
+    <ng-template #Credit>
+
+      <ion-card mode="ios" [ngClass]="{'state-verde': credit.status === 'verde', 
+        'state-amarillo': credit.status === 'amarillo',
+        'state-rojo': credit.status === 'rojo',
+        'state-azul': credit.status === 'azul' }">
+
+        <span *ngIf="credit.status === 'verde'">
+          <ion-card-header>
+            <ion-card-subtitle>Estado: Interés</ion-card-subtitle>
+            <ion-card-title text-wrap>En espera</ion-card-title>
+          </ion-card-header>
+          <ion-card-content text-wrap>
+            En poco tiempo recibirá respuesta de la solicitud
+          </ion-card-content>
+
+        </span>
+
+        <span *ngIf="credit.status === 'amarillo'">
+          <ion-card-header>
+            <ion-card-subtitle>Estado: Negociación</ion-card-subtitle>
+            <ion-card-title text-wrap>Favor de Responder</ion-card-title>
+          </ion-card-header>
+          <ion-card-content text-wrap>
+            <ion-label text-wrap>Detalles de la oferta : {{credit.notes}}</ion-label>
+            <ion-list lines="none">
+              <ion-list-header text-wrap> Documentos Requeridos:</ion-list-header>
+              <ion-item lines="none" *ngFor="let doc of credit.files">{{doc}}</ion-item>
+            </ion-list>
+          </ion-card-content>
+          <!-- Poner en notes Aceptado o Denagado -->
+
+          <ion-item lines="none">
+            <ion-button (click)="respondOfert('Aceptado')" color="success" fill="outline" slot="end">
+              Aceptar <ion-icon name="checkmark-circle"></ion-icon>
+            </ion-button>
+            <ion-button (click)="respondOfert('Denagado')" color="danger" fill="outline" slot="end">
+              Denegar <ion-icon name="close-circle"></ion-icon>
+            </ion-button>
+
+          </ion-item>
+
+        </span>
+
+        <span *ngIf="credit.status === 'rojo'">
+          <ion-card-header>
+            <ion-card-subtitle>Estado: Respuesta de Crédito</ion-card-subtitle>
+            <!-- Poner en notes Aceptado o Denagado -->
+            <ion-card-title text-wrap> Crédito: {{credit.notes}}</ion-card-title>
+            <ion-card-content text-wrap>
+            </ion-card-content>
+          </ion-card-header>
+        </span>
+
+      </ion-card>
+    </ng-template>
+    <ng-template #noCredit>
+      <ion-card mode="ios">
+        <ion-card-header>
+          <ion-card-title style="display: flex; align-items: center;">
+            <ion-icon name="paper"></ion-icon> Solicitar Crédito
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-label text-wrap><b>Aún no cuentas con algún credito para esta propiedad</b></ion-label>
+          <ion-label text-wrap>Solicita uno de manera gratuita presionando en el botón:</ion-label>
+        </ion-card-content>
+        <ion-item lines="none">
+          <ion-button (click)="createCredit()" color="secondary" fill="outline" slot="end">
+            Solicitar Crédito <ion-icon name="send"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-card>
+    </ng-template>
+    <!-- /credito -->
+    <!-- schedule -->
+    <ng-container *ngIf="hasSchedule; then Schedule; else noSchedule"></ng-container>
+    <ng-template #Schedule>
+
+    </ng-template>
+    <ng-template #noSchedule>
+      <ion-card mode="ios">
+        <ion-card-header>
+          <ion-card-title style="display: flex; align-items: center;">
+            <ion-icon name="calendar"></ion-icon> Solicitar Visita
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-label text-wrap><b>Aún no cuentas con alguna cita para esta propiedad</b></ion-label>
+          <ion-label text-wrap>Solicita una de manera gratuita presionando en el botón:</ion-label>
+        </ion-card-content>
+        <ion-item lines="none">
+          <ion-button (click)="setLikeProperty(property._id)" color="secondary" fill="outline" slot="end">
+            Solicitar Cita <ion-icon name="send"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-card>
+    </ng-template>
+    <!-- /Schedule -->
+
+
+  </ng-template>
+  <!-- no cargado -->
+  <ng-template #elseTemplate>
+    <ion-skeleton-text width=40px></ion-skeleton-text>
+    <ion-skeleton-text width=200px></ion-skeleton-text>
+    <ion-skeleton-text width=600px></ion-skeleton-text>
+    <ion-skeleton-text width=100px></ion-skeleton-text>
+    <ion-skeleton-text width=80px></ion-skeleton-text>
+  </ng-template>
+  <!-- /cargar -->
+</ion-content>

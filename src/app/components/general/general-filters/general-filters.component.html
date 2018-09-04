@@ -7,13 +7,19 @@
     </ion-buttons>
     <ion-title>Filtros</ion-title>
     <ion-buttons slot="end">
-      <ion-button slot="end" (click)="reset()">
+      <ion-button color="success" slot="end" (click)="sendFilters();goBack()">
+        <ion-icon mode="md" slot="icon-only" name="checkmark-circle"></ion-icon>
+      </ion-button>
+      <ion-button color="danger" slot="end" (click)="reset();goBack()">
         <ion-icon mode="md" slot="icon-only" name="trash"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
+<!-- <div class="parent20"> -->
 <ion-content fullscreen>
+
   <ng-container *ngIf="!isFilterApply; then thenTemplate; else elseTemplate"></ng-container>
   <ng-template #thenTemplate>
 
@@ -163,6 +169,7 @@
       </ion-item>
     </ion-list>
     <ion-button expand="block" color="secondary" (click)="sendFilters();goBack()">Aplicar</ion-button>
+
   </ng-template>
   <ng-template #elseTemplate>
     <!-- Filtros aplicar -->
@@ -285,6 +292,10 @@
               <ion-label>Aliados</ion-label>
               <ion-radio slot="start" value="aliados"></ion-radio>
             </ion-item>
+            <ion-item>
+              <ion-label>Otros</ion-label>
+              <ion-radio slot="start" value="otros"></ion-radio>
+            </ion-item>
           </ion-radio-group>
         </ion-list>
         <ion-button expand="block" color="secondary" (click)="goBack()">Aplicar</ion-button>
@@ -295,6 +306,12 @@
   </p> -->
     </span>
   </ng-template>
-
-
 </ion-content>
+
+<!-- </div> -->
+
+<!-- <ion-footer *ngIf="!isFilterApply">
+  <ion-toolbar>
+    <ion-button expand="block" color="secondary" (click)="sendFilters();goBack()">Aplicar</ion-button>
+  </ion-toolbar>
+</ion-footer> -->

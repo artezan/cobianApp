@@ -1,0 +1,25 @@
+.user-select-contenet {
+    margin: 3% 30% 2% 30%;
+}
+
+.state-verde {
+    border-left: 4px solid var(--ion-color-success);
+}
+
+.state-amarillo {
+    border-left: 4px solid var(--ion-color-warning);
+}
+
+.state-rojo {
+    border-left: 4px solid var(--ion-color-danger);
+}
+
+.state-azul {
+    border-left: 4px solid var(--ion-color-blue);
+}
+
+@media(max-width: 900px) {
+    .user-select-contenet {
+        margin: 1% 1% 1% 1%;
+    }
+}

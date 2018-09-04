@@ -1,0 +1,41 @@
+.parent20 {
+    height: 563px;
+    overflow: auto;
+}
+
+.main-container {
+    height: 75vh;
+    /* or position:absolute; height:100%; */
+    display: flex;
+    flex-direction: column;
+}
+
+/* an arbitrary container of fixed height */
+.fixed-container {
+    height: 100px;
+    padding: 20px;
+    background-color: #0B5AB0;
+    color: white;
+}
+
+/* this is the flex container that will take the rest of the height */
+.content-wrapper {
+    display: flex;
+    flex: 1;
+    min-height: 0px;
+    /* IMPORTANT: you need this for non-chrome browsers */
+}
+
+/* the container for our overflowed content */
+.overflow-container {
+    flex: 1;
+    overflow: auto;
+}
+
+/* the overflow content itself */
+.overflow-content {
+    height: 2000px;
+    color: black;
+    background-color: #ddd;
+    padding: 20px;
+}

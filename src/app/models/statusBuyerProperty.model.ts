@@ -6,13 +6,29 @@ export interface IStatusBuyerProperty {
    * Estado
    * gris: Autoperfilamiento
    * verde: Likes
-   * amarilla: oferta, negociación
-   * roja: negociación aceptada
+   * amarillo: oferta, negociación
+   * rojo: negociación aceptada
    * azul: post-venta
    */
-  status?: 'verde' | 'gris' | 'amarilla' | 'roja' | 'azul';
+  status?: 'verde' | 'gris' | 'amarillo' | 'rojo' | 'azul';
   buyer?: IBuyer | string;
   property?: IProperty | string;
+  note?: string;
+  timestamp?: Date;
+  _id?: string;
+}
+export interface IStatusBuyerPropertyGet {
+  /**
+   * Estado
+   * gris: Autoperfilamiento
+   * verde: Likes
+   * amarillo: oferta, negociación
+   * rojo: negociación aceptada
+   * azul: post-venta
+   */
+  status?: 'verde' | 'gris' | 'amarillo' | 'rojo' | 'azul';
+  buyer?: IBuyer;
+  property?: IProperty;
   note?: string;
   timestamp?: Date;
   _id?: string;

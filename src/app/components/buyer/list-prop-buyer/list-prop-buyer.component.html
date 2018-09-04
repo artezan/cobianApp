@@ -52,7 +52,7 @@
     <ng-template #searchTemplate>
 
       <!-- menu end -->
-      <ion-menu contentId="menu-end" menuId="filters" side="end" type="push">
+      <ion-menu contentId="menu-end" menuId="filters" side="end" type="overlay">
         <app-general-filters (filters)="getFilters($event)"></app-general-filters>
       </ion-menu>
 

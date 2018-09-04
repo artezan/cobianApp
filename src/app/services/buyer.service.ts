@@ -26,4 +26,9 @@ export class BuyerService {
       .post(END_POINT.BUYER_CHECK, buyer)
       .pipe(map((data: any) => data.data));
   }
+  public newBuyer(buyer: IBuyer): Observable<IBuyer> {
+    return this.http
+      .post(END_POINT.BUYER, buyer)
+      .pipe(map((data: any) => data.data));
+  }
 }

@@ -10,6 +10,8 @@ const bypropertyid = 'bypropertyid/';
 const checkbuyer = 'checkbuyer/';
 const propertybyBuyer = 'matchsearchbybuyer/';
 const statusBuyerProperty = 'status/';
+const credit = 'credit/';
+const schedule = 'schedule/';
 
 export const END_POINT = {
   IP: ip,
@@ -25,4 +27,8 @@ export const END_POINT = {
   PROPERTY: apiUrl + property,
   // status buyer property
   STATUS_BP: apiUrl + statusBuyerProperty,
+  // credit
+  CREDIT: apiUrl + credit,
+  // schedule
+  SCHEDULE: apiUrl + schedule,
 };

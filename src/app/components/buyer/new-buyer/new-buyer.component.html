@@ -1,7 +1,8 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button mode="md" style="color: white !important"></ion-back-button>
+      <ion-back-button *ngIf="!isEdit" mode="md" style="color: white !important"></ion-back-button>
+      <ion-menu-button *ngIf="isEdit" style="color: white !important"></ion-menu-button>
     </ion-buttons>
     <ion-title>
       Registro
@@ -59,4 +60,248 @@
       </div>
     </ion-card>
   </form>
+  <form #loginForm2="ngForm">
+    <!-- <ion-card [hidden]='!isCorrect'> -->
+    <ion-card [hidden]='!isCorrect'>
+      <div #product></div>
+      <ion-card-header>
+        <ion-card-title> Ingrese su Perfil</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <!-- email -->
+        <mdc-text-field label="Correo" [(ngModel)]="newBuyer.email" #email="ngModel" id="email" name="email" required
+          [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+        <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+          <span *ngIf="email.dirty || email.touched">Anota Correo</span>
+        </mdc-text-field-helper-text>
+        <!--password -->
+        <mdc-text-field label="Contraseña" [(ngModel)]="newBuyer.password" #password="ngModel" id="password" name="password"
+          type="password" required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+        <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+          <span *ngIf="password.dirty || password.touched">Anota Contraseña</span>
+        </mdc-text-field-helper-text>
+        <!--years -->
+
+        <mdc-text-field label="Edad" [(ngModel)]="newBuyer.years" #years="ngModel" id="years" name="years" type="number"
+          required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+        <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+          <span *ngIf="years.dirty || years.touched">Anota Edad</span>
+        </mdc-text-field-helper-text>
+        <!-- numOfFamily -->
+        <mdc-text-field label="Número de miembros de familia" type="number" [(ngModel)]="newBuyer.numOfFamily"
+          #numOfFamily="ngModel" id="numOfFamily" name="numOfFamily" required [box]="true" [required]="true"
+          [helperText]="weightHelper"></mdc-text-field>
+        <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+          <span *ngIf="numOfFamily.dirty || numOfFamily.touched">Anota Numero</span>
+        </mdc-text-field-helper-text>
+        <!-- isMale -->
+
+        <ion-item lines="none" class="margin-field">
+          <ion-label>Género</ion-label>
+          <ion-select [(ngModel)]="newBuyer.isMale" #isMale="ngModel" id="isMale" name="isMale" required placeholder="Selecciona uno">
+            <ion-select-option value="false">Mujer</ion-select-option>
+            <ion-select-option value="true">Hombre</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <!-- isSingle -->
+        <ion-item lines="none" class="margin-field">
+          <ion-label>
+            Soltero
+          </ion-label>
+          <ion-toggle [(ngModel)]="newBuyer.isSingle" #isSingle="ngModel" id="isSingle" name="isSingle" required mode="md"
+            slot="end"></ion-toggle>
+        </ion-item>
+
+        <!-- tipo de propiedad
+            casa
+departamento
+terreno
+nave industrial
+           -->
+
+        <ion-item lines="none" class="margin-field">
+          <ion-label>Tipo de Propiedad</ion-label>
+          <ion-select [(ngModel)]="newBuyer.typeOfProperty" #typeOfProperty="ngModel" id="typeOfProperty" name="typeOfProperty"
+            required placeholder="Tipo">
+            <ion-select-option value="casa">Casa</ion-select-option>
+            <ion-select-option value="departamento">Departamento</ion-select-option>
+            <ion-select-option value="nave industrial">Nave Industrial</ion-select-option>
+            <ion-select-option value="terreno">Terreno</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <!-- space -->
+        <mdc-text-field label="Espacio(metros)" type="number" [(ngModel)]="newBuyer.space" #space="ngModel" id="space"
+          name="space" required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+        <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+          <span *ngIf="space.dirty || space.touched">Anota Espacio</span>
+        </mdc-text-field-helper-text>
+        <!-- Compra/renta -->
+
+        <ion-item lines="none" class="margin-field">
+          <ion-label>Comprar/Rentar</ion-label>
+          <ion-select [(ngModel)]="newBuyer.isRenter" #isRenter="ngModel" id="isRenter" name="isRenter" required
+            placeholder="Selecciona">
+            <ion-select-option value="false">Comprar</ion-select-option>
+            <ion-select-option value="true">Rentar</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <!-- Fecha a comprar -->
+        <ion-label text-wrap>Anota la posible fecha de compra o renta</ion-label>
+        <!-- day -->
+        <mdc-text-field label="Dia" type="number" [(ngModel)]="daySelect" #d="ngModel" id="d" name="d" required [box]="true"
+          [required]="true" [helperText]="weightHelper"></mdc-text-field>
+        <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+          <span *ngIf="d.dirty || d.touched">Anota Dia</span>
+        </mdc-text-field-helper-text>
+        <!-- mm -->
+        <ion-item lines="none" class="margin-field">
+          <ion-label>Mes</ion-label>
+          <ion-select [(ngModel)]="monthSelect" #me="ngModel" id="me" name="me" required placeholder="Selecciona">
+            <ion-select-option *ngFor="let m of months; let i = index" [value]="i + 1">{{m}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <!-- aa -->
+        <mdc-text-field label="Año" type="number" [(ngModel)]="yearSelect" #y="ngModel" id="y" name="y" required [box]="true"
+          [required]="true" [helperText]="weightHelper"></mdc-text-field>
+        <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+          <span *ngIf="y.dirty || y.touched">Anota Año</span>
+        </mdc-text-field-helper-text>
+        <!-- city -->
+        <ion-item lines="none" class="margin-field">
+          <ion-label>Ciudad</ion-label>
+          <ion-select [(ngModel)]="newBuyer.city" #city="ngModel" id="city" name="city" required placeholder="Selecciona">
+            <ion-select-option value="puebla">Puebla</ion-select-option>
+            <ion-select-option value="mexico">Mexico</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <!-- zone -->
+        <mdc-text-field label="Zona" [(ngModel)]="newBuyer.zone" #zone="ngModel" id="zone" name="zone" required [box]="true"
+          [required]="true" [helperText]="weightHelper"></mdc-text-field>
+        <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+          <span *ngIf="zone.dirty || zone.touched">Anota Zona</span>
+        </mdc-text-field-helper-text>
+        <!-- minPrice -->
+        <mdc-text-field label="Precio Minimo" type="number" [(ngModel)]="newBuyer.minPrice" #minPrice="ngModel" id="minPrice"
+          name="minPrice" required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+        <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+          <span *ngIf="minPrice.dirty || minPrice.touched">Anota Precio</span>
+        </mdc-text-field-helper-text>
+        <!-- maxPrice -->
+        <mdc-text-field label="Precio Máximo" type="number" [(ngModel)]="newBuyer.maxPrice" #maxPrice="ngModel" id="maxPrice"
+          name="maxPrice" required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+        <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+          <span *ngIf="maxPrice.dirty || maxPrice.touched">Anota Precio</span>
+        </mdc-text-field-helper-text>
+        <!-- numRooms -->
+        <mdc-text-field label="Num. mínimo cuartos" type="number" [(ngModel)]="newBuyer.numRooms" #numRooms="ngModel"
+          id="numRooms" name="numRooms" required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+        <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+          <span *ngIf="numRooms.dirty || numRooms.touched">Anota Cuartos</span>
+        </mdc-text-field-helper-text>
+        <!-- numCars -->
+        <mdc-text-field label="lugares estacionamiento" type="number" [(ngModel)]="newBuyer.numCars" #numCars="ngModel"
+          id="numCars" name="numCars" required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+        <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+          <span *ngIf="numCars.dirty || numCars.touched">Anota Número</span>
+        </mdc-text-field-helper-text>
+        <!-- numBathrooms -->
+        <mdc-text-field label="Baños" type="number" [(ngModel)]="newBuyer.numBathrooms" #numBathrooms="ngModel" id="numBathrooms"
+          name="numBathrooms" required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+        <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+          <span *ngIf="numBathrooms.dirty || numBathrooms.touched">Anota Número</span>
+        </mdc-text-field-helper-text>
+        <!-- Nuevo/Usado -->
+
+        <ion-item lines="none" class="margin-field">
+          <ion-label>Estado</ion-label>
+          <ion-select [(ngModel)]="newBuyer.isOld" #isOld="ngModel" id="isOld" name="isOld" required placeholder="Selecciona">
+            <ion-select-option value="false">Nuevo</ion-select-option>
+            <ion-select-option value="true">Usado</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <!-- isClose -->
+
+        <ion-item lines="none" class="margin-field">
+          <ion-label>Fraccionamiento</ion-label>
+          <ion-select [(ngModel)]="newBuyer.isClose" #isClose="ngModel" id="isClose" name="isClose" required
+            placeholder="Selecciona">
+            <ion-select-option value="false">Abierto</ion-select-option>
+            <ion-select-option value="true">Cerrado</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <!-- hasGarden -->
+
+        <ion-item lines="none" class="margin-field">
+          <ion-label>Jardin</ion-label>
+          <ion-select [(ngModel)]="newBuyer.hasGarden" #hasGarden="ngModel" id="hasGarden" name="hasGarden" required
+            placeholder="Selecciona">
+            <ion-select-option value="false">Sin Jardin</ion-select-option>
+            <ion-select-option value="true">Con Jardin</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <!-- isLowLevel -->
+
+        <ion-item lines="none" class="margin-field">
+          <ion-label>Planta Baja</ion-label>
+          <ion-select [(ngModel)]="newBuyer.isLowLevel" #isLowLevel="ngModel" id="isLowLevel" name="isLowLevel"
+            required placeholder="Selecciona">
+            <ion-select-option value="false">Cualquiera</ion-select-option>
+            <ion-select-option value="true">Planta Baja</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <!-- hasElevator -->
+
+        <ion-item lines="none" class="margin-field">
+          <ion-label>Elevador</ion-label>
+          <ion-select [(ngModel)]="newBuyer.hasElevator" #hasElevator="ngModel" id="hasElevator" name="hasElevator"
+            required placeholder="Selecciona">
+            <ion-select-option value="false">No importa</ion-select-option>
+            <ion-select-option value="true">Con Elevador</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <!-- allServices -->
+
+        <ion-item lines="none" class="margin-field">
+          <ion-label>Servicios</ion-label>
+          <ion-select [(ngModel)]="newBuyer.allServices" #allServices="ngModel" id="allServices" name="allServices"
+            required placeholder="Selecciona">
+            <ion-select-option value="false">No importa</ion-select-option>
+            <ion-select-option value="true">Todos los servicios</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <!-- wayToBuy FOVISSTE, IMSS, contado, PEMEX, Infonavit, aliados, otros -->
+
+        <ion-item lines="none" class="margin-field">
+          <ion-label text-wrap>Forma de Comprar</ion-label>
+          <ion-select [(ngModel)]="newBuyer.wayToBuy" #wayToBuy="ngModel" id="wayToBuy" name="wayToBuy" required
+            placeholder="Selecciona">
+            <ion-select-option value="FOVISSTE">FOVISSTE</ion-select-option>
+            <ion-select-option value="IMSS">IMSS</ion-select-option>
+            <ion-select-option value="contado">contado</ion-select-option>
+            <ion-select-option value="PEMEX">Pemex</ion-select-option>
+            <ion-select-option value="infonavit">Infonavit</ion-select-option>
+            <ion-select-option value="infonavit">Aliados</ion-select-option>
+            <ion-select-option value="otros">Otros</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-label text-wrap>Anota palabras clave separadas por comas para una mejor búsqueda (ej: casa, departamento,
+          mascotas)</ion-label>
+        <mdc-textarea [(ngModel)]="words" #w="ngModel" id="w" name="w" label="Palabras" rows="8" cols="40"></mdc-textarea>
+
+
+      </ion-card-content>
+      <ion-button *ngIf="isCorrect === false" color="warning">Usuario Repetido Verifique
+        los datos</ion-button>
+      <div style="text-align: right">
+        <ion-button [disabled]="!loginForm2.form.valid" color="secondary" (click)="checkUser()" slot="end" *ngIf="!isEdit">Crear</ion-button>
+        <ion-button [disabled]="!loginForm2.form.valid" color="secondary" (click)="editUser()" slot="end" *ngIf="isEdit">Editar</ion-button>
+        <!--  <ion-button *ngIf="isCorrect === true" color="success" (click)="check()" slot="end">Correcto, puede
+          continuar</ion-button> -->
+
+
+      </div>
+    </ion-card>
+  </form>
+
 </ion-content>
