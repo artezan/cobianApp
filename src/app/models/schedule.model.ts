@@ -6,42 +6,43 @@ export interface ISchedule {
   /**
    * Fecha del Evento
    */
-  day: number;
-  month: number;
-  year: number;
-  hour: number;
-  minute: number;
-  timestamp: Date;
+  day?: number;
+  month?: number;
+  year?: number;
+  hour?: number;
+  minute?: number;
+  timestamp?: Date;
   /**
    * Titulo del evento
    */
-  title: string;
+  title?: string;
   /**
    * Direccion
    */
-  address: string;
+  address?: string;
   /**
    *  propiedad
    */
-  property: IProperty;
+  property?: IProperty;
   /**
    * Comprador
    */
-  buyer: IBuyer;
+  buyer?: IBuyer;
   /**
    *  Asesor
    */
-  adviser: IAdviser;
+  adviser?: IAdviser;
   /**
    *  Asesor
    */
-  // seller: ISeller;
+  // seller?: ISeller;
   /**
    * Estado
    */
-  status: string;
+  status?: 'verde' | 'gris' | 'amarillo' | 'rojo' | 'azul';
   /**
    * Notas
    */
-  note: string;
+  note?: string;
+  _id?: string;
 }

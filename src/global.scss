@@ -16,6 +16,10 @@ $mdc-theme-secondary: #F5811E; // secondary color F58634
     max-width: 10% !important;
 }
 
+.split-pane-ios.split-pane-visible>.split-pane-side {
+    max-width: 10% !important;
+}
+
 body,
 html {
     height: 100%
@@ -23,4 +27,34 @@ html {
 
 .space-buttons {
     min-height: 100px !important;
+}
+
+.state-gris {
+    border-left: 4px solid var(--ion-color-medium);
+}
+
+.state-verde {
+    border-left: 4px solid var(--ion-color-success);
+}
+
+.state-amarillo {
+    border-left: 4px solid var(--ion-color-warning);
+}
+
+.state-rojo {
+    border-left: 4px solid var(--ion-color-danger);
+}
+
+.state-azul {
+    border-left: 4px solid var(--ion-color-blue);
+}
+
+.my-contenet {
+    margin: 3% 30% 2% 30%;
+}
+
+@media(max-width: 900px) {
+    .my-contenet {
+        margin: 1% 1% 1% 1%;
+    }
 }

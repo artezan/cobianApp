@@ -9,6 +9,8 @@ import { UserSelectComponent } from './components/login/user-select/user-select.
 import { NewBuyerComponent } from './components/buyer/new-buyer/new-buyer.component';
 import { InterPropBuyerComponent } from './components/buyer/inter-prop-buyer/inter-prop-buyer.component';
 import { CreditEventBuyerComponent } from './components/buyer/credit-event-buyer/credit-event-buyer.component';
+import { OfertBuyerComponent } from './components/buyer/ofert-buyer/ofert-buyer.component';
+import { MainAdminComponent } from './components/admin/main-admin/main-admin.component';
 
 const routes: Routes = [
   // Rutas
@@ -22,6 +24,8 @@ const routes: Routes = [
   { path: 'new-buyer', component: NewBuyerComponent },
   { path: 'inter-prop-buyer', component: InterPropBuyerComponent },
   { path: 'credit-event-buyer', component: CreditEventBuyerComponent },
+  { path: 'ofert-buyer', component: OfertBuyerComponent },
+  { path: 'main-admin', component: MainAdminComponent },
 ];
 
 @NgModule({

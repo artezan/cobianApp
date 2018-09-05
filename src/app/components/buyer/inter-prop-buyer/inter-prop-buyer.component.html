@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button mode="md" style="color: white !important"></ion-back-button>
+      <ion-menu-button style="color: white !important"></ion-menu-button>
     </ion-buttons>
     <ion-title>
       Lista de Deseos
@@ -14,7 +14,7 @@
 
     <h2>Selecciona uno para mayor información</h2>
     <ion-card *ngFor="let item of sBP | async" mode='ios' [ngClass]="{'state-verde': item.status === 'verde', 'state-amarillo': item.status === 'amarillo','state-rojo': item.status === 'rojo','state-azul': item.status === 'azul' }"
-      (click)="itemDetail(item.property)">
+      (click)="itemDetail(item.property, item._id)">
       <ion-card-header>
         <ion-card-subtitle *ngIf="item.status === 'verde'">Estado: Interés</ion-card-subtitle>
         <ion-card-subtitle *ngIf="item.status === 'amarillo'">Estado: Negociación</ion-card-subtitle>

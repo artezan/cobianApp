@@ -10,16 +10,22 @@ import { map } from 'rxjs/operators';
 })
 export class StatusBuyerPropertyService {
   constructor(private http: HttpClient) {}
-  newStatusBuyerProperty(
+  public newStatusBuyerProperty(
     sBP: IStatusBuyerProperty,
   ): Observable<IStatusBuyerProperty> {
     return this.http
       .post(END_POINT.STATUS_BP, sBP)
       .pipe(map((data: any) => data.data));
   }
-  deletedStatusBuyerProperty(sBPId: string): Observable<Boolean> {
+  public deletedStatusBuyerProperty(sBPId: string): Observable<Boolean> {
     return this.http
       .delete(END_POINT.STATUS_BP + sBPId)
+      .pipe(map((data: any) => data.data));
+  }
+  public upgradeStatus(sBPId: string, sBPStatus: string): Observable<Boolean> {
+    const body = { status: sBPStatus };
+    return this.http
+      .post(END_POINT.STATUS_UPGRADE + sBPId, body)
       .pipe(map((data: any) => data.data));
   }
 }

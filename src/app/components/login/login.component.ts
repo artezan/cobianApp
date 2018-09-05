@@ -67,6 +67,10 @@ export class LoginComponent implements OnInit {
             load.dismiss();
             this.navController.navigateRoot('list-prop-buyer', false);
           }
+          if (data.type === 'administrator') {
+            load.dismiss();
+            this.navController.navigateRoot('main-admin', false);
+          }
         } else {
           load.dismiss();
           this.isFind = false;

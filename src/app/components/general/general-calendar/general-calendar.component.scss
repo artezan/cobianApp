@@ -52,6 +52,46 @@ td:hover {
     font-size: small;
 }
 
+.event-of-day-gris {
+    background-color: #aab4bd;
+    border-left: 5px solid #47525d;
+    border-radius: 7%;
+    margin-bottom: 4%;
+    font-size: small;
+}
+
+.event-of-day-verde {
+    background-color: #c3f7d7;
+    border-left: 5px solid var(--ion-color-success);
+    border-radius: 7%;
+    margin-bottom: 4%;
+    font-size: small;
+}
+
+.event-of-day-amarillo {
+    background-color: #f7f3e2;
+    border-left: 5px solid var(--ion-color-warning);
+    border-radius: 7%;
+    margin-bottom: 4%;
+    font-size: small;
+}
+
+.event-of-day-rojo {
+    background-color: #f1b9b9;
+    border-left: 5px solid var(--ion-color-danger);
+    border-radius: 7%;
+    margin-bottom: 4%;
+    font-size: small;
+}
+
+.event-of-day-azul {
+    background-color: #9bd6fb;
+    border-left: 5px solid var(--ion-color-blue);
+    border-radius: 7%;
+    margin-bottom: 4%;
+    font-size: small;
+}
+
 .toast-alert {
     .toast-container {
         background-color: #ffcdcd;

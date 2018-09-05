@@ -27,8 +27,9 @@
     <ng-template #matchTemplate>
       <h1>Propiedades Sugeridas</h1>
       <ion-label>Se muestran las coincidencias con tu perfil</ion-label>
-      <ion-list lines="full">
-        <ion-item lines="inset" detail *ngFor="let property of properties" (click)="itemDetail(property)">
+      <ion-list [@animateStagger]="{value:'50'}" lines="full">
+        <ion-item [@animate]="{value:'*',params:{y:'100%'}}" lines="inset" detail *ngFor="let property of properties"
+          (click)="itemDetail(property)">
           <ion-icon *ngIf="property.typeOfProperty === 'departamento'" style="color: #F5811E" name="business" slot="start"></ion-icon>
           <ion-icon *ngIf="property.typeOfProperty === 'casa'" style="color: #F5811E" name="home" slot="start"></ion-icon>
           <ion-label text-wrap>
@@ -53,7 +54,7 @@
 
       <!-- menu end -->
       <ion-menu contentId="menu-end" menuId="filters" side="end" type="overlay">
-        <app-general-filters (filters)="getFilters($event)"></app-general-filters>
+        <app-general-filters (filters)="getFilters($event)" (resetAll)="getAllProperty()"></app-general-filters>
       </ion-menu>
 
 
@@ -67,8 +68,9 @@
         </ion-item>
         <ng-container *ngIf=" (allProperties | async)?.length ; then dataDisplay; else noDataDisplay "></ng-container>
         <ng-template #dataDisplay>
-          <ion-list lines="full">
-            <ion-item lines="inset" detail *ngFor="let property of allProperties | async" (click)="itemDetail(property)">
+          <ion-list [@animateStagger]="{value:'50'}" lines="full">
+            <ion-item [@animate]="{value:'*',params:{y:'100%'}}" lines="inset" detail *ngFor="let property of allProperties | async"
+              (click)="itemDetail(property)">
               <ion-icon *ngIf="property.typeOfProperty === 'departamento'" style="color: #F5811E" name="business" slot="start"></ion-icon>
               <ion-icon *ngIf="property.typeOfProperty === 'casa'" style="color: #F5811E" name="home" slot="start"></ion-icon>
               <ion-label text-wrap>

@@ -12,6 +12,8 @@ const propertybyBuyer = 'matchsearchbybuyer/';
 const statusBuyerProperty = 'status/';
 const credit = 'credit/';
 const schedule = 'schedule/';
+const upgradeStatus = 'upgradelevelbyid/';
+const ofert = 'ofert/';
 
 export const END_POINT = {
   IP: ip,
@@ -27,8 +29,11 @@ export const END_POINT = {
   PROPERTY: apiUrl + property,
   // status buyer property
   STATUS_BP: apiUrl + statusBuyerProperty,
+  STATUS_UPGRADE: apiUrl + statusBuyerProperty + upgradeStatus,
   // credit
   CREDIT: apiUrl + credit,
   // schedule
   SCHEDULE: apiUrl + schedule,
+  // ofert
+  OFERT: apiUrl + ofert,
 };

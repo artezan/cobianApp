@@ -26,22 +26,66 @@
   <!-- eventos -->
   <ng-container *ngIf="scheduleToShow.length > 0; then data; else noData"></ng-container>
   <ng-template #data>
-    <ion-card *ngFor="let schedule of scheduleToShow">
-      <ion-card-header>
-        <ion-card-subtitle>Cita: {{schedule.day}}/{{schedule.month}}/{{schedule.year}}</ion-card-subtitle>
-        <ion-card-subtitle *ngIf="schedule.minute === 0">Hora: {{schedule.hour}}:{{schedule.minute}}0</ion-card-subtitle>
-        <ion-card-subtitle *ngIf="schedule.minute !== 0">Hora: {{schedule.hour}}:{{schedule.minute}}</ion-card-subtitle>
-        <ion-card-title>{{schedule.property.name}}</ion-card-title>
-      </ion-card-header>
+    <ion-card *ngFor="let schedule of scheduleToShow" [ngClass]="{'state-verde': schedule.status === 'verde', 
+        'state-amarillo': schedule.status === 'amarillo',
+        'state-rojo': schedule.status === 'rojo',
+        'state-gris': schedule.status === 'gris',
+        'state-azul': schedule.status === 'azul' }">
+      <span *ngIf="schedule.status === 'gris'">
+        <ion-card-header>
+          <ion-card-subtitle>Estado: Cita Generada</ion-card-subtitle>
+          <ion-card-title text-wrap>En espera</ion-card-title>
+        </ion-card-header>
+        <ion-card-content text-wrap>
+          En poco tiempo recibirá respuesta de la cita solicitada
+        </ion-card-content>
 
-      <ion-card-content>
-        <ion-label>
-          <ion-icon name="person"></ion-icon>
-          <b>Tiene una cita con {{schedule.adviser.name}}</b>
-        </ion-label>
-        <ion-icon name="pin"></ion-icon>
-        Direccion {{schedule.property.zone}}
-      </ion-card-content>
+      </span>
+
+      <span *ngIf="schedule.status === 'verde'">
+        <ion-card-header>
+          <ion-card-subtitle>Estado: Propuesta Cita</ion-card-subtitle>
+          <ion-card-title text-wrap>Favor de Responder</ion-card-title>
+        </ion-card-header>
+        <ion-card-content text-wrap>
+          <ion-label text-wrap>Detalles de la cita : {{schedule.note}}</ion-label>
+          <ion-list lines="none">
+            <ion-item lines="none" text-wrap> Fecha: {{schedule.day}}/{{schedule.month}}/{{schedule.year}}</ion-item>
+            <ion-item *ngIf="schedule.minute < 10" lines="none" text-wrap>Hora:
+              {{schedule.hour}}:0{{schedule.minute}}</ion-item>
+            <ion-item *ngIf="schedule.minute >= 10" lines="none" text-wrap>Hora:
+              {{schedule.hour}}:{{schedule.minute}}</ion-item>
+          </ion-list>
+        </ion-card-content>
+
+      </span>
+      <span *ngIf="!schedule.status || schedule.status === 'amarillo'">
+        <ion-card-header>
+          <ion-card-subtitle>Cita: {{schedule.day}}/{{schedule.month}}/{{schedule.year}}</ion-card-subtitle>
+          <ion-card-subtitle *ngIf="schedule.minute < 10">Hora: {{schedule.hour}}:0{{schedule.minute}}</ion-card-subtitle>
+          <ion-card-subtitle *ngIf="schedule.minute >= 10">Hora: {{schedule.hour}}:{{schedule.minute}}</ion-card-subtitle>
+          <ion-card-title>{{schedule.property.name}}</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-label>
+            <ion-icon name="person"></ion-icon>
+            <b>Tiene una cita con {{schedule.adviser.name}}</b>
+          </ion-label>
+          <ion-icon name="pin"></ion-icon>
+          Direccion {{schedule.property.zone}}
+        </ion-card-content>
+      </span>
+      <span *ngIf="schedule.status === 'rojo'">
+        <ion-card-header>
+          <ion-card-subtitle>Estado: Visita</ion-card-subtitle>
+          <!-- Poner en notes Visitada o No Visitada -->
+          <ion-card-title text-wrap> Asistencia: {{schedule.note}}</ion-card-title>
+          <ion-card-content text-wrap>
+          </ion-card-content>
+        </ion-card-header>
+      </span>
+
     </ion-card>
   </ng-template>
   <!-- sin evento -->

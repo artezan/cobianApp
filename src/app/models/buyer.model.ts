@@ -3,6 +3,7 @@ import { IAdviser } from './adviser.model';
 import { IProperty } from './property.model';
 import { IStatusBuyerProperty } from './statusBuyerProperty.model';
 import { ICredit } from './credit.model';
+import { IOfert } from './ofert.model';
 
 export interface IBuyer {
   name?: string;
@@ -128,7 +129,7 @@ export interface IBuyer {
   /**
    * Ofertas
    */
-  // ofert?: IOfert[];
+  ofert?: IOfert[];
   /**
    * Estado buyer/property
    */

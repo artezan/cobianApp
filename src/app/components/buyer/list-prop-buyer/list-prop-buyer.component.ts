@@ -7,11 +7,13 @@ import { IProperty } from '../../../models/property.model';
 import { NavigationExtras, Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
 import { Observable, from } from 'rxjs';
+import { fuseAnimations } from '../../../_config/_animations';
 
 @Component({
   selector: 'app-list-prop-buyer',
   templateUrl: './list-prop-buyer.component.html',
   styleUrls: ['./list-prop-buyer.component.scss'],
+  animations: fuseAnimations,
 })
 export class ListPropBuyerComponent implements OnInit {
   properties: IProperty[] = [];
@@ -42,6 +44,7 @@ export class ListPropBuyerComponent implements OnInit {
   }
   getAllProperty() {
     this.allProperties = this.propertyService.getAll();
+    this.numOfFilers = 0;
   }
   getBuyer(id) {
     this.buyerService.getBuyerById(id).subscribe(buyer => {

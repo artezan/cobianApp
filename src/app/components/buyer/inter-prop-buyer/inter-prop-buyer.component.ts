@@ -32,8 +32,10 @@ export class InterPropBuyerComponent implements OnInit {
       .pipe(map(res => res.statusBuyerProperty));
     this.isLoad = true;
   }
-  itemDetail(item: IProperty) {
-    const data: NavigationExtras = { queryParams: { id: item._id } };
+  itemDetail(item: IProperty, statusId: string) {
+    const data: NavigationExtras = {
+      queryParams: { id: item._id, statusId: statusId },
+    };
     this.router.navigate(['credit-event-buyer'], data);
   }
 }

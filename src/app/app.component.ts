@@ -14,6 +14,7 @@ import { IUserSession } from './models/userSession.model';
 })
 export class AppComponent {
   public appPages = [
+    // buyer
     {
       title: 'Propiedades',
       url: '/list-prop-buyer',
@@ -33,16 +34,23 @@ export class AppComponent {
       userType: 'buyer',
     },
     {
+      title: 'Ofertas',
+      url: '/ofert-buyer',
+      icon: 'clipboard',
+      userType: 'buyer',
+    },
+    {
       title: 'Editar Perfil',
       url: '/new-buyer',
       icon: 'contact',
       userType: 'buyer',
     },
+    // admin
     {
-      title: 'List',
-      url: '/list',
-      icon: 'list',
-      userType: '',
+      title: 'Principal',
+      url: '/main-admin',
+      icon: 'home',
+      userType: 'administrator',
     },
   ];
   isDevice: boolean;

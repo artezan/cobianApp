@@ -25,6 +25,8 @@ import { NewBuyerComponent } from './components/buyer/new-buyer/new-buyer.compon
 import { OfertBuyerComponent } from './components/buyer/ofert-buyer/ofert-buyer.component';
 import { InterPropBuyerComponent } from './components/buyer/inter-prop-buyer/inter-prop-buyer.component';
 import { CreditEventBuyerComponent } from './components/buyer/credit-event-buyer/credit-event-buyer.component';
+import { MainAdminComponent } from './components/admin/main-admin/main-admin.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -41,10 +43,12 @@ import { CreditEventBuyerComponent } from './components/buyer/credit-event-buyer
     OfertBuyerComponent,
     InterPropBuyerComponent,
     CreditEventBuyerComponent,
+    MainAdminComponent,
   ],
   entryComponents: [],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     // IonicModule.forRoot({ mode: 'ios' }),
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),

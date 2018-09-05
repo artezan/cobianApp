@@ -51,12 +51,23 @@ export class GeneralCalendarComponent implements OnInit, OnChanges {
     );
     if (events.length > 0) {
       if (events.length === 1) {
-        str +=
-          '<div class="event-of-day" id="' +
-          day +
-          '">' +
-          events.length +
-          ' Evento </div>';
+        if (events[0].status) {
+          str +=
+            '<div class="event-of-day-' +
+            events[0].status +
+            '" id="' +
+            day +
+            '">' +
+            events.length +
+            ' Evento </div>';
+        } else {
+          str +=
+            '<div class="event-of-day" id="' +
+            day +
+            '">' +
+            events.length +
+            ' Evento </div>';
+        }
       } else {
         str +=
           '<div class="event-of-day" id="' +

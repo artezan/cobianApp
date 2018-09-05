@@ -10,6 +10,8 @@ import { IProperty } from '../../../models/property.model';
 export class GeneralFiltersComponent implements OnInit {
   @Output()
   filters = new EventEmitter();
+  @Output()
+  resetAll = new EventEmitter();
   constructor(public menuCtr: MenuController) {}
   isFilterApply = false;
   caseFilter: string;
@@ -105,5 +107,6 @@ export class GeneralFiltersComponent implements OnInit {
       numRooms: 0,
       space: 0,
     };
+    this.resetAll.emit();
   }
 }

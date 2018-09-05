@@ -1,3 +1,87 @@
-<p>
-  ofert-buyer works!
-</p>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button style="color: white !important"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Ofertas
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <!-- cargar -->
+  <ng-container *ngIf="isLoad; then thenTemplate; else elseTemplate"></ng-container>
+  <!-- si cargado -->
+  <ng-template #thenTemplate>
+    <ng-container *ngIf="hasOfert; then Ofert; else noOfert"></ng-container>
+    <!-- sin oferta -->
+    <ng-template #noOfert>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>Sin Ofertas</ion-card-subtitle>
+          <ion-card-title text-wrap>Cuando se genere una oferta la podrá revisar aquí</ion-card-title>
+
+        </ion-card-header>
+      </ion-card>
+    </ng-template>
+    <!-- con oferta -->
+    <ng-template #Ofert>
+      <ion-card mode="ios" *ngFor="let ofert of oferts" [ngClass]="
+        {
+        'state-amarillo': ofert.status === 'amarillo',
+        'state-rojo': ofert.status === 'rojo'
+         }">
+        <span *ngIf="ofert.status === 'amarillo'">
+          <ion-card-header>
+            <ion-card-subtitle>Estado: Negociación</ion-card-subtitle>
+            <ion-card-title text-wrap>Favor de Responder</ion-card-title>
+          </ion-card-header>
+          <ion-card-content text-wrap>
+            <ion-label text-wrap>Oferta para la propiedad: <b>{{getProperty(ofert.property).name}}</b></ion-label>
+            <ion-label text-wrap>Oferta por: <b>${{ofert.ofertPrice}}</b></ion-label>
+            <ion-label text-wrap>Detalles de la oferta : {{ofert.notes}}</ion-label>
+            <ion-list lines="none">
+              <ion-list-header text-wrap> Documentos Requeridos:</ion-list-header>
+              <ion-item lines="none" *ngFor="let doc of ofert.files">{{doc}}</ion-item>
+            </ion-list>
+          </ion-card-content>
+          <!-- Poner en notes Aceptado o Denagado -->
+
+          <ion-item lines="none">
+            <ion-button (click)="respondOfert('Aceptada', ofert)" color="success" fill="outline" slot="end">
+              Aceptar <ion-icon name="checkmark-circle"></ion-icon>
+            </ion-button>
+            <ion-button (click)="respondOfert('Denagada', ofert)" color="danger" fill="outline" slot="end">
+              Denegar <ion-icon name="close-circle"></ion-icon>
+            </ion-button>
+
+          </ion-item>
+
+        </span>
+        <span *ngIf="ofert.status === 'rojo'">
+          <ion-card-header>
+            <ion-card-subtitle>Estado: Respuesta de Oferta</ion-card-subtitle>
+            <!-- Poner en notes Aceptado o Denagado -->
+            <ion-card-title text-wrap> Oferta: {{ofert.notes}}</ion-card-title>
+            <ion-card-content text-wrap>
+              <ion-label text-wrap *ngIf="ofert.notes === 'Aceptada' "> Propiedad <b>{{getProperty(ofert.property).name
+                  }}</b>
+                Apartada</ion-label>
+
+            </ion-card-content>
+          </ion-card-header>
+        </span>
+      </ion-card>
+    </ng-template>
+  </ng-template>
+  <!-- no cargado -->
+  <ng-template #elseTemplate>
+    <ion-skeleton-text width=40px></ion-skeleton-text>
+    <ion-skeleton-text width=200px></ion-skeleton-text>
+    <ion-skeleton-text width=600px></ion-skeleton-text>
+    <ion-skeleton-text width=100px></ion-skeleton-text>
+    <ion-skeleton-text width=80px></ion-skeleton-text>
+  </ng-template>
+
+  <!-- /cargar -->
+</ion-content>
