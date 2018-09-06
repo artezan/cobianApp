@@ -28,4 +28,9 @@ export class StatusBuyerPropertyService {
       .post(END_POINT.STATUS_UPGRADE + sBPId, body)
       .pipe(map((data: any) => data.data));
   }
+  public getStatusBuyerProperty(): Observable<IStatusBuyerProperty[]> {
+    return this.http
+      .get(END_POINT.STATUS_BP)
+      .pipe(map((data: any) => data.data));
+  }
 }

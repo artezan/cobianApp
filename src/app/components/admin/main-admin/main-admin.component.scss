@@ -1,0 +1,244 @@
+//   
+.desktop-card {
+    // height: 400px !important;
+    height: 100% !important;
+}
+
+.desktop-tabs {
+    padding: 0% 30% 0% 30%;
+}
+
+.desktop-grid {
+    padding: 0% 20% 0% 20%;
+}
+
+.container {
+    width: 100%;
+    position: sticky;
+}
+
+.progressbar {
+    counter-reset: step;
+}
+
+.progressbar .item {
+    position: relative;
+    float: left;
+    width: 20.33%;
+    list-style: none;
+    text-align: center;
+    font-size: smaller;
+}
+
+.progressbar .item:before {
+    content: counter(step);
+    counter-increment: step;
+    display: block;
+    width: 30px;
+    height: 30px;
+    margin: 0 auto 10px auto;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    background-color: #fff;
+    text-align: center;
+    line-height: 30px;
+}
+
+.progressbar .item:after {
+    content: '';
+    position: absolute;
+    /*width: 80%;*/
+    width: 100%;
+    height: 1px;
+    top: 15px;
+    /*left: -40%;*/
+    left: -50%;
+    z-index: -1;
+    background-color: #ddd;
+}
+
+.progressbar .item:first-child:after {
+    content: none;
+}
+
+.progressbar .item.active {
+    color: green;
+}
+
+.progressbar .item.active:before {
+    border-color: green;
+}
+
+.progressbar .item.active+.item:after {
+    background-color: green;
+}
+
+//---active
+.progressbar .item.active-verde {
+    color: var(--ion-color-success);
+}
+
+.progressbar .item.active-verde:before {
+    border-color: var(--ion-color-success);
+}
+
+.progressbar .item.active-verde+.item:after {
+    background-color: var(--ion-color-success);
+}
+
+// amarillo
+.progressbar .item.active-amarillo {
+    color: var(--ion-color-warning);
+}
+
+.progressbar .item.active-amarillo:before {
+    border-color: var(--ion-color-warning);
+}
+
+.progressbar .item.active-amarillo+.item:after {
+    background-color: var(--ion-color-warning);
+}
+
+// rojo
+.progressbar .item.active-rojo {
+    color: var(--ion-color-danger);
+}
+
+.progressbar .item.active-rojo:before {
+    border-color: var(--ion-color-danger);
+}
+
+.progressbar .item.active-rojo+.item:after {
+    background-color: var(--ion-color-danger);
+}
+
+// blue
+.progressbar .item.active-azul {
+    color: var(--ion-color-blue);
+}
+
+.progressbar .item.active-azul:before {
+    border-color: var(--ion-color-blue);
+}
+
+.progressbar .item.active-azul+.item:after {
+    background-color: var(--ion-color-blue);
+}
+
+//----/active
+/* ol.progtrckr {
+    // margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+ol.progtrckr li {
+    display: inline-block;
+    text-align: center;
+    line-height: 3em;
+}
+
+ol.progtrckr li.progtrckr-done {
+    color: black;
+    border-bottom: 4px solid yellowgreen;
+}
+
+ol.progtrckr li.progtrckr-todo {
+    color: silver;
+    border-bottom: 4px solid silver;
+}
+
+ol.progtrckr li:after {
+    content: "\00a0\00a0";
+}
+
+ol.progtrckr li:before {
+    position: relative;
+    bottom: -2.5em;
+    float: left;
+    left: 50%;
+    line-height: 1em;
+}
+
+ol.progtrckr li.progtrckr-done:before {
+    content: "\2713";
+    color: white;
+    background-color: yellowgreen;
+    height: 1.2em;
+    width: 1.2em;
+    line-height: 1.2em;
+    border: none;
+    border-radius: 1.2em;
+}
+
+ol.progtrckr li.progtrckr-todo:before {
+    content: "\039F";
+    color: silver;
+    background-color: white;
+    font-size: 1.5em;
+    bottom: -1.6em;
+}
+ */
+/* .progressbar {
+    margin-bottom: 30px;
+    margin-top: 10px;
+    counter-reset: step;
+    clear: both;
+    list-style: none;
+}
+
+.progressbar li {
+    font-size: 12px;
+    width: 24%;
+    float: left;
+    position: relative;
+    text-align: center;
+}
+
+.progressbar li:before {
+    content: counter(step);
+    counter-increment: step;
+    width: 25px;
+    line-height: 25px;
+    display: block;
+    font-size: 12px;
+    color: transparent;
+    border: 6px solid #ececec;
+    background: #27ae60;
+    border-radius: 19px;
+    margin: 0 auto 4px;
+}
+
+.progressbar li:after {
+    content: '';
+    width: 85%;
+    height: 3px;
+    background: #B9B9B9;
+    position: absolute;
+    left: -42%;
+    top: 17px;
+    z-index: 0;
+}
+
+.progressbar li:first-child:after {
+    content: none;
+}
+
+.progress-payment li {
+    width: 50%;
+}
+
+.progressbar li.active:after,
+.progressbar li.active:before {
+    background: #27ae60;
+    color: white;
+}
+
+.progressbar li.complete:after {
+    background: #27ae60;
+}
+
+.progressbar li.half-complete:after {
+    background: linear-gradient(to right, #27ae60 50%, #B9B9B9 50%);
+    color: white;
+} */

@@ -20,4 +20,9 @@ export class ScheduleService {
       .put(END_POINT.SCHEDULE + schedule._id, schedule)
       .pipe(map((data: any) => data.data));
   }
+  public getSchedule(): Observable<ISchedule[]> {
+    return this.http
+      .get(END_POINT.SCHEDULE)
+      .pipe(map((data: any) => data.data));
+  }
 }

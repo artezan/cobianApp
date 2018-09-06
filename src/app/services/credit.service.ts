@@ -20,4 +20,7 @@ export class CreditService {
       .put(END_POINT.CREDIT + credit._id, credit)
       .pipe(map((data: any) => data.data));
   }
+  public getCredit(): Observable<ICredit[]> {
+    return this.http.get(END_POINT.CREDIT).pipe(map((data: any) => data.data));
+  }
 }

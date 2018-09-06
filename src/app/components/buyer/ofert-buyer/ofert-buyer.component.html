@@ -26,7 +26,7 @@
     </ng-template>
     <!-- con oferta -->
     <ng-template #Ofert>
-      <ion-card mode="ios" *ngFor="let ofert of oferts" [ngClass]="
+      <ion-card *ngFor="let ofert of oferts" [ngClass]="
         {
         'state-amarillo': ofert.status === 'amarillo',
         'state-rojo': ofert.status === 'rojo'

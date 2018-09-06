@@ -45,4 +45,5 @@ export interface ISchedule {
    */
   note?: string;
   _id?: string;
+  administrator?: string;
 }

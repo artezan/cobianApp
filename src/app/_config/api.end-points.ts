@@ -1,5 +1,5 @@
-const ip = 'https://cobianback.herokuapp.com/';
-// const ip = 'http://localhost:3000/';
+// const ip = 'https://cobianback.herokuapp.com/';
+const ip = 'http://localhost:3000/';
 
 const apiUrl = ip + 'api/v1/';
 const userSession = 'usersession/';
@@ -14,6 +14,7 @@ const credit = 'credit/';
 const schedule = 'schedule/';
 const upgradeStatus = 'upgradelevelbyid/';
 const ofert = 'ofert/';
+const administrator = 'administrator/';
 
 export const END_POINT = {
   IP: ip,
@@ -36,4 +37,6 @@ export const END_POINT = {
   SCHEDULE: apiUrl + schedule,
   // ofert
   OFERT: apiUrl + ofert,
+  // admin
+  ADMINISTRATOR: apiUrl + administrator,
 };

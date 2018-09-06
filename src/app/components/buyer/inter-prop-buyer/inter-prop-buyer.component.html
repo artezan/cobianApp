@@ -13,7 +13,7 @@
   <ng-template #thenTemplate>
 
     <h2>Selecciona uno para mayor información</h2>
-    <ion-card *ngFor="let item of sBP | async" mode='ios' [ngClass]="{'state-verde': item.status === 'verde', 'state-amarillo': item.status === 'amarillo','state-rojo': item.status === 'rojo','state-azul': item.status === 'azul' }"
+    <ion-card *ngFor="let item of sBP | async" [ngClass]="{'state-verde': item.status === 'verde', 'state-amarillo': item.status === 'amarillo','state-rojo': item.status === 'rojo','state-azul': item.status === 'azul' }"
       (click)="itemDetail(item.property, item._id)">
       <ion-card-header>
         <ion-card-subtitle *ngIf="item.status === 'verde'">Estado: Interés</ion-card-subtitle>

@@ -27,6 +27,7 @@ import { InterPropBuyerComponent } from './components/buyer/inter-prop-buyer/int
 import { CreditEventBuyerComponent } from './components/buyer/credit-event-buyer/credit-event-buyer.component';
 import { MainAdminComponent } from './components/admin/main-admin/main-admin.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BarLineComponent } from './components/general/bar-line/bar-line.component';
 
 @NgModule({
   declarations: [
@@ -44,13 +45,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     InterPropBuyerComponent,
     CreditEventBuyerComponent,
     MainAdminComponent,
+    BarLineComponent,
   ],
   entryComponents: [],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     // IonicModule.forRoot({ mode: 'ios' }),
-    IonicModule.forRoot(),
+    IonicModule.forRoot({ backButtonText: '' }),
     IonicStorageModule.forRoot(),
     AppRoutingModule,
     FormsModule,

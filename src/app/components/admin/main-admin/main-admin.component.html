@@ -6,17 +6,337 @@
     <ion-title>
       Administrador
     </ion-title>
+
+  </ion-toolbar>
+  <ion-toolbar [ngClass]="{'desktop-tabs': isDesktop}" color="primary">
+    <ion-segment color="secondary" (ionChange)="segmentChanged($event)">
+      <ion-segment-button checked value="movementsSegment">
+        Movimientos
+      </ion-segment-button>
+      <ion-segment-button value="eventsSegment">
+        Eventos
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-grid fixed [@animateStagger]="{value:'50'}">
-    <ion-row [@animate]="{value:'*',params:{y:'100%'}}">
-      <ion-col>
-        ion-col
-      </ion-col>
-      <ion-col>
-        ion-col
-      </ion-col>
-    </ion-row>
+  <!-- <ion-grid [ngClass]="{'desktop-grid': isDesktop}"> -->
+  <ion-grid>
+    <ng-container *ngIf="isLoad; then thenLoad; else elseLoad"></ng-container>
+    <!-- cargado -->
+    <ng-template #thenLoad>
+
+
+      <span [ngSwitch]="segment">
+        <!-- movementsSegment -->
+        <span *ngSwitchCase="'movementsSegment'">
+          <!-- <ion-row justify-content-around> -->
+          <ion-row>
+            <ion-col size-md="6" size-lg="6" size-xl="6" *ngFor="let item of allData">
+              <!-- 
+              decide que carta
+              ofert
+              schedule
+              credit
+              sbp
+            -->
+              <span [ngSwitch]="item.type">
+                <span *ngSwitchCase="'ofert'">
+                  <ion-card [ngClass]="{'state-verde': item.data.oferts.status === 'verde', 
+            'state-amarillo':  item.data.oferts.status === 'amarillo',
+            'state-rojo':  item.data.oferts.status === 'rojo',
+            'state-gris': item.data.oferts.status === 'gris',
+            'state-azul':  item.data.oferts.status === 'azul',
+            'desktop-card': isDesktop }">
+                    <ion-card-header>
+                      <ion-card-subtitle>
+                        fecha: {{formatDates(item.time)}}
+                      </ion-card-subtitle>
+                      <ion-card-title>
+                        Oferta
+                      </ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                      <ion-item lines="none">
+                        <ion-icon slot="start" class="color-item-secondary" name="clipboard"></ion-icon>
+                        <ion-label slot="start" text-wrap>
+                          <p><b>Notas:</b> </p>
+                          <p>{{item.data.oferts.notes}}</p>
+                        </ion-label>
+                      </ion-item>
+                      <ion-item lines="none">
+                        <ion-icon slot="start" class="color-item-secondary" name="cash"></ion-icon>
+                        <ion-label slot="start" text-wrap>
+                          <p><b>Precio:</b> </p>
+                          <p>${{item.data.oferts.ofertPrice}}</p>
+                        </ion-label>
+                      </ion-item>
+                    </ion-card-content>
+                  </ion-card>
+
+                </span>
+                <span *ngSwitchCase="'schedule'">
+
+                  <ion-card [ngClass]="{'state-verde': item.data.schedules.status === 'verde', 
+                      'state-amarillo':  item.data.schedules.status === 'amarillo',
+                      'state-rojo':  item.data.schedules.status === 'rojo',
+                      'state-gris': item.data.schedules.status === 'gris',
+                      'state-azul':  item.data.schedules.status === 'azul',
+                      'state-amarillo':  !item.data.schedules.status,
+                      'desktop-card': isDesktop    }">
+                    <ion-card-header>
+                      <ion-card-subtitle>
+                        fecha: {{formatDates(item.time)}}
+                      </ion-card-subtitle>
+                      <ion-card-title>
+                        Evento
+                      </ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                      <ion-item lines="none" *ngIf="item.data.schedules.buyer">
+                        <ion-icon slot="start" class="color-item-secondary" name="contact"></ion-icon>
+                        <ion-label slot="start" text-wrap>
+                          <p><b>Cliente:</b> </p>
+                          <p>{{item.data.schedules.buyer.name}}</p>
+                        </ion-label>
+                      </ion-item>
+                      <ion-item lines="none" *ngIf="item.data.schedules.adviser">
+                        <ion-icon slot="start" class="color-item-secondary" name="contact"></ion-icon>
+                        <ion-label slot="start" text-wrap>
+                          <p><b>Asesor:</b> </p>
+                          <p>{{item.data.schedules.adviser.name}}</p>
+                        </ion-label>
+                      </ion-item>
+                      <ion-item lines="none" *ngIf="item.data.schedules.property">
+                        <ion-icon slot="start" class="color-item-secondary" name="home"></ion-icon>
+                        <ion-label slot="start" text-wrap>
+                          <p><b>Propiedad:</b> </p>
+                          <p>{{item.data.schedules.property.name}}</p>
+                        </ion-label>
+                      </ion-item>
+                      <ion-item lines="none" *ngIf="item.data.schedules.address">
+                        <ion-icon slot="start" class="color-item-secondary" name="pin"></ion-icon>
+                        <ion-label slot="start" text-wrap>
+                          <p><b>Lugar:</b> </p>
+                          <p>{{item.data.schedules.address}}</p>
+                        </ion-label>
+                      </ion-item>
+                      <ion-item lines="none" *ngIf="item.data.schedules.day">
+                        <ion-icon slot="start" class="color-item-secondary" name="calendar"></ion-icon>
+                        <ion-label slot="start" text-wrap>
+                          <p><b>Fecha del Evento:</b> </p>
+                          <p>{{item.data.schedules.day}}/{{item.data.schedules.month}}/{{item.data.schedules.year}}</p>
+                        </ion-label>
+                      </ion-item>
+                      <ion-item lines="none" *ngIf="item.data.schedules.status">
+                        <ion-icon slot="start" class="color-item-secondary" name="cash"></ion-icon>
+                        <ion-label slot="start" text-wrap>
+                          <p><b>Estado:</b> </p>
+                          <p *ngIf="item.data.schedules.status === 'gris'">Cita Generada</p>
+                          <p *ngIf="item.data.schedules.status === 'verde'">Propuesta Cita</p>
+                          <p *ngIf="item.data.schedules.status === 'amarillo'">Esperando Visita</p>
+                          <p *ngIf="item.data.schedules.status === 'rojo'">Visitada</p>
+                        </ion-label>
+                      </ion-item>
+                      <ion-item *ngIf="item.data.schedules.note" lines="none">
+                        <ion-icon slot="start" class="color-item-secondary" name="clipboard"></ion-icon>
+                        <ion-label slot="start" text-wrap>
+                          <p><b>Notas:</b> </p>
+                          <p>{{item.data.schedules.note}}</p>
+                        </ion-label>
+                      </ion-item>
+                    </ion-card-content>
+                  </ion-card>
+
+
+
+                </span>
+                <span *ngSwitchCase="'credit'">
+                  <ion-card [ngClass]="{'state-verde': item.data.credits.status === 'verde', 
+                    'state-amarillo':  item.data.credits.status === 'amarillo',
+                    'state-rojo':  item.data.credits.status === 'rojo',
+                    'state-gris': item.data.credits.status === 'gris',
+                    'state-azul':  item.data.credits.status === 'azul',
+                    'desktop-card': isDesktop  }">
+                    <ion-card-header>
+                      <ion-card-subtitle>
+                        fecha: {{formatDates(item.time)}}
+                      </ion-card-subtitle>
+                      <ion-card-title>
+                        Crédito
+                      </ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                      <ion-item lines="none" *ngIf="item.data.credits.buyer">
+                        <ion-icon slot="start" class="color-item-secondary" name="contact"></ion-icon>
+                        <ion-label slot="start" text-wrap>
+                          <p><b>Cliente:</b> </p>
+                          <p>{{item.data.credits.buyer.name}}</p>
+                        </ion-label>
+                      </ion-item>
+                      <ion-item lines="none" *ngIf="item.data.credits.property">
+                        <ion-icon slot="start" class="color-item-secondary" name="home"></ion-icon>
+                        <ion-label slot="start" text-wrap>
+                          <p><b>Propiedad:</b> </p>
+                          <p>{{item.data.credits.property.name}}</p>
+                        </ion-label>
+                      </ion-item>
+                      <p><b>Notas:</b> </p>
+                      <ion-label text-wrap>
+                        {{item.data.credits.notes}}
+                      </ion-label>
+                    </ion-card-content>
+                  </ion-card>
+
+                </span>
+                <span *ngSwitchCase="'sbp'">
+                  <ion-card [ngClass]="{'state-verde': item.data.sbps.status === 'verde', 
+                    'state-amarillo':  item.data.sbps.status === 'amarillo',
+                    'state-rojo':  item.data.sbps.status === 'rojo',
+                    'state-gris': item.data.sbps.status === 'gris',
+                    'state-azul':  item.data.sbps.status === 'azul',
+                    'desktop-card': isDesktop  }">
+                    <ion-card-header>
+                      <ion-card-subtitle>
+                        fecha: {{formatDates(item.time)}}
+                      </ion-card-subtitle>
+                      <ion-card-title text-wrap>
+                        Propiedad-Cliente
+                      </ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                      <ion-item lines="none" *ngIf="item.data.sbps.buyer">
+                        <ion-icon slot="start" class="color-item-secondary" name="contact"></ion-icon>
+                        <ion-label slot="start" text-wrap>
+                          <p><b>Cliente:</b> </p>
+                          <p>{{item.data.sbps.buyer.name}}</p>
+                        </ion-label>
+                      </ion-item>
+                      <ion-item lines="none" *ngIf="item.data.sbps.property">
+                        <ion-icon slot="start" class="color-item-secondary" name="home"></ion-icon>
+                        <ion-label slot="start" text-wrap>
+                          <p><b>Propiedad:</b> </p>
+                          <p>{{item.data.sbps.property.name}}</p>
+                        </ion-label>
+                      </ion-item>
+                      <!-- Progreso -->
+                      <p><b>Progreso:</b> </p>
+                      <div class="container">
+                        <ul class="progressbar">
+                          <li class="item " [ngClass]="
+                          {'active-verde': item.data.sbps.status === 'verde', 
+                    'active-amarillo':  item.data.sbps.status === 'amarillo',
+                    'active-rojo':  item.data.sbps.status === 'rojo',
+                    'active-azul':  item.data.sbps.status === 'azul' }">Información</li>
+                          <li class="item" [ngClass]="
+                          { 
+                    'active-amarillo':  item.data.sbps.status === 'amarillo',
+                    'active-rojo':  item.data.sbps.status === 'rojo',
+                    'active-azul':  item.data.sbps.status === 'azul' }">Seguimiento</li>
+                          <li class="item" [ngClass]="
+                          {
+                    'active-rojo':  item.data.sbps.status === 'rojo',
+                    'active-azul':  item.data.sbps.status === 'azul' }">Cierre</li>
+                          <li class="item" [ngClass]="
+                          {
+                    'active-azul':  item.data.sbps.status === 'azul' }">PostVenta</li>
+                        </ul>
+                      </div>
+
+
+                    </ion-card-content>
+
+                  </ion-card>
+
+
+                </span>
+              </span>
+
+            </ion-col>
+
+
+          </ion-row>
+
+
+        </span>
+        <!-- eventsSegment -->
+        <span *ngSwitchCase="'eventsSegment'">
+          <!-- Toggles in a List -->
+          <ng-container *ngIf="scheduleToShow.length !== 0; then showSchedule; else noShow"></ng-container>
+          <ng-template #showSchedule>
+
+            <ion-list lines="none" *ngIf="!isOne">
+              <ion-item lines="none">
+                <ion-label>Mostrar Todos</ion-label>
+                <ion-toggle [(ngModel)]="isAll" (ionChange)="getAllSchedule();"></ion-toggle>
+              </ion-item>
+              <ion-item lines="none" *ngIf="!isAll">
+                <ion-chip color="secondary">
+                  <ion-label>Mostrando eventos de hoy
+                  </ion-label>
+                </ion-chip>
+              </ion-item>
+
+            </ion-list>
+            <ion-grid>
+              <ion-row>
+                <ion-col size-md="6" size-lg="6" size-xl="6" *ngFor="let schedule of scheduleToShow">
+                  <ion-card [ngClass]="{'state-verde': schedule.status === 'verde', 
+                'state-amarillo': schedule.status === 'amarillo',
+                'state-rojo': schedule.status === 'rojo',
+                'state-gris': schedule.status === 'gris',
+                'state-azul': schedule.status === 'azul',
+                'desktop-card': isDesktop  }">
+                    <ion-card-header>
+                      <ion-card-subtitle text-wrap>Fecha del Evento:
+                        {{schedule.day}}/{{schedule.month}}/{{schedule.year}}</ion-card-subtitle>
+                      <ion-card-subtitle *ngIf="schedule.minute < 10">Hora: {{schedule.hour}}:0{{schedule.minute}}</ion-card-subtitle>
+                      <ion-card-subtitle *ngIf="schedule.minute >= 10">Hora: {{schedule.hour}}:{{schedule.minute}}</ion-card-subtitle>
+
+                      <ion-card-title text-wrap>{{schedule.title}}</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content text-wrap>
+                      <ion-label text-wrap><b>Detalles del evento:</b></ion-label>
+                      <ion-label text-wrap>{{schedule.note}}</ion-label>
+                      <ion-label text-wrap><b>Dirección: </b></ion-label>
+                      <ion-label text-wrap>{{schedule.address}}</ion-label>
+
+                    </ion-card-content>
+                  </ion-card>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+
+
+          </ng-template>
+          <ng-template #noShow>
+            <ion-card>
+              <ion-card-header>
+                <ion-card-title> No hay eventos hoy</ion-card-title>
+              </ion-card-header>
+
+            </ion-card>
+          </ng-template>
+
+        </span>
+        <!-- /event -->
+      </span>
+    </ng-template>
+    <!-- nocargado -->
+    <ng-template #elseLoad>
+      <ion-skeleton-text width=40px></ion-skeleton-text>
+      <ion-skeleton-text width=200px></ion-skeleton-text>
+      <ion-skeleton-text width=600px></ion-skeleton-text>
+      <ion-skeleton-text width=100px></ion-skeleton-text>
+      <ion-skeleton-text width=80px></ion-skeleton-text>
+    </ng-template>
   </ion-grid>
+
+
 </ion-content>
+<!-- fab placed to the bottom end -->
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button *ngIf="segment === 'eventsSegment'" color="secondary">
+    <ion-icon name="calendar"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

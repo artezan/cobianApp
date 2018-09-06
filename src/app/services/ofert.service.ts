@@ -20,4 +20,7 @@ export class OfertService {
       .put(END_POINT.OFERT + ofert._id, ofert)
       .pipe(map((data: any) => data.data));
   }
+  public getOfert(): Observable<IOfert[]> {
+    return this.http.get(END_POINT.OFERT).pipe(map((data: any) => data.data));
+  }
 }
