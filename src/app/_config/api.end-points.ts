@@ -1,5 +1,5 @@
-// const ip = 'https://cobianback.herokuapp.com/';
-const ip = 'http://localhost:3000/';
+const ip = 'https://cobianback.herokuapp.com/';
+// const ip = 'http://localhost:3000/';
 
 const apiUrl = ip + 'api/v1/';
 const userSession = 'usersession/';
