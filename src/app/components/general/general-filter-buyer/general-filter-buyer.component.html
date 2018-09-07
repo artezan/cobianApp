@@ -1,18 +1,18 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="goBack()" slot="start">
+      <ion-button (click)="applyFilters()" slot="start">
         <ion-icon mode="md" slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>Filtros</ion-title>
     <ion-buttons slot="end">
-      <ion-button color="success" slot="end" (click)="sendFilters();goBack()">
+      <ion-button color="success" slot="end" (click)="applyFilters();">
         <ion-icon mode="md" slot="icon-only" name="checkmark-circle"></ion-icon>
       </ion-button>
-      <ion-button color="danger" slot="end" (click)="reset();goBack()">
+      <!-- <ion-button color="danger" slot="end" (click)="reset();goBack()">
         <ion-icon mode="md" slot="icon-only" name="trash"></ion-icon>
-      </ion-button>
+      </ion-button> -->
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
