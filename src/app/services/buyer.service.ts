@@ -15,6 +15,9 @@ export class BuyerService {
       .get(END_POINT.BUYER_ID + id)
       .pipe(map((data: any) => data.data));
   }
+  public getBuyerAll(): Observable<IBuyer[]> {
+    return this.http.get(END_POINT.BUYER).pipe(map((data: any) => data.data));
+  }
 
   public putBuyer(buyer: IBuyer): Observable<boolean> {
     return this.http

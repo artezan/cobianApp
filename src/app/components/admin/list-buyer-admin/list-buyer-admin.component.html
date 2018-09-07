@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button style="color: white !important"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Clientes
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <ng-container *ngIf="isLoading; then Load; else noLoad"></ng-container>
+  <!-- contenido -->
+
+  <ng-template #Load class="my-contenet">
+    <mat-drawer-container style="background-color: white" autosize>
+      <mat-drawer #drawer class="sidenav" [mode]="isDesktop ? 'side' : 'over'" [opened]="openMenu">
+        <app-general-filter-buyer (filters)="getFilters($event)" (resetAll)="getBuyerAll()"></app-general-filter-buyer>
+      </mat-drawer>
+      <ion-item *ngIf="!isDesktop" lines="none">
+        <ion-button (click)="drawer.toggle()" color="secondary" fill="outline">
+          <ion-icon name="funnel"></ion-icon>Filtros(0)
+        </ion-button>
+      </ion-item>
+
+      <!-- Table -->
+      <app-general-table [columns]="columns" [rows]="rows" (editButton)="edit($event)" (deletedButton)="deleted($event)"
+        [isDesktop]="isDesktop" [filterByDayInput]="filterDay" [filterByMonthInput]="filterMonth" [filterByYearInput]="filterYear"
+        [filterByStateInput]="filterState"></app-general-table>
+    </mat-drawer-container>
+
+
+  </ng-template>
+  <!-- /contenido -->
+
+  <!-- Skeleton -->
+  <ng-template #noLoad>
+    <app-general-skeleton></app-general-skeleton>
+  </ng-template>
+
+
+</ion-content>

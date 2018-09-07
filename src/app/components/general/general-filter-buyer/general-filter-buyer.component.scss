@@ -1,0 +1,15 @@
+.filter-tool {
+    display: unset !important;
+}
+
+.navbar {
+    position: fixed;
+    /* Set the navbar to fixed position */
+    /* Position the navbar at the top of the page */
+    z-index: 10;
+}
+
+.main {
+    margin-top: 26%;
+    /* Add a top margin to avoid content overlay */
+}

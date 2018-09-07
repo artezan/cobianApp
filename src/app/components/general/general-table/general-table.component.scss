@@ -1,0 +1,80 @@
+table {
+    width: 100%;
+}
+
+.table-container {
+    height: 500px;
+    overflow: auto;
+}
+
+.buttons-movile-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 30%;
+}
+
+td,
+th {
+    width: 15%;
+}
+
+.customWidthClass {
+    flex: 0 0 6%
+}
+
+.red-icon {
+    color: red;
+}
+
+.green-icon {
+    color: green;
+}
+
+.yellow-icon {
+    size: 1px !important;
+    color: goldenrod;
+}
+
+.flexbox-ranking {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.flexbox-buttons {
+    display: flex;
+    flex-direction: row;
+}
+
+.margin-ranking {
+    margin-right: 3px;
+    margin-left: 3px;
+}
+
+.center-cell {
+    justify-content: center;
+}
+
+.righ-cell {
+    justify-content: flex-end;
+}
+
+.chip-yellow {
+    background-color: #FFE57F
+}
+
+.chip-green {
+    background-color: #B9F6CA;
+}
+
+.chip-black {
+    background-color: #546E7A;
+    color: white;
+}
+
+.tag {
+    background-color: blue;
+    color: white;
+    border-radius: 25%
+}

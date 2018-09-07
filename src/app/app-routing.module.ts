@@ -11,6 +11,7 @@ import { InterPropBuyerComponent } from './components/buyer/inter-prop-buyer/int
 import { CreditEventBuyerComponent } from './components/buyer/credit-event-buyer/credit-event-buyer.component';
 import { OfertBuyerComponent } from './components/buyer/ofert-buyer/ofert-buyer.component';
 import { MainAdminComponent } from './components/admin/main-admin/main-admin.component';
+import { ListBuyerAdminComponent } from './components/admin/list-buyer-admin/list-buyer-admin.component';
 
 const routes: Routes = [
   // Rutas
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'credit-event-buyer', component: CreditEventBuyerComponent },
   { path: 'ofert-buyer', component: OfertBuyerComponent },
   { path: 'main-admin', component: MainAdminComponent },
+  { path: 'list-buyer-admin', component: ListBuyerAdminComponent },
 ];
 
 @NgModule({

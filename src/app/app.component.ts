@@ -52,6 +52,12 @@ export class AppComponent {
       icon: 'home',
       userType: 'administrator',
     },
+    {
+      title: 'Consumidores',
+      url: '/list-buyer-admin',
+      icon: 'clipboard',
+      userType: 'administrator',
+    },
   ];
   isDevice: boolean;
   isLoggin = false;

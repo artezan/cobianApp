@@ -28,6 +28,40 @@ import { CreditEventBuyerComponent } from './components/buyer/credit-event-buyer
 import { MainAdminComponent } from './components/admin/main-admin/main-admin.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BarLineComponent } from './components/general/bar-line/bar-line.component';
+import {
+  MatButtonModule,
+  MatCheckboxModule,
+  MatToolbarModule,
+  MatSidenavModule,
+  MatIconModule,
+  MatListModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSortModule,
+  MatGridListModule,
+  MatCardModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatSelectModule,
+  MatTooltipModule,
+  MatButtonToggleModule,
+  MatChipsModule,
+  MatBottomSheetModule,
+  MatSnackBarModule,
+  MatAutocompleteModule,
+  MatExpansionModule,
+  MatDialogModule,
+  MatRadioModule,
+  MatTabsModule,
+  MatProgressSpinnerModule,
+  MatDividerModule,
+} from '@angular/material';
+import { GeneralTableComponent } from './components/general/general-table/general-table.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { CdkTableModule } from '@angular/cdk/table';
+import { ListBuyerAdminComponent } from './components/admin/list-buyer-admin/list-buyer-admin.component';
+import { GeneralSkeletonComponent } from './components/general/general-skeleton/general-skeleton.component';
+import { GeneralFilterBuyerComponent } from './components/general/general-filter-buyer/general-filter-buyer.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +80,10 @@ import { BarLineComponent } from './components/general/bar-line/bar-line.compone
     CreditEventBuyerComponent,
     MainAdminComponent,
     BarLineComponent,
+    GeneralTableComponent,
+    ListBuyerAdminComponent,
+    GeneralSkeletonComponent,
+    GeneralFilterBuyerComponent,
   ],
   entryComponents: [],
   imports: [
@@ -58,6 +96,36 @@ import { BarLineComponent } from './components/general/bar-line/bar-line.compone
     FormsModule,
     AppMaterialModule,
     HttpClientModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    LayoutModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatListModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatGridListModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatTooltipModule,
+    MatButtonToggleModule,
+    MatChipsModule,
+    MatBottomSheetModule,
+    MatSnackBarModule,
+    MatAutocompleteModule,
+    MatExpansionModule,
+    MatDialogModule,
+    MatRadioModule,
+    MatTabsModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    MatDividerModule,
+    CdkTableModule,
   ],
   providers: [
     StatusBar,

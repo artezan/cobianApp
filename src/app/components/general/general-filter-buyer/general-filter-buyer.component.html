@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()" slot="start">
+        <ion-icon mode="md" slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Filtros</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="success" slot="end" (click)="sendFilters();goBack()">
+        <ion-icon mode="md" slot="icon-only" name="checkmark-circle"></ion-icon>
+      </ion-button>
+      <ion-button color="danger" slot="end" (click)="reset();goBack()">
+        <ion-icon mode="md" slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<div class="main">
+
+  <ion-list>
+    <ion-radio-group [(ngModel)]="status" (ionChange)="applyFilters()">
+      <ion-list-header>
+        <ion-label>Estado</ion-label>
+      </ion-list-header>
+
+      <ion-item lines="none">
+        <ion-label>Gris</ion-label>
+        <ion-radio mode="md" value="gris" slot="end"></ion-radio>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>Verde</ion-label>
+        <ion-radio mode="md" value="verde" slot="end"></ion-radio>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>Amarillo</ion-label>
+        <ion-radio mode="md" value="amarillo" slot="end"></ion-radio>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>Rojo</ion-label>
+        <ion-radio mode="md" value="rojo" slot="end"></ion-radio>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>Azul</ion-label>
+        <ion-radio mode="md" value="azul" slot="end"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Fecha</ion-label>
+    </ion-list-header>
+  </ion-list>
+  <ion-item>
+    <ion-label>
+      Dia
+    </ion-label>
+    <ion-input (ionChange)="applyFilters()" (onkeyup)="applyFilters()" type="number" [(ngModel)]="dayInput" #day="ngModel"
+      id="day" name="day"></ion-input>
+  </ion-item>
+  <ion-item>
+    <mat-form-field>
+      <mat-select (selectionChange)="applyFilters()" [(ngModel)]="monthInput" #day="ngModel" id="day" name="day"
+        placeholder="Mes">
+        <mat-option *ngFor="let month of months; let i=index" [value]="i">
+          {{month}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ion-item>
+  <ion-item>
+    <ion-label>
+      Año
+    </ion-label>
+    <ion-input (ionChange)="applyFilters()" type="number" [(ngModel)]="yearInput" #day="ngModel" id="day" name="day"></ion-input>
+  </ion-item>
+
+</div>
