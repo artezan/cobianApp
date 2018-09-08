@@ -9,3 +9,7 @@ export interface TableColumsModel {
   buttonMail?: boolean;
   buttonRating?: boolean;
 }
+export interface TableStatusChips {
+  name: string;
+  status: string;
+}

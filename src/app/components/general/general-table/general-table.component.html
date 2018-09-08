@@ -65,19 +65,19 @@
             <td mat-cell style="padding: 0% 1% 0% 1%" [ngClass]="{customWidthClass: column.w }" *cdkCellDef="let row">{{formatDates(row[column.prop])}}</td>
           </div>
           <!-- status 
-            propertyName
-            propertyStatus 
+            name
+            status 
           -->
           <span *ngIf="column.type === 'status'">
             <td mat-cell class="center-cell " [ngClass]="{customWidthClass: column.w } " *cdkCellDef="let row">
               <ion-chip *ngFor="let property of row[column.prop]" [ngClass]="{
-                'background-gris': property.propertyStatus === 'gris', 
-                'background-verde': property.propertyStatus === 'verde',
-                'background-amarillo': property.propertyStatus === 'amarillo',
-                'background-rojo': property.propertyStatus === 'rojo',
-                'background-azul': property.propertyStatus === 'azul'
+                'background-gris': property.status === 'gris', 
+                'background-verde': property.status === 'verde',
+                'background-amarillo': property.status === 'amarillo',
+                'background-rojo': property.status === 'rojo',
+                'background-azul': property.status === 'azul'
             }">
-                <ion-label>{{property.propertyName}}</ion-label>
+                <ion-label>{{property.name}}</ion-label>
               </ion-chip>
 
             </td>
@@ -166,13 +166,13 @@
 <!-- Celular lista -->
 <ng-template #Device>
   <ion-list>
-    <ion-item *ngFor="let row of dataSource.data; let i=index">
+    <ion-item lines="inset" *ngFor="let row of dataSource.data">
       <ion-label>
         <span *ngFor="let column of columns; let ii=index">
           <!-- title -->
-          <h2 *ngIf="ii === 0 && column.type === 'normal'">{{row[column.prop]}}</h2>
+          <h2 *ngIf="ii === 0 && column.type === 'normal'"><b>{{row[column.prop]}}</b></h2>
           <!-- normal -->
-          <p *ngIf="column.type === 'normal'">{{row[column.prop]}}</p>
+          <p *ngIf="column.type === 'normal' && ii !== 0">{{row[column.prop]}}</p>
 
           <!-- fecha -->
           <p *ngIf="column.type === 'date'">{{formatDates(row[column.prop])}}</p>

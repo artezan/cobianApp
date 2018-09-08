@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { TableColumsModel } from '../../../models/tableColums.model';
+import {
+  TableColumsModel,
+  TableStatusChips
+} from '../../../models/tableColums.model';
 import { IBuyer } from '../../../models/buyer.model';
 import { BuyerService } from '../../../services/buyer.service';
 import { StatusBuyerPropertyService } from '../../../services/status-buyer-property.service';
@@ -8,7 +11,7 @@ import { Platform, MenuController } from '@ionic/angular';
 @Component({
   selector: 'app-list-buyer-admin',
   templateUrl: './list-buyer-admin.component.html',
-  styleUrls: ['./list-buyer-admin.component.scss'],
+  styleUrls: ['./list-buyer-admin.component.scss']
 })
 export class ListBuyerAdminComponent implements OnInit {
   isLoading = false;
@@ -25,7 +28,7 @@ export class ListBuyerAdminComponent implements OnInit {
     private buyerService: BuyerService,
     private sBPService: StatusBuyerPropertyService,
     private platform: Platform,
-    public menuCtr: MenuController,
+    public menuCtr: MenuController
   ) {
     this.isDesktop = platform.is('desktop');
     if (this.isDesktop) {
@@ -42,27 +45,27 @@ export class ListBuyerAdminComponent implements OnInit {
       {
         name: 'Nombre',
         prop: 'name',
-        type: 'normal',
+        type: 'normal'
       },
       {
         name: 'Apellido',
         prop: 'fatherLastName',
-        type: 'normal',
+        type: 'normal'
       },
       {
         name: 'Fecha Alta',
         prop: 'timestamp',
-        type: 'date',
+        type: 'date'
       },
       {
         name: 'Teléfono',
         prop: 'phone',
-        type: 'phone',
+        type: 'phone'
       },
       {
         name: 'Estado',
         prop: 'properties',
-        type: 'status',
+        type: 'status'
       },
 
       {
@@ -71,8 +74,8 @@ export class ListBuyerAdminComponent implements OnInit {
         type: 'buttons',
         buttonEdit: true,
         buttonDeleted: true,
-        buttonDetails: true,
-      },
+        buttonDetails: true
+      }
     ];
   }
   getBuyerAll() {
@@ -84,18 +87,18 @@ export class ListBuyerAdminComponent implements OnInit {
     const rows = [];
 
     buyers.forEach(buyer => {
-      const properties = [];
+      const properties: TableStatusChips[] = [];
       if (buyer.statusBuyerProperty && buyer.statusBuyerProperty.length > 0) {
         buyer.statusBuyerProperty.forEach(sBP => {
           properties.push({
-            propertyName: sBP.property.name,
-            propertyStatus: sBP.status,
+            name: sBP.property.name,
+            status: sBP.status
           });
         });
       } else {
         properties.push({
-          propertyName: 'Sin interés',
-          propertyStatus: 'gris',
+          name: 'Sin interés',
+          status: 'gris'
         });
       }
       rows.push({
@@ -104,7 +107,7 @@ export class ListBuyerAdminComponent implements OnInit {
         fatherLastName: buyer.fatherLastName,
         timestamp: buyer.timestamp,
         phone: buyer.phone,
-        properties: properties,
+        properties: properties
       });
     });
     this.rows = rows;

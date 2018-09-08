@@ -1,85 +1,87 @@
 // http://ionicframework.com/docs/theming/
-@import "~@ionic/angular/css/normalize.css";
-@import "~@ionic/angular/css/structure.css";
-@import "~@ionic/angular/css/typography.css";
-@import "~@ionic/angular/css/colors.css";
-@import "~@ionic/angular/css/padding.css";
-@import "~@ionic/angular/css/float-elements.css";
-@import "~@ionic/angular/css/text-alignment.css";
-@import "~@ionic/angular/css/text-transformation.css";
-@import "~@ionic/angular/css/flex-utils.css";
+@import '~@ionic/angular/css/normalize.css';
+@import '~@ionic/angular/css/structure.css';
+@import '~@ionic/angular/css/typography.css';
+@import '~@ionic/angular/css/colors.css';
+@import '~@ionic/angular/css/padding.css';
+@import '~@ionic/angular/css/float-elements.css';
+@import '~@ionic/angular/css/text-alignment.css';
+@import '~@ionic/angular/css/text-transformation.css';
+@import '~@ionic/angular/css/flex-utils.css';
 $mdc-theme-primary: #000000; // primary color
-$mdc-theme-secondary: #F5811E; // secondary color F58634
-@import "~@angular-mdc/theme/material";
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+$mdc-theme-secondary: #f5811e; // secondary color F58634
+@import '~@angular-mdc/theme/material';
 
-.split-pane-md.split-pane-visible>.split-pane-side {
-    max-width: 10% !important;
+.split-pane-md.split-pane-visible > .split-pane-side {
+  max-width: 10% !important;
 }
 
-.split-pane-ios.split-pane-visible>.split-pane-side {
-    max-width: 10% !important;
+.split-pane-ios.split-pane-visible > .split-pane-side {
+  max-width: 10% !important;
 }
 
 body,
 html {
-    height: 100%;
+  height: 100%;
 }
 
 .space-buttons {
-    min-height: 100px !important;
+  min-height: 100px !important;
 }
 
 .state-gris {
-    border-left: 4px solid var(--ion-color-medium);
+  border-left: 4px solid var(--ion-color-medium);
 }
 
 .state-verde {
-    border-left: 4px solid var(--ion-color-success);
+  border-left: 4px solid var(--ion-color-success);
 }
 
 .state-amarillo {
-    border-left: 4px solid var(--ion-color-warning);
+  border-left: 4px solid var(--ion-color-warning);
 }
 
 .state-rojo {
-    border-left: 4px solid var(--ion-color-danger);
+  border-left: 4px solid var(--ion-color-danger);
 }
 
 .state-azul {
-    border-left: 4px solid var(--ion-color-blue);
+  border-left: 4px solid var(--ion-color-blue);
 }
 
 .background-gris {
-    background-color: var(--ion-color-medium);
+  background-color: var(--ion-color-medium);
 }
 
 .background-verde {
-    background-color: var(--ion-color-success);
+  background-color: var(--ion-color-success);
 }
 
 .background-amarillo {
-    background-color: var(--ion-color-warning);
+  background-color: var(--ion-color-warning);
 }
 
 .background-rojo {
-    background-color: var(--ion-color-danger);
+  background-color: var(--ion-color-danger);
 }
 
 .background-azul {
-    background-color: var(--ion-color-blue);
+  background-color: var(--ion-color-blue);
 }
 
 .my-contenet {
-    margin: 3% 30% 2% 30%;
+  margin: 3% 30% 2% 30%;
 }
 
-@media(max-width: 900px) {
-    .my-contenet {
-        margin: 1% 1% 1% 1%;
-    }
+@media (max-width: 900px) {
+  .my-contenet {
+    margin: 1% 1% 1% 1%;
+  }
 }
 
 .color-item-secondary {
-    color: var(--ion-color-secondary)
+  color: var(--ion-color-secondary);
+}
+::-webkit-scrollbar {
+  width: 10px;
 }

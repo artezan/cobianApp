@@ -1,15 +1,19 @@
-.filter-tool {
-    display: unset !important;
-}
-
-.navbar {
-    position: fixed;
-    /* Set the navbar to fixed position */
-    /* Position the navbar at the top of the page */
-    z-index: 10;
-}
-
 .main {
-    margin-top: 26%;
-    /* Add a top margin to avoid content overlay */
+  margin-top: 26%;
+  /* Add a top margin to avoid content overlay */
+  overflow: auto;
+}
+
+.top-bar {
+  position: fixed;
+  overflow: hidden;
+  z-index: 10;
+  width: 15%;
+}
+@media (max-width: 900px) {
+  .top-bar {
+    position: absolute;
+    width: 100%;
+    right: 0;
+  }
 }

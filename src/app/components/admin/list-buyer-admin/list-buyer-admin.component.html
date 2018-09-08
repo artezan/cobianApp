@@ -14,20 +14,31 @@
   <!-- contenido -->
 
   <ng-template #Load class="my-contenet">
-    <mat-drawer-container style="background-color: white" autosize>
-      <mat-drawer #drawer class="sidenav" [mode]="isDesktop ? 'side' : 'over'" [opened]="openMenu">
-        <app-general-filter-buyer (filters)="getFilters($event)" (resetAll)="getBuyerAll()"></app-general-filter-buyer>
+    <mat-drawer-container class="side-container" autosize>
+      <!-- contenido de filtros -->
+      <mat-drawer [class.mat-elevation-z1]=true position="end" #drawer class="sidenav" [mode]="isDesktop ? 'side' : 'over'"
+        [opened]="openMenu">
+        <app-general-filter-buyer (filters)="getFilters($event)" (resetAll)="getBuyerAll()" [isDesktop]="isDesktop"></app-general-filter-buyer>
       </mat-drawer>
+      <!-- /contenido de filtros -->
+      <!-- filtros boton -->
       <ion-item *ngIf="!isDesktop" lines="none">
-        <ion-button (click)="drawer.toggle()" color="secondary" fill="outline">
+        <ion-button (click)="drawer.toggle()" slot="end" color="secondary" fill="outline">
           <ion-icon name="funnel"></ion-icon>Filtros(0)
         </ion-button>
       </ion-item>
+      <ion-item *ngIf="isDesktop" lines="none">
+        <ion-button (click)="drawer.toggle()" slot="end" color="secondary" fill="outline">
+          <ion-icon name="funnel"></ion-icon>Filtros Ocultar
+        </ion-button>
+      </ion-item>
+      <!-- /filtros boton -->
 
       <!-- Table -->
       <app-general-table [columns]="columns" [rows]="rows" (editButton)="edit($event)" (deletedButton)="deleted($event)"
         [isDesktop]="isDesktop" [filterByDayInput]="filterDay" [filterByMonthInput]="filterMonth" [filterByYearInput]="filterYear"
         [filterByStateInput]="filterState"></app-general-table>
+      <!-- /Table -->
     </mat-drawer-container>
 
 

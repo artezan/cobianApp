@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <ion-buttons *ngIf="!isDesktop" slot="start">
       <ion-button (click)="applyFilters()" slot="start">
         <ion-icon mode="md" slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
@@ -10,17 +10,20 @@
       <ion-button color="success" slot="end" (click)="applyFilters();">
         <ion-icon mode="md" slot="icon-only" name="checkmark-circle"></ion-icon>
       </ion-button>
-      <!-- <ion-button color="danger" slot="end" (click)="reset();goBack()">
+      <ion-button color="danger" slot="end" (click)="reset();goBack()">
         <ion-icon mode="md" slot="icon-only" name="trash"></ion-icon>
-      </ion-button> -->
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 
 
-<div class="main">
+<!-- <mat-toolbar class="top-bar">Filtros</mat-toolbar> -->
 
+
+<!-- <div class="main"> -->
+<ion-content fullscreen>
   <ion-list>
     <ion-radio-group [(ngModel)]="status" (ionChange)="applyFilters()">
       <ion-list-header>
@@ -70,6 +73,13 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+    <!--  <ion-label>Mes</ion-label>
+          <ion-select interface="popover" (selectionChange)="applyFilters()" [(ngModel)]="monthInput" #day="ngModel" id="day"
+            name="day">
+            <ion-select-option *ngFor="let month of months; let i=index" [value]="i">{{month}}</ion-select-option>
+          </ion-select> -->
+
   </ion-item>
   <ion-item>
     <ion-label>
@@ -77,5 +87,7 @@
     </ion-label>
     <ion-input (ionChange)="applyFilters()" type="number" [(ngModel)]="yearInput" #day="ngModel" id="day" name="day"></ion-input>
   </ion-item>
+</ion-content>
 
-</div>
+
+<!-- </div> -->

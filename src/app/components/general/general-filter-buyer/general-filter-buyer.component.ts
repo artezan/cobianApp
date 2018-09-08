@@ -4,7 +4,7 @@ import { IBuyer } from '../../../models/buyer.model';
 @Component({
   selector: 'app-general-filter-buyer',
   templateUrl: './general-filter-buyer.component.html',
-  styleUrls: ['./general-filter-buyer.component.scss'],
+  styleUrls: ['./general-filter-buyer.component.scss']
 })
 export class GeneralFilterBuyerComponent implements OnInit {
   status: string;
@@ -20,7 +20,7 @@ export class GeneralFilterBuyerComponent implements OnInit {
     'Septiembre',
     'Octubre',
     'Noviembre',
-    'Diciembre',
+    'Diciembre'
   ];
   dayInput: number;
   monthInput: number;
@@ -29,6 +29,8 @@ export class GeneralFilterBuyerComponent implements OnInit {
   filters = new EventEmitter();
   @Output()
   resetAll = new EventEmitter();
+  @Input()
+  isDesktop: boolean;
 
   constructor() {}
 
@@ -38,7 +40,7 @@ export class GeneralFilterBuyerComponent implements OnInit {
       day: this.dayInput,
       month: this.monthInput,
       year: this.yearInput,
-      status: this.status,
+      status: this.status
     });
   }
   reset() {
