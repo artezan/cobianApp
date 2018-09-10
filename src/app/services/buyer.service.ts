@@ -34,4 +34,9 @@ export class BuyerService {
       .post(END_POINT.BUYER, buyer)
       .pipe(map((data: any) => data.data));
   }
+  public deletedBuyer(buyer: IBuyer): Observable<boolean> {
+    return this.http
+      .delete(END_POINT.BUYER + buyer._id)
+      .pipe(map((data: any) => data.data));
+  }
 }

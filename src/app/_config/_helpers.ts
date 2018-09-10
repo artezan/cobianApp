@@ -1,5 +1,7 @@
 import { IBuyer } from '../models/buyer.model';
 import { IProperty } from '../models/property.model';
+
+// filtro prop match
 /**
  *
  * @param buyer comprador
@@ -97,4 +99,53 @@ export function CalcPercentage(
     return b.percentage - a.percentage;
   });
   return properties;
+}
+
+// filtro buyers
+export function BuyersFilters(
+  buyer: IBuyer,
+  filtersApply: {
+    day: number;
+    month: number;
+    year: number;
+    status: string;
+  },
+) {
+  let isOK = true;
+  const buyerDate = new Date(buyer.timestamp);
+  // si existe
+  if (filtersApply.day !== undefined && filtersApply.day !== null) {
+    if (buyerDate.getDate() !== filtersApply.day) {
+      isOK = false;
+    }
+  }
+  // si existe
+  if (filtersApply.month !== undefined && filtersApply.month !== null) {
+    if (buyerDate.getMonth() !== filtersApply.month) {
+      isOK = false;
+    }
+  }
+  // si existe
+  if (filtersApply.year !== undefined && filtersApply.year !== null) {
+    if (buyerDate.getFullYear() !== filtersApply.year) {
+      isOK = false;
+    }
+  }
+  // si existe
+  if (filtersApply.status !== undefined && filtersApply.status !== null) {
+    if (buyer.statusBuyerProperty && buyer.statusBuyerProperty.length > 0) {
+      const isFinded = buyer.statusBuyerProperty.findIndex(
+        sbp => sbp.status === filtersApply.status,
+      );
+      if (isFinded === -1) {
+        isOK = false;
+      }
+    } else {
+      if (filtersApply.status !== 'gris') {
+        isOK = false;
+      }
+    }
+  }
+  // end filters
+  return isOK;
 }

@@ -7,16 +7,21 @@ import {
   SimpleChanges,
   Output,
   EventEmitter,
+  AfterViewInit,
+  IterableDiffers,
+  DoCheck,
 } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+
 import { TableColumsModel } from '../../../models/tableColums.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-general-table',
   templateUrl: './general-table.component.html',
   styleUrls: ['./general-table.component.scss'],
 })
-export class GeneralTableComponent implements OnInit, OnChanges {
+export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
   months = [
     'Enero',
     'Febrero',
@@ -56,22 +61,28 @@ export class GeneralTableComponent implements OnInit, OnChanges {
   @ViewChild(MatSort)
   sort: MatSort;
   realData;
-  @Input()
-  filterByDayInput: number;
-  @Input()
-  filterByMonthInput: number;
-  @Input()
-  filterByYearInput: number;
-  @Input()
-  filterByStateInput: string;
+  iterableDiffer;
 
-  constructor() {
+  constructor(private _iterableDiffers: IterableDiffers) {
     // Assign the data to the data source for the table to render
+    this.iterableDiffer = this._iterableDiffers.find([]).create(null);
   }
 
   ngOnInit() {
     // TICKETS.map(item => item.timestamp);
+    // this.dataSource.sort = this.sort;
   }
+  // ve los cambios en array lenght = 0
+  /* ngDoCheck() {
+    const changes = this.iterableDiffer.diff(this.rows);
+    if (changes) {
+      console.log(changes);
+      this.dataSource = new MatTableDataSource(changes.collection);
+      this.realData = changes.collection;
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }
+  } */
   ngOnChanges(changes: SimpleChanges) {
     console.log(changes);
     if (changes.columns) {
@@ -79,44 +90,14 @@ export class GeneralTableComponent implements OnInit, OnChanges {
         this.displayedColumns = changes.columns.currentValue.map(
           colum => colum.prop,
         );
-        console.log(this.displayedColumns);
       }
     }
     if (changes.rows) {
       if (changes.rows.currentValue) {
-        console.log(changes.rows.currentValue);
         this.dataSource = new MatTableDataSource(changes.rows.currentValue);
         this.realData = changes.rows.currentValue;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-      }
-    }
-    if (changes.filterByDayInput) {
-      if (changes.filterByDayInput.currentValue) {
-        this.filterByDay(changes.filterByDayInput.currentValue);
-      } else {
-        this.filterByDay(null);
-      }
-    }
-    if (changes.filterByMonthInput) {
-      if (changes.filterByMonthInput.currentValue) {
-        this.filterByMonth(changes.filterByMonthInput.currentValue);
-      } else {
-        this.filterByMonth(null);
-      }
-    }
-    if (changes.filterByYearInput) {
-      if (changes.filterByYearInput.currentValue) {
-        this.filterByYear(changes.filterByYearInput.currentValue);
-      } else {
-        this.filterByYear(null);
-      }
-    }
-    if (changes.filterByStateInput) {
-      if (changes.filterByStateInput.currentValue) {
-        this.filterByState(changes.filterByStateInput.currentValue);
-      } else {
-        this.filterByState(null);
       }
     }
   }
@@ -128,9 +109,7 @@ export class GeneralTableComponent implements OnInit, OnChanges {
     }
   }
   filterByDay(day: number) {
-    if (this.dataSource.data.length === 0) {
-      this.dataSource = new MatTableDataSource(this.realData);
-    }
+    this.dataSource = new MatTableDataSource(this.realData);
     const dayFinded = this.dataSource.data.filter(
       item => new Date(item.timestamp).getDate() === +day,
     );
@@ -140,9 +119,7 @@ export class GeneralTableComponent implements OnInit, OnChanges {
     }
   }
   filterByYear(year: number) {
-    if (this.dataSource.data.length === 0) {
-      this.dataSource = new MatTableDataSource(this.realData);
-    }
+    this.dataSource = new MatTableDataSource(this.realData);
     const dayFinded = this.dataSource.data.filter(
       item => new Date(item.timestamp).getFullYear() === +year,
     );
@@ -162,21 +139,14 @@ export class GeneralTableComponent implements OnInit, OnChanges {
     }
   }
   filterByState(status) {
-    const data = [];
-    console.log(this.dataSource);
     if (!status) {
       this.dataSource = new MatTableDataSource(this.realData);
     } else {
       this.dataSource = new MatTableDataSource(this.realData);
-      this.dataSource.data.forEach(item => {
-        item.properties.forEach(element => {
-          if (element.propertyStatus === status) {
-            data.push(item);
-          }
-        });
-      });
-      console.log(data);
-      this.dataSource = new MatTableDataSource(data);
+      const stateFinded = this.dataSource.data.filter(
+        item => item.status.toLowerCase() === status.toLowerCase(),
+      );
+      this.dataSource = new MatTableDataSource(stateFinded);
     }
   }
   formatDates(dateInput: Date): string {
@@ -206,5 +176,9 @@ export class GeneralTableComponent implements OnInit, OnChanges {
   }
   detailsItem(item) {
     this.detailsButton.emit(item);
+  }
+  // sort despues de iniciar
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
   }
 }

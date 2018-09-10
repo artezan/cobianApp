@@ -50,7 +50,7 @@
 
   </mat-card>
   <div style="margin: 1%" class="mat-elevation-z8">
-    <div class="table-container" style="overflow-x:auto; ">
+    <div class="table-container" style="overflow-x:auto; " *ngIf="rows && dataSource">
       <table mat-table [dataSource]="dataSource" matSort>
         <ng-container *ngFor="let column of columns" [cdkColumnDef]="column.prop">
           <th mat-header-cell mat-sort-header [ngClass]="{customWidthClass: column.w } " *cdkHeaderCellDef>{{
@@ -183,13 +183,13 @@
           <!-- status -->
           <span *ngIf="column.type === 'status'">
             <ion-chip *ngFor="let property of row[column.prop]" [ngClass]="{
-            'background-gris': property.propertyStatus === 'gris', 
-            'background-verde': property.propertyStatus === 'verde',
-            'background-amarillo': property.propertyStatus === 'amarillo',
-            'background-rojo': property.propertyStatus === 'rojo',
-            'background-azul': property.propertyStatus === 'azul'
+            'background-gris': property.status === 'gris', 
+            'background-verde': property.status === 'verde',
+            'background-amarillo': property.status === 'amarillo',
+            'background-rojo': property.status === 'rojo',
+            'background-azul': property.status === 'azul'
         }">
-              <ion-label>{{property.propertyName}}</ion-label>
+              <ion-label>{{property.name}}</ion-label>
             </ion-chip>
           </span>
         </span>
