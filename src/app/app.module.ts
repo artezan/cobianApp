@@ -62,6 +62,18 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { ListBuyerAdminComponent } from './components/admin/list-buyer-admin/list-buyer-admin.component';
 import { GeneralSkeletonComponent } from './components/general/general-skeleton/general-skeleton.component';
 import { GeneralFilterBuyerComponent } from './components/general/general-filter-buyer/general-filter-buyer.component';
+import { DetailBuyerAdminComponent } from './components/admin/detail-buyer-admin/detail-buyer-admin.component';
+import { ListAdviserAdminComponent } from './components/admin/list-adviser-admin/list-adviser-admin.component';
+import { FilterAdviserComponent } from './components/general/filter-adviser/filter-adviser.component';
+import { NewEditAdviserComponent } from './components/adviser/new-edit-adviser/new-edit-adviser.component';
+import { NewEditSellerComponent } from './components/seller/new-edit-seller/new-edit-seller.component';
+import { ListSellerAdminComponent } from './components/admin/list-seller-admin/list-seller-admin.component';
+import { DetailSellerAdminComponent } from './components/admin/detail-seller-admin/detail-seller-admin.component';
+import { DetailAdviserAdminComponent } from './components/admin/detail-adviser-admin/detail-adviser-admin.component';
+import { FilterSellerComponent } from './components/general/filter-seller/filter-seller.component';
+import { DetailPropAdminComponent } from './components/admin/detail-prop-admin/detail-prop-admin.component';
+import { NewEditPropComponent } from './components/prop/new-edit-prop/new-edit-prop.component';
+import { ListPropAdminComponent } from './components/admin/list-prop-admin/list-prop-admin.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +96,18 @@ import { GeneralFilterBuyerComponent } from './components/general/general-filter
     ListBuyerAdminComponent,
     GeneralSkeletonComponent,
     GeneralFilterBuyerComponent,
+    DetailBuyerAdminComponent,
+    ListAdviserAdminComponent,
+    FilterAdviserComponent,
+    NewEditAdviserComponent,
+    NewEditSellerComponent,
+    ListSellerAdminComponent,
+    DetailSellerAdminComponent,
+    DetailAdviserAdminComponent,
+    FilterSellerComponent,
+    DetailPropAdminComponent,
+    NewEditPropComponent,
+    ListPropAdminComponent,
   ],
   entryComponents: [],
   imports: [

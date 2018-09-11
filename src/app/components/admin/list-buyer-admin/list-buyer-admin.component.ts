@@ -98,7 +98,6 @@ export class ListBuyerAdminComponent implements OnInit {
     this.buyerService.getBuyerAll().subscribe(buyers => {
       this.realData = buyers;
       this.buyers = buyers;
-      console.log(buyers);
       this.setRows(this.realData);
     });
   }
@@ -147,17 +146,18 @@ export class ListBuyerAdminComponent implements OnInit {
     // this.navCtr.navigateRoot('new-buyer', false, data);
   }
   deleted(buyer: IBuyer) {
-    /*  this.buyerService.deletedBuyer(buyer).subscribe(val => {
-      if (val) {
-        this.presentToast('Usuario eliminado');
-      }
-    }); */
     this.buyerService
       .deletedBuyer(buyer)
       .toPromise()
       .then(() => {
         this.getBuyerAll();
       });
+  }
+  detailBuyer(buyer: IBuyer) {
+    const data: NavigationExtras = {
+      queryParams: { id: buyer._id },
+    };
+    this.router.navigate(['detail-buyer-admin'], data);
   }
   async presentAlertConfirm(buyer: IBuyer) {
     const alert = await this.alertController.create({
@@ -174,16 +174,22 @@ export class ListBuyerAdminComponent implements OnInit {
         },
         {
           text: 'Sí',
-          // IMPORTANTE ASYNC !!!!!
+          role: 'ok',
           handler: () => {
-            this.deleted(buyer);
-            this.getBuyerAll();
+            /* this.deleted(buyer);
+            this.getBuyerAll(); */
           },
         },
       ],
     });
 
     await alert.present();
+    // IMPORTANTE ASYNC !!!!!
+    await alert.onWillDismiss().then(res => {
+      if (res.role === 'ok') {
+        this.deleted(buyer);
+      }
+    });
   }
   async presentToast(message) {
     const toast = await this.toastController.create({

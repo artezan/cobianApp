@@ -12,11 +12,11 @@ $mdc-theme-primary: #000000; // primary color
 $mdc-theme-secondary: #f5811e; // secondary color F58634
 @import '~@angular-mdc/theme/material';
 
-.split-pane-md.split-pane-visible > .split-pane-side {
+.split-pane-md.split-pane-visible>.split-pane-side {
   max-width: 10% !important;
 }
 
-.split-pane-ios.split-pane-visible > .split-pane-side {
+.split-pane-ios.split-pane-visible>.split-pane-side {
   max-width: 10% !important;
 }
 
@@ -27,6 +27,10 @@ html {
 
 .space-buttons {
   min-height: 100px !important;
+}
+
+.state-secondary {
+  border-left: 4px solid var(--ion-color-secondary);
 }
 
 .state-gris {
@@ -70,18 +74,25 @@ html {
 }
 
 .my-contenet {
-  margin: 3% 30% 2% 30%;
+  margin: 3% 30% 2% 30% !important;
 }
 
 @media (max-width: 900px) {
   .my-contenet {
-    margin: 1% 1% 1% 1%;
+    margin: 1% 1% 1% 1% !important;
   }
 }
 
 .color-item-secondary {
   color: var(--ion-color-secondary);
 }
+
 ::-webkit-scrollbar {
   width: 10px;
+}
+
+.icon-chip-detail {
+  border-radius: 50%;
+  background-color: black;
+  color: white;
 }

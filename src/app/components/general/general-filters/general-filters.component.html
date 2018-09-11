@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <ion-buttons *ngIf="!isDesktop" slot="start">
       <ion-button (click)="goBack()" slot="start">
         <ion-icon mode="md" slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
@@ -38,13 +38,13 @@
         <ion-label>
           Renta
         </ion-label>
-        <ion-toggle [(ngModel)]="rent" mode="md" slot="end"></ion-toggle>
+        <ion-toggle (ionChange)="sendFilters()" [(ngModel)]="rent" mode="md" slot="end"></ion-toggle>
       </ion-item>
       <ion-item lines="none">
         <ion-label>
           Venta
         </ion-label>
-        <ion-toggle [(ngModel)]="sell" mode="md" slot="end"></ion-toggle>
+        <ion-toggle (ionChange)="sendFilters()" [(ngModel)]="sell" mode="md" slot="end"></ion-toggle>
       </ion-item>
       <ion-item lines="none" (click)=" caseFilter = 'Tipo de Vivienda';isFilterApply = !isFilterApply; ">
         <ion-label>
@@ -85,25 +85,25 @@
         <ion-label>
           Usado
         </ion-label>
-        <ion-toggle [(ngModel)]="old" mode="md" slot="end"></ion-toggle>
+        <ion-toggle (ionChange)="sendFilters()" [(ngModel)]="old" mode="md" slot="end"></ion-toggle>
       </ion-item>
       <ion-item lines="none">
         <ion-label>
           Nuevo
         </ion-label>
-        <ion-toggle [(ngModel)]="notOld" mode="md" slot="end"></ion-toggle>
+        <ion-toggle (ionChange)="sendFilters()" [(ngModel)]="notOld" mode="md" slot="end"></ion-toggle>
       </ion-item>
       <ion-item lines="none">
         <ion-label>
           Cerrado
         </ion-label>
-        <ion-toggle [(ngModel)]="close" mode="md" slot="end"></ion-toggle>
+        <ion-toggle (ionChange)="sendFilters()" [(ngModel)]="close" mode="md" slot="end"></ion-toggle>
       </ion-item>
       <ion-item lines="none">
         <ion-label>
           Abierto
         </ion-label>
-        <ion-toggle [(ngModel)]="open" mode="md" slot="end"></ion-toggle>
+        <ion-toggle (ionChange)="sendFilters()" [(ngModel)]="open" mode="md" slot="end"></ion-toggle>
       </ion-item>
       <ion-item lines="none" (click)="isFilterApply = !isFilterApply; caseFilter = 'Bathrooms'">
         <ion-label>
@@ -116,49 +116,49 @@
         <ion-label>
           Con Jardin
         </ion-label>
-        <ion-toggle [(ngModel)]="garden" mode="md" slot="end"></ion-toggle>
+        <ion-toggle (ionChange)="sendFilters()" [(ngModel)]="garden" mode="md" slot="end"></ion-toggle>
       </ion-item>
       <ion-item lines="none">
         <ion-label>
           Sin Jardin
         </ion-label>
-        <ion-toggle [(ngModel)]="noGarden" mode="md" slot="end"></ion-toggle>
+        <ion-toggle (ionChange)="sendFilters()" [(ngModel)]="noGarden" mode="md" slot="end"></ion-toggle>
       </ion-item>
       <ion-item lines="none">
         <ion-label>
           En plata baja
         </ion-label>
-        <ion-toggle [(ngModel)]="lowLevel" mode="md" slot="end"></ion-toggle>
+        <ion-toggle (ionChange)="sendFilters()" [(ngModel)]="lowLevel" mode="md" slot="end"></ion-toggle>
       </ion-item>
       <ion-item lines="none">
         <ion-label>
           Cualquier Nivel
         </ion-label>
-        <ion-toggle [(ngModel)]="noMatterLevel" mode="md" slot="end"></ion-toggle>
+        <ion-toggle (ionChange)="sendFilters()" [(ngModel)]="noMatterLevel" mode="md" slot="end"></ion-toggle>
       </ion-item>
       <ion-item lines="none">
         <ion-label>
           Con Elevador
         </ion-label>
-        <ion-toggle [(ngModel)]="elevator" mode="md" slot="end"></ion-toggle>
+        <ion-toggle (ionChange)="sendFilters()" [(ngModel)]="elevator" mode="md" slot="end"></ion-toggle>
       </ion-item>
       <ion-item lines="none">
         <ion-label>
           Sin Elevador
         </ion-label>
-        <ion-toggle [(ngModel)]="noElevator" mode="md" slot="end"></ion-toggle>
+        <ion-toggle (ionChange)="sendFilters()" [(ngModel)]="noElevator" mode="md" slot="end"></ion-toggle>
       </ion-item>
       <ion-item lines="none">
         <ion-label>
           Todos los servicios
         </ion-label>
-        <ion-toggle [(ngModel)]="allServices" mode="md" slot="end"></ion-toggle>
+        <ion-toggle (ionChange)="sendFilters()" [(ngModel)]="allServices" mode="md" slot="end"></ion-toggle>
       </ion-item>
       <ion-item lines="none">
         <ion-label>
           Sin Servicios
         </ion-label>
-        <ion-toggle [(ngModel)]="notAllServices" mode="md" slot="end"></ion-toggle>
+        <ion-toggle (ionChange)="sendFilters()" [(ngModel)]="notAllServices" mode="md" slot="end"></ion-toggle>
       </ion-item>
       <ion-item lines="none" (click)="isFilterApply = !isFilterApply; caseFilter = 'Forma de compra'">
         <ion-label>
@@ -250,7 +250,7 @@
       </span>
       <span *ngSwitchCase="'Bathrooms'">
         <ion-item>
-          <ion-label>Minimo num. de baños </ion-label>
+          <ion-label>Minimo num.</ion-label>
           <ion-input type="number" [(ngModel)]="hopeProperty.numBathrooms" #numBathrooms="ngModel" id="numBathrooms"
             name="numBathrooms"></ion-input>
         </ion-item>

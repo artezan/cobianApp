@@ -84,7 +84,6 @@ export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
     }
   } */
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
     if (changes.columns) {
       if (changes.columns.currentValue) {
         this.displayedColumns = changes.columns.currentValue.map(

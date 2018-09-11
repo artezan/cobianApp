@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button style="color: white !important"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Detalles
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <ion-grid fixed>
+    <ng-container *ngIf="isLoad; then thenTemplate; else elseTemplate"></ng-container>
+    <ng-template #thenTemplate>
+      <h1> Detalles de Asessor </h1>
+
+      <ion-card>
+
+
+        <ion-card-header>
+          <ion-card-subtitle> {{adviser.name}} {{adviser.lastName}} </ion-card-subtitle>
+          <ion-card-title> {{adviser.name}} </ion-card-title>
+        </ion-card-header>
+        <ion-item>
+          <ion-label>Email: {{adviser.email}}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Hora inicio {{adviser.hourStart}}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Hora fin {{adviser.hourEnd}}</ion-label>
+        </ion-item>
+
+      </ion-card>
+      <!-- buyers -->
+      <h1 *ngIf="adviser.buyer && adviser.buyer.length > 0"> Consumidores Asignados </h1>
+      <ion-card *ngFor="let buyer  of adviser.buyer ">
+        <ion-item>
+          <ion-label>Consumidor {{buyer.name}}</ion-label>
+        </ion-item>
+      </ion-card>
+      <!-- schedule -->
+      <h1 *ngIf="adviser.schedule && adviser.schedule.length > 0"> Citas </h1>
+      <ion-card *ngFor="let schedule  of adviser.schedule " [ngClass]="{'state-verde': schedule.status === 'verde', 
+    'state-amarillo': schedule.status === 'amarillo',
+    'state-rojo': schedule.status === 'rojo',
+    'state-azul': schedule.status === 'azul' }">
+        <ion-item>
+          <ion-label>Propiedad {{schedule.property.name}}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Fecha {{schedule.day}}/{{schedule.month}}/{{schedule.year}}</ion-label>
+        </ion-item>
+        <ion-item *ngIf="schedule.minute < 10" text-wrap>Hora:
+          {{schedule.hour}}:0{{schedule.minute}}</ion-item>
+        <ion-item *ngIf="schedule.minute >= 10" text-wrap>Hora:
+          {{schedule.hour}}:{{schedule.minute}}</ion-item>
+        <ion-item>
+          <ion-label>Lugar {{schedule.address}}</ion-label>
+        </ion-item>
+      </ion-card>
+
+    </ng-template>
+    <ng-template #elseTemplate style="text-align: center">
+      <ion-spinner name="bubbles"></ion-spinner>
+
+    </ng-template>
+  </ion-grid>
+
+</ion-content>

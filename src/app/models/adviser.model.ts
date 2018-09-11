@@ -2,41 +2,45 @@ import { ISchedule } from './schedule.model';
 import { IBuyer } from './buyer.model';
 
 export interface IAdviser {
-  name: any;
-  lastName: string;
-  password: any;
-  timestamp: Date;
-  email: string;
+  name?: any;
+  lastName?: string;
+  password?: any;
+  timestamp?: Date;
+  email?: string;
   /**
    *  eventos programados
    */
-  schedule: ISchedule[];
+  schedule?: ISchedule[];
   /**
    * hora disponible inicio
    */
-  hourStart: number;
+  hourStart?: number;
   /**
    * hora disponible fin
    */
-  hourEnd: number;
+  hourEnd?: number;
   /**
    * Compradores asignados
    */
-  buyer: IBuyer[];
+  buyer?: IBuyer[];
   /**
    * Metas
    */
-  // goal: IGoal[];
+  // goal?: IGoal[];
   /**
    * Notificaciones guardadas
    */
-  // notification: INotification[];
+  // notification?: INotification[];
   /**
    * Si vende o renta
    */
-  isRenter: boolean;
+  isRenter?: boolean;
   /**
    * ciudad para filtar
    */
-  city: string;
+  city?: string;
+  /**
+   * id
+   */
+  _id?: string;
 }

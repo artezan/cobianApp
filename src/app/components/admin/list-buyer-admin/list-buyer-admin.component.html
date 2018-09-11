@@ -38,7 +38,7 @@
 
       <!-- Table  -->
       <app-general-table [columns]="columns" [rows]="rows" [isDesktop]="isDesktop" (editButton)="edit($event)"
-        (deletedButton)="presentAlertConfirm($event)"></app-general-table>
+        (deletedButton)="presentAlertConfirm($event)" (detailsButton)="detailBuyer($event)"></app-general-table>
       <!-- /Table -->
     </mat-drawer-container>
 

@@ -1,0 +1,238 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button style="color: white !important"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Propiedad
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid fixed>
+    <div class="container" style="margin-top: 3%">
+      <form #newUserForm="ngForm">
+        <mat-card>
+          <mat-card-title>Complete los campos</mat-card-title>
+          <div class="flex-container">
+            <!-- name -->
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre</mat-label>
+              <input matInput placeholder="" [(ngModel)]="property.name" #name="ngModel" id="name" name="name" required>
+              <mat-error *ngIf="name.dirty || name.touched">Anotar Nombre</mat-error>
+            </mat-form-field>
+            <!-- isRent  -->
+            <mat-form-field appearance="outline">
+              <mat-label>Venta o Renta</mat-label>
+              <mat-select [(ngModel)]="property.isRent" #isRent="ngModel" id="isRent" name="isRent" required>
+                <mat-option [value]=true>
+                  Renta
+                </mat-option>
+                <mat-option [value]=false>
+                  Venta
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="isRent.dirty || isRent.touched">Selecciona una</mat-error>
+            </mat-form-field>
+            <!-- typeOfProperty -->
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo de Vivienda</mat-label>
+              <mat-select [(ngModel)]="property.typeOfProperty" #typeOfProperty="ngModel" id="typeOfProperty" name="typeOfProperty"
+                required>
+                <mat-option value="casa">Casa
+                </mat-option>
+                <mat-option value="departamento">Departamento
+                </mat-option>
+                <mat-option value="nave industrial">Nave Industrial
+                </mat-option>
+                <mat-option value="terreno">Terreno
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="typeOfProperty.dirty || typeOfProperty.touched">Anotar Correo</mat-error>
+            </mat-form-field>
+            <!-- space-->
+            <mat-form-field appearance="outline">
+              <mat-label>Espacio</mat-label>
+              <input matInput type="number" [(ngModel)]="property.space" #space="ngModel" id="space" name="space"
+                required>
+              <mat-error *ngIf="space.dirty || space.touched">Anotar Espacio</mat-error>
+            </mat-form-field>
+            <!-- dateToBuy -->
+            <!-- Fecha a comprar -->
+            <ion-label text-wrap>Anota la posible fecha de compra o renta</ion-label>
+            <!-- day -->
+            <mdc-text-field label="Dia" type="number" [(ngModel)]="daySelect" #d="ngModel" id="d" name="d" required
+              [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+            <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+              <span *ngIf="d.dirty || d.touched">Anota Dia</span>
+            </mdc-text-field-helper-text>
+            <!-- mm -->
+            <ion-item lines="none" class="margin-field">
+              <ion-label>Mes</ion-label>
+              <ion-select [(ngModel)]="monthSelect" #me="ngModel" id="me" name="me" required placeholder="Selecciona">
+                <ion-select-option *ngFor="let m of months; let i = index" [value]="i + 1">{{m}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <!-- aa -->
+            <mdc-text-field label="Año" type="number" [(ngModel)]="yearSelect" #y="ngModel" id="y" name="y" required
+              [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+            <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+              <span *ngIf="y.dirty || y.touched">Anota Año</span>
+            </mdc-text-field-helper-text>
+            <!-- zone -->
+            <mat-form-field appearance="outline">
+              <mat-label>Zona</mat-label>
+              <input matInput placeholder="" [(ngModel)]="property.zone" #zone="ngModel" id="zone" name="zone" required>
+              <mat-error *ngIf="zone.dirty || zone.touched">Anotar Zona</mat-error>
+            </mat-form-field>
+            <!-- minPrice -->
+            <mat-form-field appearance="outline">
+              <mat-label>Precio Minimo</mat-label>
+              <input matInput type="number" placeholder="" [(ngModel)]="property.minPrice" #minPrice="ngModel" id="minPrice"
+                name="minPrice" required>
+              <mat-error *ngIf="minPrice.dirty || minPrice.touched">Anotar Numero</mat-error>
+            </mat-form-field>
+            <!-- max -->
+            <mat-form-field appearance="outline">
+              <mat-label>Precio Maximo</mat-label>
+              <input matInput type="number" placeholder="" [(ngModel)]="property.maxPrice" #maxPrice="ngModel" id="maxPrice"
+                name="maxPrice" required>
+              <mat-error *ngIf="maxPrice.dirty || maxPrice.touched">Anotar Numero</mat-error>
+            </mat-form-field>
+            <!-- numRooms -->
+            <mat-form-field appearance="outline">
+              <mat-label>Numero de Cuartos</mat-label>
+              <input matInput type="number" placeholder="" [(ngModel)]="property.numRooms" #numRooms="ngModel" id="numRooms"
+                name="numRooms" required>
+              <mat-error *ngIf="numRooms.dirty || numRooms.touched">Anotar Numero</mat-error>
+            </mat-form-field>
+            <!-- numBathrooms -->
+            <mat-form-field appearance="outline">
+              <mat-label>Numero de Baños</mat-label>
+              <input matInput type="number" placeholder="" [(ngModel)]="property.numBathrooms" #numBathrooms="ngModel"
+                id="numBathrooms" name="numBathrooms" required>
+              <mat-error *ngIf="numBathrooms.dirty || numBathrooms.touched">Anotar Numero</mat-error>
+            </mat-form-field>
+            <!-- numCars -->
+            <mat-form-field appearance="outline">
+              <mat-label>Lugares Estacionamiento</mat-label>
+              <input matInput type="number" placeholder="" [(ngModel)]="property.numCars" #numCars="ngModel" id="numCars"
+                name="numCars" required>
+              <mat-error *ngIf="numCars.dirty || numCars.touched">Anotar Numero</mat-error>
+            </mat-form-field>
+            <!-- isOld -->
+            <mat-form-field appearance="outline">
+              <mat-label>Estado</mat-label>
+              <mat-select [(ngModel)]="property.isOld" #isOld="ngModel" id="isOld" name="isOld" required>
+                <mat-option [value]=false>Nuevo
+                </mat-option>
+                <mat-option [value]=true>Usado
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="isOld.dirty || isOld.touched">Selecciona uno</mat-error>
+            </mat-form-field>
+            <!-- isClose -->
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo Fraccionamiento</mat-label>
+              <mat-select [(ngModel)]="property.isClose" #isClose="ngModel" id="isClose" name="isClose" required>
+                <mat-option [value]=false>Abierto
+                </mat-option>
+                <mat-option [value]=true>Cerrado
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="isClose.dirty || isClose.touched">Selecciona uno</mat-error>
+            </mat-form-field>
+            <!-- hasGarden -->
+            <mat-form-field appearance="outline">
+              <mat-label>Con Jardin</mat-label>
+              <mat-select [(ngModel)]="property.hasGarden" #hasGarden="ngModel" id="hasGarden" name="hasGarden"
+                required>
+                <mat-option [value]=true>Sí
+                </mat-option>
+                <mat-option [value]=false>No
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="hasGarden.dirty || hasGarden.touched">Selecciona uno</mat-error>
+            </mat-form-field>
+            <!-- isLowLevel -->
+            <mat-form-field appearance="outline">
+              <mat-label>Planta Baja</mat-label>
+              <mat-select [(ngModel)]="property.isLowLevel" #isLowLevel="ngModel" id="isLowLevel" name="isLowLevel"
+                required>
+                <mat-option [value]=true>Sí
+                </mat-option>
+                <mat-option [value]=false>No
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="isLowLevel.dirty || isLowLevel.touched">Selecciona uno</mat-error>
+            </mat-form-field>
+            <!-- hasElevator -->
+            <mat-form-field appearance="outline">
+              <mat-label>Con Elevador</mat-label>
+              <mat-select [(ngModel)]="property.hasElevator" #hasElevator="ngModel" id="hasElevator" name="hasElevator"
+                required>
+                <mat-option [value]=true>Sí
+                </mat-option>
+                <mat-option [value]=false>No
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="hasElevator.dirty || hasElevator.touched">Selecciona uno</mat-error>
+            </mat-form-field>
+            <!-- allServices -->
+            <mat-form-field appearance="outline">
+              <mat-label>Todos los Servicios </mat-label>
+              <mat-select [(ngModel)]="property.allServices" #allServices="ngModel" id="allServices" name="allServices"
+                required>
+                <mat-option [value]=true>Sí
+                </mat-option>
+                <mat-option [value]=false>No
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="allServices.dirty || allServices.touched">Selecciona uno</mat-error>
+            </mat-form-field>
+            <!-- wayToBuy FOVISSTE, IMSS, contado, PEMEX, Infonavit, aliados, otros -->
+
+            <mat-form-field appearance="outline">
+              <mat-label>Forma de Venta/Renta </mat-label>
+              <mat-select [(ngModel)]="property.wayToBuy" #wayToBuy="ngModel" id="wayToBuy" name="wayToBuy" required
+                placeholder="Selecciona">
+                <mat-option value="FOVISSTE">FOVISSTE</mat-option>
+                <mat-option value="IMSS">IMSS</mat-option>
+                <mat-option value="contado">contado</mat-option>
+                <mat-option value="PEMEX">Pemex</mat-option>
+                <mat-option value="infonavit">Infonavit</mat-option>
+                <mat-option value="infonavit">Aliados</mat-option>
+                <mat-option value="otros">Otros</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <!-- tag -->
+            <ion-label text-wrap>Anota palabras clave separadas por comas para una mejor búsqueda (ej: casa,
+              departamento,
+              mascotas)</ion-label>
+            <mdc-textarea [(ngModel)]="words" #w="ngModel" id="w" name="w" label="Palabras" rows="8" cols="40"></mdc-textarea>
+            <!-- files -->
+            <ion-label text-wrap>Anota nombre de los archivos separado por comas (ej: documento1,
+              documento2, documento3, etc...)</ion-label>
+            <mdc-textarea [(ngModel)]="files" #f="ngModel" id="f" name="f" label="Documentos:" rows="8" cols="40"></mdc-textarea>
+
+          </div>
+          <mat-card-actions align="end">
+            <div style="margin-right: 2%">
+              <span [matTooltip]=errorToShow [matTooltipClass]="'tooltip-size'" (mouseenter)="getPopMessage($event)">
+                <button *ngIf="isNew" id="submitUser" mat-raised-button color="primary" (click)="newCustomer()"
+                  [disabled]="!newUserForm.form.valid">Crear</button>
+                <button *ngIf="!isNew" id="submitUser" mat-raised-button color="primary" (click)="editCustomer()">Editar</button>
+              </span>
+            </div>
+
+
+          </mat-card-actions>
+
+        </mat-card>
+      </form>
+
+    </div>
+  </ion-grid>
+
+</ion-content>

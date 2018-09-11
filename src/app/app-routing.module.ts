@@ -12,6 +12,16 @@ import { CreditEventBuyerComponent } from './components/buyer/credit-event-buyer
 import { OfertBuyerComponent } from './components/buyer/ofert-buyer/ofert-buyer.component';
 import { MainAdminComponent } from './components/admin/main-admin/main-admin.component';
 import { ListBuyerAdminComponent } from './components/admin/list-buyer-admin/list-buyer-admin.component';
+import { DetailBuyerAdminComponent } from './components/admin/detail-buyer-admin/detail-buyer-admin.component';
+import { ListAdviserAdminComponent } from './components/admin/list-adviser-admin/list-adviser-admin.component';
+import { NewEditAdviserComponent } from './components/adviser/new-edit-adviser/new-edit-adviser.component';
+import { DetailAdviserAdminComponent } from './components/admin/detail-adviser-admin/detail-adviser-admin.component';
+import { ListSellerAdminComponent } from './components/admin/list-seller-admin/list-seller-admin.component';
+import { DetailSellerAdminComponent } from './components/admin/detail-seller-admin/detail-seller-admin.component';
+import { NewEditSellerComponent } from './components/seller/new-edit-seller/new-edit-seller.component';
+import { NewEditPropComponent } from './components/prop/new-edit-prop/new-edit-prop.component';
+import { ListPropAdminComponent } from './components/admin/list-prop-admin/list-prop-admin.component';
+import { DetailPropAdminComponent } from './components/admin/detail-prop-admin/detail-prop-admin.component';
 
 const routes: Routes = [
   // Rutas
@@ -28,6 +38,16 @@ const routes: Routes = [
   { path: 'ofert-buyer', component: OfertBuyerComponent },
   { path: 'main-admin', component: MainAdminComponent },
   { path: 'list-buyer-admin', component: ListBuyerAdminComponent },
+  { path: 'detail-buyer-admin', component: DetailBuyerAdminComponent },
+  { path: 'list-adviser-admin', component: ListAdviserAdminComponent },
+  { path: 'new-edit-adviser', component: NewEditAdviserComponent },
+  { path: 'detail-adviser-admin', component: DetailAdviserAdminComponent },
+  { path: 'list-seller-admin', component: ListSellerAdminComponent },
+  { path: 'detail-seller-admin', component: DetailSellerAdminComponent },
+  { path: 'new-edit-seller', component: NewEditSellerComponent },
+  { path: 'list-prop-admin', component: ListPropAdminComponent },
+  { path: 'new-edit-prop', component: NewEditPropComponent },
+  { path: 'detail-prop-admin', component: DetailPropAdminComponent },
 ];
 
 @NgModule({

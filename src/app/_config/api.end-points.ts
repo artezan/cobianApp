@@ -15,6 +15,10 @@ const schedule = 'schedule/';
 const upgradeStatus = 'upgradelevelbyid/';
 const ofert = 'ofert/';
 const administrator = 'administrator/';
+const adviser = 'adviser/';
+const adviserId = 'byadviserid/';
+const seller = 'seller/';
+const sellerId = 'bysellerid/';
 
 export const END_POINT = {
   IP: ip,
@@ -39,4 +43,10 @@ export const END_POINT = {
   OFERT: apiUrl + ofert,
   // admin
   ADMINISTRATOR: apiUrl + administrator,
+  // adviser
+  ADVISER: apiUrl + adviser,
+  ADVISER_ID: apiUrl + adviser + adviserId,
+  // seller
+  SELLER: apiUrl + seller,
+  SELLER_ID: apiUrl + seller + sellerId,
 };

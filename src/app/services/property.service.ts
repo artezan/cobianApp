@@ -21,8 +21,24 @@ export class PropertyService {
       .get(END_POINT.PROPERTY_BY_ID + id)
       .pipe(map((data: any) => data.data));
   }
-  public getAll(): Observable<IProperty[]>{
-    return this.http.get(END_POINT.PROPERTY)
-    .pipe(map((data: any) => data.data));
+  public getAll(): Observable<IProperty[]> {
+    return this.http
+      .get(END_POINT.PROPERTY)
+      .pipe(map((data: any) => data.data));
+  }
+  public deletedById(id: string): Observable<boolean> {
+    return this.http
+      .delete(END_POINT.PROPERTY + id)
+      .pipe(map((data: any) => data.data));
+  }
+  public newProperty(property: IProperty): Observable<IProperty> {
+    return this.http
+      .post(END_POINT.PROPERTY, property)
+      .pipe(map((data: any) => data.data));
+  }
+  public putProperty(property: IProperty): Observable<boolean> {
+    return this.http
+      .put(END_POINT.PROPERTY + property._id, property)
+      .pipe(map((data: any) => data.data));
   }
 }

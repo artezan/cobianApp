@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { IProperty } from '../../../models/property.model';
 
@@ -8,10 +8,14 @@ import { IProperty } from '../../../models/property.model';
   styleUrls: ['./general-filters.component.scss'],
 })
 export class GeneralFiltersComponent implements OnInit {
+  @Input()
+  isDesktop = false;
   @Output()
   filters = new EventEmitter();
   @Output()
   resetAll = new EventEmitter();
+  @Output()
+  closeMenuMaterial = new EventEmitter();
   constructor(public menuCtr: MenuController) {}
   isFilterApply = false;
   caseFilter: string;
@@ -39,11 +43,14 @@ export class GeneralFiltersComponent implements OnInit {
 
   ngOnInit() {}
   goBack() {
-    console.log(this.hopeProperty);
     if (this.isFilterApply) {
+      this.sendFilters();
       this.isFilterApply = false;
     } else {
       this.menuCtr.close('filters');
+      if (!this.isDesktop) {
+        this.closeMenuMaterial.emit();
+      }
     }
   }
   sendFilters() {

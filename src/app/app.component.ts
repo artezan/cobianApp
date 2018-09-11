@@ -58,6 +58,24 @@ export class AppComponent {
       icon: 'clipboard',
       userType: 'administrator',
     },
+    {
+      title: 'Asesores',
+      url: '/list-adviser-admin',
+      icon: 'people',
+      userType: 'administrator',
+    },
+    {
+      title: 'Vendedores',
+      url: '/list-seller-admin',
+      icon: 'cash',
+      userType: 'administrator',
+    },
+    {
+      title: 'Propiedades',
+      url: '/list-prop-admin',
+      icon: 'business',
+      userType: 'administrator',
+    },
   ];
   isDevice: boolean;
   isLoggin = false;
