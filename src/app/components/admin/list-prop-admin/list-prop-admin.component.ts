@@ -59,12 +59,12 @@ export class ListPropAdminComponent implements OnInit {
       {
         name: 'Precio Max',
         prop: 'maxPrice',
-        type: 'normal',
+        type: 'money',
       },
       {
         name: 'Precio Min',
         prop: 'minPrice',
-        type: 'normal',
+        type: 'money',
       },
       {
         name: 'Fecha Alta',
@@ -190,9 +190,11 @@ export class ListPropAdminComponent implements OnInit {
   }
   getFilters(filters: IProperty) {
     console.log(filters);
-    const advFinded = this.properties.filter(prop =>
-      PropertyFilter(filters, prop),
-    );
+    const advFinded = this.properties.filter(prop => {
+      const temp = PropertyFilter(filters, prop);
+      this.numOfFilters = temp.numOfFilters;
+      return temp.isHope;
+    });
     //  setea buyers
     this.setRows(advFinded);
   }

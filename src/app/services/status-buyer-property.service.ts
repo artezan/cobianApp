@@ -33,4 +33,10 @@ export class StatusBuyerPropertyService {
       .get(END_POINT.STATUS_BP)
       .pipe(map((data: any) => data.data));
   }
+  public searchSpecial(buyerId, propertyId): Observable<IStatusBuyerProperty> {
+    const body = { buyer: buyerId, property: propertyId };
+    return this.http
+      .post(END_POINT.STATUS_SEARCH, body)
+      .pipe(map((data: any) => data.data));
+  }
 }

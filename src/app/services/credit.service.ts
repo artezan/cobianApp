@@ -23,4 +23,14 @@ export class CreditService {
   public getCredit(): Observable<ICredit[]> {
     return this.http.get(END_POINT.CREDIT).pipe(map((data: any) => data.data));
   }
+  public getCreditById(id: string): Observable<ICredit> {
+    return this.http
+      .get(END_POINT.CREDIT_ID + id)
+      .pipe(map((data: any) => data.data));
+  }
+  public deleteCredit(id: string): Observable<ICredit> {
+    return this.http
+      .delete(END_POINT.CREDIT + id)
+      .pipe(map((data: any) => data.data));
+  }
 }

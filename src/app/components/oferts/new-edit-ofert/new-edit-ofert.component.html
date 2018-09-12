@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button style="color: white !important"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Oferta
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ng-container *ngIf="isLoad; then thenTemplate; else elseTemplate"></ng-container>
+  <ng-template #thenTemplate>
+    <ion-grid fixed>
+      <h1>Oferta</h1>
+      <div class="container" style="margin-top: 3%">
+        <form #newUserForm="ngForm">
+          <mat-card>
+            <mat-card-title>Complete los campos</mat-card-title>
+            <div class="flex-container">
+              <!-- buyer -->
+              <mat-form-field appearance="outline">
+                <mat-label>Consumidor</mat-label>
+                <mat-select [disabled]="!isNew" (selectionChange)="getProp(bu.value)" [(ngModel)]="ofert.buyer" #bu="ngModel"
+                  id="bu" name="bu" required>
+                  <mat-option *ngFor="let buyer of buyers" [value]="buyer._id">
+                    {{buyer.name}} {{buyer.fatherLastName}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="bu.dirty || bu.touched">Selecciona</mat-error>
+              </mat-form-field>
+              <!-- prop -->
+              <mat-form-field *ngIf="bu.value && !isEmpty" appearance="outline">
+                <mat-label>Propiedad de Interés</mat-label>
+                <mat-select [disabled]="!isNew" [(ngModel)]="ofert.property" #p="ngModel" id="p" name="p" required>
+                  <mat-option *ngFor="let prop of properties" [value]="prop._id">
+                    {{prop.name}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="p.dirty || p.touched">Selecciona</mat-error>
+              </mat-form-field>
+              <ion-button *ngIf="isEmpty" color="danger" fill="outline" shape="round">Usuarion sin propiedades
+                interesadas</ion-button>
+              <!-- files -->
+              <ion-label text-wrap>Anota los documentos para el crédito separado por comas
+                (documento1,documento2,etc...)</ion-label>
+              <mdc-textarea [(ngModel)]="files" #f="ngModel" id="f" name="f" label="Ducumentos" rows="8" cols="40"></mdc-textarea>
+              <!-- notas -->
+              <mdc-textarea [(ngModel)]="ofert.notes" #w="ngModel" id="w" name="w" label="Notas" rows="8" cols="40"
+                required></mdc-textarea>
+              <!-- precio-->
+              <mat-form-field appearance="outline">
+                <mat-label>Precio</mat-label>
+                <input matInput type="number" [(ngModel)]="ofert.ofertPrice" #space="ngModel" id="space" name="space"
+                  required>
+                <mat-error *ngIf="space.dirty || space.touched">Anotar Costo</mat-error>
+              </mat-form-field>
+
+            </div>
+            <mat-card-actions align="end">
+              <div style="margin-right: 2%">
+                <span [matTooltip]=errorToShow [matTooltipClass]="'tooltip-size'" (mouseenter)="getPopMessage($event)">
+                  <button *ngIf="isNew" id="submitUser" mat-raised-button color="primary" (click)="newOfert()"
+                    [disabled]="!newUserForm.form.valid || isEmpty">Crear</button>
+                  <button *ngIf="!isNew" id="submitUser" mat-raised-button color="primary" [disabled]="!newUserForm.form.valid"
+                    (click)="editOfert()">Editar</button>
+                </span>
+              </div>
+
+
+
+            </mat-card-actions>
+
+          </mat-card>
+        </form>
+
+      </div>
+    </ion-grid>
+
+  </ng-template>
+  <ng-template #elseTemplate>
+    <app-general-skeleton></app-general-skeleton>
+  </ng-template>
+
+
+</ion-content>

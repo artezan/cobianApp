@@ -76,7 +76,26 @@ export class AppComponent {
       icon: 'business',
       userType: 'administrator',
     },
+    {
+      title: 'Créditos',
+      url: '/list-credit-admin',
+      icon: 'document',
+      userType: 'administrator',
+    },
+    {
+      title: 'Ofertas',
+      url: '/list-ofert-admin',
+      icon: 'card',
+      userType: 'administrator',
+    },
+    {
+      title: 'Eventos',
+      url: '/list-schedule-admin',
+      icon: 'calendar',
+      userType: 'administrator',
+    },
   ];
+
   isDevice: boolean;
   isLoggin = false;
   user: IUserSession;

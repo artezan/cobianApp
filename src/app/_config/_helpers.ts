@@ -341,5 +341,12 @@ export function PropertyFilter(hopeProperty: IProperty, prop: IProperty) {
   }
   // end for
   console.log(numFilters);
-  return isHope;
+  return { isHope: isHope, numOfFilters: numFilters };
+}
+export function FormatDatesFront(dateInput: Date): string {
+  const day: string = new Date(dateInput).getDate().toString();
+  const month: string = (new Date(dateInput).getMonth() + 1).toString();
+  const year: string = new Date(dateInput).getFullYear().toString();
+  const date = day + '/' + month + '/' + year;
+  return date;
 }

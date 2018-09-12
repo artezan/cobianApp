@@ -51,10 +51,10 @@
             <mat-form-field appearance="outline">
               <mat-label>Vende o Renta</mat-label>
               <mat-select [(ngModel)]="seller.isRenter" #isRenter="ngModel" id="isRenter" name="isRenter" required>
-                <mat-option [value]=false>
+                <mat-option value="false">
                   Vende
                 </mat-option>
-                <mat-option [value]=true>
+                <mat-option value="true">
                   Renta
                 </mat-option>
               </mat-select>
@@ -72,15 +72,12 @@
             <!-- prop -->
             <mat-form-field appearance="outline">
               <mat-label>Propiedades del Vendedor</mat-label>
-              <mat-select [(ngModel)]="seller.property" #isRenter="ngModel" id="isRenter" name="isRenter" multiple>
-                <mat-option [value]=false>
-                  Vende
-                </mat-option>
-                <mat-option [value]=true>
-                  s
+              <mat-select [(ngModel)]="seller.property" #property="ngModel" id="property" name="property" multiple>
+                <mat-option *ngFor="let prop of properties$ | async" [value]="prop._id">
+                  {{prop.name}}
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="isRenter.dirty || isRenter.touched">Anotar Tipo</mat-error>
+              <mat-error *ngIf="property.dirty || property.touched">Anotar Tipo</mat-error>
             </mat-form-field>
           </div>
           <mat-card-actions align="end">
@@ -88,7 +85,8 @@
               <span [matTooltip]=errorToShow [matTooltipClass]="'tooltip-size'" (mouseenter)="getPopMessage($event)">
                 <button *ngIf="isNew" id="submitUser" mat-raised-button color="primary" (click)="newCustomer()"
                   [disabled]="!newUserForm.form.valid">Crear</button>
-                <button *ngIf="!isNew" id="submitUser" mat-raised-button color="primary" (click)="editCustomer()">Editar</button>
+                <button *ngIf="!isNew" id="submitUser" mat-raised-button color="primary" [disabled]="!newUserForm.form.valid"
+                  (click)="editCustomer()">Editar</button>
               </span>
             </div>
 

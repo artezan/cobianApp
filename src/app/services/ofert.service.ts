@@ -23,4 +23,14 @@ export class OfertService {
   public getOfert(): Observable<IOfert[]> {
     return this.http.get(END_POINT.OFERT).pipe(map((data: any) => data.data));
   }
+  public getOfertById(id: string): Observable<IOfert> {
+    return this.http
+      .get(END_POINT.OFERT_ID + id)
+      .pipe(map((data: any) => data.data));
+  }
+  public deleteOfertById(id: string): Observable<boolean> {
+    return this.http
+      .delete(END_POINT.OFERT + id)
+      .pipe(map((data: any) => data.data));
+  }
 }

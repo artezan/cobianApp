@@ -4,7 +4,7 @@
       <ion-menu-button style="color: white !important"></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Asesores
+      Créditos
     </ion-title>
 
   </ion-toolbar>
@@ -16,14 +16,14 @@
   <ng-template #Load class="my-contenet">
     <mat-drawer-container class="side-container" autosize>
       <!-- contenido de filtros -->
-      <mat-drawer [class.mat-elevation-z1]=true position="end" #drawer class="sidenav" [mode]="isDesktop ? 'side' : 'over'"
+      <!-- <mat-drawer [class.mat-elevation-z1]=true position="end" #drawer class="sidenav" [mode]="isDesktop ? 'side' : 'over'"
         [opened]="openMenu">
-        <app-filter-adviser (filters)="getFilters($event)" (resetAll)="getAdviserAll()" (closeMenu)="drawer.close()"
-          [isDesktop]="isDesktop"></app-filter-adviser>
-      </mat-drawer>
+        <app-filter-seller (filters)="getFilters($event)" (resetAll)="getSellerAll()" (closeMenu)="drawer.close()"
+          [isDesktop]="isDesktop"></app-filter-seller>
+      </mat-drawer> -->
       <!-- /contenido de filtros -->
       <!-- filtros boton -->
-      <ion-item *ngIf="!isDesktop" lines="none">
+      <!-- <ion-item *ngIf="!isDesktop" lines="none">
         <ion-button (click)="drawer.toggle()" slot="end" color="secondary" fill="outline">
           <ion-icon name="funnel"></ion-icon>Filtros({{numOfFilters}})
         </ion-button>
@@ -32,14 +32,14 @@
         <ion-button (click)="drawer.toggle()" slot="end" color="secondary" fill="outline">
           <ion-icon name="funnel"></ion-icon>Filtros {{(drawer.openedChange | async) ? 'cerrar' : 'abrir'}}
         </ion-button>
-      </ion-item>
+      </ion-item> -->
 
       <!-- /filtros boton -->
 
       <!-- Table  -->
-      <h2>Lista de Asesores </h2>
+      <h2>Lista de Créditos</h2>
       <app-general-table [columns]="columns" [rows]="rows" [isDesktop]="isDesktop" (editButton)="edit($event)"
-        (deletedButton)="presentAlertConfirm($event)" (detailsButton)="detailAdv($event)"></app-general-table>
+        (deletedButton)="presentAlertConfirm($event)"></app-general-table>
       <!-- /Table -->
     </mat-drawer-container>
 
@@ -55,8 +55,8 @@
 
 </ion-content>
 <!-- fab placed to the bottom end -->
-<ion-fab vertical="bottom" horizontal="start" slot="fixed">
+<!-- <ion-fab vertical="bottom" horizontal="start" slot="fixed">
   <ion-fab-button (click)="newBuyer()" *ngIf="isLoading" color="secondary">
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>
-</ion-fab>
+</ion-fab> -->

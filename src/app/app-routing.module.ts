@@ -22,6 +22,12 @@ import { NewEditSellerComponent } from './components/seller/new-edit-seller/new-
 import { NewEditPropComponent } from './components/prop/new-edit-prop/new-edit-prop.component';
 import { ListPropAdminComponent } from './components/admin/list-prop-admin/list-prop-admin.component';
 import { DetailPropAdminComponent } from './components/admin/detail-prop-admin/detail-prop-admin.component';
+import { ListCreditAdminComponent } from './components/admin/list-credit-admin/list-credit-admin.component';
+import { NewEditCreditComponent } from './components/credit/new-edit-credit/new-edit-credit.component';
+import { ListOfertsAdminComponent } from './components/admin/list-oferts-admin/list-oferts-admin.component';
+import { NewEditOfertComponent } from './components/oferts/new-edit-ofert/new-edit-ofert.component';
+import { ListScheduleAdminComponent } from './components/admin/list-schedule-admin/list-schedule-admin.component';
+import { NewEditScheduleComponent } from './components/schedule/new-edit-schedule/new-edit-schedule.component';
 
 const routes: Routes = [
   // Rutas
@@ -48,6 +54,12 @@ const routes: Routes = [
   { path: 'list-prop-admin', component: ListPropAdminComponent },
   { path: 'new-edit-prop', component: NewEditPropComponent },
   { path: 'detail-prop-admin', component: DetailPropAdminComponent },
+  { path: 'list-credit-admin', component: ListCreditAdminComponent },
+  { path: 'new-edit-credit', component: NewEditCreditComponent },
+  { path: 'list-ofert-admin', component: ListOfertsAdminComponent },
+  { path: 'new-edit-ofert', component: NewEditOfertComponent },
+  { path: 'new-edit-schedule', component: NewEditScheduleComponent },
+  { path: 'list-schedule-admin', component: ListScheduleAdminComponent },
 ];
 
 @NgModule({

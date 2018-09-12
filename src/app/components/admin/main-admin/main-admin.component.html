@@ -30,6 +30,7 @@
       <span [ngSwitch]="segment">
         <!-- movementsSegment -->
         <span *ngSwitchCase="'movementsSegment'">
+          <h2>Movimientos en el sistema </h2>
           <!-- <ion-row justify-content-around> -->
           <ion-row>
             <ion-col size-md="6" size-lg="6" size-xl="6" *ngFor="let item of allData">
@@ -69,6 +70,20 @@
                         <ion-label slot="start" text-wrap>
                           <p><b>Precio:</b> </p>
                           <p>${{item.data.oferts.ofertPrice}}</p>
+                        </ion-label>
+                      </ion-item>
+                      <ion-item lines="none">
+                        <ion-icon slot="start" class="color-item-secondary" name="contact"></ion-icon>
+                        <ion-label slot="start" text-wrap>
+                          <p><b>Cliente:</b> </p>
+                          <p>{{item.data.oferts.buyer.name}}</p>
+                        </ion-label>
+                      </ion-item>
+                      <ion-item lines="none">
+                        <ion-icon slot="start" class="color-item-secondary" name="home"></ion-icon>
+                        <ion-label slot="start" text-wrap>
+                          <p><b>Propiedad:</b> </p>
+                          <p>{{item.data.oferts.property.name}}</p>
                         </ion-label>
                       </ion-item>
                     </ion-card-content>
@@ -264,6 +279,7 @@
           <!-- Toggles in a List -->
           <ng-container *ngIf="scheduleToShow.length !== 0; then showSchedule; else noShow"></ng-container>
           <ng-template #showSchedule>
+            <h2>Eventos de hoy </h2>
 
             <ion-list lines="none" *ngIf="!isOne">
               <ion-item lines="none">

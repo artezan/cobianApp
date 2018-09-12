@@ -1,5 +1,5 @@
-const ip = 'https://cobianback.herokuapp.com/';
-// const ip = 'http://localhost:3000/';
+// const ip = 'https://cobianback.herokuapp.com/';
+const ip = 'http://localhost:3000/';
 
 const apiUrl = ip + 'api/v1/';
 const userSession = 'usersession/';
@@ -14,11 +14,14 @@ const credit = 'credit/';
 const schedule = 'schedule/';
 const upgradeStatus = 'upgradelevelbyid/';
 const ofert = 'ofert/';
+const ofertId = 'byofertid/';
 const administrator = 'administrator/';
 const adviser = 'adviser/';
 const adviserId = 'byadviserid/';
 const seller = 'seller/';
 const sellerId = 'bysellerid/';
+const creditById = 'bycreditid/';
+const sbpbypropertybuyer = 'bybuyerpropid/';
 
 export const END_POINT = {
   IP: ip,
@@ -35,12 +38,15 @@ export const END_POINT = {
   // status buyer property
   STATUS_BP: apiUrl + statusBuyerProperty,
   STATUS_UPGRADE: apiUrl + statusBuyerProperty + upgradeStatus,
+  STATUS_SEARCH: apiUrl + statusBuyerProperty + sbpbypropertybuyer,
   // credit
   CREDIT: apiUrl + credit,
+  CREDIT_ID: apiUrl + credit + creditById,
   // schedule
   SCHEDULE: apiUrl + schedule,
   // ofert
   OFERT: apiUrl + ofert,
+  OFERT_ID: apiUrl + ofert + ofertId,
   // admin
   ADMINISTRATOR: apiUrl + administrator,
   // adviser

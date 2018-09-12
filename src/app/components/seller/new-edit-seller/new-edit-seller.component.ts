@@ -4,6 +4,8 @@ import { NavigationExtras, ActivatedRoute, Router } from '@angular/router';
 import { SellerService } from '../../../services/seller.service';
 import { NavController } from '@ionic/angular';
 import { PropertyService } from '../../../services/property.service';
+import { Observable } from 'rxjs';
+import { IProperty } from '../../../models/property.model';
 
 @Component({
   selector: 'app-new-edit-seller',
@@ -17,6 +19,7 @@ export class NewEditSellerComponent implements OnInit {
   errorToShow = '';
   errorToShowMat = 'Dato obligatorio';
   seller: ISeller = {};
+  properties$: Observable<IProperty[]>;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -26,10 +29,24 @@ export class NewEditSellerComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.getProperties();
     this.route.queryParams.subscribe(params => {
+      let arr = [];
       if (params['id']) {
         this.sellerService.getSellerById(params['id']).subscribe(s => {
+          Object.keys(s).forEach(key => {
+            if (s[key] === false) {
+              s[key] = 'false';
+            } else if (s[key] === true) {
+              s[key] = 'true';
+            }
+          });
+          if (s.property && s.property.length > 0) {
+            arr = <any>s.property.map(p => p._id);
+          }
+          delete s.property;
           this.seller = s;
+          this.seller.property = arr;
         });
         this.isNew = false;
       } else {
@@ -37,8 +54,10 @@ export class NewEditSellerComponent implements OnInit {
       }
     });
   }
+  getProperties() {
+    this.properties$ = this.propertyService.getAll();
+  }
   newCustomer() {
-    console.log(this.seller);
     this.sellerService.newSeller(this.seller).subscribe(s => {
       const toast: NavigationExtras = {
         queryParams: { res: 'Nuevo Propietario Agregado' },
@@ -47,8 +66,6 @@ export class NewEditSellerComponent implements OnInit {
     });
   }
   editCustomer() {
-    console.log(this.seller);
-
     this.sellerService.putSeller(this.seller).subscribe(() => {
       const toast: NavigationExtras = {
         queryParams: { res: ' Propietario Editado' },

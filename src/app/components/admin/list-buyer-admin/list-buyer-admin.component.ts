@@ -95,6 +95,7 @@ export class ListBuyerAdminComponent implements OnInit {
     this.getBuyerAll();
   }
   getBuyerAll() {
+    this.numOfFilters = 0;
     this.buyerService.getBuyerAll().subscribe(buyers => {
       this.realData = buyers;
       this.buyers = buyers;

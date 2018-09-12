@@ -167,7 +167,7 @@
 <ng-template #Device>
   <ion-list>
     <ion-item lines="inset" *ngFor="let row of dataSource.data">
-      <ion-label>
+      <ion-label text-wrap>
         <span *ngFor="let column of columns; let ii=index">
           <!-- title -->
           <h2 *ngIf="ii === 0 && column.type === 'normal'"><b>{{row[column.prop]}}</b></h2>
@@ -176,6 +176,21 @@
 
           <!-- fecha -->
           <p *ngIf="column.type === 'date'">{{formatDates(row[column.prop])}}</p>
+          <!-- boolean -->
+          <span *ngIf="column.type === 'boolean'">
+            <button *ngIf="row[column.prop]" (click)="onSelect(row)" mat-icon-button>
+              {{column.name}} <mat-icon class="secondary-text" class="green-icon">check_circle</mat-icon>
+            </button>
+            <button *ngIf="!row[column.prop]" (click)="onSelect(row)" mat-icon-button>
+              {{column.name}} <mat-icon class="secondary-text" class="red-icon">cancel</mat-icon>
+            </button>
+          </span>
+          <!-- money -->
+          <span *ngIf="column.type === 'money'">
+            <p> {{column.name}}: $ {{
+              row[column.prop].toFixed(2) }}</p>
+          </span>
+
 
           <!-- phone -->
           <!-- <p *ngIf="column.type === 'phone'"><a [href]="'tel:'+row[column.prop]">{{ row[column.prop]}}</a></p> -->
@@ -213,7 +228,7 @@
         <a *ngIf="column.type === 'phone'" mat-icon-button color="primary" [href]="'tel:'+row[column.prop]">
           <mat-icon>phone</mat-icon>
         </a>
-        <button *ngIf="column.type === 'buttons' && column.buttonEdit" mat-icon-button color="primary" (click)="detailsItem(row)">
+        <button *ngIf="column.type === 'buttons' && column.buttonEdit" mat-icon-button color="primary" (click)="editItem(row)">
           <mat-icon>create</mat-icon>
         </button>
       </div>
@@ -221,4 +236,6 @@
 
     </ion-item>
   </ion-list>
+  <div class="space-buttons"></div>
+
 </ng-template>
