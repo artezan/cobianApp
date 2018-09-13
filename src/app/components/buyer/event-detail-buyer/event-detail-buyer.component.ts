@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UserSessionService } from '../../../services/user-session.service';
 import { BuyerService } from '../../../services/buyer.service';
 import { ISchedule } from '../../../models/schedule.model';
+import { ScheduleService } from '../../../services/schedule.service';
 
 @Component({
   selector: 'app-event-detail-buyer',
@@ -19,7 +20,12 @@ export class EventDetailBuyerComponent implements OnInit {
     private route: ActivatedRoute,
     private userSessionService: UserSessionService,
     private buyerService: BuyerService,
+    private scheduleService: ScheduleService,
   ) {
+    this.inti();
+  }
+
+  private inti() {
     const buyer = this.userSessionService.userSession.value;
     this.buyerService.getBuyerById(buyer.id).subscribe(b => {
       this.schedule = b.schedule;
@@ -58,5 +64,19 @@ export class EventDetailBuyerComponent implements OnInit {
       );
       this.scheduleToShow = isFinded;
     }
+  }
+  respondSchedule(str: string, scheduleId: string) {
+    const schedule = this.schedule.find(s => s._id === scheduleId);
+    if (str === 'Aceptado') {
+      schedule.status = 'amarillo';
+    } else {
+      schedule.status = 'gris';
+    }
+    schedule.note = str;
+    this.scheduleService.putSchedule(schedule).subscribe(res => {
+      if (res) {
+        this.inti();
+      }
+    });
   }
 }

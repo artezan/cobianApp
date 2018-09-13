@@ -25,4 +25,14 @@ export class ScheduleService {
       .get(END_POINT.SCHEDULE)
       .pipe(map((data: any) => data.data));
   }
+  public getScheduleById(id: string): Observable<ISchedule> {
+    return this.http
+      .get(END_POINT.SCHEDULE_ID + id)
+      .pipe(map((data: any) => data.data));
+  }
+  public deltedScheduleById(id: string): Observable<ISchedule> {
+    return this.http
+      .delete(END_POINT.SCHEDULE + id)
+      .pipe(map((data: any) => data.data));
+  }
 }

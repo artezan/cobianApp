@@ -69,6 +69,30 @@
               <mat-error *ngIf="password.dirty || password.touched">Anotar Contraseña</mat-error>
               <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
             </mat-form-field>
+            <!-- buyers -->
+            <div class="flex-container2">
+              <div *ngIf="adviser.buyer && adviser.buyer.length > 0">
+                <mat-list role="list">
+                  <h3 mat-subheader>Clientes del Asesor</h3>
+                  <mat-list-item role="listitem" *ngFor="let buyer of adviser.buyer">
+                    {{buyer.name}}
+                    <!-- <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="schedule.adviser=undefined"></button> -->
+                    <button mat-icon-button (click)="deleteBuyer(buyer._id)">
+                      <mat-icon color="warn">clear</mat-icon>
+                    </button>
+                  </mat-list-item>
+                </mat-list>
+              </div>
+              <mat-form-field appearance="outline">
+                <mat-label>Asignar Clientes</mat-label>
+                <mat-select [(ngModel)]="buyerInput" #b="ngModel" id="b" name="b" multiple>
+                  <mat-option *ngFor="let buyer of buyers$ | async" [value]="buyer._id">
+                    {{buyer.name}} {{buyer.fatherLastName}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
           </div>
           <mat-card-actions align="end">
             <div style="margin-right: 2%">

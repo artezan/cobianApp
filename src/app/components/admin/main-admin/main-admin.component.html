@@ -97,7 +97,6 @@
                       'state-rojo':  item.data.schedules.status === 'rojo',
                       'state-gris': item.data.schedules.status === 'gris',
                       'state-azul':  item.data.schedules.status === 'azul',
-                      'state-amarillo':  !item.data.schedules.status,
                       'desktop-card': isDesktop    }">
                     <ion-card-header>
                       <ion-card-subtitle>
@@ -141,6 +140,14 @@
                         <ion-label slot="start" text-wrap>
                           <p><b>Fecha del Evento:</b> </p>
                           <p>{{item.data.schedules.day}}/{{item.data.schedules.month}}/{{item.data.schedules.year}}</p>
+                        </ion-label>
+                      </ion-item>
+                      <ion-item lines="none" *ngIf="item.data.schedules.hour">
+                        <ion-icon slot="start" class="color-item-secondary" name="time"></ion-icon>
+                        <ion-label slot="start" text-wrap>
+                          <p><b>Hora del Evento:</b> </p>
+                          <p *ngIf="item.data.schedules.minute < 10">{{item.data.schedules.hour}}:0{{item.data.schedules.minute}}</p>
+                          <p *ngIf="item.data.schedules.minute >= 10">{{item.data.schedules.hour}}:{{item.data.schedules.minute}}</p>
                         </ion-label>
                       </ion-item>
                       <ion-item lines="none" *ngIf="item.data.schedules.status">

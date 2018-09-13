@@ -42,6 +42,7 @@ export class ListScheduleAdminComponent implements OnInit {
     private router: Router,
     private scheduleService: ScheduleService,
     public alertController: AlertController,
+    private userService: UserSessionService,
   ) {
     this.monthNumber = new Date().getMonth();
     this.year = new Date().getFullYear();
@@ -74,10 +75,26 @@ export class ListScheduleAdminComponent implements OnInit {
     }
   }
   getEvents() {
+    this.isLoad = false;
+
     this.isAll = true;
     this.scheduleService.getSchedule().subscribe(schedules => {
+      const user = this.userService.userSession.value;
       console.log(schedules);
-      this.schedule = schedules;
+      if (user.type === 'administrator') {
+        this.schedule = schedules;
+      } else {
+        schedules.forEach(s => {
+          if (!s.administrator) {
+            this.schedule.push(s);
+          }
+        });
+      }
+      this.schedule.sort((a, b) => {
+        // Turn your strings into dates, and then subtract them
+        // to get a value that is either negative, positive, or zero.
+        return <any>new Date(b.timestamp) - <any>new Date(a.timestamp);
+      });
       this.isLoad = true;
     });
   }
@@ -97,70 +114,45 @@ export class ListScheduleAdminComponent implements OnInit {
     };
     this.router.navigate(['new-edit-schedule'], data);
   }
-  async presentAlertPrompt() {
-    const alert = await this.alertController.create(<any>{
-      header: 'Prompt!',
-      inputs: [
-        {
-          name: 'name1',
-          type: 'text',
-          placeholder: 'Placeholder 1',
-        },
-        {
-          name: 'name2',
-          type: 'text',
-          id: 'name2-id',
-          value: 'hello',
-          placeholder: 'Placeholder 2',
-        },
-        {
-          name: 'name3',
-          type: 'text',
-          value: 'http://ionicframework.com',
-          placeholder: 'Favorite site ever',
-        },
-        // input date with min & max
-        {
-          name: 'name4',
-          type: 'date',
-          min: '2017-03-01',
-          max: '2018-01-12',
-        },
-        // input date without min nor max
-        {
-          name: 'name5',
-          type: 'date',
-        },
-        {
-          name: 'name6',
-          type: 'number',
-          min: -5,
-          max: 10,
-        },
-        {
-          name: 'name7',
-          type: 'number',
-        },
-      ],
+  deleteEvent(id) {
+    this.scheduleService
+      .deltedScheduleById(id)
+      .toPromise()
+      .then(() => {
+        this.getEvents();
+      });
+  }
+  async presentAlertConfirm(id) {
+    const alert = await this.alertController.create({
+      header: 'Eliminar evento',
+      message: `¿Desea eliminar evento ?`,
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: () => {
-            console.log('Confirm Cancel');
+          handler: blah => {
+            console.log('Confirm Cancel: blah');
           },
         },
         {
-          text: 'Ok',
+          text: 'Sí',
+          role: 'ok',
           handler: () => {
-            console.log('Confirm Ok');
+            /* this.deleted(buyer);
+            this.getBuyerAll(); */
           },
         },
       ],
     });
 
     await alert.present();
+    // IMPORTANTE ASYNC !!!!!
+    await alert.onWillDismiss().then(res => {
+      if (res.role === 'ok') {
+        this.deleteEvent(id);
+      }
+    });
   }
 
   // _helpers

@@ -55,7 +55,11 @@ import {
   MatTabsModule,
   MatProgressSpinnerModule,
   MatDividerModule,
+  MatDatepickerModule,
+  NativeDateModule,
+  MAT_DATE_LOCALE,
 } from '@angular/material';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { GeneralTableComponent } from './components/general/general-table/general-table.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { CdkTableModule } from '@angular/cdk/table';
@@ -162,6 +166,9 @@ import { ListScheduleAdminComponent } from './components/admin/list-schedule-adm
     MatProgressSpinnerModule,
     MatDividerModule,
     CdkTableModule,
+    MatDatepickerModule,
+    NativeDateModule,
+    MatMomentDateModule,
   ],
   providers: [
     StatusBar,
@@ -174,6 +181,7 @@ import { ListScheduleAdminComponent } from './components/admin/list-schedule-adm
       deps: [UserSessionService],
       multi: true,
     },
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
   ],
   bootstrap: [AppComponent],
 })

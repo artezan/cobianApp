@@ -50,13 +50,22 @@
         <ion-card-content text-wrap>
           <ion-label text-wrap>Detalles de la cita : {{schedule.note}}</ion-label>
           <ion-list lines="none">
-            <ion-item lines="none" text-wrap> Fecha: {{schedule.day}}/{{schedule.month}}/{{schedule.year}}</ion-item>
+            <ion-item lines="none" text-wrap> Fecha: {{schedule.day}}/{{schedule.month + 1 }}/{{schedule.year}}</ion-item>
             <ion-item *ngIf="schedule.minute < 10" lines="none" text-wrap>Hora:
               {{schedule.hour}}:0{{schedule.minute}}</ion-item>
             <ion-item *ngIf="schedule.minute >= 10" lines="none" text-wrap>Hora:
               {{schedule.hour}}:{{schedule.minute}}</ion-item>
           </ion-list>
         </ion-card-content>
+        <ion-item lines="none">
+          <ion-button (click)="respondSchedule('Aceptado', schedule._id)" color="success" fill="outline" slot="end">
+            Aceptar <ion-icon name="checkmark-circle"></ion-icon>
+          </ion-button>
+          <ion-button (click)="respondSchedule('Denagado',  schedule._id)" color="danger" fill="outline" slot="end">
+            Denegar <ion-icon name="close-circle"></ion-icon>
+          </ion-button>
+
+        </ion-item>
 
       </span>
       <span *ngIf="!schedule.status || schedule.status === 'amarillo'">
