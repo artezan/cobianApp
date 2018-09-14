@@ -36,6 +36,7 @@ export class ListSellerAdminComponent implements OnInit {
     public navCtr: NavController,
     public route: ActivatedRoute,
   ) {
+    console.log('init');
     this.isDesktop = platform.is('desktop');
     if (this.isDesktop) {
       this.openMenu = true;
@@ -84,6 +85,7 @@ export class ListSellerAdminComponent implements OnInit {
     this.getSellerAll();
   }
   getSellerAll() {
+    this.isLoading = false;
     this.numOfFilters = 0;
     this.sellerService.getSellerAll().subscribe(seller => {
       this.seller = seller;
@@ -114,14 +116,20 @@ export class ListSellerAdminComponent implements OnInit {
     const data: NavigationExtras = {
       queryParams: { id: 'new' },
     };
-    this.navCtr.navigateRoot('new-edit-seller');
+    // this.navCtr.navigateRoot('new-edit-seller');
+    this.router.navigate(['new-edit-seller']);
   }
   edit(item) {
     const data: NavigationExtras = {
       queryParams: { id: item._id },
     };
     this.router.navigate(['new-edit-seller'], data);
-    // this.navCtr.navigateRoot('new-buyer', false, data);
+    // this.router
+    //   .navigateByUrl('/list-seller-admin', { skipLocationChange: true })
+    //   .then(() => this.router.navigate(['new-edit-seller'], data));
+    // this.isLoading = false;
+
+    // this.navCtr.navigateRoot('new-edit-seller', false, data);
   }
   deleted(seller: ISeller) {
     this.sellerService

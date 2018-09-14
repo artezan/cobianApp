@@ -139,15 +139,14 @@
                         <ion-icon slot="start" class="color-item-secondary" name="calendar"></ion-icon>
                         <ion-label slot="start" text-wrap>
                           <p><b>Fecha del Evento:</b> </p>
-                          <p>{{item.data.schedules.day}}/{{item.data.schedules.month}}/{{item.data.schedules.year}}</p>
+                          <p>{{item.data.schedules.day}}/{{item.data.schedules.month + 1}}/{{item.data.schedules.year}}</p>
                         </ion-label>
                       </ion-item>
                       <ion-item lines="none" *ngIf="item.data.schedules.hour">
                         <ion-icon slot="start" class="color-item-secondary" name="time"></ion-icon>
                         <ion-label slot="start" text-wrap>
                           <p><b>Hora del Evento:</b> </p>
-                          <p *ngIf="item.data.schedules.minute < 10">{{item.data.schedules.hour}}:0{{item.data.schedules.minute}}</p>
-                          <p *ngIf="item.data.schedules.minute >= 10">{{item.data.schedules.hour}}:{{item.data.schedules.minute}}</p>
+                          <p> {{formatHours(item.data.schedules.hour,item.data.schedules.minute)}} </p>
                         </ion-label>
                       </ion-item>
                       <ion-item lines="none" *ngIf="item.data.schedules.status">
@@ -286,12 +285,12 @@
           <!-- Toggles in a List -->
           <ng-container *ngIf="scheduleToShow.length !== 0; then showSchedule; else noShow"></ng-container>
           <ng-template #showSchedule>
-            <h2>Eventos de hoy </h2>
+            <h2>Eventos Personales </h2>
 
             <ion-list lines="none" *ngIf="!isOne">
               <ion-item lines="none">
-                <ion-label>Mostrar Todos</ion-label>
-                <ion-toggle [(ngModel)]="isAll" (ionChange)="getAllSchedule();"></ion-toggle>
+                <ion-button (click)="isAll = !isAll;getAllSchedule(); ">{{isAll ? 'Mostrar eventos de hoy':'Mostrar
+                  todos'}}</ion-button>
               </ion-item>
               <ion-item lines="none" *ngIf="!isAll">
                 <ion-chip color="secondary">
@@ -304,17 +303,12 @@
             <ion-grid>
               <ion-row>
                 <ion-col size-md="6" size-lg="6" size-xl="6" *ngFor="let schedule of scheduleToShow">
-                  <ion-card [ngClass]="{'state-verde': schedule.status === 'verde', 
-                'state-amarillo': schedule.status === 'amarillo',
-                'state-rojo': schedule.status === 'rojo',
-                'state-gris': schedule.status === 'gris',
-                'state-azul': schedule.status === 'azul',
+                  <ion-card [ngClass]="{
                 'desktop-card': isDesktop  }">
                     <ion-card-header>
                       <ion-card-subtitle text-wrap>Fecha del Evento:
-                        {{schedule.day}}/{{schedule.month}}/{{schedule.year}}</ion-card-subtitle>
-                      <ion-card-subtitle *ngIf="schedule.minute < 10">Hora: {{schedule.hour}}:0{{schedule.minute}}</ion-card-subtitle>
-                      <ion-card-subtitle *ngIf="schedule.minute >= 10">Hora: {{schedule.hour}}:{{schedule.minute}}</ion-card-subtitle>
+                        {{schedule.day}}/{{schedule.month + 1}}/{{schedule.year}}</ion-card-subtitle>
+                      <ion-card-subtitle>Hora: {{formatHours(schedule.hour,schedule.minute)}} </ion-card-subtitle>
 
                       <ion-card-title text-wrap>{{schedule.title}}</ion-card-title>
                     </ion-card-header>
@@ -333,14 +327,17 @@
 
           </ng-template>
           <ng-template #noShow>
+            <ion-list lines="none" *ngIf="!isOne">
+              <ion-item lines="none">
+                <ion-button (click)="isAll = !isAll;getAllSchedule(); ">Mostrar Todos</ion-button>
+              </ion-item>
+            </ion-list>
             <ion-card>
               <ion-card-header>
                 <ion-card-title> No hay eventos hoy</ion-card-title>
               </ion-card-header>
-
             </ion-card>
           </ng-template>
-
         </span>
         <!-- /event -->
       </span>
@@ -359,7 +356,7 @@
 </ion-content>
 <!-- fab placed to the bottom end -->
 <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button *ngIf="segment === 'eventsSegment'" color="secondary">
+  <ion-fab-button [routerLink]="['/personal-schedule']" *ngIf="segment === 'eventsSegment'" color="secondary">
     <ion-icon name="calendar"></ion-icon>
   </ion-fab-button>
 </ion-fab>

@@ -94,6 +94,12 @@ export class AppComponent {
       icon: 'calendar',
       userType: 'administrator',
     },
+    {
+      title: 'Metas',
+      url: '/list-goals-admin',
+      icon: 'stats',
+      userType: 'administrator',
+    },
   ];
 
   isDevice: boolean;

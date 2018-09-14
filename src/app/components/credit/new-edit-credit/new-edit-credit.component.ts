@@ -73,7 +73,13 @@ export class NewEditCreditComponent implements OnInit {
         queryParams: { res: 'Credito Editado' },
       };
       // this.router.navigate(['list-credit-admin'], toast);
-      this.navCtr.navigateRoot('list-credit-admin', true, toast);
+      // this.navCtr.navigateRoot('list-credit-admin', true, toast);
+      /**
+       * Es para recargar el componente previo
+       */
+      this.router
+        .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+        .then(() => this.router.navigate(['list-credit-admin'], toast));
     });
   }
   editCustomer() {

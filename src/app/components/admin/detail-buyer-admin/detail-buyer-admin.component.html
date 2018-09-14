@@ -189,12 +189,9 @@
           <ion-label>Propiedad {{schedule.property.name}}</ion-label>
         </ion-item>
         <ion-item>
-          <ion-label>Fecha {{schedule.day}}/{{schedule.month}}/{{schedule.year}}</ion-label>
+          <ion-label>Fecha {{schedule.day}}/{{schedule.month + 1}}/{{schedule.year}}</ion-label>
         </ion-item>
-        <ion-item *ngIf="schedule.minute < 10" text-wrap>Hora:
-          {{schedule.hour}}:0{{schedule.minute}}</ion-item>
-        <ion-item *ngIf="schedule.minute >= 10" text-wrap>Hora:
-          {{schedule.hour}}:{{schedule.minute}}</ion-item>
+        <ion-item text-wrap>Hora: {{formatHours(schedule.hour, schedule.minute)}}</ion-item>
         <ion-item>
           <ion-label>Lugar {{schedule.address}}</ion-label>
         </ion-item>

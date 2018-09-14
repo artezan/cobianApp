@@ -8,6 +8,7 @@ import { StatusBuyerPropertyService } from '../../../services/status-buyer-prope
 import { IStatusBuyerProperty } from '../../../models/statusBuyerProperty.model';
 import { IBuyer } from '../../../models/buyer.model';
 import { ICreditGet } from '../../../models/credit.model';
+import { FormatHoursFront } from '../../../_config/_helpers';
 
 @Component({
   selector: 'app-detail-buyer-admin',
@@ -70,5 +71,8 @@ export class DetailBuyerAdminComponent implements OnInit {
     const year: string = new Date(dateInput).getFullYear().toString();
     const date = day + '/' + month + '/' + year;
     return date;
+  }
+  formatHours(hours, minutes) {
+    return FormatHoursFront(hours, minutes);
   }
 }

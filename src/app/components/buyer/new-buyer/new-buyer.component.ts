@@ -4,7 +4,7 @@ import { BuyerService } from '../../../services/buyer.service';
 import { fromEvent } from 'rxjs';
 import { UserSessionService } from '../../../services/user-session.service';
 import { NavController, LoadingController } from '@ionic/angular';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-new-buyer',
@@ -111,7 +111,16 @@ export class NewBuyerComponent implements OnInit {
       const user = this.userSession.userSession.value;
       // data  administrator buyer seller adviser management
       if (user.type && user.type === 'administrator') {
-        this.router.navigate(['list-buyer-admin']);
+        // this.router.navigate(['list-buyer-admin']);
+        const toast: NavigationExtras = {
+          queryParams: { res: ' Comprador Creado' },
+        };
+        /**
+         * Es para recargar el componente previo
+         */
+        this.router
+          .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+          .then(() => this.router.navigate(['list-buyer-admin'], toast));
       } else {
         if (buyer) {
           this.userSession.setUserSession(
@@ -138,7 +147,17 @@ export class NewBuyerComponent implements OnInit {
       const user = this.userSession.userSession.value;
       // data  administrator buyer seller adviser management
       if (user.type && user.type === 'administrator') {
-        this.navController.navigateRoot('list-buyer-admin');
+        // this.navController.navigateRoot('list-buyer-admin');
+        // this.router.navigate('/list-buyer-admin');
+        const toast: NavigationExtras = {
+          queryParams: { res: ' Comprador Editado' },
+        };
+        /**
+         * Es para recargar el componente previo
+         */
+        this.router
+          .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+          .then(() => this.router.navigate(['list-buyer-admin'], toast));
       } else {
         if (val) {
           this.navController.navigateRoot('list-prop-buyer', false);

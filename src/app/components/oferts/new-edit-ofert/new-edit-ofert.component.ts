@@ -80,10 +80,16 @@ export class NewEditOfertComponent implements OnInit {
     this.ofert.files = this.files.split(',');
     this.ofertService.putOfert(this.ofert).subscribe(s => {
       const toast: NavigationExtras = {
-        queryParams: { res: 'Credito Editado' },
+        queryParams: { res: 'Oferta Editada' },
       };
       // this.router.navigate(['list-credit-admin'], toast);
-      this.navCtr.navigateRoot('list-ofert-admin', true, toast);
+      // this.navCtr.navigateRoot('list-ofert-admin', true, toast);
+      /**
+       * Es para recargar el componente previo
+       */
+      this.router
+        .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+        .then(() => this.router.navigate(['list-ofert-admin'], toast));
     });
   }
   newOfert() {
@@ -97,7 +103,13 @@ export class NewEditOfertComponent implements OnInit {
         ofert: this.OfertsBuyer,
       };
       this.buyerService.putBuyer(buyer).subscribe(() => {
-        this.navCtr.navigateRoot('list-ofert-admin', true);
+        // this.navCtr.navigateRoot('list-ofert-admin', true);
+        const toast: NavigationExtras = {
+          queryParams: { res: 'Oferta Creada' },
+        };
+        this.router
+          .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+          .then(() => this.router.navigate(['list-ofert-admin'], toast));
       });
     });
   }

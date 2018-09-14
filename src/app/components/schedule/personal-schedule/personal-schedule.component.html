@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button style="color: white !important"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Evento Personal
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid fixed>
+    <div class="container" style="margin-top: 3%">
+      <form #newUserForm="ngForm">
+        <mat-card>
+          <mat-card-title>Complete los campos</mat-card-title>
+          <div class="flex-container">
+
+
+            <!-- address -->
+            <mat-form-field appearance="outline">
+              <mat-label>Dirección</mat-label>
+              <textarea matInput [(ngModel)]="schedule.address" #address="ngModel" id="address" name="address" required></textarea>
+              <mat-error *ngIf="address.dirty || address.touched">Anotar Dirección</mat-error>
+            </mat-form-field>
+            <!-- Fecha -->
+            <mat-form-field appearance="outline">
+              <input (dateChange)="dateSelect($event)" (focus)="picker.open()" [value]="getDate(schedule.day, schedule.month, schedule.year)"
+                matInput [matDatepicker]="picker" placeholder="Selecciona Fecha" required>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <!-- hora -->
+            <mat-label style="margin-bottom: 2%;">Anote Hora </mat-label>
+            <div>
+              <mat-form-field style="width: 70px;" appearance="outline">
+                <input max=24 min=0 type="number" style="text-align: right;" matInput [(ngModel)]="schedule.hour" #hour="ngModel"
+                  id="hour" name="hour" required>
+
+              </mat-form-field>
+              :
+              <mat-form-field style="width: 70px;" appearance="outline">
+                <input max=59 min=0 type="number" matInput [(ngModel)]="schedule.minute" #minute="ngModel" id="minute"
+                  name="minute" required>
+              </mat-form-field>
+              <!-- pm/am -->
+              <mat-form-field style="width: 71px;
+                margin-left: 1%;" appearance="outline">
+                <mat-select (selectionChange)="hourFormat(ampm.value)" #ampm>
+                  <mat-option value="pm">
+                    PM
+                  </mat-option>
+                  <mat-option value="am">
+                    AM
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <!-- title -->
+            <mat-form-field appearance="outline">
+              <mat-label>Titulo del evento</mat-label>
+              <input matInput [(ngModel)]="schedule.title" #title="ngModel" id="title" name="title" required>
+              <mat-error *ngIf="title.dirty || title.touched">Anotar Titulo</mat-error>
+
+            </mat-form-field>
+            <!-- note -->
+            <mat-form-field appearance="outline">
+              <mat-label>Notas</mat-label>
+              <textarea matInput [(ngModel)]="schedule.note" #note="ngModel" id="note" name="note"></textarea>
+            </mat-form-field>
+            <!-- <div class="alert-schedule">
+                El Asesor seleccionado tiene una disponibilidad de 8 a 6 hrs
+              </div> -->
+
+          </div>
+          <mat-card-actions align="end">
+            <div style="margin-right: 2%">
+              <span [matTooltip]=errorToShow [matTooltipClass]="'tooltip-size'" (mouseenter)="getPopMessage($event)">
+                <button *ngIf="isNew" id="submitUser" mat-raised-button color="primary" (click)="newSchedule()"
+                  [disabled]="!newUserForm.form.valid">Crear</button>
+                <button *ngIf="!isNew" id="submitUser" mat-raised-button color="primary" (click)="editSchedule()">Editar</button>
+              </span>
+            </div>
+
+
+          </mat-card-actions>
+
+        </mat-card>
+      </form>
+
+    </div>
+  </ion-grid>
+
+</ion-content>

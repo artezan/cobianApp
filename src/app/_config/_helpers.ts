@@ -350,3 +350,25 @@ export function FormatDatesFront(dateInput: Date): string {
   const date = day + '/' + month + '/' + year;
   return date;
 }
+export function FormatHoursFront(hours: number, minutes: number) {
+  let strFormat, strMin, strHour, strState;
+  if (minutes === 0 || minutes === undefined || minutes === null) {
+    strMin = '00';
+  } else if (minutes < 10) {
+    strMin = `0${minutes}`;
+  } else if (minutes >= 10) {
+    strMin = minutes.toString();
+  }
+  if (hours > 12) {
+    strHour = `${hours - 12}`;
+    strState = 'PM';
+  } else if (hours < 12) {
+    strHour = hours.toString();
+    strState = 'AM';
+  } else if (hours === 12) {
+    strHour = hours.toString();
+    strState = 'PM';
+  }
+  strFormat = `${strHour}:${strMin} ${strState}`;
+  return strFormat;
+}

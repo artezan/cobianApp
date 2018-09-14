@@ -84,6 +84,12 @@ import { ListOfertsAdminComponent } from './components/admin/list-oferts-admin/l
 import { NewEditOfertComponent } from './components/oferts/new-edit-ofert/new-edit-ofert.component';
 import { NewEditScheduleComponent } from './components/schedule/new-edit-schedule/new-edit-schedule.component';
 import { ListScheduleAdminComponent } from './components/admin/list-schedule-admin/list-schedule-admin.component';
+import { RefreComponent } from './components/general/refre/refre.component';
+import { PersonalScheduleComponent } from './components/schedule/personal-schedule/personal-schedule.component';
+import { NewEditGoalComponent } from './components/goals/new-edit-goal/new-edit-goal.component';
+import { ListGoalsComponent } from './components/admin/list-goals/list-goals.component';
+import { GoalProgressComponent } from './components/general/goal-progress/goal-progress.component';
+import { NgCircleProgressModule } from 'ng-circle-progress';
 
 @NgModule({
   declarations: [
@@ -124,6 +130,11 @@ import { ListScheduleAdminComponent } from './components/admin/list-schedule-adm
     NewEditOfertComponent,
     NewEditScheduleComponent,
     ListScheduleAdminComponent,
+    RefreComponent,
+    PersonalScheduleComponent,
+    NewEditGoalComponent,
+    ListGoalsComponent,
+    GoalProgressComponent,
   ],
   entryComponents: [],
   imports: [
@@ -169,6 +180,10 @@ import { ListScheduleAdminComponent } from './components/admin/list-schedule-adm
     MatDatepickerModule,
     NativeDateModule,
     MatMomentDateModule,
+    NgCircleProgressModule.forRoot({
+      showInnerStroke: false,
+      responsive: true,
+    }),
   ],
   providers: [
     StatusBar,

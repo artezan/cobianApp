@@ -13,7 +13,7 @@ export class AdviserService {
   public getAdviserAll(): Observable<IAdviser[]> {
     return this.http.get(END_POINT.ADVISER).pipe(map((data: any) => data.data));
   }
-  public newAdviser(adviser: IAdviser): Observable<IAdviser[]> {
+  public newAdviser(adviser: IAdviser): Observable<IAdviser> {
     return this.http
       .post(END_POINT.ADVISER, adviser)
       .pipe(map((data: any) => data.data));

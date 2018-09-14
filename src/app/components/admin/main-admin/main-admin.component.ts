@@ -14,6 +14,7 @@ import {
   IStatusBuyerPropertyGet,
 } from '../../../models/statusBuyerProperty.model';
 import { Platform } from '@ionic/angular';
+import { FormatHoursFront } from '../../../_config/_helpers';
 
 @Component({
   selector: 'app-main-admin',
@@ -132,6 +133,9 @@ export class MainAdminComponent implements OnInit {
     const date = day + '/' + month + '/' + year;
     return date;
   }
+  formatHours(hours, minutes) {
+    return FormatHoursFront(hours, minutes);
+  }
   segmentChanged(segment) {
     this.segment = segment.detail.value;
   }
@@ -151,9 +155,7 @@ export class MainAdminComponent implements OnInit {
     const isFinded = this.schedule.filter(
       s => s.day === day && s.month === month && s.year === year,
     );
-    if (isFinded.length > 0) {
-      this.scheduleToShow = isFinded;
-    }
+    this.scheduleToShow = isFinded;
   }
   getAllSchedule() {
     if (this.isAll === true) {

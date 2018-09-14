@@ -62,7 +62,10 @@ export class NewEditSellerComponent implements OnInit {
       const toast: NavigationExtras = {
         queryParams: { res: 'Nuevo Propietario Agregado' },
       };
-      this.router.navigate(['list-seller-admin'], toast);
+      // this.router.navigate(['list-seller-admin'], toast);
+      this.router
+        .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+        .then(() => this.router.navigate(['list-seller-admin'], toast));
     });
   }
   editCustomer() {
@@ -70,8 +73,12 @@ export class NewEditSellerComponent implements OnInit {
       const toast: NavigationExtras = {
         queryParams: { res: ' Propietario Editado' },
       };
-      this.router.navigate(['list-seller-admin'], toast);
-      this.navCtr.navigateRoot('list-seller-admin', true, toast);
+      /**
+       * Es para recargar el componente previo
+       */
+      this.router
+        .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+        .then(() => this.router.navigate(['list-seller-admin'], toast));
     });
   }
   getPopMessage(event) {

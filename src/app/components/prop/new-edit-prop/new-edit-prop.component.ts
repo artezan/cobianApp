@@ -90,7 +90,13 @@ export class NewEditPropComponent implements OnInit {
       const toast: NavigationExtras = {
         queryParams: { res: 'Nuevo Propiedad Agregada' },
       };
-      this.router.navigate(['list-prop-admin'], toast);
+      // this.router.navigate(['list-prop-admin'], toast);
+      /**
+       * Es para recargar el componente previo
+       */
+      this.router
+        .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+        .then(() => this.router.navigate(['list-prop-admin'], toast));
     });
   }
   editCustomer() {
@@ -107,7 +113,13 @@ export class NewEditPropComponent implements OnInit {
       const toast: NavigationExtras = {
         queryParams: { res: 'Propiedad Editada' },
       };
-      this.router.navigate(['list-prop-admin'], toast);
+      // this.router.navigate(['list-prop-admin'], toast);
+      /**
+       * Es para recargar el componente previo
+       */
+      this.router
+        .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+        .then(() => this.router.navigate(['list-prop-admin'], toast));
     });
   }
   getPopMessage(event) {

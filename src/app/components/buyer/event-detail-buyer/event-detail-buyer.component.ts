@@ -4,6 +4,7 @@ import { UserSessionService } from '../../../services/user-session.service';
 import { BuyerService } from '../../../services/buyer.service';
 import { ISchedule } from '../../../models/schedule.model';
 import { ScheduleService } from '../../../services/schedule.service';
+import { FormatHoursFront } from '../../../_config/_helpers';
 
 @Component({
   selector: 'app-event-detail-buyer',
@@ -78,5 +79,8 @@ export class EventDetailBuyerComponent implements OnInit {
         this.inti();
       }
     });
+  }
+  formatHours(hours, minutes) {
+    return FormatHoursFront(hours, minutes);
   }
 }

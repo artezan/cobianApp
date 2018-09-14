@@ -1,5 +1,6 @@
 import { ISchedule } from './schedule.model';
 import { IBuyer } from './buyer.model';
+import { IGoal } from './goal.model';
 
 export interface IAdviser {
   name?: any;
@@ -26,7 +27,7 @@ export interface IAdviser {
   /**
    * Metas
    */
-  // goal?: IGoal[];
+  goal?: IGoal[];
   /**
    * Notificaciones guardadas
    */

@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BuyerService } from '../../../services/buyer.service';
 import { UserSessionService } from '../../../services/user-session.service';
 import { AdviserService } from '../../../services/adviser.service';
+import { FormatHoursFront } from '../../../_config/_helpers';
 
 @Component({
   selector: 'app-detail-adviser-admin',
@@ -47,5 +48,8 @@ export class DetailAdviserAdminComponent implements OnInit {
     const year: string = new Date(dateInput).getFullYear().toString();
     const date = day + '/' + month + '/' + year;
     return date;
+  }
+  formatHours(hours, minutes) {
+    return FormatHoursFront(hours, minutes);
   }
 }

@@ -47,6 +47,8 @@ export class ListBuyerAdminComponent implements OnInit {
     public toastController: ToastController,
     public navCtr: NavController,
   ) {
+    console.log('lista de buyers c');
+
     this.isDesktop = platform.is('desktop');
     if (this.isDesktop) {
       this.openMenu = true;
@@ -56,6 +58,7 @@ export class ListBuyerAdminComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('lista de buyers');
     this.columns = [
       {
         name: 'Nombre',

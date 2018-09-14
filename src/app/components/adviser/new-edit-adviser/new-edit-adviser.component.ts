@@ -50,12 +50,27 @@ export class NewEditAdviserComponent implements OnInit {
     this.buyers$ = this.buyerService.getBuyerAll();
   }
   newCustomer() {
-    this.adviser.buyer = this.buyerInput;
+    this.adviser.buyer = <any>this.buyerInput.map(b => b._id);
     this.adviserService.newAdviser(this.adviser).subscribe(adv => {
+      this.buyerInput.forEach(buyer => {
+        const indexFinded = buyer.adviser.findIndex(ad => ad._id === adv._id);
+        if (indexFinded === -1) {
+          const arr = buyer.adviser.map(ad => ad._id);
+          arr.push(adv._id);
+          buyer.adviser = <any>arr;
+          this.buyerService.putBuyer(buyer).subscribe(() => {});
+        }
+      });
       const toast: NavigationExtras = {
         queryParams: { res: 'Nuevo Asesor Agregado' },
       };
-      this.router.navigate(['list-adviser-admin'], toast);
+      // this.router.navigate(['list-adviser-admin'], toast);
+      /**
+       * Es para recargar el componente previo
+       */
+      this.router
+        .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+        .then(() => this.router.navigate(['list-adviser-admin'], toast));
     });
   }
   deleteBuyer(buyerId) {
@@ -85,10 +100,11 @@ export class NewEditAdviserComponent implements OnInit {
   editCustomer() {
     if (this.buyerInput && this.buyerInput.length > 0) {
       this.buyerInput.forEach(b => {
-        const index = this.adviser.buyer.findIndex(ab => ab._id === b);
+        const index = this.adviser.buyer.findIndex(ab => ab._id === b._id);
         if (index === -1) {
-          this.adviser.buyer.push(b);
+          this.adviser.buyer.push(<any>b._id);
         }
+        this.newAdviserToBuyer(b, this.adviser._id);
       });
     }
 
@@ -98,8 +114,23 @@ export class NewEditAdviserComponent implements OnInit {
         queryParams: { res: ' Asesor Editado' },
       };
       // this.n.navigate(['list-adviser-admin'], toast);
-      this.navCtr.navigateRoot('list-adviser-admin');
+      // this.navCtr.navigateRoot('list-adviser-admin');
+      /**
+       * Es para recargar el componente previo
+       */
+      this.router
+        .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+        .then(() => this.router.navigate(['list-adviser-admin'], toast));
     });
+  }
+  newAdviserToBuyer(buyer: IBuyer, adviserId: string) {
+    const indexFinded = buyer.adviser.findIndex(adv => adv._id === adviserId);
+    if (indexFinded === -1) {
+      const arr = buyer.adviser.map(adv => adv._id);
+      arr.push(adviserId);
+      buyer.adviser = <any>arr;
+      this.buyerService.putBuyer(buyer).subscribe(() => console.log('act'));
+    }
   }
   getPopMessage(event) {
     const isDisabled = (<HTMLInputElement>document.getElementById('submitUser'))

@@ -28,6 +28,10 @@ import { ListOfertsAdminComponent } from './components/admin/list-oferts-admin/l
 import { NewEditOfertComponent } from './components/oferts/new-edit-ofert/new-edit-ofert.component';
 import { ListScheduleAdminComponent } from './components/admin/list-schedule-admin/list-schedule-admin.component';
 import { NewEditScheduleComponent } from './components/schedule/new-edit-schedule/new-edit-schedule.component';
+import { RefreComponent } from './components/general/refre/refre.component';
+import { PersonalScheduleComponent } from './components/schedule/personal-schedule/personal-schedule.component';
+import { ListGoalsComponent } from './components/admin/list-goals/list-goals.component';
+import { NewEditGoalComponent } from './components/goals/new-edit-goal/new-edit-goal.component';
 
 const routes: Routes = [
   // Rutas
@@ -60,6 +64,10 @@ const routes: Routes = [
   { path: 'new-edit-ofert', component: NewEditOfertComponent },
   { path: 'new-edit-schedule', component: NewEditScheduleComponent },
   { path: 'list-schedule-admin', component: ListScheduleAdminComponent },
+  { path: 'personal-schedule', component: PersonalScheduleComponent },
+  { path: 'RefrshComponent', component: RefreComponent },
+  { path: 'list-goals-admin', component: ListGoalsComponent },
+  { path: 'new-edit-goal', component: NewEditGoalComponent },
 ];
 
 @NgModule({

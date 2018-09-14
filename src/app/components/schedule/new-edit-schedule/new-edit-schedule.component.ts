@@ -135,7 +135,20 @@ export class NewEditScheduleComponent implements OnInit {
               }
               adv.schedule.push(<ISchedule>s._id);
               this.adviserService.putAdviser(adv).subscribe(() => {
-                this.navCtr.navigateRoot('list-schedule-admin');
+                const toast: NavigationExtras = {
+                  queryParams: { res: ' Evento Creado' },
+                };
+                // this.navCtr.navigateRoot('list-schedule-admin');
+                /**
+                 * Es para recargar el componente previo
+                 */
+                this.router
+                  .navigateByUrl('/RefrshComponent', {
+                    skipLocationChange: true,
+                  })
+                  .then(() =>
+                    this.router.navigate(['list-schedule-admin'], toast),
+                  );
               });
             });
         });
@@ -160,9 +173,7 @@ export class NewEditScheduleComponent implements OnInit {
                 adv.buyer.push(<any>this.schedule.buyer);
               }
               adv.schedule.push(<ISchedule>this.schedule._id);
-              this.adviserService.putAdviser(adv).subscribe(() => {
-                console.log('ya');
-              });
+              this.adviserService.putAdviser(adv).subscribe(() => {});
             });
         });
       });
@@ -189,10 +200,16 @@ export class NewEditScheduleComponent implements OnInit {
 
     this.scheduleService.putSchedule(<ISchedule>this.schedule).subscribe(() => {
       const toast: NavigationExtras = {
-        queryParams: { res: ' Propietario Editado' },
+        queryParams: { res: ' Evento Editado' },
       };
       // this.router.navigate(['list-seller-admin'], toast);
-      this.navCtr.navigateRoot('list-schedule-admin');
+      // this.navCtr.navigateRoot('list-schedule-admin');
+      /**
+       * Es para recargar el componente previo
+       */
+      this.router
+        .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+        .then(() => this.router.navigate(['list-schedule-admin'], toast));
     });
   }
   checkHoursAdviser(type: 'edit' | 'new') {

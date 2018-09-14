@@ -2,10 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { ISchedule } from '../../../models/schedule.model';
 import { BuyerService } from '../../../services/buyer.service';
 import { UserSessionService } from '../../../services/user-session.service';
-import { NavController, AlertController } from '@ionic/angular';
-import { Router, NavigationExtras } from '@angular/router';
+import {
+  NavController,
+  AlertController,
+  ToastController,
+} from '@ionic/angular';
+import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { ScheduleService } from '../../../services/schedule.service';
-import { FormatDatesFront } from '../../../_config/_helpers';
+import { FormatDatesFront, FormatHoursFront } from '../../../_config/_helpers';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-list-schedule-admin',
@@ -43,11 +48,19 @@ export class ListScheduleAdminComponent implements OnInit {
     private scheduleService: ScheduleService,
     public alertController: AlertController,
     private userService: UserSessionService,
+    private toastController: ToastController,
+    private storage: Storage,
+    public route: ActivatedRoute,
   ) {
     this.monthNumber = new Date().getMonth();
     this.year = new Date().getFullYear();
   }
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['res']) {
+        this.presentToast(params['res']);
+      }
+    });
     /* const buyer = this.userSessionService.userSession.value;
     this.buyerService.getBuyerById(buyer.id).subscribe(b => {
       this.schedule = b.schedule;
@@ -114,6 +127,12 @@ export class ListScheduleAdminComponent implements OnInit {
     };
     this.router.navigate(['new-edit-schedule'], data);
   }
+  editEventPersonalById(id: string) {
+    const data: NavigationExtras = {
+      queryParams: { id: id },
+    };
+    this.router.navigate(['personal-schedule'], data);
+  }
   deleteEvent(id) {
     this.scheduleService
       .deltedScheduleById(id)
@@ -154,6 +173,31 @@ export class ListScheduleAdminComponent implements OnInit {
       }
     });
   }
+  async toastPresent(m = 'Eventos pendientes hoy') {
+    const isPresent = await this.storage.get('alert-today');
+    console.log(isPresent);
+    if (+isPresent !== new Date().getDate()) {
+      const toast = await this.toastController.create({
+        message: m,
+        showCloseButton: true,
+        position: 'bottom',
+        closeButtonText: 'OK',
+        cssClass: 'toast-alert',
+        duration: 50000,
+      });
+      toast.present();
+      toast.onWillDismiss().then(() => {
+        this.storage.set('alert-today', new Date().getDate());
+      });
+    }
+  }
+  async presentToast(message) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+    });
+    toast.present();
+  }
 
   // _helpers
   backOne() {
@@ -184,5 +228,8 @@ export class ListScheduleAdminComponent implements OnInit {
       return 'Cita pasada';
     } else if (state === 'azul') {
     }
+  }
+  formatHours(hours, minutes) {
+    return FormatHoursFront(hours, minutes);
   }
 }

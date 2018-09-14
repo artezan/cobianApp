@@ -23,6 +23,8 @@ const seller = 'seller/';
 const sellerId = 'bysellerid/';
 const creditById = 'bycreditid/';
 const sbpbypropertybuyer = 'bybuyerpropid/';
+const goal = 'goal/';
+const goalId = 'bygoalid/';
 
 export const END_POINT = {
   IP: ip,
@@ -57,4 +59,7 @@ export const END_POINT = {
   // seller
   SELLER: apiUrl + seller,
   SELLER_ID: apiUrl + seller + sellerId,
+  // goal
+  GOAL: apiUrl + goal,
+  GOAL_ID: apiUrl + goal + goalId,
 };

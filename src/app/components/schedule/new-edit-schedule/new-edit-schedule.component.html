@@ -4,7 +4,7 @@
       <ion-menu-button style="color: white !important"></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Propietario
+      Evento
     </ion-title>
 
   </ion-toolbar>
@@ -12,6 +12,8 @@
 <ion-content>
   <ion-grid fixed>
     <div class="container" style="margin-top: 3%">
+      <ion-button style="margin-bottom: 2%" shape="round" color="secondary" [routerLink]="['/personal-schedule']">Crear
+        Evento Personal</ion-button>
       <form #newUserForm="ngForm">
         <mat-card>
           <mat-card-title>Complete los campos</mat-card-title>

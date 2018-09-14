@@ -86,7 +86,7 @@
               <mat-form-field appearance="outline">
                 <mat-label>Asignar Clientes</mat-label>
                 <mat-select [(ngModel)]="buyerInput" #b="ngModel" id="b" name="b" multiple>
-                  <mat-option *ngFor="let buyer of buyers$ | async" [value]="buyer._id">
+                  <mat-option *ngFor="let buyer of buyers$ | async" [value]="buyer">
                     {{buyer.name}} {{buyer.fatherLastName}}
                   </mat-option>
                 </mat-select>

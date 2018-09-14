@@ -121,7 +121,7 @@ export class ListAdviserAdminComponent implements OnInit {
     const data: NavigationExtras = {
       queryParams: { id: 'new' },
     };
-    this.navCtr.navigateRoot('new-edit-adviser');
+    this.router.navigate(['new-edit-adviser']);
   }
   edit(item) {
     const data: NavigationExtras = {

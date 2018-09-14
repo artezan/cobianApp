@@ -26,6 +26,8 @@ export class GeneralCalendarComponent implements OnInit, OnChanges {
   schedules: ISchedule[] = [];
   @Output()
   calendarSelect = new EventEmitter<any>();
+  @Output()
+  alertOfToday = new EventEmitter<any>();
   flag = false;
   constructor(public toastController: ToastController) {}
   // tslint:disable:no-var-keyword
@@ -79,19 +81,8 @@ export class GeneralCalendarComponent implements OnInit, OnChanges {
     }
     return str;
   }
-  async presentToast() {
-    if (this.flag === false) {
-      const toast = await this.toastController.create({
-        message: 'Eventos pendientes hoy',
-        showCloseButton: true,
-        position: 'bottom',
-        closeButtonText: 'OK',
-        cssClass: 'toast-alert',
-        duration: 50000,
-      });
-      toast.present();
-      this.flag = true;
-    }
+  presentToast() {
+    this.alertOfToday.emit();
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes.month) {

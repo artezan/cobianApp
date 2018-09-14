@@ -11,6 +11,7 @@ import { ToastController } from '@ionic/angular';
 import { StatusBuyerPropertyService } from '../../../services/status-buyer-property.service';
 import { ScheduleService } from '../../../services/schedule.service';
 import { ISchedule } from '../../../models/schedule.model';
+import { FormatHoursFront } from '../../../_config/_helpers';
 
 @Component({
   selector: 'app-credit-event-buyer',
@@ -192,5 +193,8 @@ export class CreditEventBuyerComponent implements OnInit {
       duration: 3000,
     });
     toast.present();
+  }
+  formatHours(hours, minutes) {
+    return FormatHoursFront(hours, minutes);
   }
 }
