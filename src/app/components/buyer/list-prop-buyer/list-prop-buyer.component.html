@@ -38,7 +38,7 @@
             <ion-chip *ngIf="property.percentage > 60" class="high">
               <ion-label>Alta coincidencia</ion-label>
             </ion-chip>
-            <ion-chip *ngIf="property.percentage <= 60" class="medium">
+            <ion-chip *ngIf="property.percentage <= 60 && property.percentage > 30 " class="medium">
               <ion-label>Media coincidencia</ion-label>
             </ion-chip>
             <ion-chip *ngIf="property.percentage <= 30" class="low">

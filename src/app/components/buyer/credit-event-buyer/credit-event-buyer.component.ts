@@ -5,7 +5,7 @@ import { IProperty } from '../../../models/property.model';
 import { BuyerService } from '../../../services/buyer.service';
 import { UserSessionService } from '../../../services/user-session.service';
 import { CreditService } from '../../../services/credit.service';
-import { ICredit } from '../../../models/credit.model';
+import { ICredit, ICreditGet } from '../../../models/credit.model';
 import { IBuyer } from '../../../models/buyer.model';
 import { ToastController } from '@ionic/angular';
 import { StatusBuyerPropertyService } from '../../../services/status-buyer-property.service';
@@ -72,8 +72,9 @@ export class CreditEventBuyerComponent implements OnInit {
   getBuyerById(propertyId) {
     const buyerId = this.userSessionService.userSession.value.id;
     this.buyerService.getBuyerById(buyerId).subscribe(buyer => {
-      const isCreditFinded = buyer.credit.find(
-        credit => credit.property === propertyId,
+      const buyerGet = <any>buyer;
+      const isCreditFinded = buyerGet.credit.find(
+        (credit) => credit.property._id === propertyId,
       );
       const isScheduleFinded = buyer.schedule.find(
         s => s.property._id === propertyId,

@@ -37,7 +37,7 @@
             <ion-card-title text-wrap>Favor de Responder</ion-card-title>
           </ion-card-header>
           <ion-card-content text-wrap>
-            <ion-label text-wrap>Oferta para la propiedad: <b>{{getProperty(ofert.property).name}}</b></ion-label>
+            <ion-label text-wrap>Oferta para la propiedad: <b>{{ofert.property.name}}</b></ion-label>
             <ion-label text-wrap>Oferta por: <b>${{ofert.ofertPrice}}</b></ion-label>
             <ion-label text-wrap>Detalles de la oferta : {{ofert.notes}}</ion-label>
             <ion-list lines="none">
@@ -64,7 +64,7 @@
             <!-- Poner en notes Aceptado o Denagado -->
             <ion-card-title text-wrap> Oferta: {{ofert.notes}}</ion-card-title>
             <ion-card-content text-wrap>
-              <ion-label text-wrap *ngIf="ofert.notes === 'Aceptada' "> Propiedad <b>{{getProperty(ofert.property).name
+              <ion-label text-wrap *ngIf="ofert.notes === 'Aceptada' "> Propiedad <b>{{ofert.property.name
                   }}</b>
                 Apartada</ion-label>
 

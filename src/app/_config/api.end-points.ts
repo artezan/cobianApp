@@ -61,5 +61,5 @@ export const END_POINT = {
   SELLER_ID: apiUrl + seller + sellerId,
   // goal
   GOAL: apiUrl + goal,
-  GOAL_ID: apiUrl + goal + goalId,
+  GOAL_ID: apiUrl + goal + goalId
 };

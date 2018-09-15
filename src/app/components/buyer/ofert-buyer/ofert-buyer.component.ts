@@ -12,7 +12,7 @@ import { IBuyer } from '../../../models/buyer.model';
 @Component({
   selector: 'app-ofert-buyer',
   templateUrl: './ofert-buyer.component.html',
-  styleUrls: ['./ofert-buyer.component.scss'],
+  styleUrls: ['./ofert-buyer.component.scss']
 })
 export class OfertBuyerComponent implements OnInit {
   isLoad = false;
@@ -26,7 +26,7 @@ export class OfertBuyerComponent implements OnInit {
     private buyerService: BuyerService,
     public toastController: ToastController,
     private ofertService: OfertService,
-    private statusBuyerPropertyService: StatusBuyerPropertyService,
+    private statusBuyerPropertyService: StatusBuyerPropertyService
   ) {
     this.getOfert();
   }
@@ -47,7 +47,7 @@ export class OfertBuyerComponent implements OnInit {
   }
   respondOfert(str: string, ofert: IOfert) {
     const find = this.statusBuyerProperty.find(
-      (s: any) => s.property._id === ofert.property,
+      (s: any) => s.property._id === ofert.property._id
     );
     this.statusBuyerPropertyService
       .upgradeStatus(find._id, 'rojo')
@@ -61,15 +61,11 @@ export class OfertBuyerComponent implements OnInit {
       }
     });
   }
-  getProperty(id: string): IProperty {
-    return this.buyer.statusBuyerProperty.find(sBP => sBP.property._id === id)
-      .property;
-  }
   // toast
   async presentToast(message: string) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 3000,
+      duration: 3000
     });
     toast.present();
   }
