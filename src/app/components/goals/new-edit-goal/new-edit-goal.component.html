@@ -11,130 +11,110 @@
 </ion-header>
 <ion-content>
   <ion-grid fixed>
-    <ion-row>
-      <ion-col size-md="6" size-lg="6" size-xl="6">
-        <ion-card [ngClass]="{'desktop-card': isDesktop }">
-          <ion-card-header>
-            <ion-card-title>
-              Progreso
-            </ion-card-title>
-            <ion-card-content>
-              <app-goal-progress subtitle="Progreso" [percent]="percent"></app-goal-progress>
-              <ion-list>
-                <ion-list-header>Asesores del Objetivo</ion-list-header>
-                <ion-item *ngFor="let adv of goal.adviser">
-                  {{adv.name}} {{adv.lastName}}
-                </ion-item>
-              </ion-list>
-            </ion-card-content>
-          </ion-card-header>
-        </ion-card>
-      </ion-col>
-      <ion-col size-md="6" size-lg="6" size-xl="6">
-        <form #newUserForm="ngForm">
-          <mat-card [ngClass]="{'desktop-card': isDesktop }">
-            <mat-card-title>Datos del Objetivo</mat-card-title>
-            <div class="flex-container">
-              <!-- adv -->
-              <mat-form-field appearance="outline">
-                <mat-label>Asesores</mat-label>
-                <mat-select [(ngModel)]="adviserSelect" #adviserSelect2="ngModel" id="adviserSelect2" name="adviserSelect2"
-                  required multiple>
-                  <mat-option *ngFor="let adv of advisers$ | async" [value]="adv">{{adv.name}} {{adv.lastName}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <!-- title -->
-              <mat-form-field appearance="outline">
-                <mat-label>Titulo</mat-label>
-                <input matInput placeholder="" [(ngModel)]="goal.title" #title="ngModel" id="title" name="title"
-                  required>
-                <mat-error *ngIf="title.dirty || title.touched">Anotar</mat-error>
-              </mat-form-field>
-              <!-- title -->
-              <mat-form-field appearance="outline">
-                <mat-label>Contenido</mat-label>
-                <textarea matInput placeholder="" [(ngModel)]="goal.content" #content="ngModel" id="content" name="content"
-                  required></textarea>
-                <mat-error *ngIf="content.dirty || content.touched">Anotar</mat-error>
-              </mat-form-field>
-              <!-- status -->
-              <mat-form-field appearance="outline">
-                <mat-label>Estado</mat-label>
-                <mat-select [(ngModel)]="goal.status" #status="ngModel" id="status" name="status" required>
-                  <mat-option value="gris">
-                    Inicial
-                  </mat-option>
-                  <mat-option value="verde">
-                    Bajo
-                  </mat-option>
-                  <mat-option value="amarillo">
-                    Medio
-                  </mat-option>
-                  <mat-option value="rojo">
-                    Urgente
-                  </mat-option>
-                  <mat-option value="azul">
-                    Cumplido
-                  </mat-option>
-                </mat-select>
-                <mat-error *ngIf="status.dirty || status.touched">Selecciona</mat-error>
-              </mat-form-field>
-              <!-- goal -->
-              <mat-form-field appearance="outline">
-                <mat-label>Objetivo Numérico</mat-label>
-                <input matInput placeholder="" (change)="getPercent()" (onkeyup)="getPercent()" type="number"
-                  [(ngModel)]="goal.goalNumber" #goalNumber="ngModel" id="goalNumber" name="goalNumber" required>
-                <mat-error *ngIf="goalNumber.dirty || goalNumber.touched">Anotar</mat-error>
-              </mat-form-field>
-              <!-- goal current -->
-              <mat-form-field appearance="outline">
-                <mat-label>Objetivo Actual</mat-label>
-                <input matInput placeholder="" type="number" (change)="getPercent()" (onkeyup)="getPercent()"
-                  [(ngModel)]="goal.currentNumber" #currentNumber="ngModel" id="currentNumber" name="currentNumber"
-                  required>
-                <mat-error *ngIf="currentNumber.dirty || currentNumber.touched">Anotar</mat-error>
-              </mat-form-field>
-              <!-- isOld -->
-              <mat-form-field appearance="outline">
-                <mat-label>Tipo</mat-label>
-                <mat-select [(ngModel)]="goal.isByManagement" #isByManagement="ngModel" id="isByManagement" name="isByManagement"
-                  required>
-                  <mat-option [value]=false>Individual
-                  </mat-option>
-                  <mat-option [value]=true>Grupal
-                  </mat-option>
-                </mat-select>
-                <mat-error *ngIf="isByManagement.dirty || isByManagement.touched">Selecciona uno</mat-error>
-              </mat-form-field>
+    <h1 *ngIf="isNew">Nuevo Objetivo</h1>
+    <h1 *ngIf="!isNew">Editar Objetivo</h1>
+    <p>Complete los campos para asignar una meta</p>
+    <div class="container" style="margin-top: 3%">
+      <form #newUserForm="ngForm">
+        <mat-card [ngClass]="{'desktop-card': isDesktop }">
+          <mat-card-title>Datos del Objetivo</mat-card-title>
 
-              <!-- Fecha -->
-              <mat-form-field appearance="outline">
-                <mat-label>Fecha para ser cumplido</mat-label>
-                <input (dateChange)="dateSelect($event)" (focus)="picker.open()" [value]="getDate(goal.day, goal.month, goal.year)"
-                  matInput [matDatepicker]="picker" placeholder="Selecciona Fecha" required>
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
+          <div class="flex-container2" *ngIf="goal.adviser && goal.adviser.length > 0">
+            <!-- list adv -->
+            <mat-list role="list">
+              <h3 mat-subheader>Asesores del Objetivo</h3>
+              <mat-list-item role="listitem" *ngFor="let adv of goal.adviser">
+                {{adv.name}} {{adv.lastName}}
+                <!-- <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="schedule.adviser=undefined"></button> -->
+                <button matTooltip="Eliminar" mat-icon-button (click)="deleteAdviserOfGoal(adv._id)">
+                  <mat-icon color="warn">clear</mat-icon>
+                </button>
+              </mat-list-item>
+            </mat-list>
+          </div>
 
+          <div class="flex-container">
+            <!-- adv -->
+            <mat-form-field appearance="outline">
+              <mat-label>Asesores</mat-label>
+              <mat-select [(ngModel)]="adviserSelect" #adviserSelect2="ngModel" id="adviserSelect2" name="adviserSelect2"
+                [required]="isNew" multiple>
+                <mat-option *ngFor="let adv of advisers$ | async" [value]="adv">{{adv.name}} {{adv.lastName}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <!-- title -->
+            <mat-form-field appearance="outline">
+              <mat-label>Titulo</mat-label>
+              <input matInput placeholder="" [(ngModel)]="goal.title" #title="ngModel" id="title" name="title" required>
+              <mat-error *ngIf="title.dirty || title.touched">Anotar</mat-error>
+            </mat-form-field>
+            <!-- cont -->
+            <mat-form-field appearance="outline">
+              <mat-label>Contenido</mat-label>
+              <textarea matInput placeholder="" [(ngModel)]="goal.content" #content="ngModel" id="content" name="content"
+                required></textarea>
+              <mat-error *ngIf="content.dirty || content.touched">Anotar</mat-error>
+            </mat-form-field>
+            <!-- status -->
+            <mat-form-field appearance="outline">
+              <mat-label>Estado</mat-label>
+              <mat-select [(ngModel)]="goal.status" #status="ngModel" id="status" name="status" required>
+                <mat-option value="gris">
+                  Inicial
+                </mat-option>
+                <mat-option value="verde">
+                  Bajo
+                </mat-option>
+                <mat-option value="amarillo">
+                  Medio
+                </mat-option>
+                <mat-option value="rojo">
+                  Urgente
+                </mat-option>
+                <!-- <mat-option value="azul">
+                  Cumplido
+                </mat-option> -->
+              </mat-select>
+              <mat-error *ngIf="status.dirty || status.touched">Selecciona</mat-error>
+            </mat-form-field>
+            <!-- isOld -->
+            <!--  <mat-form-field appearance="outline">
+              <mat-label>Tipo</mat-label>
+              <mat-select [(ngModel)]="goal.isByManagement" #isByManagement="ngModel" id="isByManagement" name="isByManagement"
+                required>
+                <mat-option [value]=false>Individual
+                </mat-option>
+                <mat-option [value]=true>Grupal
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="isByManagement.dirty || isByManagement.touched">Selecciona uno</mat-error>
+            </mat-form-field> -->
+
+            <!-- Fecha -->
+            <mat-form-field appearance="outline">
+              <mat-label>Fecha para ser cumplido</mat-label>
+              <input (dateChange)="dateSelect($event)" (focus)="picker.open()" [value]="getDate(goal.day, goal.month, goal.year)"
+                matInput [matDatepicker]="picker" placeholder="Selecciona Fecha" required>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <!-- GENERAL str list -->
+            <app-form-str-list nameTitle="Lista de Objetivos" nameItems="Objetivo" (arrList)="arrList = $event"
+              [arrStr]="arrList" [numOfItems]="numOfItems"></app-form-str-list>
+          </div>
+          <mat-card-actions align="end">
+            <div style="margin-right: 2%">
+              <span [matTooltip]=errorToShow [matTooltipClass]="'tooltip-size'" (mouseenter)="getPopMessage($event)">
+                <button *ngIf="isNew" id="submitUser" mat-raised-button color="primary" (click)="newGoal()" [disabled]="!newUserForm.form.valid">Crear</button>
+                <button *ngIf="!isNew" id="submitUser" mat-raised-button color="primary" [disabled]="!newUserForm.form.valid"
+                  (click)="editGoal()">Editar</button>
+              </span>
             </div>
-            <mat-card-actions align="end">
-              <div style="margin-right: 2%">
-                <span [matTooltip]=errorToShow [matTooltipClass]="'tooltip-size'" (mouseenter)="getPopMessage($event)">
-                  <button *ngIf="isNew" id="submitUser" mat-raised-button color="primary" (click)="newOGoal()"
-                    [disabled]="!newUserForm.form.valid">Crear</button>
-                  <button *ngIf="!isNew" id="submitUser" mat-raised-button color="primary" [disabled]="!newUserForm.form.valid"
-                    (click)="editGoal()">Editar</button>
-                </span>
-              </div>
-
-
-
-            </mat-card-actions>
-
-          </mat-card>
-        </form>
-      </ion-col>
-    </ion-row>
-
+          </mat-card-actions>
+        </mat-card>
+      </form>
+    </div>
   </ion-grid>
+
+
 </ion-content>

@@ -100,6 +100,12 @@ export class AppComponent {
       icon: 'stats',
       userType: 'administrator',
     },
+    {
+      title: 'Simulador Match',
+      url: '/simulate-search-admin',
+      icon: 'heart-empty',
+      userType: 'administrator',
+    },
   ];
 
   isDevice: boolean;

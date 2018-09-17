@@ -28,11 +28,10 @@ export class GoalService {
       .put(END_POINT.GOAL + goal._id, goal)
       .pipe(map((data: any) => data.data));
   }
-  /* 
-  
-  public deleteCredit(id: string): Observable<ICredit> {
+
+  public deleteGoal(id: string): Observable<boolean> {
     return this.http
-      .delete(END_POINT.CREDIT + id)
+      .delete(END_POINT.GOAL + id)
       .pipe(map((data: any) => data.data));
-  } */
+  }
 }

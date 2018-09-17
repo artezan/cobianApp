@@ -1,0 +1,20 @@
+<div class="flex-container2">
+  <h3 mat-subheader>{{nameTitle}}</h3>
+  <div *ngFor="let item of arrInput; let i=index">
+    <mat-form-field appearance="outline" style="width: 80%;">
+      <mat-label>{{nameItems}} {{i + 1}}</mat-label>
+      <input matInput placeholder="" (keyup)="getStr(itemModel.value)" [(ngModel)]="arrStr[i]" #itemModel="ngModel" id="itemModel"
+        name="itemModel" [required]="isRequired">
+      <mat-error *ngIf="(itemModel.dirty || itemModel.touched) && isRequired">Obligatorio</mat-error>
+    </mat-form-field>
+    <button matTooltip="Eliminar" mat-icon-button (click)="deleteItem(i)">
+      <mat-icon color="warn">clear</mat-icon>
+    </button>
+  </div>
+  <div class="button-add">
+    <button mat-stroked-button color="accent" (click)="addItem()">
+      <mat-icon color="accent">add</mat-icon>
+      Agregar
+    </button>
+  </div>
+</div>

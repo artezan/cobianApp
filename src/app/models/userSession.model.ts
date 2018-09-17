@@ -1,5 +1,5 @@
 export interface IUserSession {
-  type?: string;
+  type?: 'administrator' | 'buyer' | 'seller' | 'adviser' | 'management';
   name?: string;
   id?: string;
   password?: string;

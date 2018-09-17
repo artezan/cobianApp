@@ -14,10 +14,6 @@ export interface IGoal {
    */
   status?: 'verde' | 'gris' | 'amarillo' | 'rojo' | 'azul';
   /**
-   * Datos Cuantitativos
-   */
-  dataNumber?: number[];
-  /**
    * Cumplido o no
    */
   isComplete?: boolean;
@@ -30,11 +26,14 @@ export interface IGoal {
    */
   title?: string;
   timestamp?: Date;
-  dateLimit?: string;
   day?: number;
   month?: number;
   year?: number;
+  goals?: [
+    {
+      nameGoal: string;
+      isComplete: boolean;
+    }
+  ];
   _id?: string;
-  goalNumber?: number;
-  currentNumber?: number;
 }

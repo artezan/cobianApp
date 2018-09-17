@@ -372,3 +372,19 @@ export function FormatHoursFront(hours: number, minutes: number) {
   strFormat = `${strHour}:${strMin} ${strState}`;
   return strFormat;
 }
+export function GetPercentGoal(
+  goals: [
+    {
+      nameGoal: string;
+      isComplete: boolean;
+    }
+  ],
+): number {
+  let numOfComplete = 0;
+  goals.forEach(goal => {
+    if (goal.isComplete) {
+      numOfComplete++;
+    }
+  });
+  return +((numOfComplete * 100) / goals.length).toFixed(2);
+}

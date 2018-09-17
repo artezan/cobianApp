@@ -58,6 +58,16 @@
           <ion-label>Lugar {{schedule.address}}</ion-label>
         </ion-item>
       </ion-card>
+      <!-- Goals -->
+      <h1 *ngIf="adviser.goal && adviser.goal.length > 0"> Metas Asignadas </h1>
+      <ion-card *ngFor="let goal  of adviser.goal ">
+        <ion-item>
+          <ion-label>Meta {{goal.title}}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Completado {{getPercentage(goal.goals)}}%</ion-label>
+        </ion-item>
+      </ion-card>
 
     </ng-template>
     <ng-template #elseTemplate style="text-align: center">

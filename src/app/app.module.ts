@@ -90,6 +90,9 @@ import { NewEditGoalComponent } from './components/goals/new-edit-goal/new-edit-
 import { ListGoalsComponent } from './components/admin/list-goals/list-goals.component';
 import { GoalProgressComponent } from './components/general/goal-progress/goal-progress.component';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { DetailGoalAdminComponent } from './components/admin/detail-goal-admin/detail-goal-admin.component';
+import { FormStrListComponent } from './components/general/form-str-list/form-str-list.component';
+import { SimulateSearchAdminComponent } from './components/admin/simulate-search-admin/simulate-search-admin.component';
 
 @NgModule({
   declarations: [
@@ -135,6 +138,9 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
     NewEditGoalComponent,
     ListGoalsComponent,
     GoalProgressComponent,
+    DetailGoalAdminComponent,
+    FormStrListComponent,
+    SimulateSearchAdminComponent,
   ],
   entryComponents: [],
   imports: [

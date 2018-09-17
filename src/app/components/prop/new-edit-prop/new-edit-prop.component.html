@@ -60,13 +60,16 @@
             </mat-form-field>
             <!-- dateToBuy -->
             <!-- Fecha a comprar -->
-            <ion-label text-wrap>Anota la posible fecha de compra o renta</ion-label>
-            <!-- day -->
-            <mdc-text-field label="Dia" type="number" [(ngModel)]="daySelect" #d="ngModel" id="d" name="d" required
-              [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
-            <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
-              <span *ngIf="d.dirty || d.touched">Anota Dia</span>
-            </mdc-text-field-helper-text>
+            <div>
+              <ion-label text-wrap>Anota la posible fecha de compra o renta</ion-label>
+              <!-- day -->
+              <mdc-text-field label="Dia" type="number" [(ngModel)]="daySelect" #d="ngModel" id="d" name="d" required
+                [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+              <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+                <span *ngIf="d.dirty || d.touched">Anota Dia</span>
+              </mdc-text-field-helper-text>
+            </div>
+
             <!-- mm -->
             <ion-item lines="none" class="margin-field">
               <ion-label>Mes</ion-label>
@@ -75,11 +78,14 @@
               </ion-select>
             </ion-item>
             <!-- aa -->
-            <mdc-text-field label="Año" type="number" [(ngModel)]="yearSelect" #y="ngModel" id="y" name="y" required
-              [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
-            <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
-              <span *ngIf="y.dirty || y.touched">Anota Año</span>
-            </mdc-text-field-helper-text>
+            <div>
+              <mdc-text-field label="Año" type="number" [(ngModel)]="yearSelect" #y="ngModel" id="y" name="y" required
+                [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+              <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+                <span *ngIf="y.dirty || y.touched">Anota Año</span>
+              </mdc-text-field-helper-text>
+            </div>
+
             <!-- zone -->
             <mat-form-field appearance="outline">
               <mat-label>Zona</mat-label>
@@ -207,14 +213,20 @@
               </mat-select>
             </mat-form-field>
             <!-- tag -->
-            <ion-label text-wrap>Anota palabras clave separadas por comas para una mejor búsqueda (ej: casa,
-              departamento,
-              mascotas)</ion-label>
-            <mdc-textarea [(ngModel)]="words" #w="ngModel" id="w" name="w" label="Palabras" rows="8" cols="40"></mdc-textarea>
+            <div>
+              <ion-label text-wrap>Anota palabras clave separadas por comas para una mejor búsqueda (ej: casa,
+                departamento,
+                mascotas)</ion-label>
+              <mdc-textarea [(ngModel)]="words" #w="ngModel" id="w" name="w" label="Palabras" rows="8" cols="40"></mdc-textarea>
+            </div>
+
             <!-- files -->
-            <ion-label text-wrap>Anota nombre de los archivos separado por comas (ej: documento1,
-              documento2, documento3, etc...)</ion-label>
-            <mdc-textarea [(ngModel)]="files" #f="ngModel" id="f" name="f" label="Documentos:" rows="8" cols="40"></mdc-textarea>
+            <div>
+              <ion-label text-wrap>Anota nombre de los archivos separado por comas (ej: documento1,
+                documento2, documento3, etc...)</ion-label>
+              <mdc-textarea [(ngModel)]="files" #f="ngModel" id="f" name="f" label="Documentos:" rows="8" cols="40"></mdc-textarea>
+            </div>
+
 
           </div>
           <mat-card-actions align="end">

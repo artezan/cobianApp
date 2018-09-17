@@ -39,7 +39,7 @@
       <!-- Table  -->
       <h2>Lista de Objetivos</h2>
       <app-general-table [columns]="columns" [rows]="rows" [isDesktop]="isDesktop" (editButton)="edit($event)"
-        (deletedButton)="presentAlertConfirm($event)"></app-general-table>
+        (deletedButton)="presentAlertConfirm($event)" (detailsButton)="detail($event)"></app-general-table>
       <!-- /Table -->
     </mat-drawer-container>
 

@@ -9,6 +9,7 @@ const property = 'property/';
 const bypropertyid = 'bypropertyid/';
 const checkbuyer = 'checkbuyer/';
 const propertybyBuyer = 'matchsearchbybuyer/';
+const properySimulate = 'matchsearchbydemo/';
 const statusBuyerProperty = 'status/';
 const credit = 'credit/';
 const schedule = 'schedule/';
@@ -38,6 +39,7 @@ export const END_POINT = {
   PROPERTY_MATCH_SEARCH: apiUrl + property + propertybyBuyer,
   PROPERTY_BY_ID: apiUrl + property + bypropertyid,
   PROPERTY: apiUrl + property,
+  PROPERTY_SIMULATE: apiUrl + property + properySimulate,
   // status buyer property
   STATUS_BP: apiUrl + statusBuyerProperty,
   STATUS_UPGRADE: apiUrl + statusBuyerProperty + upgradeStatus,
@@ -61,5 +63,5 @@ export const END_POINT = {
   SELLER_ID: apiUrl + seller + sellerId,
   // goal
   GOAL: apiUrl + goal,
-  GOAL_ID: apiUrl + goal + goalId
+  GOAL_ID: apiUrl + goal + goalId,
 };

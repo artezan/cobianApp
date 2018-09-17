@@ -172,22 +172,24 @@
           <!-- title -->
           <h2 *ngIf="ii === 0 && column.type === 'normal'"><b>{{row[column.prop]}}</b></h2>
           <!-- normal -->
-          <p *ngIf="column.type === 'normal' && ii !== 0">{{row[column.prop]}}</p>
+          <p *ngIf="column.type === 'normal' && ii !== 0"><b> {{column.name}}: </b>{{row[column.prop]}}</p>
 
           <!-- fecha -->
-          <p *ngIf="column.type === 'date'">{{formatDates(row[column.prop])}}</p>
+          <p *ngIf="column.type === 'date'"><b> {{column.name}}: </b> {{formatDates(row[column.prop])}}</p>
           <!-- boolean -->
           <span *ngIf="column.type === 'boolean'">
             <button *ngIf="row[column.prop]" (click)="onSelect(row)" mat-icon-button>
-              {{column.name}} <mat-icon class="secondary-text" class="green-icon">check_circle</mat-icon>
+              <b> {{column.name}} </b>
+              <mat-icon class="secondary-text" class="green-icon">check_circle</mat-icon>
             </button>
             <button *ngIf="!row[column.prop]" (click)="onSelect(row)" mat-icon-button>
-              {{column.name}} <mat-icon class="secondary-text" class="red-icon">cancel</mat-icon>
+              <b> {{column.name}} </b>
+              <mat-icon class="secondary-text" class="red-icon">cancel</mat-icon>
             </button>
           </span>
           <!-- money -->
           <span *ngIf="column.type === 'money'">
-            <p> {{column.name}}: $ {{
+            <p> <b>{{column.name}}: </b>$ {{
               row[column.prop].toFixed(2) }}</p>
           </span>
 

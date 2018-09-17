@@ -1,0 +1,14 @@
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    padding: 5%;
+}
+
+.flex-container>* {
+    width: 100%;
+    margin: 5%
+}
+
+.desktop-card {
+    height: 100% !important;
+}

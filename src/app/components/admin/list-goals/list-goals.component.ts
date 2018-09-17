@@ -106,7 +106,7 @@ export class ListGoalsComponent implements OnInit {
     });
   }
   newOfert() {
-    this.router.navigate(['new-edit-ofert']);
+    this.router.navigate(['new-edit-goal']);
   }
   setRows(goals: IGoal[]) {
     const rows = [];
@@ -164,18 +164,24 @@ export class ListGoalsComponent implements OnInit {
     this.router.navigate(['new-edit-goal'], data);
     // this.navCtr.navigateRoot('new-buyer', false, data);
   }
-  deleted(c: IOfert) {
-    /*  this.ofertService
-      .deleteOfertById(c._id)
+  deleted(c: IGoal) {
+    this.goalService
+      .deleteGoal(c._id)
       .toPromise()
       .then(() => {
-        this.getOfertAll();
-      }); */
+        this.getGoalAll();
+      });
+  }
+  detail(item: IGoal) {
+    const data: NavigationExtras = {
+      queryParams: { id: item._id },
+    };
+    this.router.navigate(['detail-goal-admin'], data);
   }
   async presentAlertConfirm(c) {
     const alert = await this.alertController.create({
-      header: 'Eliminar Oferta',
-      message: `¿Desea eliminar oferta ?`,
+      header: 'Eliminar Meta',
+      message: `¿Desea eliminar meta ?`,
       buttons: [
         {
           text: 'Cancelar',

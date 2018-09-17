@@ -41,4 +41,14 @@ export class PropertyService {
       .put(END_POINT.PROPERTY + property._id, property)
       .pipe(map((data: any) => data.data));
   }
+  public getPropertySimulate(
+    property: IProperty,
+    percentage: number,
+  ): Observable<IProperty[]> {
+    const body: any = property;
+    body.percentage = percentage;
+    return this.http
+      .post(END_POINT.PROPERTY_SIMULATE, body)
+      .pipe(map((data: any) => data.data));
+  }
 }

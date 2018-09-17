@@ -1,0 +1,248 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button style="color: white !important"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Simulador
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid fixed>
+    <ng-container *ngIf="isSimulate; then thenTemplate; else elseTemplate"></ng-container>
+    <ng-template #thenTemplate>
+      <h1>Propiedades Sugeridas</h1>
+      <ion-label>Se muestran las coincidencias con tu perfil</ion-label>
+      <ion-list lines="full">
+        <ion-item lines="inset" *ngFor="let property of propertiesMatch">
+          <ion-icon *ngIf="property.typeOfProperty === 'departamento'" style="color: #F5811E" name="business" slot="start"></ion-icon>
+          <ion-icon *ngIf="property.typeOfProperty === 'casa'" style="color: #F5811E" name="home" slot="start"></ion-icon>
+          <ion-label text-wrap>
+            <h2>{{property.name}}</h2>
+            <p>{{property.zone}}</p>
+            <ion-chip *ngIf="property.percentage > 60" class="high">
+              <ion-label>Alta coincidencia</ion-label>
+            </ion-chip>
+            <ion-chip *ngIf="property.percentage <= 60 && property.percentage > 30 " class="medium">
+              <ion-label>Media coincidencia</ion-label>
+            </ion-chip>
+            <ion-chip *ngIf="property.percentage <= 30" class="low">
+              <ion-label>Baja coincidencia</ion-label>
+            </ion-chip>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ng-template>
+    <ng-template #elseTemplate>
+      <h1>Simulador de Búsqueda Match</h1>
+      <p>Llene los campos para encontrar propiedades de acuerdo al perfil</p>
+
+      <div class="container" style="margin-top: 3%">
+        <form #newUserForm="ngForm">
+          <mat-card>
+            <div class="flex-container">
+              <!-- isRent  -->
+              <mat-form-field appearance="outline">
+                <mat-label>Venta o Renta</mat-label>
+                <mat-select [(ngModel)]="property.isRent" #isRent="ngModel" id="isRent" name="isRent" required>
+                  <mat-option [value]=true>
+                    Renta
+                  </mat-option>
+                  <mat-option [value]=false>
+                    Venta
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="isRent.dirty || isRent.touched">Selecciona una</mat-error>
+              </mat-form-field>
+              <!-- typeOfProperty -->
+              <mat-form-field appearance="outline">
+                <mat-label>Tipo de Vivienda</mat-label>
+                <mat-select [(ngModel)]="property.typeOfProperty" #typeOfProperty="ngModel" id="typeOfProperty" name="typeOfProperty"
+                  required>
+                  <mat-option value="casa">Casa
+                  </mat-option>
+                  <mat-option value="departamento">Departamento
+                  </mat-option>
+                  <mat-option value="nave industrial">Nave Industrial
+                  </mat-option>
+                  <mat-option value="terreno">Terreno
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="typeOfProperty.dirty || typeOfProperty.touched">Anotar Correo</mat-error>
+              </mat-form-field>
+              <!-- space-->
+              <mat-form-field appearance="outline">
+                <mat-label>Espacio</mat-label>
+                <input matInput type="number" [(ngModel)]="property.space" #space="ngModel" id="space" name="space"
+                  required>
+                <mat-error *ngIf="space.dirty || space.touched">Anotar Espacio</mat-error>
+              </mat-form-field>
+              <!-- Fecha a comprar -->
+              <!-- Fecha -->
+              <mat-form-field appearance="outline">
+                <mat-label>Fecha para ser adquirido</mat-label>
+                <input (dateChange)="dateSelect($event)" (focus)="picker.open()" matInput [matDatepicker]="picker"
+                  placeholder="Selecciona Fecha" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <!-- zone -->
+              <mat-form-field appearance="outline">
+                <mat-label>Zona</mat-label>
+                <input matInput placeholder="" [(ngModel)]="property.zone" #zone="ngModel" id="zone" name="zone"
+                  required>
+                <mat-error *ngIf="zone.dirty || zone.touched">Anotar Zona</mat-error>
+              </mat-form-field>
+              <!-- minPrice -->
+              <mat-form-field appearance="outline">
+                <mat-label>Precio Minimo</mat-label>
+                <input matInput type="number" placeholder="" [(ngModel)]="property.minPrice" #minPrice="ngModel" id="minPrice"
+                  name="minPrice" required>
+                <mat-error *ngIf="minPrice.dirty || minPrice.touched">Anotar Numero</mat-error>
+              </mat-form-field>
+              <!-- max -->
+              <mat-form-field appearance="outline">
+                <mat-label>Precio Maximo</mat-label>
+                <input matInput type="number" placeholder="" [(ngModel)]="property.maxPrice" #maxPrice="ngModel" id="maxPrice"
+                  name="maxPrice" required>
+                <mat-error *ngIf="maxPrice.dirty || maxPrice.touched">Anotar Numero</mat-error>
+              </mat-form-field>
+              <!-- numRooms -->
+              <mat-form-field appearance="outline">
+                <mat-label>Numero de Cuartos</mat-label>
+                <input matInput type="number" placeholder="" [(ngModel)]="property.numRooms" #numRooms="ngModel" id="numRooms"
+                  name="numRooms" required>
+                <mat-error *ngIf="numRooms.dirty || numRooms.touched">Anotar Numero</mat-error>
+              </mat-form-field>
+              <!-- numBathrooms -->
+              <mat-form-field appearance="outline">
+                <mat-label>Numero de Baños</mat-label>
+                <input matInput type="number" placeholder="" [(ngModel)]="property.numBathrooms" #numBathrooms="ngModel"
+                  id="numBathrooms" name="numBathrooms" required>
+                <mat-error *ngIf="numBathrooms.dirty || numBathrooms.touched">Anotar Numero</mat-error>
+              </mat-form-field>
+              <!-- numCars -->
+              <mat-form-field appearance="outline">
+                <mat-label>Lugares Estacionamiento</mat-label>
+                <input matInput type="number" placeholder="" [(ngModel)]="property.numCars" #numCars="ngModel" id="numCars"
+                  name="numCars" required>
+                <mat-error *ngIf="numCars.dirty || numCars.touched">Anotar Numero</mat-error>
+              </mat-form-field>
+              <!-- isOld -->
+              <mat-form-field appearance="outline">
+                <mat-label>Estado</mat-label>
+                <mat-select [(ngModel)]="property.isOld" #isOld="ngModel" id="isOld" name="isOld" required>
+                  <mat-option [value]=false>Nuevo
+                  </mat-option>
+                  <mat-option [value]=true>Usado
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="isOld.dirty || isOld.touched">Selecciona uno</mat-error>
+              </mat-form-field>
+              <!-- isClose -->
+              <mat-form-field appearance="outline">
+                <mat-label>Tipo Fraccionamiento</mat-label>
+                <mat-select [(ngModel)]="property.isClose" #isClose="ngModel" id="isClose" name="isClose" required>
+                  <mat-option [value]=false>Abierto
+                  </mat-option>
+                  <mat-option [value]=true>Cerrado
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="isClose.dirty || isClose.touched">Selecciona uno</mat-error>
+              </mat-form-field>
+              <!-- hasGarden -->
+              <mat-form-field appearance="outline">
+                <mat-label>Con Jardin</mat-label>
+                <mat-select [(ngModel)]="property.hasGarden" #hasGarden="ngModel" id="hasGarden" name="hasGarden"
+                  required>
+                  <mat-option [value]=true>Sí
+                  </mat-option>
+                  <mat-option [value]=false>No
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="hasGarden.dirty || hasGarden.touched">Selecciona uno</mat-error>
+              </mat-form-field>
+              <!-- isLowLevel -->
+              <mat-form-field appearance="outline">
+                <mat-label>Planta Baja</mat-label>
+                <mat-select [(ngModel)]="property.isLowLevel" #isLowLevel="ngModel" id="isLowLevel" name="isLowLevel"
+                  required>
+                  <mat-option [value]=true>Sí
+                  </mat-option>
+                  <mat-option [value]=false>No
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="isLowLevel.dirty || isLowLevel.touched">Selecciona uno</mat-error>
+              </mat-form-field>
+              <!-- hasElevator -->
+              <mat-form-field appearance="outline">
+                <mat-label>Con Elevador</mat-label>
+                <mat-select [(ngModel)]="property.hasElevator" #hasElevator="ngModel" id="hasElevator" name="hasElevator"
+                  required>
+                  <mat-option [value]=true>Sí
+                  </mat-option>
+                  <mat-option [value]=false>No
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="hasElevator.dirty || hasElevator.touched">Selecciona uno</mat-error>
+              </mat-form-field>
+              <!-- allServices -->
+              <mat-form-field appearance="outline">
+                <mat-label>Todos los Servicios </mat-label>
+                <mat-select [(ngModel)]="property.allServices" #allServices="ngModel" id="allServices" name="allServices"
+                  required>
+                  <mat-option [value]=true>Sí
+                  </mat-option>
+                  <mat-option [value]=false>No
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="allServices.dirty || allServices.touched">Selecciona uno</mat-error>
+              </mat-form-field>
+              <!-- wayToBuy FOVISSTE, IMSS, contado, PEMEX, Infonavit, aliados, otros -->
+
+              <mat-form-field appearance="outline">
+                <mat-label>Forma de Venta/Renta </mat-label>
+                <mat-select [(ngModel)]="property.wayToBuy" #wayToBuy="ngModel" id="wayToBuy" name="wayToBuy" required
+                  placeholder="Selecciona">
+                  <mat-option value="FOVISSTE">FOVISSTE</mat-option>
+                  <mat-option value="IMSS">IMSS</mat-option>
+                  <mat-option value="contado">contado</mat-option>
+                  <mat-option value="PEMEX">Pemex</mat-option>
+                  <mat-option value="infonavit">Infonavit</mat-option>
+                  <mat-option value="infonavit">Aliados</mat-option>
+                  <mat-option value="otros">Otros</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <!-- tag -->
+            <app-form-str-list nameTitle="Lista Etiquetas" nameItems="Etiqueta" [arrStr]="property.tag" (arrList)="property.tag = $event">
+            </app-form-str-list>
+            <mat-card-actions align="end">
+              <div style="margin: 3%">
+                <span [matTooltip]=errorToShow [matTooltipClass]="'tooltip-size'" (mouseenter)="getPopMessage($event)">
+                  <ion-button shape="round" style="margin: 3%" id="submitUser" color="primary" (click)="startSimulate()"
+                    [disabled]="!newUserForm.form.valid">Simular Búsqueda</ion-button>
+                </span>
+              </div>
+
+
+            </mat-card-actions>
+
+          </mat-card>
+        </form>
+
+      </div>
+    </ng-template>
+
+
+  </ion-grid>
+
+</ion-content>
+<!-- fab placed to the bottom end -->
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button *ngIf="isSimulate" color="secondary" (click)="isSimulate = false">
+    <ion-icon name="refresh"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

@@ -32,6 +32,8 @@ import { RefreComponent } from './components/general/refre/refre.component';
 import { PersonalScheduleComponent } from './components/schedule/personal-schedule/personal-schedule.component';
 import { ListGoalsComponent } from './components/admin/list-goals/list-goals.component';
 import { NewEditGoalComponent } from './components/goals/new-edit-goal/new-edit-goal.component';
+import { DetailGoalAdminComponent } from './components/admin/detail-goal-admin/detail-goal-admin.component';
+import { SimulateSearchAdminComponent } from './components/admin/simulate-search-admin/simulate-search-admin.component';
 
 const routes: Routes = [
   // Rutas
@@ -68,6 +70,8 @@ const routes: Routes = [
   { path: 'RefrshComponent', component: RefreComponent },
   { path: 'list-goals-admin', component: ListGoalsComponent },
   { path: 'new-edit-goal', component: NewEditGoalComponent },
+  { path: 'detail-goal-admin', component: DetailGoalAdminComponent },
+  { path: 'simulate-search-admin', component: SimulateSearchAdminComponent },
 ];
 
 @NgModule({

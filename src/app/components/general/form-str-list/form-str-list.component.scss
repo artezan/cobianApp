@@ -1,0 +1,26 @@
+.flex-container2 {
+    display: flex;
+    flex-direction: column;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 3%;
+    border: 2px solid darkgray;
+    border-radius: 8px;
+
+}
+
+.button-add {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1%;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    padding: 5%;
+}
+
+.flex-container>* {
+    width: 100%;
+}

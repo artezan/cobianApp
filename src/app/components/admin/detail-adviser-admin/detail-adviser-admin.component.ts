@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BuyerService } from '../../../services/buyer.service';
 import { UserSessionService } from '../../../services/user-session.service';
 import { AdviserService } from '../../../services/adviser.service';
-import { FormatHoursFront } from '../../../_config/_helpers';
+import { FormatHoursFront, GetPercentGoal } from '../../../_config/_helpers';
 
 @Component({
   selector: 'app-detail-adviser-admin',
@@ -41,6 +41,9 @@ export class DetailAdviserAdminComponent implements OnInit {
       if (adv.buyer && adv.buyer.length > 0) {
       }
     });
+  }
+  getPercentage(goals) {
+    return GetPercentGoal(goals);
   }
   formatDates(dateInput: Date): string {
     const day: string = new Date(dateInput).getDate().toString();
