@@ -24,3 +24,48 @@
 .flex-container>* {
     width: 100%;
 }
+
+.one-input {
+    width: 80%;
+}
+
+.more-input {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: baseline;
+
+}
+
+.more-input>* {
+    padding: 1%
+}
+
+.more-input>button {
+    flex: 0
+}
+
+.date-input {
+    width: 18%;
+}
+
+@media (max-width: 900px) {
+
+    .more-input {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+
+    }
+
+    .date-input {
+        width: 50%;
+    }
+
+}
+
+hr {
+    width: 100%;
+    height: 0px;
+    background-color: darkgray;
+    border-radius: 7px 7px 7px 7px;
+}

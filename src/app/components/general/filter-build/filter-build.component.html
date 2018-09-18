@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons *ngIf="!isDesktop" slot="start">
+      <ion-button (click)="applyFilters(); goBack()" slot="start">
+        <ion-icon mode="md" slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Filtros</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="success" slot="end" (click)="applyFilters();goBack()">
+        <ion-icon mode="md" slot="icon-only" name="checkmark-circle"></ion-icon>
+      </ion-button>
+      <ion-button color="danger" slot="end" (click)="reset();goBack()">
+        <ion-icon mode="md" slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<!-- <div class="main"> -->
+<ion-content fullscreen>
+  <ion-item>
+    <mat-form-field>
+      <mat-select (selectionChange)="applyFilters()" [(ngModel)]="isComplete" #isR="ngModel" id="isR" name="isR"
+        placeholder="Tipo">
+        <mat-option [value]=true>
+          Completado
+        </mat-option>
+        <mat-option [value]=false>
+          En Proceso
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ion-item>
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Fecha inicio</ion-label>
+    </ion-list-header>
+  </ion-list>
+  <ion-item>
+    <ion-label>
+      Dia
+    </ion-label>
+    <ion-input (ionChange)="applyFilters()" (onkeyup)="applyFilters()" type="number" [(ngModel)]="dayInput" #day="ngModel"
+      id="day" name="day"></ion-input>
+  </ion-item>
+  <ion-item>
+    <mat-form-field>
+      <mat-select (selectionChange)="applyFilters()" [(ngModel)]="monthInput" #day="ngModel" id="day" name="day"
+        placeholder="Mes">
+        <mat-option *ngFor="let month of months; let i=index" [value]="i">
+          {{month}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ion-item>
+  <ion-item>
+    <ion-label>
+      Año
+    </ion-label>
+    <ion-input (ionChange)="applyFilters()" type="number" [(ngModel)]="yearInput" #day="ngModel" id="day" name="day"></ion-input>
+  </ion-item>
+  <br>
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Fecha Fin</ion-label>
+    </ion-list-header>
+  </ion-list>
+  <ion-item>
+    <ion-label>
+      Dia
+    </ion-label>
+    <ion-input (ionChange)="applyFilters()" (onkeyup)="applyFilters()" type="number" [(ngModel)]="dayInput2" #day="ngModel"
+      id="day" name="day"></ion-input>
+  </ion-item>
+  <ion-item>
+    <mat-form-field>
+      <mat-select (selectionChange)="applyFilters()" [(ngModel)]="monthInput2" #day="ngModel" id="day" name="day"
+        placeholder="Mes">
+        <mat-option *ngFor="let month of months; let i=index" [value]="i">
+          {{month}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ion-item>
+  <ion-item>
+    <ion-label>
+      Año
+    </ion-label>
+    <ion-input (ionChange)="applyFilters()" type="number" [(ngModel)]="yearInput2" #day="ngModel" id="day" name="day"></ion-input>
+  </ion-item>
+</ion-content>
+
+
+<!-- </div> -->

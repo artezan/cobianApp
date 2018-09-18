@@ -93,6 +93,12 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 import { DetailGoalAdminComponent } from './components/admin/detail-goal-admin/detail-goal-admin.component';
 import { FormStrListComponent } from './components/general/form-str-list/form-str-list.component';
 import { SimulateSearchAdminComponent } from './components/admin/simulate-search-admin/simulate-search-admin.component';
+import { ListBuildAdminComponent } from './components/admin/list-build-admin/list-build-admin.component';
+import { ListMakerAdminComponent } from './components/admin/list-maker-admin/list-maker-admin.component';
+import { NewEditMakerComponent } from './components/maker/new-edit-maker/new-edit-maker.component';
+import { NewEditBuildComponent } from './components/build/new-edit-build/new-edit-build.component';
+import { FilterBuildComponent } from './components/general/filter-build/filter-build.component';
+import { FilterMakerComponent } from './components/general/filter-maker/filter-maker.component';
 
 @NgModule({
   declarations: [
@@ -141,6 +147,12 @@ import { SimulateSearchAdminComponent } from './components/admin/simulate-search
     DetailGoalAdminComponent,
     FormStrListComponent,
     SimulateSearchAdminComponent,
+    ListBuildAdminComponent,
+    ListMakerAdminComponent,
+    NewEditMakerComponent,
+    NewEditBuildComponent,
+    FilterBuildComponent,
+    FilterMakerComponent,
   ],
   entryComponents: [],
   imports: [

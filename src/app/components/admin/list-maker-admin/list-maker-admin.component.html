@@ -4,7 +4,7 @@
       <ion-menu-button style="color: white !important"></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Objetivos
+      Constructores
     </ion-title>
 
   </ion-toolbar>
@@ -17,29 +17,29 @@
     <mat-drawer-container class="side-container" autosize>
       <!-- contenido de filtros -->
       <!-- <mat-drawer [class.mat-elevation-z1]=true position="end" #drawer class="sidenav" [mode]="isDesktop ? 'side' : 'over'"
-            [opened]="openMenu">
-            <app-filter-seller (filters)="getFilters($event)" (resetAll)="getSellerAll()" (closeMenu)="drawer.close()"
-              [isDesktop]="isDesktop"></app-filter-seller>
-          </mat-drawer> -->
+        [opened]="openMenu">
+        <app-filter-seller (filters)="getFilters($event)" (resetAll)="getSellerAll()" (closeMenu)="drawer.close()"
+          [isDesktop]="isDesktop"></app-filter-seller>
+      </mat-drawer> -->
       <!-- /contenido de filtros -->
       <!-- filtros boton -->
       <!-- <ion-item *ngIf="!isDesktop" lines="none">
-            <ion-button (click)="drawer.toggle()" slot="end" color="secondary" fill="outline">
-              <ion-icon name="funnel"></ion-icon>Filtros({{numOfFilters}})
-            </ion-button>
-          </ion-item>
-          <ion-item *ngIf="isDesktop" lines="none">
-            <ion-button (click)="drawer.toggle()" slot="end" color="secondary" fill="outline">
-              <ion-icon name="funnel"></ion-icon>Filtros {{(drawer.openedChange | async) ? 'cerrar' : 'abrir'}}
-            </ion-button>
-          </ion-item> -->
+        <ion-button (click)="drawer.toggle()" slot="end" color="secondary" fill="outline">
+          <ion-icon name="funnel"></ion-icon>Filtros({{numOfFilters}})
+        </ion-button>
+      </ion-item>
+      <ion-item *ngIf="isDesktop" lines="none">
+        <ion-button (click)="drawer.toggle()" slot="end" color="secondary" fill="outline">
+          <ion-icon name="funnel"></ion-icon>Filtros {{(drawer.openedChange | async) ? 'cerrar' : 'abrir'}}
+        </ion-button>
+      </ion-item> -->
 
       <!-- /filtros boton -->
 
       <!-- Table  -->
-      <h2>Lista de Objetivos</h2>
+      <h2>Lista de Constructores</h2>
       <app-general-table [columns]="columns" [rows]="rows" [isDesktop]="isDesktop" (editButton)="edit($event)"
-        (deletedButton)="presentAlertConfirm($event)" (detailsButton)="detail($event)"></app-general-table>
+        (deletedButton)="presentAlertConfirm($event)"></app-general-table>
       <!-- /Table -->
     </mat-drawer-container>
 
@@ -56,7 +56,7 @@
 </ion-content>
 <!-- fab placed to the bottom end -->
 <ion-fab vertical="bottom" horizontal="start" slot="fixed">
-  <ion-fab-button (click)="newOfert()" *ngIf="isLoading" color="secondary">
+  <ion-fab-button (click)="newBuild()" *ngIf="isLoading" color="secondary">
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>
 </ion-fab>

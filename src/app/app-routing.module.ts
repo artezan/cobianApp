@@ -34,6 +34,10 @@ import { ListGoalsComponent } from './components/admin/list-goals/list-goals.com
 import { NewEditGoalComponent } from './components/goals/new-edit-goal/new-edit-goal.component';
 import { DetailGoalAdminComponent } from './components/admin/detail-goal-admin/detail-goal-admin.component';
 import { SimulateSearchAdminComponent } from './components/admin/simulate-search-admin/simulate-search-admin.component';
+import { ListBuildAdminComponent } from './components/admin/list-build-admin/list-build-admin.component';
+import { NewEditBuildComponent } from './components/build/new-edit-build/new-edit-build.component';
+import { ListMakerAdminComponent } from './components/admin/list-maker-admin/list-maker-admin.component';
+import { NewEditMakerComponent } from './components/maker/new-edit-maker/new-edit-maker.component';
 
 const routes: Routes = [
   // Rutas
@@ -72,6 +76,10 @@ const routes: Routes = [
   { path: 'new-edit-goal', component: NewEditGoalComponent },
   { path: 'detail-goal-admin', component: DetailGoalAdminComponent },
   { path: 'simulate-search-admin', component: SimulateSearchAdminComponent },
+  { path: 'list-build-admin', component: ListBuildAdminComponent },
+  { path: 'new-edit-build', component: NewEditBuildComponent },
+  { path: 'list-maker-admin', component: ListMakerAdminComponent },
+  { path: 'new-edit-maker', component: NewEditMakerComponent },
 ];
 
 @NgModule({

@@ -1,5 +1,6 @@
 import { IBuyer } from '../models/buyer.model';
 import { IProperty } from '../models/property.model';
+import { IBuild } from '../models/build.model';
 
 // filtro prop match
 /**
@@ -387,4 +388,85 @@ export function GetPercentGoal(
     }
   });
   return +((numOfComplete * 100) / goals.length).toFixed(2);
+}
+export function FilerBuild(
+  build: IBuild,
+  filtersApply: {
+    day: number;
+    month: number;
+    year: number;
+    day2: number;
+    month2: number;
+    year2: number;
+    isComplete: boolean;
+  },
+) {
+  let isOK = true;
+  let buildDateEnd;
+  const buildDateStart = new Date(build.timestamp);
+  if (build.timeLine) {
+    const lastIndex = build.timeLine.length - 1;
+    if (build.timeLine.length > 0) {
+      const lastPhase = build.timeLine[lastIndex];
+      buildDateEnd = new Date(
+        lastPhase.yearToEnd,
+        lastPhase.monthToEnd,
+        lastPhase.dayToEnd,
+      );
+    }
+  }
+  let isComplete = true;
+  const isFinded = build.timeLine.find(t => t.isComplete === false);
+  if (isFinded) {
+    isComplete = false;
+  }
+  // inicio
+  // si existe
+  if (filtersApply.day !== undefined && filtersApply.day !== null) {
+    if (buildDateStart.getDate() !== filtersApply.day) {
+      isOK = false;
+    }
+  }
+  // si existe
+  if (filtersApply.month !== undefined && filtersApply.month !== null) {
+    if (buildDateStart.getMonth() !== filtersApply.month) {
+      isOK = false;
+    }
+  }
+  // si existe
+  if (filtersApply.year !== undefined && filtersApply.year !== null) {
+    if (buildDateStart.getFullYear() !== filtersApply.year) {
+      isOK = false;
+    }
+  }
+  // fin
+  // si existe
+  if (filtersApply.day2 !== undefined && filtersApply.day2 !== null) {
+    if (buildDateEnd.getDate() !== filtersApply.day2) {
+      isOK = false;
+    }
+  }
+  // si existe
+  if (filtersApply.month2 !== undefined && filtersApply.month2 !== null) {
+    if (buildDateEnd.getMonth() !== filtersApply.month2) {
+      isOK = false;
+    }
+  }
+  // si existe
+  if (filtersApply.year2 !== undefined && filtersApply.year2 !== null) {
+    if (buildDateEnd.getFullYear() !== filtersApply.year2) {
+      isOK = false;
+    }
+  }
+  // si existe
+  if (
+    filtersApply.isComplete !== undefined &&
+    filtersApply.isComplete !== null
+  ) {
+    if (isComplete !== filtersApply.isComplete) {
+      isOK = false;
+    }
+  }
+  // end filters
+  return isOK;
 }

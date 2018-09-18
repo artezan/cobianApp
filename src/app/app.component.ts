@@ -89,6 +89,18 @@ export class AppComponent {
       userType: 'administrator',
     },
     {
+      title: 'Obras',
+      url: '/list-build-admin',
+      icon: 'construct',
+      userType: 'administrator',
+    },
+    {
+      title: 'Constructores',
+      url: '/list-maker-admin',
+      icon: 'walk',
+      userType: 'administrator',
+    },
+    {
       title: 'Eventos',
       url: '/list-schedule-admin',
       icon: 'calendar',

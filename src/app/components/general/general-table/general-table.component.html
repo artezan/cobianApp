@@ -115,7 +115,8 @@
           </span>
           <!-- number  -->
           <span *ngIf="column.type === 'number'">
-            <td mat-cell class="center-cell" [ngClass]="{customWidthClass: column.w } " *cdkCellDef="let row"> {{
+            <td mat-cell class="center-cell" style="text-align: center" [ngClass]="{customWidthClass: column.w } "
+              *cdkCellDef="let row"> {{
               row[column.prop]}}</td>
           </span>
           <!-- phone
@@ -173,6 +174,8 @@
           <h2 *ngIf="ii === 0 && column.type === 'normal'"><b>{{row[column.prop]}}</b></h2>
           <!-- normal -->
           <p *ngIf="column.type === 'normal' && ii !== 0"><b> {{column.name}}: </b>{{row[column.prop]}}</p>
+          <!-- number -->
+          <p *ngIf="column.type === 'number'"><b> {{column.name}}: </b>{{row[column.prop]}}</p>
 
           <!-- fecha -->
           <p *ngIf="column.type === 'date'"><b> {{column.name}}: </b> {{formatDates(row[column.prop])}}</p>

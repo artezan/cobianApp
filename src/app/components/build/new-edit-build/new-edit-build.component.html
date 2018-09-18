@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button style="color: white !important"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Obra
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid fixed>
+    <h1 *ngIf="isNew">Nueva Obra</h1>
+    <h1 *ngIf="!isNew">Editar Obra</h1>
+    <div class="container" style="margin-top: 3%">
+      <form #newUserForm="ngForm">
+        <mat-card>
+          <mat-card-title>Complete los campos</mat-card-title>
+          <div class="flex-container">
+            <!-- prop -->
+            <mat-form-field appearance="outline">
+              <mat-label>Constructores de la obra</mat-label>
+              <mat-select [(value)]="maker" [(ngModel)]="maker" #property="ngModel" id="property" name="property"
+                multiple>
+                <mat-option *ngFor="let prop of makers" [value]="prop._id">
+                  {{prop.name}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="property.dirty || property.touched">Selcciona</mat-error>
+            </mat-form-field>
+            <!-- name -->
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre</mat-label>
+              <input matInput placeholder="" [(ngModel)]="build.name" #name="ngModel" id="name" name="name" required>
+              <mat-error *ngIf="name.dirty || name.touched">Anotar Nombre</mat-error>
+            </mat-form-field>
+            <!-- city -->
+            <mat-form-field appearance="outline">
+              <mat-label>Ciudad</mat-label>
+              <mat-select [(ngModel)]="build.city" #city="ngModel" id="city" name="city" required>
+                <mat-option value="puebla">
+                  Puebla
+                </mat-option>
+                <mat-option value="mexico">
+                  México
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="city.dirty || city.touched">Anotar Ciudad</mat-error>
+            </mat-form-field>
+            <!-- notas -->
+            <mat-form-field appearance="outline">
+              <mat-label>Notas</mat-label>
+              <textarea matInput [(ngModel)]="build.notes" #notes="ngModel" id="notes" name="notes"></textarea>
+            </mat-form-field>
+
+
+          </div>
+          <!--  faeses List -->
+          <app-form-str-list [forms]="forms" nameTitle="Fases de la Obra" nameItems="Fase" nameItems2="Notas"
+            (arrOutput)="getPhases($event)" [arrStr]="arrStr" [arrStr2]="arrStr2" [arrDate]="arrDate" [arrDate2]="arrDate2"
+            [numOfItems]="arrStr.length" [isDesktop]="isDesktop"></app-form-str-list>
+          <mat-card-actions align="end">
+            <div style="margin-right: 2%">
+              <span [matTooltip]=errorToShow [matTooltipClass]="'tooltip-size'" (mouseenter)="getPopMessage($event)">
+                <button *ngIf="isNew" id="submitUser" mat-raised-button color="primary" (click)="newCustomer()"
+                  [disabled]="!newUserForm.form.valid">Crear</button>
+                <button *ngIf="!isNew" id="submitUser" mat-raised-button color="primary" [disabled]="!newUserForm.form.valid"
+                  (click)="editCustomer()">Editar</button>
+              </span>
+            </div>
+
+
+          </mat-card-actions>
+
+        </mat-card>
+      </form>
+
+    </div>
+  </ion-grid>
+
+</ion-content>

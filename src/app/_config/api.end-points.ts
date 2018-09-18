@@ -1,5 +1,5 @@
-const ip = 'https://cobianback.herokuapp.com/';
-// const ip = 'http://localhost:3000/';
+// const ip = 'https://cobianback.herokuapp.com/';
+const ip = 'http://localhost:3000/';
 
 const apiUrl = ip + 'api/v1/';
 const userSession = 'usersession/';
@@ -26,6 +26,11 @@ const creditById = 'bycreditid/';
 const sbpbypropertybuyer = 'bybuyerpropid/';
 const goal = 'goal/';
 const goalId = 'bygoalid/';
+const build = 'build/';
+const buildupdatephase = 'updatephase/';
+const buildbybuildid = 'bybuildid/';
+const maker = 'maker/';
+const makerbymakerid = 'bymakerid/';
 
 export const END_POINT = {
   IP: ip,
@@ -64,4 +69,11 @@ export const END_POINT = {
   // goal
   GOAL: apiUrl + goal,
   GOAL_ID: apiUrl + goal + goalId,
+  // building
+  BUILD: apiUrl + build,
+  BUILD_ID: apiUrl + build + buildbybuildid,
+  BUILD_UPDATE_PHASE: apiUrl + build + buildupdatephase,
+  // maker
+  MAKER: apiUrl + maker,
+  MAKER_ID: apiUrl + maker + makerbymakerid,
 };
