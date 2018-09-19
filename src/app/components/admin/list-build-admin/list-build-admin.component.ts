@@ -114,7 +114,9 @@ export class ListBuildAdminComponent implements OnInit {
       if (build.timeLine) {
         const lastIndex = build.timeLine.length - 1;
         if (build.timeLine.length > 0) {
-          const isFinded = build.timeLine.find(t => t.isComplete === false);
+          const isFinded = build.timeLine.find(
+            t => t.isComplete === false || !t.isComplete,
+          );
           if (isFinded) {
             isComplete = false;
           }

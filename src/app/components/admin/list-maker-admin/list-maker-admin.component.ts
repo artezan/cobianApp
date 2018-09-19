@@ -91,7 +91,6 @@ export class ListMakerAdminComponent implements OnInit {
         type: 'buttons',
         buttonEdit: true,
         buttonDeleted: true,
-        buttonDetails: true,
       },
     ];
     this.getMakerAll();

@@ -1,3 +1,104 @@
-<p>
-  new-edit-maker works!
-</p>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button style="color: white !important"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Propietario
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid fixed>
+    <ng-container *ngIf="isLoad; then thenTemplate; else elseTemplate"></ng-container>
+    <ng-template #thenTemplate>
+      <div class="container" style="margin-top: 3%">
+        <form #newUserForm="ngForm">
+          <mat-card>
+            <mat-card-title>Complete los campos</mat-card-title>
+            <div class="flex-container">
+              <!-- name -->
+              <mat-form-field appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input matInput placeholder="" [(ngModel)]="maker.name" #name="ngModel" id="name" name="name" required>
+                <mat-error *ngIf="name.dirty || name.touched">Anotar Nombre</mat-error>
+              </mat-form-field>
+              <!-- lastname -->
+              <mat-form-field appearance="outline">
+                <mat-label>Apellido</mat-label>
+                <input matInput [(ngModel)]="maker.lastName" #lastName="ngModel" id="lastName" name="lastName" required>
+                <mat-error *ngIf="lastName.dirty || lastName.touched">Anotar Apellido</mat-error>
+              </mat-form-field>
+              <!-- email -->
+              <mat-form-field appearance="outline">
+                <mat-label>Correo</mat-label>
+                <input matInput [(ngModel)]="maker.email" #email="ngModel" id="email" name="email" required>
+                <mat-error *ngIf="email.dirty || email.touched">Anotar Correo</mat-error>
+              </mat-form-field>
+              <!-- email -->
+              <mat-form-field appearance="outline">
+                <mat-label>Teléfono</mat-label>
+                <input matInput [(ngModel)]="maker.phone" #phone="ngModel" id="phone" name="phone" required>
+                <mat-error *ngIf="phone.dirty || phone.touched">Anotar Teléfono</mat-error>
+              </mat-form-field>
+              <!-- city -->
+              <mat-form-field appearance="outline">
+                <mat-label>Ciudad</mat-label>
+                <mat-select [(ngModel)]="maker.city" #city="ngModel" id="city" name="city" required>
+                  <mat-option value="puebla">
+                    Puebla
+                  </mat-option>
+                  <mat-option value="mexico">
+                    México
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="city.dirty || city.touched">Anotar Ciudad</mat-error>
+              </mat-form-field>
+              <!-- pass -->
+              <mat-form-field appearance="outline">
+                <mat-label>Contraseña</mat-label>
+                <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="maker.password" #password="ngModel" id="password"
+                  name="password" required>
+                <mat-error *ngIf="password.dirty || password.touched">Anotar Contraseña</mat-error>
+                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+              </mat-form-field>
+
+              <!-- prop -->
+              <mat-form-field appearance="outline">
+                <mat-label>Obras del Constructor</mat-label>
+                <mat-select (selectionChange)="flag = true" [(ngModel)]="maker.build._id" #property="ngModel" id="property"
+                  name="property">
+                  <mat-option *ngFor="let prop of buildings$ | async" [value]="prop._id">
+                    {{prop.name}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="property.dirty || property.touched">Anotar Tipo</mat-error>
+              </mat-form-field>
+            </div>
+            <mat-card-actions align="end">
+              <div style="margin-right: 2%">
+                <span [matTooltip]=errorToShow [matTooltipClass]="'tooltip-size'" (mouseenter)="getPopMessage($event)">
+                  <button *ngIf="isNew" id="submitUser" mat-raised-button color="primary" (click)="newCustomer()"
+                    [disabled]="!newUserForm.form.valid">Crear</button>
+                  <button *ngIf="!isNew" id="submitUser" mat-raised-button color="primary" [disabled]="!newUserForm.form.valid"
+                    (click)="editCustomer()">Editar</button>
+                </span>
+              </div>
+
+
+            </mat-card-actions>
+
+          </mat-card>
+        </form>
+
+      </div>
+    </ng-template>
+    <ng-template #elseTemplate>
+      <app-general-skeleton></app-general-skeleton>
+    </ng-template>
+
+
+  </ion-grid>
+
+</ion-content>

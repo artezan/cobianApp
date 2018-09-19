@@ -1,48 +1,52 @@
 <div class="flex-container2">
   <h3 mat-subheader>{{nameTitle}}</h3>
-  <div *ngFor="let item of arrInput; let i=index" [ngClass]="{'more-input': forms.arrStr && forms.arrDate}">
-    <!-- arrStr default* -->
-    <mat-form-field appearance="outline" [ngClass]="{'one-input': forms.arrStr && !forms.arrDate}">
-      <mat-label>{{nameItems}} {{i + 1}}</mat-label>
-      <input matInput placeholder="" (keyup)="getStr(itemModel.value)" [(ngModel)]="arrStr[i]" #itemModel="ngModel" id="itemModel"
-        name="itemModel" [required]="isRequired">
-      <mat-error *ngIf="(itemModel.dirty || itemModel.touched) && isRequired">Obligatorio</mat-error>
-    </mat-form-field>
-    <!-- / arrStr default* -->
-    <!-- arrStr2 -->
-    <mat-form-field appearance="outline" *ngIf="forms.arrStr2">
-      <mat-label>{{nameItems2}} {{i + 1}}</mat-label>
-      <input matInput placeholder="" (keyup)="getStr(itemModel.value)" [(ngModel)]="arrStr2[i]" #itemModel="ngModel" id="itemModel"
-        name="itemModel" [required]="isRequired">
-      <mat-error *ngIf="(itemModel.dirty || itemModel.touched) && isRequired">Obligatorio</mat-error>
-    </mat-form-field>
-    <!-- arrDate -->
-    <!-- Fecha -->
-    <mat-form-field class="date-input" *ngIf="forms.arrDate" appearance="outline">
-      <mat-label>Inicio</mat-label>
-      <input (dateChange)="dateSelect($event, i)" [value]="arrDate[i]" (focus)="picker.open()" matInput [matDatepicker]="picker"
-        placeholder="" [required]="isRequired">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-    <!-- Fecha2 -->
-    <mat-form-field class="date-input" *ngIf="forms.arrDate2" appearance="outline">
-      <mat-label>Fin</mat-label>
-      <input (dateChange)="dateSelect2($event, i)" [value]="arrDate2[i]" (focus)="picker.open()" matInput
-        [matDatepicker]="picker" placeholder="" [required]="isRequired">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-    <!-- X -->
-    <button *ngIf="isDesktop" matTooltip="Eliminar" mat-icon-button (click)="deleteItem(i)">
-      <mat-icon color="warn">clear</mat-icon>
-    </button>
-    <button *ngIf="!isDesktop" mat-stroked-button color="warn" (click)="deleteItem(i)">
-      <mat-icon>clear</mat-icon>Eliminar
-    </button>
-    <hr *ngIf="!isDesktop">
-    <!-- /X -->
-  </div>
+  <form #newUserForm="ngForm">
+    <div *ngFor="let item of arrInput; let i=index" [ngClass]="{'more-input': forms.arrStr && forms.arrDate}">
+      <!-- arrStr default* -->
+      <mat-form-field appearance="outline" [ngClass]="{'one-input': forms.arrStr && !forms.arrDate}">
+        <mat-label>{{nameItems}} {{i + 1}}</mat-label>
+        <input matInput placeholder="" (keyup)="getStr()" [(ngModel)]="arrStr[i]" #str="ngModel" id="str{{i}}" name="str{{i}}"
+          [required]="isRequired">
+        <mat-error *ngIf="(str.dirty || str.touched) && isRequired">Obligatorio</mat-error>
+      </mat-form-field>
+      <!-- / arrStr default* -->
+      <!-- arrStr2 -->
+      <mat-form-field appearance="outline" *ngIf="forms.arrStr2">
+        <mat-label>{{nameItems2}} {{i + 1}}</mat-label>
+        <input matInput placeholder="" (keyup)="getStr()" [(ngModel)]="arrStr2[i]" #str2="ngModel" id="str2{{i}}" name="str2{{i}}"
+          [required]="isRequired">
+        <mat-error *ngIf="(str2.dirty || str2.touched) && isRequired">Obligatorio</mat-error>
+      </mat-form-field>
+      <!-- arrDate -->
+      <!-- Fecha -->
+      <mat-form-field class="date-input" *ngIf="forms.arrDate" appearance="outline">
+        <mat-label>Inicio</mat-label>
+        <input (dateChange)="dateSelect($event, i)" [value]="arrDate[i]" [(ngModel)]="arrDate[i]" #date2="ngModel" id="date{{i}}"
+          name="date{{i}}" (focus)="picker.open()" matInput [matDatepicker]="picker" placeholder="" [required]="isRequired">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <!-- Fecha2 -->
+      <mat-form-field class="date-input" *ngIf="forms.arrDate2" appearance="outline">
+        <mat-label>Fin</mat-label>
+        <input (dateChange)="dateSelect2($event, i)" [value]="arrDate2[i]" [(ngModel)]="arrDate2[i]" #date2="ngModel"
+          id="date2{{i}}" name="date2{{i}}" (focus)="picker.open()" matInput [matDatepicker]="picker" placeholder=""
+          [required]="isRequired">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <!-- X -->
+      <button *ngIf="isDesktop" matTooltip="Eliminar" mat-icon-button (click)="deleteItem(i)">
+        <mat-icon color="warn">clear</mat-icon>
+      </button>
+      <button *ngIf="!isDesktop" mat-stroked-button color="warn" (click)="deleteItem(i)">
+        <mat-icon>clear</mat-icon>Eliminar
+      </button>
+      <hr *ngIf="!isDesktop">
+      <!-- /X -->
+    </div>
+  </form>
+
   <div class="button-add">
     <button mat-stroked-button color="accent" (click)="addItem()">
       <mat-icon color="accent">add</mat-icon>

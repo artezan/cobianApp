@@ -18,13 +18,13 @@
         <mat-card>
           <mat-card-title>Complete los campos</mat-card-title>
           <div class="flex-container">
-            <!-- prop -->
+            <!-- makers -->
             <mat-form-field appearance="outline">
               <mat-label>Constructores de la obra</mat-label>
               <mat-select [(value)]="maker" [(ngModel)]="maker" #property="ngModel" id="property" name="property"
                 multiple>
-                <mat-option *ngFor="let prop of makers" [value]="prop._id">
-                  {{prop.name}}
+                <mat-option [disabled]="prop.build" *ngFor="let prop of makers" [value]="prop._id">
+                  {{prop.name}} <small *ngIf="prop.build">Pertenece a: {{prop.build.name}} </small>
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="property.dirty || property.touched">Selcciona</mat-error>
@@ -59,13 +59,13 @@
           <!--  faeses List -->
           <app-form-str-list [forms]="forms" nameTitle="Fases de la Obra" nameItems="Fase" nameItems2="Notas"
             (arrOutput)="getPhases($event)" [arrStr]="arrStr" [arrStr2]="arrStr2" [arrDate]="arrDate" [arrDate2]="arrDate2"
-            [numOfItems]="arrStr.length" [isDesktop]="isDesktop"></app-form-str-list>
+            [numOfItems]="isNew ? 2 : arrStr.length" [isDesktop]="isDesktop" [isRequired]="true"></app-form-str-list>
           <mat-card-actions align="end">
             <div style="margin-right: 2%">
               <span [matTooltip]=errorToShow [matTooltipClass]="'tooltip-size'" (mouseenter)="getPopMessage($event)">
                 <button *ngIf="isNew" id="submitUser" mat-raised-button color="primary" (click)="newCustomer()"
-                  [disabled]="!newUserForm.form.valid">Crear</button>
-                <button *ngIf="!isNew" id="submitUser" mat-raised-button color="primary" [disabled]="!newUserForm.form.valid"
+                  [disabled]="!newUserForm.form.valid || !isPhasesValid">Crear</button>
+                <button *ngIf="!isNew" id="submitUser" mat-raised-button color="primary" [disabled]="!newUserForm.form.valid || !isPhasesValid"
                   (click)="editCustomer()">Editar</button>
               </span>
             </div>

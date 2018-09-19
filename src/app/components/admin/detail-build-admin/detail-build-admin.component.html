@@ -1,0 +1,129 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button style="color: white !important"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Objetivo
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid fixed>
+    <ng-container *ngIf="isLoad; then Load; else NoLoad"></ng-container>
+    <ng-template #Load>
+      <h1>Detalles de: {{build.name}}</h1>
+      <ion-row>
+        <ion-col size-md="6" size-lg="6" size-xl="6">
+          <ion-card [ngClass]="{'desktop-card': isDesktop }">
+            <!-- [ngClass]="{'desktop-card': isDesktop }" -->
+            <ion-card-header>
+              <ion-card-title>
+                Progreso
+              </ion-card-title>
+              <ion-card-content>
+                <app-goal-progress subtitle="Progreso" [percent]="percent"></app-goal-progress>
+                <ion-list lines="none">
+                  <ion-list-header>Constructores de la Obra</ion-list-header>
+                  <ion-item lines="none" *ngFor="let adv of build.maker">
+                    {{adv.name}} {{adv.lastName}}
+                  </ion-item>
+                </ion-list>
+              </ion-card-content>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+        <ion-col size-md="6" size-lg="6" size-xl="6">
+          <ion-card [ngClass]="{'desktop-card': isDesktop }">
+            <ion-card-header>
+              <ion-card-title>
+                Lista de Fases
+              </ion-card-title>
+              <ion-card-subtitle>Seleccione una fase para completar</ion-card-subtitle>
+
+            </ion-card-header>
+            <div class="flex-container">
+              <mat-checkbox (change)="changeGoal()" *ngFor="let item of build.timeLine; let i=index" [(ngModel)]="item.isComplete">
+                <h3>
+                  {{item.namePhase}}
+                </h3>
+                <div>
+                  {{item.notes}}
+                </div>
+                <div>
+                  Inicio: {{formatDates(item.yearToStart,item.monthToStart, item.dayToStart)}}
+                </div>
+                <div>
+                  Fin: {{formatDates(item.yearToEnd,item.monthToEnd, item.dayToEnd)}}
+                </div>
+              </mat-checkbox>
+            </div>
+            <!--  <ion-list style="padding: 5%;" lines="none">
+                <ion-list-header>Otros Datos</ion-list-header>
+                <ion-item lines="none">
+                  <ion-label>
+                    <p><b>Contenido</b></p>
+                    <p>{{goal.content}}</p>
+                  </ion-label>
+                </ion-item>
+                <ion-item lines="none">
+                  <ion-label>
+                    <p><b>Estatus</b></p>
+                    <p *ngIf="goal.status === 'verde'">Bajo</p>
+                    <p *ngIf="goal.status === 'gris'">Inicial</p>
+                    <p *ngIf="goal.status === 'amarillo'">Medio</p>
+                    <p *ngIf="goal.status === 'rojo'">Urgente</p>
+                  </ion-label>
+                </ion-item>
+                <ion-item lines="none">
+                  <ion-label>
+                    <p><b>Fecha Inicio</b></p>
+                    <p>{{formatDates(goal.timestamp)}}</p>
+                  </ion-label>
+                </ion-item>
+                <ion-item lines="none">
+                  <ion-label>
+                    <p><b>Fecha Fin</b></p>
+                    <p>{{fortmatDate2(goal.year, goal.month, goal.day)}}</p>
+                  </ion-label>
+                </ion-item>
+  
+              </ion-list>
+   -->
+
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+
+      <!-- Contenedor de fases -->
+      <div class="conteiner-phases" *ngFor="let item of build.timeLine">
+
+        <!-- fase titulo -->
+        <h2>{{item.namePhase}}</h2>
+        <!-- contenedor imagenes -->
+        <div class="flex-img">
+          <img src="https://picsum.photos/2000/3000?random" alt="">
+          <img src="https://picsum.photos/2000/3000/?random" alt="">
+          <img src="https://picsum.photos/2000/3000/?random" alt="">
+          <img src="https://picsum.photos/2000/3000/?random" alt="">
+          <img src="https://picsum.photos/2000/3000/?random" alt="">
+          <img src="https://picsum.photos/2000/3000/?random" alt="">
+        </div>
+        <button style="margin-left: 1%;" mat-stroked-button color="accent">
+          <mat-icon color="accent">add</mat-icon>
+          Agregar
+        </button>
+        <!-- /contenedor imagenes -->
+      </div>
+
+      <!-- /Contenedor de fases -->
+
+
+    </ng-template>
+    <ng-template #NoLoad>
+      <app-general-skeleton></app-general-skeleton>
+    </ng-template>
+  </ion-grid>
+</ion-content>

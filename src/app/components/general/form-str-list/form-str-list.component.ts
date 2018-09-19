@@ -6,7 +6,16 @@ import {
   EventEmitter,
   OnChanges,
   SimpleChanges,
+  ViewChild,
+  ElementRef,
 } from '@angular/core';
+export interface FormStr {
+  arrStr: string[];
+  arrStr2: string[];
+  arrDate: Date[];
+  arrDate2: Date[];
+  isValid: boolean;
+}
 
 @Component({
   selector: 'app-form-str-list',
@@ -14,6 +23,8 @@ import {
   styleUrls: ['./form-str-list.component.scss'],
 })
 export class FormStrListComponent implements OnInit, OnChanges {
+  @ViewChild('newUserForm')
+  newUserForm;
   @Input()
   numOfItems = 3;
   @Input()
@@ -79,12 +90,15 @@ export class FormStrListComponent implements OnInit, OnChanges {
     this.arrInput = Array(num).fill(1);
   }
   getStr(itemStr?) {
+    console.log(this.newUserForm.valid);
+
     this.arrList.emit(this.arrStr);
     this.arrOutput.emit({
       arrStr: this.arrStr,
       arrStr2: this.arrStr2,
       arrDate: this.arrDate,
       arrDate2: this.arrDate2,
+      isValid: this.newUserForm.valid,
     });
   }
   deleteItem(number) {
@@ -112,7 +126,6 @@ export class FormStrListComponent implements OnInit, OnChanges {
     }
   }
   dateSelect2(event, i) {
-    console.log(event);
     if (event) {
       this.arrDate2[i] = new Date(
         event.value._i.year,

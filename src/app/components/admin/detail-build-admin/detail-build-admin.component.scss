@@ -1,0 +1,40 @@
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    padding: 5%;
+}
+
+.flex-container>* {
+    width: 100%;
+    margin: 5%
+}
+
+.desktop-card {
+    height: 100% !important;
+}
+
+.flex-img {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flex-img>* {
+    padding: 1%;
+    width: 200px;
+    height: 300px;
+}
+
+.conteiner-phases {
+    padding: 3%
+}
+
+.flex-img>.item {
+    align-self: flex-end
+}
+
+@media (max-width: 900px) {
+    .flex-img>* {
+        padding: 1%;
+        width: 100%;
+    }
+}

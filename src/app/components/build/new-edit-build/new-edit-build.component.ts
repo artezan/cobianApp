@@ -7,6 +7,7 @@ import { NavController, Platform } from '@ionic/angular';
 import { PropertyService } from '../../../services/property.service';
 import { BuildService } from '../../../services/build.service';
 import { MakerService } from '../../../services/maker.service';
+import { FormStr } from '../../general/form-str-list/form-str-list.component';
 
 @Component({
   selector: 'app-new-edit-build',
@@ -20,7 +21,7 @@ export class NewEditBuildComponent implements OnInit {
   errorToShow = '';
   errorToShowMat = 'Dato obligatorio';
   build: IBuild = {};
-  makers;
+  makers: IMaker[];
   maker;
   forms = {
     arrStr: true,
@@ -33,6 +34,7 @@ export class NewEditBuildComponent implements OnInit {
   arrDate = [];
   arrDate2 = [];
   isDesktop: any;
+  isPhasesValid = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -64,20 +66,55 @@ export class NewEditBuildComponent implements OnInit {
         });
         this.isNew = false;
       } else {
+        this.build.timeLine = [{}];
         this.isNew = true;
       }
     });
   }
   getMakers() {
     this.makerService.getMakerAll().subscribe(m => {
+      console.log(m);
       this.makers = m;
     });
   }
-  getPhases(phases) {
-    console.log(phases);
+  getPhases(phases: FormStr) {
+    this.isPhasesValid = phases.isValid;
+    phases.arrStr.forEach((str, i) => {
+      const phaseObj = {
+        namePhase: str,
+        notes: phases.arrStr2[i],
+        dayToStart: phases.arrDate[i] ? phases.arrDate[i].getDate() : undefined,
+        monthToStart: phases.arrDate[i]
+          ? phases.arrDate[i].getMonth()
+          : undefined,
+        yearToStart: phases.arrDate[i]
+          ? phases.arrDate[i].getFullYear()
+          : undefined,
+        dayToEnd: phases.arrDate2[i] ? phases.arrDate2[i].getDate() : undefined,
+        monthToEnd: phases.arrDate2[i]
+          ? phases.arrDate2[i].getMonth()
+          : undefined,
+        yearToEnd: phases.arrDate2[i]
+          ? phases.arrDate2[i].getFullYear()
+          : undefined,
+      };
+      if (this.build && this.build.timeLine && this.build.timeLine[i]) {
+        this.build.timeLine[i] = phaseObj;
+      } else {
+        this.build.timeLine.push(phaseObj);
+      }
+    });
   }
   newCustomer() {
+    console.log('new');
+
+    this.build.maker = this.maker;
     this.buildService.newBuild(this.build).subscribe(b => {
+      b.maker.forEach(m => {
+        console.log(m);
+        const maker = { _id: m, build: b };
+        this.makerService.putMaker(<any>maker).subscribe(() => {});
+      });
       const toast: NavigationExtras = {
         queryParams: { res: 'Nuevo Obra Agregada' },
       };
@@ -87,16 +124,25 @@ export class NewEditBuildComponent implements OnInit {
     });
   }
   editCustomer() {
+    this.setMakers();
+    // this.build.maker = this.maker;
     this.buildService.putBuild(this.build).subscribe(() => {
       const toast: NavigationExtras = {
         queryParams: { res: ' Obra Editada' },
       };
-      /**
-       * Es para recargar el componente previo
-       */
       this.router
         .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
         .then(() => this.router.navigate(['list-build-admin'], toast));
+    });
+  }
+  setMakers() {
+    this.maker.forEach(element => {
+      const indexFinded = this.build.maker.findIndex(m => m._id === element);
+      if (indexFinded === -1) {
+        this.build.maker.push(element);
+        const maker = { _id: element, build: this.build };
+        this.makerService.putMaker(maker).subscribe(() => console.log('add'));
+      }
     });
   }
   getPopMessage(event) {
