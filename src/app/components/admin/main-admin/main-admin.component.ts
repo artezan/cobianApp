@@ -58,15 +58,14 @@ export class MainAdminComponent implements OnInit {
     this.getOfert();
   }
 
-  ngOnInit() {
-    this.isLoad = true;
-  }
+  ngOnInit() {}
   getOfert() {
     this.ofertService.getOfert().subscribe(oferts => {
       this.creditService.getCredit().subscribe(credits => {
         this.scheduleService.getSchedule().subscribe(s => {
           this.sbpService.getStatusBuyerProperty().subscribe(sbps => {
             this.allData = <any>this.getMerge(oferts, credits, s, sbps);
+            this.isLoad = true;
           });
         });
       });

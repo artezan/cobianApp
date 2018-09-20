@@ -4,7 +4,7 @@
       <ion-menu-button style="color: white !important"></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Objetivo
+      Obra
     </ion-title>
 
   </ion-toolbar>
@@ -59,68 +59,96 @@
                 </div>
               </mat-checkbox>
             </div>
-            <!--  <ion-list style="padding: 5%;" lines="none">
-                <ion-list-header>Otros Datos</ion-list-header>
-                <ion-item lines="none">
-                  <ion-label>
-                    <p><b>Contenido</b></p>
-                    <p>{{goal.content}}</p>
-                  </ion-label>
-                </ion-item>
-                <ion-item lines="none">
-                  <ion-label>
-                    <p><b>Estatus</b></p>
-                    <p *ngIf="goal.status === 'verde'">Bajo</p>
-                    <p *ngIf="goal.status === 'gris'">Inicial</p>
-                    <p *ngIf="goal.status === 'amarillo'">Medio</p>
-                    <p *ngIf="goal.status === 'rojo'">Urgente</p>
-                  </ion-label>
-                </ion-item>
-                <ion-item lines="none">
-                  <ion-label>
-                    <p><b>Fecha Inicio</b></p>
-                    <p>{{formatDates(goal.timestamp)}}</p>
-                  </ion-label>
-                </ion-item>
-                <ion-item lines="none">
-                  <ion-label>
-                    <p><b>Fecha Fin</b></p>
-                    <p>{{fortmatDate2(goal.year, goal.month, goal.day)}}</p>
-                  </ion-label>
-                </ion-item>
-  
-              </ion-list>
-   -->
-
           </ion-card>
         </ion-col>
       </ion-row>
 
-
-      <!-- Contenedor de fases -->
-      <div class="conteiner-phases" *ngFor="let item of build.timeLine">
-
-        <!-- fase titulo -->
-        <h2>{{item.namePhase}}</h2>
-        <!-- contenedor imagenes -->
-        <div class="flex-img">
-          <img src="https://picsum.photos/2000/3000?random" alt="">
-          <img src="https://picsum.photos/2000/3000/?random" alt="">
-          <img src="https://picsum.photos/2000/3000/?random" alt="">
-          <img src="https://picsum.photos/2000/3000/?random" alt="">
-          <img src="https://picsum.photos/2000/3000/?random" alt="">
-          <img src="https://picsum.photos/2000/3000/?random" alt="">
-        </div>
-        <button style="margin-left: 1%;" mat-stroked-button color="accent">
-          <mat-icon color="accent">add</mat-icon>
-          Agregar
-        </button>
-        <!-- /contenedor imagenes -->
+      <!-- Options grid -->
+      <div class="conteiner-buttons">
+        <mat-button-toggle-group (change)="changeGrid($event)">
+          <mat-button-toggle [checked]="!isList" value="column">
+            <mat-icon color="accent">view_column</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle [checked]="isList" color="primary" value="list">
+            <mat-icon color="accent">view_list</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
       </div>
+      <ng-container *ngIf="isList; then List; else Column"></ng-container>
+      <ng-template #List>
 
-      <!-- /Contenedor de fases -->
+        <!-- Contenedor List -->
+        <ion-list style="margin-top: 1%" *ngFor="let item of  build.timeLine; let i=index">
+          <ion-list-header>
+            {{item.namePhase}}
+          </ion-list-header>
+          <!-- img -->
+          <ion-item *ngFor="let imgData of item.imagesData; let imgNumber=index">
+            <ion-thumbnail slot="start">
+              <ion-img [src]="imgData.url"></ion-img>
+            </ion-thumbnail>
+            <ion-label text-wrap>
+              <h3>{{item.namePhase}}</h3>
+              <p><b>Notas: </b>{{imgData.notes}}</p>
+              <p><b>Fecha de Subida: </b>{{formatDates2(imgData.date)}}</p>
+            </ion-label>
+            <ion-button (click)="presentAlertConfirm(imgData.url,i,imgNumber)" shape="round" fill="outline" color="danger">
+              <ion-icon slot="start" name="trash"></ion-icon>
+              Borrar
+            </ion-button>
+          </ion-item>
+          <!-- img antes de subir -->
+          <span *ngFor="let prev of imgToUpload;  let ii=index">
+            <ion-item *ngIf="prev.numPhase === i">
+              <span>
+                <ion-thumbnail slot="start">
+                  <ion-img [src]="prev.srcPrev"></ion-img>
+                </ion-thumbnail>
+                <ion-label>
+                  <h3>Subir Foto</h3>
+                  <p></p>
+                </ion-label>
+                <ion-input [(ngModel)]="prev.notes" placeholder="Escribe algo referente"></ion-input>
+                <ion-button shape="round" fill="outline" (click)="uploadImg(prev, ii, prev.notes)" color="success">
+                  <ion-icon slot="start" name="checkmark-circle"></ion-icon>
+                  Subir
+                </ion-button>
+                <ion-button (click)="discartImg(ii)" shape="round" fill="outline" color="danger">
+                  <ion-icon slot="start" name="trash"></ion-icon>
+                  Descartar
+                </ion-button>
+              </span>
 
+            </ion-item>
+          </span>
 
+          <input id="imagen1" name="imagen1" type="file" hidden (change)="fileChangeEvent($event)" placeholder="Upload a file...">
+          <ion-button (click)="link(i)" shape="round" fill="outline" color="secondary">
+            <ion-icon slot="start" name="add"></ion-icon>
+            Agregar
+          </ion-button>
+        </ion-list>
+
+      </ng-template>
+      <ng-template #Column>
+        <!-- Contenedor de fases -->
+        <div class="conteiner-phases" *ngFor="let phase of build.timeLine">
+
+          <!-- fase titulo -->
+          <h2>{{phase.namePhase}}</h2>
+          <!-- contenedor imagenes -->
+          <div class="flex-img">
+            <img *ngFor="let img of phase.imagesData" [src]="img.url" alt="">
+          </div>
+          <!--  <button style="margin-left: 1%;" mat-stroked-button color="accent">
+            <mat-icon color="accent">add</mat-icon>
+            Agregar
+          </button> -->
+          <!-- /contenedor imagenes -->
+        </div>
+
+        <!-- /Contenedor de fases -->
+      </ng-template>
     </ng-template>
     <ng-template #NoLoad>
       <app-general-skeleton></app-general-skeleton>

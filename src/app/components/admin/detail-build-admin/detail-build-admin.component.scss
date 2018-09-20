@@ -20,12 +20,24 @@
 
 .flex-img>* {
     padding: 1%;
-    width: 200px;
+    width: 300px;
     height: 300px;
 }
 
+.conteiner-buttons {
+    padding: 3% 3% 0% 3%;
+    text-align: right;
+    margin-top: 8%;
+
+}
+
+.conteiner-buttons>* {
+    // background-color: var(--ion-color-primary);
+
+}
+
 .conteiner-phases {
-    padding: 3%
+    padding: 1%
 }
 
 .flex-img>.item {
@@ -36,5 +48,6 @@
     .flex-img>* {
         padding: 1%;
         width: 100%;
+        height: unset;
     }
 }

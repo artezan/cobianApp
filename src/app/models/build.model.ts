@@ -18,6 +18,13 @@ export interface IBuild {
       namePhase?: string;
       isComplete?: boolean;
       imgUrls?: string[];
+      imagesData?: [
+        {
+          url: string;
+          notes: string;
+          date: string | Date;
+        }
+      ];
       _id?: any;
     }
   ];

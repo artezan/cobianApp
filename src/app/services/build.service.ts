@@ -38,4 +38,18 @@ export class BuildService {
       .put(END_POINT.BUILD_UPDATE_PHASE + id, timeLine)
       .pipe(map((data: any) => data.data));
   }
+  public uploadImg(formData: FormData): Observable<string[]> {
+    return this.http
+      .post(END_POINT.BUILD_UPLOAD_IMG, formData)
+      .pipe(map((data: any) => data.data));
+  }
+  /**
+   *
+   * @param imgName ej: imagen.PNG
+   */
+  public deletedImg(imgName: string): Observable<boolean> {
+    return this.http
+      .get(END_POINT.BUILD_DELETE_IMG + imgName)
+      .pipe(map((data: any) => data.data));
+  }
 }
