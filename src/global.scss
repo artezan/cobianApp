@@ -77,6 +77,12 @@ html {
   margin: 3% 30% 2% 30% !important;
 }
 
+.app-fab--absolute {
+  position: fixed !important;
+  bottom: 1rem;
+  right: 1rem;
+}
+
 @media (max-width: 900px) {
   .my-contenet {
     margin: 1% 1% 1% 1% !important;

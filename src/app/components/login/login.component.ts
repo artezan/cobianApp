@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserSessionService } from '../../services/user-session.service';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import {
   NavController,
   MenuController,
@@ -9,6 +9,7 @@ import {
 } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { IUserSession } from '../../models/userSession.model';
+import { IMaker } from '../../models/maker.model';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit {
   passInput: string;
   isFind = true;
   isDevice: boolean;
+  isLogin: boolean;
 
   constructor(
     private userSession: UserSessionService,
@@ -32,8 +34,10 @@ export class LoginComponent implements OnInit {
   ) {
     this.isDevice = this.platform.is('cordova');
     // console.log(this.platform.is('desktop'));
-    storage.length().then(num => {
-      if (num === 0) {
+    this.storage.keys().then(keys => {
+      const keyUserSession = keys.find(key => key === 'userSession');
+      if (!keyUserSession) {
+        this.isLogin = false;
         userSession.loggout();
       } else {
         storage.get('userSession').then((val: IUserSession) => {
@@ -63,11 +67,25 @@ export class LoginComponent implements OnInit {
             data.data[0].password,
           );
           this.isFind = true;
+          // maker
+          if (data.type === 'maker') {
+            const maker: IMaker[] = data.data;
+            this.isLogin = true;
+            load.dismiss();
+            const query: NavigationExtras = {
+              queryParams: { id: maker[0].build },
+            };
+            this.router.navigate(['detail-build-admin'], query);
+          }
+          // buyer
           if (data.type === 'buyer') {
+            this.isLogin = true;
             load.dismiss();
             this.navController.navigateRoot('list-prop-buyer', false);
           }
+          //  admin
           if (data.type === 'administrator') {
+            this.isLogin = true;
             load.dismiss();
             this.navController.navigateRoot('main-admin', false);
           }
@@ -85,6 +103,11 @@ export class LoginComponent implements OnInit {
     return await loading;
   }
   newUser() {
-    this.navController.navigateRoot('login-select-user', false);
+    this.navController.navigateForward('login-select-user', false);
+  }
+  pressEnter(event) {
+    if (event.keyCode === 13) {
+      this.login();
+    }
   }
 }

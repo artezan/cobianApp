@@ -118,6 +118,12 @@ export class AppComponent {
       icon: 'heart-empty',
       userType: 'administrator',
     },
+    {
+      title: 'Propiedades Apartadas',
+      url: '/list-salesprop-admin',
+      icon: 'timer',
+      userType: 'administrator',
+    },
   ];
 
   isDevice: boolean;
@@ -155,6 +161,9 @@ export class AppComponent {
   logout() {
     this.storage.remove('userSession').then(() => {
       this.navController.navigateRoot('login', false);
+      /* this.router
+        .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+        .then(() => this.router.navigate(['login'])); */
     });
   }
 }

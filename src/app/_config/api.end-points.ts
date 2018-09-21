@@ -1,5 +1,5 @@
 // const ip = 'https://cobianback.herokuapp.com/';
-// const ip = 'http://localhost:3000/';
+// const ip = 'http://localhost:3004/';
 const ip = 'http://31.220.52.51:3004/';
 
 const apiUrl = ip + 'api/v1/';
@@ -34,6 +34,7 @@ const uploadImg = 'uploadImg';
 const maker = 'maker/';
 const makerbymakerid = 'bymakerid/';
 const deleteFile = 'deleteFile/';
+const bystatusid = 'bystatusid/';
 
 export const END_POINT = {
   IP: ip,
@@ -52,6 +53,7 @@ export const END_POINT = {
   STATUS_BP: apiUrl + statusBuyerProperty,
   STATUS_UPGRADE: apiUrl + statusBuyerProperty + upgradeStatus,
   STATUS_SEARCH: apiUrl + statusBuyerProperty + sbpbypropertybuyer,
+  STATUS_ID: apiUrl + statusBuyerProperty + bystatusid,
   // credit
   CREDIT: apiUrl + credit,
   CREDIT_ID: apiUrl + credit + creditById,

@@ -38,14 +38,20 @@ export class UserSessionService {
   public loggout(): void {
     this.storage.remove('userSession');
     // localStorage.removeItem('userSession');
-    this.userSession.next({ name: undefined, type: undefined });
+    this.userSession.next({
+      name: undefined,
+      type: undefined,
+      id: undefined,
+      password: undefined,
+    });
   }
   // inicia antes que la app mandando un Promise en cada respuesta
   checkValidSession(): Promise<any> {
     return new Promise((resolve, reject) => {
       // ve si hay un usuario en el localstore
-      this.storage.length().then(num => {
-        if (num !== 0) {
+      this.storage.keys().then(keys => {
+        const keyUserSession = keys.find(key => key === 'userSession');
+        if (keyUserSession) {
           this.storage.get('userSession').then((val: IUserSession) => {
             this.logginUserSession(val.name, val.password).subscribe(data => {
               // data  administrator buyer seller adviser management

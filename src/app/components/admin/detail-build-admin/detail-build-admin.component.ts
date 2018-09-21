@@ -6,6 +6,7 @@ import { UserSessionService } from '../../../services/user-session.service';
 import { ToastController, Platform, AlertController } from '@ionic/angular';
 import { FormatDatesFront, FormatHoursFront } from '../../../_config/_helpers';
 import { END_POINT } from '../../../_config/api.end-points';
+import { IUserSession } from '../../../models/userSession.model';
 
 @Component({
   selector: 'app-detail-build-admin',
@@ -32,6 +33,7 @@ export class DetailBuildAdminComponent implements OnInit {
   numItem;
   // notas por img
   notes: string[] = [];
+  user: IUserSession;
   constructor(
     private route: ActivatedRoute,
     private buildService: BuildService,
@@ -40,6 +42,7 @@ export class DetailBuildAdminComponent implements OnInit {
     private platform: Platform,
     private alertController: AlertController,
   ) {
+    this.user = userSessionService.userSession.value;
     this.route.queryParams.subscribe(params => {
       if (params.id) {
         this.getGoalById(params.id);
@@ -48,10 +51,18 @@ export class DetailBuildAdminComponent implements OnInit {
   }
 
   ngOnInit() {}
+  checkAdminRol(userType: string): boolean {
+    if (userType === 'maker') {
+      return false;
+    } else {
+      return true;
+    }
+  }
   getGoalById(id: string) {
     this.isLoad = false;
     this.buildService.getBuildById(id).subscribe(build => {
       this.build = build;
+      console.log(build);
       this.getPercent(build.timeLine);
       this.isLoad = true;
     });
@@ -102,6 +113,21 @@ export class DetailBuildAdminComponent implements OnInit {
   // subir foto
   fileChangeEvent(fileInput) {
     const imgToUpload = <File>fileInput.target.files[0];
+    /*  if (imgToUpload.size > 200000) {
+      this.presentAlertImg(
+        'La imagen excede el límite de tamaño',
+        'Imagen no válida',
+      );
+    } else {
+      // img name
+      this.imgName = imgToUpload.name.slice(0, imgToUpload.name.indexOf('.'));
+      // preview
+      const reader = new FileReader();
+      reader.onload = r => {
+        this.render(reader.result);
+      };
+      reader.readAsDataURL(imgToUpload);
+    } */
     // img name
     this.imgName = imgToUpload.name.slice(0, imgToUpload.name.indexOf('.'));
     // preview
@@ -126,12 +152,20 @@ export class DetailBuildAdminComponent implements OnInit {
       canvas.height = image.height;
       ctx.drawImage(image, 0, 0, image.width, image.height);
       canvas.toBlob(c => {
-        this.imgToUpload.push({
-          numPhase: this.numItem,
-          srcPrev: src,
-          name: this.imgName,
-          srcBlob: c,
-        });
+        console.log(c);
+        if (c.size > 200000) {
+          this.presentAlertImg(
+            'La imagen excede el límite de tamaño',
+            'Imagen no válida',
+          );
+        } else {
+          this.imgToUpload.push({
+            numPhase: this.numItem,
+            srcPrev: src,
+            name: this.imgName,
+            srcBlob: c,
+          });
+        }
       });
     };
     image.src = src;
@@ -224,5 +258,23 @@ export class DetailBuildAdminComponent implements OnInit {
         this.deletedImg(url, phase, index);
       }
     });
+  }
+  async presentAlertImg(message, header) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'ok',
+          handler: () => {
+            /* this.deleted(buyer);
+            this.getBuyerAll(); */
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }

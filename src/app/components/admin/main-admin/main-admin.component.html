@@ -30,7 +30,19 @@
       <span [ngSwitch]="segment">
         <!-- movementsSegment -->
         <span *ngSwitchCase="'movementsSegment'">
+          <!-- filtros -->
+          <div class="filters-buttons-conteiner   ">
+            <mat-button-toggle-group (change)="getByType($event.value)">
+              <mat-button-toggle value="schedule">Eventos</mat-button-toggle>
+              <mat-button-toggle value="ofert">Ofertas</mat-button-toggle>
+              <mat-button-toggle value="sbp">Estados</mat-button-toggle>
+              <mat-button-toggle value="credit">Créditos</mat-button-toggle>
+              <mat-button-toggle checked value="all">Todos</mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+
           <h2>Movimientos en el sistema </h2>
+          <p>Se muestra cada acción realizada en el sistema con su estado</p>
           <!-- <ion-row justify-content-around> -->
           <ion-row>
             <ion-col size-md="6" size-lg="6" size-xl="6" *ngFor="let item of allData">

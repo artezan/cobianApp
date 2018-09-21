@@ -100,6 +100,8 @@ import { NewEditBuildComponent } from './components/build/new-edit-build/new-edi
 import { FilterBuildComponent } from './components/general/filter-build/filter-build.component';
 import { FilterMakerComponent } from './components/general/filter-maker/filter-maker.component';
 import { DetailBuildAdminComponent } from './components/admin/detail-build-admin/detail-build-admin.component';
+import { ListSalespropAdminComponent } from './components/admin/list-salesprop-admin/list-salesprop-admin.component';
+import { DetailSalespropAdminComponent } from './components/admin/detail-salesprop-admin/detail-salesprop-admin.component';
 
 @NgModule({
   declarations: [
@@ -155,6 +157,8 @@ import { DetailBuildAdminComponent } from './components/admin/detail-build-admin
     FilterBuildComponent,
     FilterMakerComponent,
     DetailBuildAdminComponent,
+    ListSalespropAdminComponent,
+    DetailSalespropAdminComponent,
   ],
   entryComponents: [],
   imports: [

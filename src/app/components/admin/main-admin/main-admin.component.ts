@@ -38,6 +38,16 @@ export class MainAdminComponent implements OnInit {
     type: string;
     time: any;
   }[] = [];
+  allDataBackUp: {
+    data: {
+      oferts?: IOfert;
+      credits?: ICreditGet;
+      schedules?: ISchedule;
+      sbps?: IStatusBuyerPropertyGet;
+    };
+    type: string;
+    time: any;
+  }[] = [];
   isDesktop = false;
 
   constructor(
@@ -65,6 +75,7 @@ export class MainAdminComponent implements OnInit {
         this.scheduleService.getSchedule().subscribe(s => {
           this.sbpService.getStatusBuyerProperty().subscribe(sbps => {
             this.allData = <any>this.getMerge(oferts, credits, s, sbps);
+            this.allDataBackUp = this.allData;
             this.isLoad = true;
           });
         });
@@ -124,6 +135,16 @@ export class MainAdminComponent implements OnInit {
     });
     console.log(allData);
     return allData;
+  }
+  // filters
+  getByType(type: 'ofert' | 'schedule' | 'credit' | 'sbp' | 'all') {
+    this.allData = this.allDataBackUp;
+    if (type === 'all') {
+      this.allData = this.allDataBackUp;
+    } else {
+      const filter = this.allData.filter(data => data.type === type);
+      this.allData = filter;
+    }
   }
   formatDates(dateInput: Date): string {
     const day: string = new Date(dateInput).getDate().toString();

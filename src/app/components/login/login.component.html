@@ -21,29 +21,34 @@
     <ion-button round fill="outline" color="secondary">Nuevo Usuario</ion-button>
   </form>
 </ion-content> -->
+<ng-container *ngIf="isLogin; then thenTemplate; else elseTemplate"></ng-container>
+<ng-template #thenTemplate>
 
-<div class="center-login">
-  <img src="assets/cobian-light.jpg" style="max-width: 10em" alt="">
-</div>
-<div *ngIf="!isFind" style="margin-top: 2%; margin-bottom: 2%; text-align: center;">
-  <span class="alert alert-danger ">
-    Error usuario y/o contraseña inválido
-  </span>
-</div>
-<div class="grandParentContaniner">
-  <form #loginForm="ngForm">
-    <mdc-text-field label="Nombre" [(ngModel)]="emailInput" #email="ngModel" id="email" name="email" required [outline]="true"
-      [required]="true" [helperText]="weightHelper"></mdc-text-field>
-    <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
-      <span *ngIf="email.dirty || email.touched">Anota nombre</span>
-    </mdc-text-field-helper-text>
-    <mdc-text-field label="Contraseña" type="password" [(ngModel)]="passInput" #pass="ngModel" id="pass" name="pass"
-      required [outline]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
-    <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
-      <span *ngIf="pass.dirty || pass.touched">Anota Contraseña</span>
-    </mdc-text-field-helper-text>
-    <ion-button color="primary" (click)="login()">Ingresar</ion-button>
-    <ion-button round fill="outline" color="secondary" (click)="newUser()">Nuevo Usuario</ion-button>
-  </form>
-  <div class="space-buttons"></div>
-</div>
+</ng-template>
+<ng-template #elseTemplate>
+  <div class="center-login">
+    <img src="assets/cobian-light.jpg" style="max-width: 10em" alt="">
+  </div>
+  <div *ngIf="!isFind" style="margin-top: 2%; margin-bottom: 2%; text-align: center;">
+    <span class="alert alert-danger ">
+      Error usuario y/o contraseña inválido
+    </span>
+  </div>
+  <div class="grandParentContaniner">
+    <form #loginForm="ngForm">
+      <mdc-text-field label="Nombre" [(ngModel)]="emailInput" #email="ngModel" id="email" name="email" required
+        [outline]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+      <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+        <span *ngIf="email.dirty || email.touched">Anota nombre</span>
+      </mdc-text-field-helper-text>
+      <mdc-text-field (keyup)="pressEnter($event)" label="Contraseña" type="password" [(ngModel)]="passInput" #pass="ngModel"
+        id="pass" name="pass" required [outline]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+      <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+        <span *ngIf="pass.dirty || pass.touched">Anota Contraseña</span>
+      </mdc-text-field-helper-text>
+      <ion-button color="primary" (click)="login()">Ingresar</ion-button>
+      <ion-button round fill="outline" color="secondary" (click)="newUser()">Nuevo Usuario</ion-button>
+    </form>
+    <div class="space-buttons"></div>
+  </div>
+</ng-template>

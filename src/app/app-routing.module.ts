@@ -39,6 +39,8 @@ import { NewEditBuildComponent } from './components/build/new-edit-build/new-edi
 import { ListMakerAdminComponent } from './components/admin/list-maker-admin/list-maker-admin.component';
 import { NewEditMakerComponent } from './components/maker/new-edit-maker/new-edit-maker.component';
 import { DetailBuildAdminComponent } from './components/admin/detail-build-admin/detail-build-admin.component';
+import { ListSalespropAdminComponent } from './components/admin/list-salesprop-admin/list-salesprop-admin.component';
+import { DetailSalespropAdminComponent } from './components/admin/detail-salesprop-admin/detail-salesprop-admin.component';
 
 const routes: Routes = [
   // Rutas
@@ -82,6 +84,8 @@ const routes: Routes = [
   { path: 'list-maker-admin', component: ListMakerAdminComponent },
   { path: 'new-edit-maker', component: NewEditMakerComponent },
   { path: 'detail-build-admin', component: DetailBuildAdminComponent },
+  { path: 'list-salesprop-admin', component: ListSalespropAdminComponent },
+  { path: 'detail-salesprop-admin', component: DetailSalespropAdminComponent },
 ];
 
 @NgModule({

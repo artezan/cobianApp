@@ -68,7 +68,7 @@
       </span>
       <span *ngIf="!schedule.status || schedule.status === 'amarillo'">
         <ion-card-header>
-          <ion-card-subtitle>Cita: {{schedule.day}}/{{schedule.month}}/{{schedule.year}}</ion-card-subtitle>
+          <ion-card-subtitle>Cita: {{schedule.day}}/{{schedule.month + 1}}/{{schedule.year}}</ion-card-subtitle>
           <ion-card-subtitle lines="none" text-wrap>Hora: {{formatHours(schedule.hour,
             schedule.minute)}}</ion-card-subtitle>
           <ion-card-title>{{schedule.property.name}}</ion-card-title>

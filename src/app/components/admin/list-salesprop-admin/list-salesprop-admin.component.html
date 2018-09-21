@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button style="color: white !important"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Propiedades
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <ng-container *ngIf="isLoading; then Load; else noLoad"></ng-container>
+  <!-- contenido -->
+
+  <ng-template #Load class="my-contenet">
+    <mat-drawer-container class="side-container" autosize>
+      <!-- contenido de filtros -->
+      <!--  <mat-drawer [class.mat-elevation-z1]=true position="end" #drawer class="sidenav" [mode]="isDesktop ? 'side' : 'over'"
+          [opened]="openMenu">
+          <app-general-filters (filters)="getFilters($event)" (resetAll)="getPropAll()" (closeMenuMaterial)="drawer.close()"
+            [isDesktop]="isDesktop"></app-general-filters>
+        </mat-drawer> -->
+      <!-- /contenido de filtros -->
+      <!-- filtros boton -->
+      <!-- <ion-item *ngIf="!isDesktop" lines="none">
+          <ion-button (click)="drawer.toggle()" slot="end" color="secondary" fill="outline">
+            <ion-icon name="funnel"></ion-icon>Filtros({{numOfFilters}})
+          </ion-button>
+        </ion-item>
+        <ion-item *ngIf="isDesktop" lines="none">
+          <ion-button (click)="drawer.toggle()" slot="end" color="secondary" fill="outline">
+            <ion-icon name="funnel"></ion-icon>Filtros {{(drawer.openedChange | async) ? 'cerrar' : 'abrir'}}
+          </ion-button>
+        </ion-item> -->
+
+      <!-- /filtros boton -->
+
+      <!-- Table  -->
+      <h2>Lista de Propiedades Apartadas </h2>
+      <p>Se muestan las propiedades en estado "Cerrado" o "Rojo" debido a una oferta y/o crédito </p>
+      <app-general-table [columns]="columns" [rows]="rows" [isDesktop]="true" (deletedButton)="presentAlertConfirm($event)"
+        (detailsButton)="detailProp($event)"></app-general-table>
+      <!-- /Table -->
+    </mat-drawer-container>
+
+
+  </ng-template>
+  <!-- /contenido -->
+
+  <!-- Skeleton -->
+  <ng-template #noLoad>
+    <app-general-skeleton></app-general-skeleton>
+  </ng-template>
+
+
+</ion-content>
+<!-- fab placed to the bottom end -->
+<!-- <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+  <ion-fab-button (click)="newBuyer()" *ngIf="isLoading" color="secondary">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab> -->

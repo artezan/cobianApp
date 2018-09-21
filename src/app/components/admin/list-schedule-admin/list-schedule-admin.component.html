@@ -17,7 +17,8 @@
     </ion-buttons>
     <ion-title *ngIf="showFullCalendar" style="text-align: center">{{month[monthNumber]}} {{year}}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="showFullCalendar = !showFullCalendar; getEvents(); " slot="end">
+      <ion-button (click)="showFullCalendar = !showFullCalendar; getEvents(); " slot="end">{{showFullCalendar ? '' :
+        'Ver calendario'}}
         <ion-icon slot="icon-only" [name]="showFullCalendar ? 'clipboard' : 'calendar'"></ion-icon>
       </ion-button>
       <ion-button *ngIf="showFullCalendar" (click)="fowardOne()" slot="end">

@@ -40,10 +40,10 @@
               <ion-card-title>
                 Lista de Fases
               </ion-card-title>
-              <ion-card-subtitle>Seleccione una fase para completar</ion-card-subtitle>
+              <ion-card-subtitle *ngIf="checkAdminRol(user.type)">Seleccione una fase para completar</ion-card-subtitle>
 
             </ion-card-header>
-            <div class="flex-container">
+            <div *ngIf="checkAdminRol(user.type)" class="flex-container">
               <mat-checkbox (change)="changeGoal()" *ngFor="let item of build.timeLine; let i=index" [(ngModel)]="item.isComplete">
                 <h3>
                   {{item.namePhase}}
@@ -59,12 +59,35 @@
                 </div>
               </mat-checkbox>
             </div>
+            <span *ngIf="!checkAdminRol(user.type)">
+              <mat-list *ngFor="let item of build.timeLine; let i=index">
+                <h3 matSubheader>
+                  <b>
+                    {{item.namePhase}}
+                  </b>
+                </h3>
+                <mat-list-item>
+                  <mat-icon [ngClass]="{'color-complete': item.isComplete, 'color-incomplete':!item.isComplete}"
+                    matListIcon>{{item.isComplete ? 'assignment_turned_in':'assignment_late'}}</mat-icon>
+                  <h4 matLine>
+                    <b>
+                      {{item.isComplete ? 'Completada':'Sin Completar'}}
+                    </b>
+                  </h4>
+                  <p matLine> Inicio: {{formatDates(item.yearToStart,item.monthToStart, item.dayToStart)}} </p>
+                  <p matLine> Fin: {{formatDates(item.yearToEnd,item.monthToEnd, item.dayToEnd)}} </p>
+                  <p matLine> {{item.notes}} </p>
+                </mat-list-item>
+              </mat-list>
+            </span>
+
           </ion-card>
         </ion-col>
       </ion-row>
 
       <!-- Options grid -->
       <div class="conteiner-buttons">
+        <p style="text-align: left;">Fotos de Fases</p>
         <mat-button-toggle-group (change)="changeGrid($event)">
           <mat-button-toggle [checked]="!isList" value="column">
             <mat-icon color="accent">view_column</mat-icon>
@@ -122,7 +145,7 @@
             </ion-item>
           </span>
 
-          <input id="imagen1" name="imagen1" type="file" hidden (change)="fileChangeEvent($event)" placeholder="Upload a file...">
+          <input id="imagen1" accept="image/*" name="imagen1" type="file" hidden (change)="fileChangeEvent($event)">
           <ion-button (click)="link(i)" shape="round" fill="outline" color="secondary">
             <ion-icon slot="start" name="add"></ion-icon>
             Agregar
