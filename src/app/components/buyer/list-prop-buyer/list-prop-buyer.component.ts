@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { BuyerService } from '../../../services/buyer.service';
 import { PropertyService } from '../../../services/property.service';
 import { UserSessionService } from '../../../services/user-session.service';
-import { CalcPercentage } from '../../../_config/_helpers';
+import { CalcPercentage, DiffDays } from '../../../_config/_helpers';
 import { IProperty } from '../../../models/property.model';
 import { NavigationExtras, Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
 import { Observable, from } from 'rxjs';
 import { fuseAnimations } from '../../../_config/_animations';
+import { map, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list-prop-buyer',
@@ -43,13 +44,38 @@ export class ListPropBuyerComponent implements OnInit {
     });
   }
   getAllProperty() {
-    this.allProperties = this.propertyService.getAll();
+    /*  this.allProperties = this.propertyService
+      .getAll() */
+    this.allProperties = new Observable<IProperty[]>(ob => {
+      this.propertyService.getAll().subscribe(data => {
+        ob.next(data.filter(p => !p.isBuy));
+      });
+    });
     this.numOfFilers = 0;
   }
   getBuyer(id) {
     this.buyerService.getBuyerById(id).subscribe(buyer => {
       console.log(buyer);
-      this.properties = CalcPercentage(buyer, buyer.property, 10);
+      const isApart = date => {
+        if (date) {
+          const days = 15 - DiffDays(date);
+          if (days > 0) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      };
+      // si apartado  debe de aparecer
+      this.properties = CalcPercentage(buyer, buyer.property, 10).filter(
+        p => !p.isBuy,
+      );
+      // si apartado NO debe de aparecer
+      /* this.properties = CalcPercentage(buyer, buyer.property, 10).filter(
+        p => !p.isBuy && !isApart(p.dateToApart),
+      ); */
       this.isLoad = true;
     });
   }

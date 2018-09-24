@@ -5,6 +5,7 @@ import { fromEvent } from 'rxjs';
 import { UserSessionService } from '../../../services/user-session.service';
 import { NavController, LoadingController } from '@ionic/angular';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import { AdviserService } from '../../../services/adviser.service';
 
 @Component({
   selector: 'app-new-buyer',
@@ -43,6 +44,7 @@ export class NewBuyerComponent implements OnInit {
     public loadingController: LoadingController,
     private route: ActivatedRoute,
     private router: Router,
+    private adviseService: AdviserService,
   ) {
     const buyerId = userSession.userSession.value.id;
     const user = userSession.userSession.value;
@@ -99,6 +101,7 @@ export class NewBuyerComponent implements OnInit {
     this.productSelect.nativeElement.scrollIntoView();
   }
   async checkUser() {
+    const user1 = this.userSession.userSession.value;
     const load = await this.presentLoadingWithOptions('Registrando...');
     load.present();
     if (this.words) {
@@ -107,10 +110,16 @@ export class NewBuyerComponent implements OnInit {
     this.newBuyer.dateToBuy = `${this.daySelect}/${this.monthSelect}/${
       this.yearSelect
     }`;
+    if (user1.type && user1.type === 'adviser') {
+      const arr: any = [user1.id];
+      this.newBuyer.adviser = arr;
+    }
     this.buyerService.newBuyer(this.newBuyer).subscribe(buyer => {
       const user = this.userSession.userSession.value;
       // data  administrator buyer seller adviser management
+      // ADMIN
       if (user.type && user.type === 'administrator') {
+        console.log('aaa');
         // this.router.navigate(['list-buyer-admin']);
         const toast: NavigationExtras = {
           queryParams: { res: ' Comprador Creado' },
@@ -121,6 +130,23 @@ export class NewBuyerComponent implements OnInit {
         this.router
           .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
           .then(() => this.router.navigate(['list-buyer-admin'], toast));
+        // ADVISER
+      } else if (user.type && user.type === 'adviser') {
+        this.adviseService.getAdviserById(user.id).subscribe(adv => {
+          adv.buyer.push(buyer);
+          this.adviseService.putAdviser(adv).subscribe(() => {
+            const toast: NavigationExtras = {
+              queryParams: { res: ' Comprador Creado' },
+            };
+            /**
+             * Es para recargar el componente previo
+             */
+            this.router
+              .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+              .then(() => this.router.navigate(['list-buyer-admin'], toast));
+          });
+        });
+        // NEW
       } else {
         if (buyer) {
           this.userSession.setUserSession(

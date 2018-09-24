@@ -58,7 +58,6 @@ export class LoginComponent implements OnInit {
       .logginUserSession(this.emailInput, this.passInput)
       .subscribe(data => {
         // data  administrator buyer seller adviser management
-
         if (data !== 'error') {
           this.userSession.setUserSession(
             data.data[0].name,
@@ -67,6 +66,12 @@ export class LoginComponent implements OnInit {
             data.data[0].password,
           );
           this.isFind = true;
+          // adviser
+          if (data.type === 'adviser') {
+            this.isLogin = true;
+            load.dismiss();
+            this.navController.navigateRoot('list-buyer-admin', false);
+          }
           // maker
           if (data.type === 'maker') {
             const maker: IMaker[] = data.data;

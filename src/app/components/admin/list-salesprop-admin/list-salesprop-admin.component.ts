@@ -114,20 +114,27 @@ export class ListSalespropAdminComponent implements OnInit {
       // rojo por credito
       const isCredidRed = sBP.buyer.credit.find(
         credit =>
-          credit.status === 'rojo' && credit.property === sBP.property._id,
+          credit.status === 'rojo' &&
+          credit.property === sBP.property._id &&
+          credit.isAccept,
       );
       // rojo por oferta
       const isOfertRed = sBP.buyer.ofert.find(
-        ofert => ofert.status === 'rojo' && ofert.property === sBP.property._id,
+        ofert =>
+          ofert.status === 'rojo' &&
+          ofert.property === sBP.property._id &&
+          ofert.isAccept,
       );
-      rows.push({
-        _id: sBP._id,
-        buyer: sBP.buyer.name,
-        property: sBP.property.name,
-        credit: !!isCredidRed,
-        ofert: !!isOfertRed,
-        timestamp: sBP.timestamp,
-      });
+      if (isOfertRed || isCredidRed) {
+        rows.push({
+          _id: sBP._id,
+          buyer: sBP.buyer.name,
+          property: sBP.property.name,
+          credit: !!isCredidRed,
+          ofert: !!isOfertRed,
+          timestamp: sBP.timestamp,
+        });
+      }
     });
     this.rows = rows;
     this.isLoading = true;

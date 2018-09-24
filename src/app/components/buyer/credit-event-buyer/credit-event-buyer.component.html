@@ -48,10 +48,10 @@
           <!-- Poner en notes Aceptado o Denagado -->
 
           <ion-item lines="none">
-            <ion-button (click)="respondOfert('Aceptado')" color="success" fill="outline" slot="end">
+            <ion-button (click)="respondOfert('Aceptado', true)" color="success" fill="outline" slot="end">
               Aceptar <ion-icon name="checkmark-circle"></ion-icon>
             </ion-button>
-            <ion-button (click)="respondOfert('Denagado')" color="danger" fill="outline" slot="end">
+            <ion-button (click)="respondOfert('Denagado', false)" color="danger" fill="outline" slot="end">
               Denegar <ion-icon name="close-circle"></ion-icon>
             </ion-button>
 
@@ -184,26 +184,32 @@
           <ion-card-content>
             <ion-label text-wrap><b>Aún no cuentas con alguna cita para esta propiedad</b></ion-label>
             <ion-label text-wrap>Solicita una de manera gratuita anotando la posible fecha y presionando en el botón:</ion-label>
-
+            <!-- fecha -->
+            <mat-form-field>
+              <input matInput (dateChange)="dateSelect($event)" [matDatepicker]="picker" (focus)="picker.open()"
+                placeholder="Fecha" required>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker touchUi #picker></mat-datepicker>
+            </mat-form-field>
             <!-- day -->
-            <mdc-text-field label="Dia" type="number" [(ngModel)]="daySelect" #d="ngModel" id="d" name="d" required
+            <!-- <mdc-text-field label="Dia" type="number" [(ngModel)]="daySelect" #d="ngModel" id="d" name="d" required
               [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
             <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
               <span *ngIf="d.dirty || d.touched">Anota Dia</span>
-            </mdc-text-field-helper-text>
+            </mdc-text-field-helper-text> -->
             <!-- mm -->
-            <ion-item lines="none" class="margin-field" style="    margin-right: 10%;">
+            <!--  <ion-item lines="none" class="margin-field" style="    margin-right: 10%;">
               <ion-label>Mes</ion-label>
               <ion-select [(ngModel)]="monthSelect" #me="ngModel" id="me" name="me" required>
                 <ion-select-option *ngFor="let m of months; let i = index" [value]="i">{{m}}</ion-select-option>
               </ion-select>
-            </ion-item>
+            </ion-item> -->
             <!-- aa -->
-            <mdc-text-field label="Año" type="number" [(ngModel)]="yearSelect" #y="ngModel" id="y" name="y" required
+            <!-- <mdc-text-field label="Año" type="number" [(ngModel)]="yearSelect" #y="ngModel" id="y" name="y" required
               [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
             <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
               <span *ngIf="y.dirty || y.touched">Anota Año</span>
-            </mdc-text-field-helper-text>
+            </mdc-text-field-helper-text> -->
             <!-- hh -->
             <mdc-text-field label="Hora (formato 24hrs)" type="number" [(ngModel)]="hourSelect" #h="ngModel" id="h"
               name="h" required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
@@ -211,9 +217,10 @@
               <span *ngIf="h.dirty || h.touched">Anota Hora</span>
             </mdc-text-field-helper-text>
 
+
           </ion-card-content>
           <ion-item lines="none">
-            <ion-button [disabled]="!loginForm2.form.valid" (click)="createSchedule()" color="secondary" fill="outline"
+            <ion-button [disabled]="!hourSelect && !yearSelect" (click)="createSchedule()" color="secondary" fill="outline"
               slot="end">
               Solicitar Cita <ion-icon name="send"></ion-icon>
             </ion-button>

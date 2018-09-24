@@ -1,6 +1,6 @@
 // const ip = 'https://cobianback.herokuapp.com/';
-// const ip = 'http://localhost:3004/';
-const ip = 'http://31.220.52.51:3004/';
+const ip = 'http://localhost:3004/';
+// const ip = 'http://31.220.52.51:3004/';
 
 const apiUrl = ip + 'api/v1/';
 const userSession = 'usersession/';
@@ -35,6 +35,9 @@ const maker = 'maker/';
 const makerbymakerid = 'bymakerid/';
 const deleteFile = 'deleteFile/';
 const bystatusid = 'bystatusid/';
+const sale = 'sale/';
+const bysaleid = 'bysaleid/';
+const byadviserid = 'byadviserid/';
 
 export const END_POINT = {
   IP: ip,
@@ -83,4 +86,8 @@ export const END_POINT = {
   // maker
   MAKER: apiUrl + maker,
   MAKER_ID: apiUrl + maker + makerbymakerid,
+  // Sales
+  SALE: apiUrl + sale,
+  SALE_ID: apiUrl + sale + bysaleid,
+  SALE_ADV_ID: apiUrl + sale + byadviserid,
 };

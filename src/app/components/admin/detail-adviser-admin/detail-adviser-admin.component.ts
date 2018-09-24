@@ -5,6 +5,8 @@ import { BuyerService } from '../../../services/buyer.service';
 import { UserSessionService } from '../../../services/user-session.service';
 import { AdviserService } from '../../../services/adviser.service';
 import { FormatHoursFront, GetPercentGoal } from '../../../_config/_helpers';
+import { SaleService } from '../../../services/sale.service';
+import { ISale } from '../../../models/sale.model';
 
 @Component({
   selector: 'app-detail-adviser-admin',
@@ -17,9 +19,11 @@ export class DetailAdviserAdminComponent implements OnInit {
   arrPropLikes: string[] = [];
   arrSBP: string[] = [];
   adviser: IAdviser;
+  sales: ISale[];
   constructor(
     private route: ActivatedRoute,
     private adviserService: AdviserService,
+    private salesService: SaleService,
   ) {
     this.route.queryParams.subscribe(params => {
       console.log(params.id);
@@ -34,9 +38,11 @@ export class DetailAdviserAdminComponent implements OnInit {
     this.isLoad = false;
     this.adviserService.getAdviserById(id).subscribe(adv => {
       this.adviser = adv;
-
-      console.log(this.adviser);
-      this.isLoad = true;
+      this.salesService.getSaleByIdAdv(id).subscribe(sales => {
+        console.log(this.adviser);
+        this.sales = sales;
+        this.isLoad = true;
+      });
 
       if (adv.buyer && adv.buyer.length > 0) {
       }

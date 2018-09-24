@@ -25,4 +25,5 @@ export interface IOfert {
    */
   files?: string[];
   _id?: string;
+  isAccept?: boolean;
 }

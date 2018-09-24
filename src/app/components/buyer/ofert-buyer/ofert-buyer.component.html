@@ -48,10 +48,10 @@
           <!-- Poner en notes Aceptado o Denagado -->
 
           <ion-item lines="none">
-            <ion-button (click)="respondOfert('Aceptada', ofert)" color="success" fill="outline" slot="end">
+            <ion-button (click)="respondOfert('Aceptada', ofert, true)" color="success" fill="outline" slot="end">
               Aceptar <ion-icon name="checkmark-circle"></ion-icon>
             </ion-button>
-            <ion-button (click)="respondOfert('Denagada', ofert)" color="danger" fill="outline" slot="end">
+            <ion-button (click)="respondOfert('Denagada', ofert, false)" color="danger" fill="outline" slot="end">
               Denegar <ion-icon name="close-circle"></ion-icon>
             </ion-button>
 

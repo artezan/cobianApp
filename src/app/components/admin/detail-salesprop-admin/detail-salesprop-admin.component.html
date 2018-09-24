@@ -79,13 +79,17 @@
         <ion-col size-md="6" size-lg="6" size-xl="6" *ngFor="let credit of getCredits(sBP)">
           <ion-card [ngClass]="{'desktop-card': isDesktop }">
             <ion-card-header>
+              <div style="text-align: right; margin-right: 2%">
+                <ion-button slot="end" [disabled]="!dayRest" (click)="presentAlertPrompt('Crédito')" color="danger"
+                  fill="outline">Firmar</ion-button>
+              </div>
               <ion-card-title>Detalles del Crédito</ion-card-title>
             </ion-card-header>
             <ion-card-content>
               <ion-list lines="none">
 
                 <ion-item lines="none">
-                  <ion-icon slot="start" class="color-item-secondary" name="contact"></ion-icon>
+                  <ion-icon slot="start" class="color-item-secondary" name="clipboard"></ion-icon>
                   <ion-label text-wrap>
                     <p><b>Notas:</b> </p>
                     <p>{{credit.notes}}
@@ -94,7 +98,7 @@
                 </ion-item>
 
                 <ion-item lines="none">
-                  <ion-icon slot="start" class="color-item-secondary" name="calendar"></ion-icon>
+                  <ion-icon slot="start" class="color-item-secondary" name="document"></ion-icon>
                   <ion-label text-wrap>
                     <p><b>Documentos:</b> </p>
                     <p *ngFor="let file of credit.files">{{file}}</p>
@@ -109,13 +113,17 @@
         <ion-col size-md="6" size-lg="6" size-xl="6" *ngFor="let ofert of getOferts(sBP)">
           <ion-card [ngClass]="{'desktop-card': isDesktop }">
             <ion-card-header>
+              <div style="text-align: right; margin-right: 2%">
+                <ion-button [disabled]="!dayRest" (click)="presentAlertPrompt('Oferta', ofert.ofertPrice)" slot="end"
+                  color="danger" fill="outline">Firmar</ion-button>
+              </div>
               <ion-card-title text-wrap>Detalles de la Oferta</ion-card-title>
             </ion-card-header>
             <ion-card-content>
               <ion-list lines="none">
 
                 <ion-item lines="none">
-                  <ion-icon slot="start" class="color-item-secondary" name="contact"></ion-icon>
+                  <ion-icon slot="start" class="color-item-secondary" name="cash"></ion-icon>
                   <ion-label text-wrap>
                     <p><b>Precio:</b> </p>
                     <p>{{ofert.ofertPrice}}
@@ -124,7 +132,7 @@
                 </ion-item>
 
                 <ion-item lines="none">
-                  <ion-icon slot="start" class="color-item-secondary" name="cash"></ion-icon>
+                  <ion-icon slot="start" class="color-item-secondary" name="clipboard"></ion-icon>
                   <ion-label text-wrap>
                     <p><b>Notas:</b></p>
                     <p> {{ofert.notes}}</p>
@@ -132,7 +140,7 @@
                 </ion-item>
 
                 <ion-item lines="none">
-                  <ion-icon slot="start" class="color-item-secondary" name="calendar"></ion-icon>
+                  <ion-icon slot="start" class="color-item-secondary" name="document"></ion-icon>
                   <ion-label text-wrap>
                     <p><b>Documentos:</b> </p>
                     <p *ngFor="let file of ofert.files">{{file}}</p>
@@ -142,6 +150,7 @@
               </ion-list>
             </ion-card-content>
             <ion-card-content></ion-card-content>
+
           </ion-card>
         </ion-col>
 
@@ -155,8 +164,8 @@
     </ng-template>
 
   </ion-grid>
-  <button (click)="presentAlertCheckbox()" class="mdc-fab mdc-fab--extended app-fab--absolute">
+  <!-- <button (click)="presentAlertCheckbox()" class="mdc-fab mdc-fab--extended app-fab--absolute">
     <span class="material-icons mdc-fab__icon">done</span>
     <span class="mdc-fab__label">Frimar</span>
-  </button>
+  </button> -->
 </ion-content>

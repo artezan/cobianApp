@@ -54,8 +54,8 @@ export class DetailBuyerAdminComponent implements OnInit {
           buyerProperty => buyerProperty.property._id,
         );
         console.log(this.arrSBP);
-        this.isLoad = true;
       }
+      this.isLoad = true;
     });
   }
   async presentToast(message: string) {

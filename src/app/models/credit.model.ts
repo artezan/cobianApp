@@ -24,6 +24,7 @@ export interface ICredit {
    */
   notes?: string;
   _id?: string;
+  isAccept?: boolean;
 }
 export interface ICreditGet {
   /**
@@ -48,4 +49,5 @@ export interface ICreditGet {
    */
   notes?: string;
   _id?: string;
+  isAccept?: boolean;
 }

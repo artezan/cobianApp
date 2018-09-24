@@ -9,23 +9,32 @@ import {
   NavController,
 } from '@ionic/angular';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
+import { StatusBuyerPropertyService } from '../../../services/status-buyer-property.service';
+import { IStatusBuyerPropertyGet } from '../../../models/statusBuyerProperty.model';
 import { PropertyFilter } from '../../../_config/_helpers';
+import { SaleService } from '../../../services/sale.service';
+import { ISale } from '../../../models/sale.model';
+import { IAdviser } from '../../../models/adviser.model';
 
 @Component({
-  selector: 'app-list-prop-admin',
-  templateUrl: './list-prop-admin.component.html',
-  styleUrls: ['./list-prop-admin.component.scss'],
+  selector: 'app-list-sales-admin',
+  templateUrl: './list-sales-admin.component.html',
+  styleUrls: ['./list-sales-admin.component.scss'],
 })
-export class ListPropAdminComponent implements OnInit {
+export class ListSalesAdminComponent implements OnInit {
   isLoading = false;
   columns: TableColumsModel[];
   rows: any[] = [];
   isDesktop = false;
   openMenu: boolean;
-  // prop
-  properties: IProperty[] = [];
   // numofFilters
   numOfFilters = 0;
+  sales: ISale[] = [];
+  advTop: IAdviser;
+  totalSales: number;
+  totalSalesOfRent: number;
+  totalSalesOfBuy: number;
+  totalCost: number;
 
   constructor(
     private propertyService: PropertyService,
@@ -35,6 +44,7 @@ export class ListPropAdminComponent implements OnInit {
     public toastController: ToastController,
     public navCtr: NavController,
     public route: ActivatedRoute,
+    private salesService: SaleService,
   ) {
     this.isDesktop = platform.is('desktop');
     if (this.isDesktop) {
@@ -52,108 +62,82 @@ export class ListPropAdminComponent implements OnInit {
     });
     this.columns = [
       {
-        name: 'Nombre',
-        prop: 'name',
+        name: 'Consumidor',
+        prop: 'buyer',
         type: 'normal',
       },
       {
-        name: 'Precio Max',
-        prop: 'maxPrice',
+        name: 'Propiedad',
+        prop: 'property',
+        type: 'normal',
+      },
+      {
+        name: 'Asesor',
+        prop: 'adviser',
+        type: 'normal',
+      },
+      {
+        name: 'Notas',
+        prop: 'note',
+        type: 'normal',
+      },
+      {
+        name: 'Renta',
+        prop: 'isRent',
+        type: 'boolean',
+      },
+      {
+        name: 'Costo',
+        prop: 'price',
         type: 'money',
       },
       {
-        name: 'Precio Min',
-        prop: 'minPrice',
-        type: 'money',
-      },
-      {
-        name: 'Fecha Alta',
+        name: 'Fecha Adquisición',
         prop: 'timestamp',
         type: 'date',
       },
-      {
-        name: 'Nuevo',
-        prop: 'isOld',
-        type: 'boolean',
-      },
-      {
-        name: 'Tipo',
-        prop: 'typePop',
-        type: 'normal',
-      },
-      {
-        name: 'Adquirida',
-        prop: 'isBuy',
-        type: 'boolean',
-      },
-      {
+
+      /*  {
         name: 'Acciones',
         prop: 'acction',
         type: 'buttons',
-        buttonEdit: true,
-        buttonDeleted: true,
         buttonDetails: true,
-      },
+      }, */
     ];
-    this.getPropAll();
+    this.getSales();
   }
-  getPropAll() {
-    this.numOfFilters = 0;
-    this.propertyService.getAll().subscribe(prop => {
-      this.properties = prop;
-      console.log(prop);
-      this.setRows(prop);
+  getSales() {
+    this.isLoading = false;
+    this.salesService.getSale().subscribe(sales => {
+      console.log(sales);
+      this.sales = sales;
+      this.setRows(sales);
+      this.getSumary(sales);
     });
   }
-  setRows(properties: IProperty[]) {
+  setRows(sales: ISale[]) {
     const rows = [];
-
-    properties.forEach(property => {
-      let typePop = 'Vende';
-      if (property.isRent) {
-        typePop = 'Renta';
-      }
+    sales.forEach(sale => {
       rows.push({
-        _id: property._id,
-        name: property.name,
-        maxPrice: property.maxPrice,
-        minPrice: property.minPrice,
-        isOld: !property.isOld,
-        timestamp: property.timestamp,
-        typePop: typePop,
-        isBuy: property.isBuy,
+        _id: sale._id,
+        buyer: sale.buyer.name,
+        property: sale.property.name,
+        adviser: sale.adviser.name,
+        isRent: sale.isRent,
+        price: sale.price,
+        note: sale.note,
+        timestamp: sale.timestamp,
       });
     });
     this.rows = rows;
     this.isLoading = true;
   }
-  newBuyer() {
+  /*  detailProp(item) {
     const data: NavigationExtras = {
-      queryParams: { id: 'new' },
+      queryParams: { id: item._id, credit: item.credit, ofert: item.ofert },
     };
-    this.navCtr.navigateRoot('new-edit-prop');
-  }
-  edit(item) {
-    const data: NavigationExtras = {
-      queryParams: { id: item._id },
-    };
-    this.router.navigate(['new-edit-prop'], data);
-    // this.navCtr.navigateRoot('new-buyer', false, data);
-  }
-  deleted(prop: IProperty) {
-    this.propertyService
-      .deletedById(prop._id)
-      .toPromise()
-      .then(() => {
-        this.getPropAll();
-      });
-  }
-  detailProp(prop: IProperty) {
-    const data: NavigationExtras = {
-      queryParams: { id: prop._id },
-    };
-    this.router.navigate(['detail-prop-admin'], data);
-  }
+    this.router.navigate(['detail-salesprop-admin'], data);
+  } */
   async presentAlertConfirm(prop: IProperty) {
     const alert = await this.alertController.create({
       header: 'Eliminar Usuario',
@@ -181,9 +165,9 @@ export class ListPropAdminComponent implements OnInit {
     await alert.present();
     // IMPORTANTE ASYNC !!!!!
     await alert.onWillDismiss().then(res => {
-      if (res.role === 'ok') {
+      /*  if (res.role === 'ok') {
         this.deleted(prop);
-      }
+      } */
     });
   }
   async presentToast(message) {
@@ -193,7 +177,23 @@ export class ListPropAdminComponent implements OnInit {
     });
     toast.present();
   }
-  getFilters(filters: IProperty) {
+  getSumary(sales: ISale[]) {
+    const add = (a, b) => a + b;
+    this.totalSales = sales.length;
+    this.totalSalesOfRent = sales.filter(s => s.isRent).length;
+    this.totalSalesOfBuy = sales.filter(s => !s.isRent).length;
+    this.totalCost = sales.map(s => s.price).reduce(add);
+    // adv number
+    let numMax = 0;
+    sales.map(s => s.adviser).forEach(adv => {
+      const num = sales.filter(s => s.adviser._id === adv._id).length;
+      if (num > numMax) {
+        numMax = num;
+        this.advTop = adv;
+      }
+    });
+  }
+  /*   getFilters(filters: IProperty) {
     console.log(filters);
     const advFinded = this.properties.filter(prop => {
       const temp = PropertyFilter(filters, prop);
@@ -202,5 +202,5 @@ export class ListPropAdminComponent implements OnInit {
     });
     //  setea buyers
     this.setRows(advFinded);
-  }
+  } */
 }

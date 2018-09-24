@@ -102,6 +102,7 @@ import { FilterMakerComponent } from './components/general/filter-maker/filter-m
 import { DetailBuildAdminComponent } from './components/admin/detail-build-admin/detail-build-admin.component';
 import { ListSalespropAdminComponent } from './components/admin/list-salesprop-admin/list-salesprop-admin.component';
 import { DetailSalespropAdminComponent } from './components/admin/detail-salesprop-admin/detail-salesprop-admin.component';
+import { ListSalesAdminComponent } from './components/admin/list-sales-admin/list-sales-admin.component';
 
 @NgModule({
   declarations: [
@@ -159,6 +160,7 @@ import { DetailSalespropAdminComponent } from './components/admin/detail-salespr
     DetailBuildAdminComponent,
     ListSalespropAdminComponent,
     DetailSalespropAdminComponent,
+    ListSalesAdminComponent,
   ],
   entryComponents: [],
   imports: [

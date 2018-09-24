@@ -14,6 +14,8 @@ import {
 } from '@ionic/angular';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { OnlyDates } from '../../../_config/_helpers';
+import { SaleService } from '../../../services/sale.service';
+import { ISale } from '../../../models/sale.model';
 
 @Component({
   selector: 'app-list-adviser-admin',
@@ -40,6 +42,7 @@ export class ListAdviserAdminComponent implements OnInit {
     public toastController: ToastController,
     public navCtr: NavController,
     public route: ActivatedRoute,
+    private salesService: SaleService,
   ) {
     this.isDesktop = platform.is('desktop');
     if (this.isDesktop) {
@@ -76,6 +79,11 @@ export class ListAdviserAdminComponent implements OnInit {
         prop: 'numOfBuyers',
         type: 'normal',
       },
+      /* {
+        name: '# Renta/Venta',
+        prop: 'numOfSale',
+        type: 'normal',
+      }, */
 
       {
         name: 'Acciones',
@@ -90,18 +98,16 @@ export class ListAdviserAdminComponent implements OnInit {
   }
   getAdviserAll() {
     this.numOfFilters = 0;
-
     this.adviserService.getAdviserAll().subscribe(adv => {
       this.realData = adv;
       this.adviser = adv;
-      console.log(adv);
       this.setRows(this.realData);
     });
   }
-  setRows(advisers: IAdviser[]) {
+  async setRows(advisers: IAdviser[]) {
     const rows = [];
 
-    advisers.forEach(adviser => {
+    advisers.forEach((adviser, i) => {
       let numOfBuyers = 0;
       if (adviser.buyer) {
         numOfBuyers = adviser.buyer.length;
@@ -112,10 +118,21 @@ export class ListAdviserAdminComponent implements OnInit {
         lastName: adviser.lastName,
         timestamp: adviser.timestamp,
         numOfBuyers: numOfBuyers,
+        // numOfSale: arr[i],
       });
+      this.rows = rows;
+      this.isLoading = true;
     });
-    this.rows = rows;
-    this.isLoading = true;
+  }
+  getNumOfSales(advisers: IAdviser[]) {
+    const arrNum: number[] = [];
+    advisers.forEach(async adviser => {
+      const sale = await this.salesService
+        .getSaleByIdAdv(adviser._id)
+        .toPromise();
+      arrNum.push(sale.length);
+    });
+    return arrNum;
   }
   newBuyer() {
     const data: NavigationExtras = {

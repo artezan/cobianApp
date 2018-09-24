@@ -74,7 +74,7 @@ export class CreditEventBuyerComponent implements OnInit {
     this.buyerService.getBuyerById(buyerId).subscribe(buyer => {
       const buyerGet = <any>buyer;
       const isCreditFinded = buyerGet.credit.find(
-        (credit) => credit.property._id === propertyId,
+        credit => credit.property._id === propertyId,
       );
       const isScheduleFinded = buyer.schedule.find(
         s => s.property._id === propertyId,
@@ -123,18 +123,26 @@ export class CreditEventBuyerComponent implements OnInit {
         });
       });
   }
-  respondOfert(str: string) {
+  respondOfert(str: string, isAcept: boolean) {
     this.statusBuyerPropertyService
       .upgradeStatus(this.statusBuyerPropertyId, 'rojo')
       .subscribe(c => console.log(c));
     this.credit.status = 'rojo';
     this.credit.notes = str;
+    this.credit.isAccept = isAcept;
     this.creditService.putCredit(this.credit).subscribe(res => {
       if (res) {
         this.getBuyerById(this.propertyId);
         this.presentToast('Credito ' + str);
       }
     });
+  }
+  dateSelect(event) {
+    if (event) {
+      this.daySelect = event.value._i.date;
+      this.monthSelect = event.value._i.month;
+      this.yearSelect = event.value._i.year;
+    }
   }
   // Schedules
   createSchedule() {

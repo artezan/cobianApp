@@ -86,4 +86,9 @@ export interface IProperty {
    */
   percentage?: number;
   _id?: string;
+  /**
+   * esta comprada
+   */
+  isBuy?: boolean;
+  dateToApart?: Date;
 }

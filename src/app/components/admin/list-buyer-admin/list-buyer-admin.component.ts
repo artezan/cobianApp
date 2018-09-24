@@ -17,6 +17,9 @@ import { BuyersFilters } from '../../../_config/_helpers';
 import { MatDrawer } from '@angular/material';
 import { NavigationExtras, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { UserSessionService } from '../../../services/user-session.service';
+import { IUserSession } from '../../../models/userSession.model';
+import { AdviserService } from '../../../services/adviser.service';
 
 @Component({
   selector: 'app-list-buyer-admin',
@@ -36,7 +39,7 @@ export class ListBuyerAdminComponent implements OnInit {
   realData: IBuyer[] = [];
   // numofFilters
   numOfFilters = 0;
-
+  user: IUserSession;
   constructor(
     private buyerService: BuyerService,
     private sBPService: StatusBuyerPropertyService,
@@ -46,9 +49,9 @@ export class ListBuyerAdminComponent implements OnInit {
     public alertController: AlertController,
     public toastController: ToastController,
     public navCtr: NavController,
+    private userSession: UserSessionService,
   ) {
-    console.log('lista de buyers c');
-
+    this.user = userSession.userSession.value;
     this.isDesktop = platform.is('desktop');
     if (this.isDesktop) {
       this.openMenu = true;
@@ -91,7 +94,7 @@ export class ListBuyerAdminComponent implements OnInit {
         prop: 'acction',
         type: 'buttons',
         buttonEdit: true,
-        buttonDeleted: true,
+        buttonDeleted: this.user.type === 'administrator' ? true : false,
         buttonDetails: true,
       },
     ];
@@ -99,11 +102,29 @@ export class ListBuyerAdminComponent implements OnInit {
   }
   getBuyerAll() {
     this.numOfFilters = 0;
-    this.buyerService.getBuyerAll().subscribe(buyers => {
-      this.realData = buyers;
-      this.buyers = buyers;
-      this.setRows(this.realData);
-    });
+    if (this.user.type === 'administrator' || this.user.type === 'management') {
+      // si es admin
+      this.buyerService.getBuyerAll().subscribe(buyers => {
+        this.realData = buyers;
+        this.buyers = buyers;
+        this.setRows(this.realData);
+      });
+    } else if (this.user.type === 'adviser') {
+      // si es adviser
+
+      this.buyerService.getBuyerAll().subscribe(buyers => {
+        console.log(buyers);
+        // filtra por id en buyer !!!
+        const buyerFilter = buyers.filter(b => {
+          return !!b.adviser.find(adv => adv._id === this.user.id);
+        });
+        console.log(buyerFilter);
+
+        this.realData = buyerFilter;
+        this.buyers = buyerFilter;
+        this.setRows(this.realData);
+      });
+    }
   }
   setRows(buyers: IBuyer[]) {
     /* this.rows = [];

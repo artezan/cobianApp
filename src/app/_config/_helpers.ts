@@ -470,3 +470,10 @@ export function FilerBuild(
   // end filters
   return isOK;
 }
+export function DiffDays(dateToDiference: Date) {
+  const date1 = new Date(dateToDiference);
+  const date2 = new Date();
+  const timeDiff = Math.abs(date2.getTime() - date1.getTime());
+  const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+  return diffDays;
+}

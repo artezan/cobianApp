@@ -124,6 +124,37 @@ export class AppComponent {
       icon: 'timer',
       userType: 'administrator',
     },
+    {
+      title: 'Propiedades Aquiridas',
+      url: '/list-sales-admin',
+      icon: 'trending-up',
+      userType: 'administrator',
+    },
+    // asesores
+    {
+      title: 'Consumidores',
+      url: '/list-buyer-admin',
+      icon: 'clipboard',
+      userType: 'adviser',
+    },
+    {
+      title: 'Propiedades',
+      url: '/list-prop-admin',
+      icon: 'business',
+      userType: 'adviser',
+    },
+    {
+      title: 'Eventos',
+      url: '/list-schedule-admin',
+      icon: 'calendar',
+      userType: 'adviser',
+    },
+    {
+      title: 'Metas',
+      url: '/list-goals-admin',
+      icon: 'stats',
+      userType: 'adviser',
+    },
   ];
 
   isDevice: boolean;

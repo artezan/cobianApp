@@ -4,7 +4,7 @@ import { UserSessionService } from '../../../services/user-session.service';
 import { PropertyService } from '../../../services/property.service';
 import { Platform, ToastController, AlertController } from '@ionic/angular';
 import { IProperty } from '../../../models/property.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import {
   IStatusBuyerProperty,
   IStatusBuyerPropertyGet,
@@ -13,6 +13,11 @@ import { FormatDatesFront } from '../../../_config/_helpers';
 import { AlertInput } from '@ionic/core';
 import { IOfert } from '../../../models/ofert.model';
 import { ICredit } from '../../../models/credit.model';
+import { BuyerService } from '../../../services/buyer.service';
+import { map } from 'rxjs/operators';
+import { IAdviser } from '../../../models/adviser.model';
+import { SaleService } from '../../../services/sale.service';
+import { ISale } from '../../../models/sale.model';
 
 @Component({
   selector: 'app-detail-salesprop-admin',
@@ -36,6 +41,9 @@ export class DetailSalespropAdminComponent implements OnInit {
     public toastController: ToastController,
     public alertController: AlertController,
     public route: ActivatedRoute,
+    public byuerService: BuyerService,
+    public saleService: SaleService,
+    private router: Router,
   ) {
     this.isDesktop = platform.is('desktop');
   }
@@ -91,32 +99,48 @@ export class DetailSalespropAdminComponent implements OnInit {
         credit.status === 'rojo' && credit.property === sBP.property._id,
     );
   }
+  async getAdv() {
+    return await this.byuerService
+      .getBuyerById(this.sBP.buyer._id)
+      .pipe(map(data => data.adviser))
+      .toPromise();
+  }
 
-  async presentAlertCheckbox() {
-    const inputsBuyer: AlertInput[] = [];
-    if (this.isOfert) {
-      inputsBuyer.push({
-        name: 'Oferta',
-        type: 'checkbox',
-        label: 'Oferta',
-        value: 'ofert',
-        checked: false,
-      });
-    }
-    if (this.isCredit) {
-      inputsBuyer.push({
-        name: 'Crédito',
-        type: 'checkbox',
-        label: 'Credito',
-        value: 'credit',
-        checked: false,
-      });
-    }
+  async presentAlertPrompt(str, oferPrice?) {
+    const propInput: AlertInput[] = [
+      {
+        name: 'price',
+        type: 'number',
+        value: this.isOfert ? oferPrice : this.sBP.property.maxPrice.toString(),
+        label: 'Costo Final',
+        placeholder: 'Costo Final',
+      },
+      {
+        name: 'note',
+        type: 'text',
+        placeholder: 'Notas',
+        value: str,
+      },
+      {
+        name: 'property',
+        type: 'text',
+        id: 'property-id',
+        value: this.sBP.property.name,
+        disabled: true,
+      },
+      {
+        name: 'buyer',
+        type: 'text',
+        value: this.sBP.buyer.name + this.sBP.buyer.fatherLastName,
+        placeholder: 'Consumidor',
+        disabled: true,
+      },
+    ];
     const alert = await this.alertController.create({
       header: 'Firmar',
-      subHeader: 'Seleccione uno o varios para confirmar',
+      subHeader: 'Llene los campos',
       message: 'Al momento de aceptar la propiedad cambiará de estado',
-      inputs: inputsBuyer,
+      inputs: propInput,
       buttons: [
         {
           text: 'Cancelar',
@@ -138,28 +162,79 @@ export class DetailSalespropAdminComponent implements OnInit {
 
     await alert.present();
     await alert.onWillDismiss().then(res => {
-      if (res.role === 'ok' && res.data.value.length > 0) {
+      console.log(res);
+      if (res.role === 'ok') {
         console.log(res);
-        this.changeStatus(res.data.value);
+        this.presentAlertCheckbox(res.data.values.price, res.data.values.note);
       }
     });
   }
-  // cambiar a azul sbp, ofert credit
-  changeStatus(arr: string[]) {
+  // asigna adv
+  async presentAlertCheckbox(price, note) {
+    const advInput: AlertInput[] = [];
+    const advisers: IAdviser[] = await this.getAdv();
+    advisers.forEach(adv => {
+      advInput.push({
+        name: 'adviser',
+        type: 'radio',
+        label: adv.name,
+        value: adv._id,
+      });
+    });
+    const alert = await this.alertController.create({
+      header: 'Asesor',
+      subHeader: 'Seleccione Asesor de renta/compra',
+      inputs: advInput,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('');
+          },
+        },
+        {
+          text: 'Firmar',
+          role: 'ok',
+          handler: () => {
+            console.log('');
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+    await alert.onWillDismiss().then(res => {
+      console.log(res);
+      if (res.role === 'ok') {
+        this.changeStatus(res.data.values, note, price);
+      }
+    });
+  }
+  // cambiar status
+  changeStatus(adv, note, price) {
+    const Sale = {
+      adviser: adv,
+      isRent: this.sBP.property.isRent,
+      buyer: this.sBP.buyer._id,
+      property: this.sBP.property._id,
+      note: note,
+      price: +price,
+    };
+    console.log(Sale);
     this.statusBPService.upgradeStatus(this.sBP._id, 'azul').subscribe(() => {
-      arr.forEach(string => {
-        if (string === 'ofert') {
-          const oferts = this.getOferts(this.sBP);
-          oferts.forEach(o => {
-            // ofert serv put
-          });
-        }
-        if (string === 'credit') {
-          const credit = this.getCredits(this.sBP);
-          credit.forEach(c => {
-            // credit serv put azul
-          });
-        }
+      this.saleService.newSale(<any>Sale).subscribe(sale => {
+        const prop = { _id: this.sBP.property._id, isBuy: true };
+        this.propertyService.putProperty(prop).subscribe(() => {
+          console.log(sale);
+          const toast: NavigationExtras = {
+            queryParams: { res: 'Venta Concretada' },
+          };
+          this.router
+            .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+            .then(() => this.router.navigate(['list-salesprop-admin'], toast));
+        });
       });
     });
   }

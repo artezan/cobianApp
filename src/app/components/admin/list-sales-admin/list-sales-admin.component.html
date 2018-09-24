@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button style="color: white !important"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Propiedades Adquiridas
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <ng-container *ngIf="isLoading; then Load; else noLoad"></ng-container>
+  <!-- contenido -->
+
+  <ng-template #Load class="my-contenet">
+    <mat-drawer-container class="side-container" autosize>
+      <!-- contenido de filtros -->
+      <!--  <mat-drawer [class.mat-elevation-z1]=true position="end" #drawer class="sidenav" [mode]="isDesktop ? 'side' : 'over'"
+            [opened]="openMenu">
+            <app-general-filters (filters)="getFilters($event)" (resetAll)="getPropAll()" (closeMenuMaterial)="drawer.close()"
+              [isDesktop]="isDesktop"></app-general-filters>
+          </mat-drawer> -->
+      <!-- /contenido de filtros -->
+      <!-- filtros boton -->
+      <!-- <ion-item *ngIf="!isDesktop" lines="none">
+            <ion-button (click)="drawer.toggle()" slot="end" color="secondary" fill="outline">
+              <ion-icon name="funnel"></ion-icon>Filtros({{numOfFilters}})
+            </ion-button>
+          </ion-item>
+          <ion-item *ngIf="isDesktop" lines="none">
+            <ion-button (click)="drawer.toggle()" slot="end" color="secondary" fill="outline">
+              <ion-icon name="funnel"></ion-icon>Filtros {{(drawer.openedChange | async) ? 'cerrar' : 'abrir'}}
+            </ion-button>
+          </ion-item> -->
+
+      <!-- /filtros boton -->
+
+      <!-- Table  -->
+      <h2>Lista de Propiedades Adquiridas </h2>
+      <p>Se muestan las propiedades que estan en estado "Azul" y estan compradas/rentadas </p>
+      <app-general-table [columns]="columns" [rows]="rows" [isDesktop]="true"></app-general-table>
+      <!-- /Table -->
+      <!-- Resumen -->
+      <mat-card [class.mat-elevation-z0]="true" class="border-sumary">
+        <mat-card-title>
+          Resumen
+        </mat-card-title>
+
+        <mat-card-content>
+          <mat-chip-list>
+            <mat-chip class="background-secondary">Total de Propiedades Adquiridas: {{totalSales}}</mat-chip>
+            <mat-chip class="background-secondary">Total de Propiedades Rentadas: {{totalSalesOfRent}}</mat-chip>
+            <mat-chip class="background-secondary">Total de Propiedades Vendidas: {{totalSalesOfBuy}}</mat-chip>
+            <mat-chip class="background-secondary">Costo Total: ${{totalCost}}</mat-chip>
+            <mat-chip class="background-secondary">Asesor Mayor Ventas: {{advTop.name}}</mat-chip>
+          </mat-chip-list>
+        </mat-card-content>
+
+      </mat-card>
+    </mat-drawer-container>
+
+
+  </ng-template>
+  <!-- /contenido -->
+
+  <!-- Skeleton -->
+  <ng-template #noLoad>
+    <app-general-skeleton></app-general-skeleton>
+  </ng-template>
+
+
+</ion-content>
+<!-- fab placed to the bottom end -->
+<!-- <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button (click)="newBuyer()" *ngIf="isLoading" color="secondary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab> -->

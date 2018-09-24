@@ -53,6 +53,10 @@ html {
   border-left: 4px solid var(--ion-color-blue);
 }
 
+.background-secondary {
+  background-color: var(--ion-color-secondary) !important;
+}
+
 .background-gris {
   background-color: var(--ion-color-medium);
 }
@@ -81,6 +85,12 @@ html {
   position: fixed !important;
   bottom: 1rem;
   right: 1rem;
+}
+
+.border-sumary,
+.border-filter {
+  border: 2px solid #ccc !important;
+  border-radius: 16px !important;
 }
 
 @media (max-width: 900px) {

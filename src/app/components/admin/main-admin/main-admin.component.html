@@ -32,7 +32,7 @@
         <span *ngSwitchCase="'movementsSegment'">
           <!-- filtros -->
           <div class="filters-buttons-conteiner   ">
-            <mat-button-toggle-group (change)="getByType($event.value)">
+            <mat-button-toggle-group style="flex-wrap: wrap" (change)="getByType($event.value)">
               <mat-button-toggle value="schedule">Eventos</mat-button-toggle>
               <mat-button-toggle value="ofert">Ofertas</mat-button-toggle>
               <mat-button-toggle value="sbp">Estados</mat-button-toggle>

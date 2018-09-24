@@ -68,6 +68,22 @@
           <ion-label>Completado {{getPercentage(goal.goals)}}%</ion-label>
         </ion-item>
       </ion-card>
+      <!-- Adquiridas -->
+      <h1 *ngIf=" sales.length > 0"> Propiedades Vendidas y Rentadas </h1>
+      <ion-card class="state-azul" *ngFor="let sale  of sales ">
+        <ion-item>
+          <ion-label>Propiedad {{sale.property.name}}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Consumidor {{sale.buyer.name}}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Cantidad ${{sale.price}}</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>Fecha {{formatDates(sale.timestamp)}}</ion-label>
+        </ion-item>
+      </ion-card>
 
     </ng-template>
     <ng-template #elseTemplate style="text-align: center">
