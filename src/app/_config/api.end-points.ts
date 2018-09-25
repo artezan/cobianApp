@@ -1,12 +1,13 @@
 // const ip = 'https://cobianback.herokuapp.com/';
-const ip = 'http://localhost:3004/';
-// const ip = 'http://31.220.52.51:3004/';
+// const ip = 'http://localhost:3004/';
+const ip = 'http://31.220.52.51:3004/';
 
 const apiUrl = ip + 'api/v1/';
 const userSession = 'usersession/';
 const buyer = 'buyer/';
 const buyerId = 'bybuyerid/';
 const property = 'property/';
+const propertyAll = 'all/';
 const bypropertyid = 'bypropertyid/';
 const checkbuyer = 'checkbuyer/';
 const propertybyBuyer = 'matchsearchbybuyer/';
@@ -51,6 +52,7 @@ export const END_POINT = {
   PROPERTY_MATCH_SEARCH: apiUrl + property + propertybyBuyer,
   PROPERTY_BY_ID: apiUrl + property + bypropertyid,
   PROPERTY: apiUrl + property,
+  PROPERTY_ALL: apiUrl + property + propertyAll,
   PROPERTY_SIMULATE: apiUrl + property + properySimulate,
   // status buyer property
   STATUS_BP: apiUrl + statusBuyerProperty,

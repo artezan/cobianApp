@@ -2,6 +2,7 @@
   height: 100%;
   background-color: white;
 }
+
 .sidenav {
   width: 230px;
   margin-bottom: 1%;
@@ -14,4 +15,10 @@
     width: 73%;
     box-shadow: 3px 0 6px rgba(0, 0, 0, 0.24);
   }
+}
+
+.toast-adv {
+  --background: #f5bd8d;
+  --color: black;
+  font-size: 15px;
 }

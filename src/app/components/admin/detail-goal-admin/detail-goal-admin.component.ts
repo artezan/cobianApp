@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UserSessionService } from '../../../services/user-session.service';
 import { ToastController, Platform } from '@ionic/angular';
 import { FormatHoursFront, FormatDatesFront } from '../../../_config/_helpers';
+import { IUserSession } from '../../../models/userSession.model';
 
 @Component({
   selector: 'app-detail-goal-admin',
@@ -18,13 +19,16 @@ export class DetailGoalAdminComponent implements OnInit {
   arrSBP: string[] = [];
   goal: IGoal;
   isDesktop = true;
+  user: IUserSession;
   constructor(
     private route: ActivatedRoute,
     private goalService: GoalService,
     private userSessionService: UserSessionService,
     public toastController: ToastController,
     private platform: Platform,
+    private userSession: UserSessionService,
   ) {
+    this.user = userSession.userSession.value;
     this.route.queryParams.subscribe(params => {
       if (params.id) {
         this.getGoalById(params.id);

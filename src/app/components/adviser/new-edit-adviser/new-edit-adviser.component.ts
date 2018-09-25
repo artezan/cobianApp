@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 import { IBuyer } from '../../../models/buyer.model';
 import { NavComponent } from '@ionic/core';
 import { NavController } from '@ionic/angular';
+import { UserSessionService } from '../../../services/user-session.service';
+import { IUserSession } from '../../../models/userSession.model';
 
 @Component({
   selector: 'app-new-edit-adviser',
@@ -23,20 +25,29 @@ export class NewEditAdviserComponent implements OnInit {
   buyers$: Observable<IBuyer[]>;
   buyerSelect$: Observable<IBuyer>;
   buyerInput: IBuyer[] = [];
-
+  user: IUserSession;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private adviserService: AdviserService,
     private buyerService: BuyerService,
     private navCtr: NavController,
-  ) {}
+    private userSession: UserSessionService,
+  ) {
+    this.user = userSession.userSession.value;
+  }
 
   ngOnInit() {
     this.getBuyers();
     this.route.queryParams.subscribe(params => {
       if (params['id']) {
         this.adviserService.getAdviserById(params['id']).subscribe(adv => {
+          console.log(adv);
+          this.adviser = adv;
+        });
+        this.isNew = false;
+      } else if (this.user.type === 'adviser') {
+        this.adviserService.getAdviserById(this.user.id).subscribe(adv => {
           console.log(adv);
           this.adviser = adv;
         });
@@ -50,7 +61,7 @@ export class NewEditAdviserComponent implements OnInit {
     this.buyers$ = this.buyerService.getBuyerAll();
   }
   newCustomer() {
-    this.adviser.buyer = <any>this.buyerInput.map(b => b._id);
+    this.adviser.buyer = <any>this.buyerInput;
     this.adviserService.newAdviser(this.adviser).subscribe(adv => {
       this.buyerInput.forEach(buyer => {
         const indexFinded = buyer.adviser.findIndex(ad => ad._id === adv._id);
@@ -64,10 +75,6 @@ export class NewEditAdviserComponent implements OnInit {
       const toast: NavigationExtras = {
         queryParams: { res: 'Nuevo Asesor Agregado' },
       };
-      // this.router.navigate(['list-adviser-admin'], toast);
-      /**
-       * Es para recargar el componente previo
-       */
       this.router
         .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
         .then(() => this.router.navigate(['list-adviser-admin'], toast));
@@ -113,14 +120,16 @@ export class NewEditAdviserComponent implements OnInit {
       const toast: NavigationExtras = {
         queryParams: { res: ' Asesor Editado' },
       };
-      // this.n.navigate(['list-adviser-admin'], toast);
-      // this.navCtr.navigateRoot('list-adviser-admin');
       /**
        * Es para recargar el componente previo
        */
-      this.router
-        .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
-        .then(() => this.router.navigate(['list-adviser-admin'], toast));
+      if (this.user.type === 'adviser') {
+        this.router.navigate(['list-buyer-admin'], toast);
+      } else {
+        this.router
+          .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+          .then(() => this.router.navigate(['list-adviser-admin'], toast));
+      }
     });
   }
   newAdviserToBuyer(buyer: IBuyer, adviserId: string) {

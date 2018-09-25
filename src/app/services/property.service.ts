@@ -26,6 +26,11 @@ export class PropertyService {
       .get(END_POINT.PROPERTY)
       .pipe(map((data: any) => data.data));
   }
+  public getAllSpecial(): Observable<IProperty[]> {
+    return this.http
+      .get(END_POINT.PROPERTY_ALL)
+      .pipe(map((data: any) => data.data));
+  }
   public deletedById(id: string): Observable<boolean> {
     return this.http
       .delete(END_POINT.PROPERTY + id)

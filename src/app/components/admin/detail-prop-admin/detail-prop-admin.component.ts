@@ -115,7 +115,7 @@ export class DetailPropAdminComponent implements OnInit {
     await alert.present();
     await alert.onWillDismiss().then(res => {
       if (res.role === 'ok') {
-        this.setPropToBuyer(res.data.value);
+        this.setPropToBuyer(res.data.values);
       }
     });
   }

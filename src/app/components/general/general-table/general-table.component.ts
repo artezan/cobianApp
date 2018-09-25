@@ -39,6 +39,8 @@ export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
   displayedColumns: string[];
   dataSource: MatTableDataSource<any>;
   @Input()
+  isIcon = false;
+  @Input()
   isDesktop = true;
   @Input()
   showFilterByStatus = true;
@@ -97,6 +99,7 @@ export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
         this.realData = changes.rows.currentValue;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        console.log(this.dataSource.data);
       }
     }
   }

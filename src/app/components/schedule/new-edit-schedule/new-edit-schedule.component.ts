@@ -14,6 +14,8 @@ import { AdviserService } from '../../../services/adviser.service';
 import { MatDatepickerInputEvent } from '@angular/material';
 import { Moment } from 'moment';
 import { ScheduleService } from '../../../services/schedule.service';
+import { UserSessionService } from '../../../services/user-session.service';
+import { IUserSession } from '../../../models/userSession.model';
 
 @Component({
   selector: 'app-new-edit-schedule',
@@ -33,6 +35,7 @@ export class NewEditScheduleComponent implements OnInit {
   advisers$: Observable<IAdviser[]>;
   item;
   adviserBefore: string;
+  user: IUserSession;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -42,7 +45,10 @@ export class NewEditScheduleComponent implements OnInit {
     private buyerService: BuyerService,
     private adviserService: AdviserService,
     public alertController: AlertController,
-  ) {}
+    private userSession: UserSessionService,
+  ) {
+    this.user = userSession.userSession.value;
+  }
 
   ngOnInit() {
     this.getProperties();
@@ -73,6 +79,9 @@ export class NewEditScheduleComponent implements OnInit {
           this.schedule.month = +params.month;
           this.schedule.year = +params.year;
         }
+        if (this.user.type === 'adviser') {
+          this.schedule.adviser = this.user.id;
+        }
         this.isNew = true;
       }
     });
@@ -81,7 +90,19 @@ export class NewEditScheduleComponent implements OnInit {
     this.properties$ = this.propertyService.getAll();
   }
   getBuyers() {
-    this.buyers$ = this.buyerService.getBuyerAll();
+    if (this.user.type === 'adviser') {
+      this.buyers$ = new Observable<IBuyer[]>(ob => {
+        this.buyerService.getBuyerAll().subscribe(data => {
+          ob.next(
+            data.filter(b => {
+              return !!b.adviser.find(adv => adv._id === this.user.id);
+            }),
+          );
+        });
+      });
+    } else {
+      this.buyers$ = this.buyerService.getBuyerAll();
+    }
   }
   getAdvByBuyer() {
     this.buyerSelect$ = this.buyerService.getBuyerById(<string>(

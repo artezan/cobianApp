@@ -119,7 +119,6 @@ export class NewBuyerComponent implements OnInit {
       // data  administrator buyer seller adviser management
       // ADMIN
       if (user.type && user.type === 'administrator') {
-        console.log('aaa');
         // this.router.navigate(['list-buyer-admin']);
         const toast: NavigationExtras = {
           queryParams: { res: ' Comprador Creado' },
@@ -149,13 +148,14 @@ export class NewBuyerComponent implements OnInit {
         // NEW
       } else {
         if (buyer) {
+          console.log(buyer);
           this.userSession.setUserSession(
             buyer.name,
             'buyer',
             buyer._id,
             buyer.password,
           );
-          this.navController.navigateRoot('login', false);
+          this.navController.navigateRoot('list-prop-buyer', false);
         }
       }
 

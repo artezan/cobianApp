@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 import { IAdviser } from '../../../models/adviser.model';
 import { Platform } from '@ionic/angular';
 import { UserSessionService } from '../../../services/user-session.service';
+import { IUserSession } from '../../../models/userSession.model';
+import { filter, map } from 'rxjs/operators';
 @Component({
   selector: 'app-new-edit-goal',
   templateUrl: './new-edit-goal.component.html',
@@ -29,6 +31,7 @@ export class NewEditGoalComponent implements OnInit {
   isDesktop = false;
   arrList: string[] = [];
   numOfItems = 3;
+  user: IUserSession;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -37,6 +40,7 @@ export class NewEditGoalComponent implements OnInit {
     private platform: Platform,
     private userService: UserSessionService,
   ) {
+    this.user = userService.userSession.value;
     this.isDesktop = platform.is('desktop');
     this.getAdviser();
     this.isLoad = false;
@@ -62,7 +66,13 @@ export class NewEditGoalComponent implements OnInit {
 
   ngOnInit() {}
   getAdviser() {
-    this.advisers$ = this.adviserService.getAdviserAll();
+    if (this.user.type === 'adviser') {
+      this.advisers$ = this.adviserService
+        .getAdviserAll()
+        .pipe(map(advs => advs.filter(adv => adv._id === this.user.id)));
+    } else {
+      this.advisers$ = this.adviserService.getAdviserAll();
+    }
   }
   editGoal() {
     // adv

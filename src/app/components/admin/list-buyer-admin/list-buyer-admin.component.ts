@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  AfterViewInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import {
   TableColumsModel,
   TableStatusChips,
@@ -20,11 +26,15 @@ import { Observable } from 'rxjs';
 import { UserSessionService } from '../../../services/user-session.service';
 import { IUserSession } from '../../../models/userSession.model';
 import { AdviserService } from '../../../services/adviser.service';
+import { Storage } from '@ionic/storage';
+import { SaleService } from '../../../services/sale.service';
+import { ISale } from '../../../models/sale.model';
 
 @Component({
   selector: 'app-list-buyer-admin',
   templateUrl: './list-buyer-admin.component.html',
   styleUrls: ['./list-buyer-admin.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ListBuyerAdminComponent implements OnInit {
   drawer: MatDrawer;
@@ -40,6 +50,7 @@ export class ListBuyerAdminComponent implements OnInit {
   // numofFilters
   numOfFilters = 0;
   user: IUserSession;
+  sales: ISale[];
   constructor(
     private buyerService: BuyerService,
     private sBPService: StatusBuyerPropertyService,
@@ -50,6 +61,8 @@ export class ListBuyerAdminComponent implements OnInit {
     public toastController: ToastController,
     public navCtr: NavController,
     private userSession: UserSessionService,
+    private storage: Storage,
+    private saleService: SaleService,
   ) {
     this.user = userSession.userSession.value;
     this.isDesktop = platform.is('desktop');
@@ -61,7 +74,6 @@ export class ListBuyerAdminComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('lista de buyers');
     this.columns = [
       {
         name: 'Nombre',
@@ -111,18 +123,16 @@ export class ListBuyerAdminComponent implements OnInit {
       });
     } else if (this.user.type === 'adviser') {
       // si es adviser
-
+      this.toastPresent(`Bienvenido ${this.user.name}`);
       this.buyerService.getBuyerAll().subscribe(buyers => {
-        console.log(buyers);
         // filtra por id en buyer !!!
         const buyerFilter = buyers.filter(b => {
           return !!b.adviser.find(adv => adv._id === this.user.id);
         });
-        console.log(buyerFilter);
-
         this.realData = buyerFilter;
         this.buyers = buyerFilter;
         this.setRows(this.realData);
+        this.getTotalSales();
       });
     }
   }
@@ -161,7 +171,7 @@ export class ListBuyerAdminComponent implements OnInit {
   newBuyer() {
     /* this.router.navigate(['new-buyer']);
     this.rows.length = 0; */
-    this.navCtr.navigateRoot('new-buyer');
+    this.router.navigate(['new-buyer']);
   }
   edit(item) {
     const data: NavigationExtras = {
@@ -184,6 +194,17 @@ export class ListBuyerAdminComponent implements OnInit {
     };
     this.router.navigate(['detail-buyer-admin'], data);
   }
+  getTotalSales() {
+    this.saleService.getSaleByIdAdv(this.user.id).subscribe(sales => {
+      this.sales = sales;
+      console.log(sales);
+    });
+  }
+  sendToTotalSales() {
+    if (this.sales.length > 0) {
+      this.router.navigate(['list-sales-admin']);
+    }
+  }
   async presentAlertConfirm(buyer: IBuyer) {
     const alert = await this.alertController.create({
       header: 'Eliminar Usuario',
@@ -193,9 +214,7 @@ export class ListBuyerAdminComponent implements OnInit {
           text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: blah => {
-            console.log('Confirm Cancel: blah');
-          },
+          handler: blah => {},
         },
         {
           text: 'Sí',
@@ -249,5 +268,22 @@ export class ListBuyerAdminComponent implements OnInit {
       numFilters++;
     }
     this.numOfFilters = numFilters;
+  }
+  async toastPresent(m = 'Eventos pendientes hoy') {
+    const isPresent = await this.storage.get('alert-adv');
+    if (+isPresent !== new Date().getDate()) {
+      const toast = await this.toastController.create(<any>{
+        message: m,
+        position: 'bottom',
+        showCloseButton: false,
+        cssClass: 'toast-adv',
+        duration: 5000,
+        mode: 'ios',
+      });
+      toast.present();
+      toast.onWillDismiss().then(() => {
+        this.storage.set('alert-adv', new Date().getDate());
+      });
+    }
   }
 }

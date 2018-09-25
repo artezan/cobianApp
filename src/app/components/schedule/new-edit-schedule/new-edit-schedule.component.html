@@ -30,7 +30,7 @@
               <mat-error *ngIf="b.dirty || b.touched">Anotar Comprador</mat-error>
             </mat-form-field>
             <!-- lista de asesores -->
-            <div *ngIf="b.value">
+            <div *ngIf="b.value && (user.type !== 'adviser' && user.type !== 'management' )">
               <mat-radio-group style="margin-bottom: 2%;" (change)="getAdvAll(ad.value)" class="example-radio-group"
                 [(ngModel)]="item" #ad="ngModel" id="ad" name="ad" required>
                 <span class="example-radio-group" *ngIf="(buyerSelect$ | async)?.adviser && (buyerSelect$ | async)?.adviser.length > 0">

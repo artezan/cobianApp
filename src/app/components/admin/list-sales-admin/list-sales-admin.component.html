@@ -39,7 +39,7 @@
       <!-- Table  -->
       <h2>Lista de Propiedades Adquiridas </h2>
       <p>Se muestan las propiedades que estan en estado "Azul" y estan compradas/rentadas </p>
-      <app-general-table [columns]="columns" [rows]="rows" [isDesktop]="true"></app-general-table>
+      <app-general-table [columns]="columns" [rows]="rows" [isDesktop]="isDesktop"></app-general-table>
       <!-- /Table -->
       <!-- Resumen -->
       <mat-card [class.mat-elevation-z0]="true" class="border-sumary">
@@ -53,7 +53,7 @@
             <mat-chip class="background-secondary">Total de Propiedades Rentadas: {{totalSalesOfRent}}</mat-chip>
             <mat-chip class="background-secondary">Total de Propiedades Vendidas: {{totalSalesOfBuy}}</mat-chip>
             <mat-chip class="background-secondary">Costo Total: ${{totalCost}}</mat-chip>
-            <mat-chip class="background-secondary">Asesor Mayor Ventas: {{advTop.name}}</mat-chip>
+            <mat-chip *ngIf="user.type !== 'adviser'" class="background-secondary">Asesor Mayor Ventas: {{advTop.name}}</mat-chip>
           </mat-chip-list>
         </mat-card-content>
 

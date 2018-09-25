@@ -8,6 +8,7 @@
     </ion-title>
 
   </ion-toolbar>
+
 </ion-header>
 <ion-content padding>
   <ng-container *ngIf="isLoading; then Load; else noLoad"></ng-container>
@@ -58,3 +59,12 @@
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>
 </ion-fab>
+<ion-footer *ngIf="user.type === 'adviser' && sales">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="sendToTotalSales()" fill="solid" color="secondary">
+        Ventas<ion-badge color="dark" style=" margin-left: 2%;">{{sales.length}}</ion-badge>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

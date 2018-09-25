@@ -30,7 +30,8 @@
 <ion-content padding>
   <ion-grid fixed style="height: 100%;">
     <span *ngIf="isLoad">
-      <app-general-calendar [year]="year" [month]="monthNumber" [schedules]="schedule" (calendarSelect)="calendarSelect($event)"></app-general-calendar>
+      <app-general-calendar [year]="year" [month]="monthNumber" [schedules]="schedule" (calendarSelect)="calendarSelect($event)"
+        (alertOfToday)="toastPresent()"></app-general-calendar>
     </span>
 
   </ion-grid>

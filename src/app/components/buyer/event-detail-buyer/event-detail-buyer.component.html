@@ -10,7 +10,7 @@
 </ion-header>
 <ion-content padding>
   <!-- Toggles in a List -->
-  <ion-list lines="none" *ngIf="!isOne">
+  <ion-list lines="none">
     <ion-item lines="none">
       <ion-label>Mostrar Todos</ion-label>
       <ion-toggle [(ngModel)]="isAll" (ionChange)="getAllSchedule();getActualSchedule()"></ion-toggle>
@@ -85,9 +85,9 @@
       </span>
       <span *ngIf="schedule.status === 'rojo'">
         <ion-card-header>
-          <ion-card-subtitle>Estado: Visita</ion-card-subtitle>
+          <ion-card-subtitle>Estado: Visitado</ion-card-subtitle>
           <!-- Poner en notes Visitada o No Visitada -->
-          <ion-card-title text-wrap> Asistencia: {{schedule.note}}</ion-card-title>
+          <ion-card-title text-wrap> Evento Pasado </ion-card-title>
           <ion-card-content text-wrap>
           </ion-card-content>
         </ion-card-header>

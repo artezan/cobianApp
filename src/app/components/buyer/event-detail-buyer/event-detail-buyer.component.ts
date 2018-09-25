@@ -5,6 +5,8 @@ import { BuyerService } from '../../../services/buyer.service';
 import { ISchedule } from '../../../models/schedule.model';
 import { ScheduleService } from '../../../services/schedule.service';
 import { FormatHoursFront, FormatDatesFront } from '../../../_config/_helpers';
+import { IUserSession } from '../../../models/userSession.model';
+import { AdviserService } from '../../../services/adviser.service';
 
 @Component({
   selector: 'app-event-detail-buyer',
@@ -16,19 +18,40 @@ export class EventDetailBuyerComponent implements OnInit {
   scheduleToShow: ISchedule[] = [];
   isAll: boolean;
   isOne: boolean;
+  user: IUserSession;
 
   constructor(
     private route: ActivatedRoute,
     private userSessionService: UserSessionService,
     private buyerService: BuyerService,
     private scheduleService: ScheduleService,
+    private adviserService: AdviserService,
   ) {
-    this.inti();
+    this.user = this.userSessionService.userSession.value;
+    if (this.user.type === 'buyer') {
+      this.inti(this.user);
+    } else if (this.user.type === 'adviser') {
+      this.initAdv(this.user);
+    }
   }
 
-  private inti() {
-    const buyer = this.userSessionService.userSession.value;
+  private inti(buyer: IUserSession) {
     this.buyerService.getBuyerById(buyer.id).subscribe(b => {
+      this.schedule = b.schedule;
+      this.route.queryParams.subscribe(params => {
+        if (params.year) {
+          this.isOne = true;
+          this.getByDay(+params.year, +params.month, +params.day);
+        } else {
+          this.isAll = false;
+          this.getActualSchedule();
+        }
+      });
+    });
+  }
+  private initAdv(adv: IUserSession) {
+    this.adviserService.getAdviserById(adv.id).subscribe(b => {
+      console.log(b);
       this.schedule = b.schedule;
       this.route.queryParams.subscribe(params => {
         if (params.year) {
@@ -76,7 +99,7 @@ export class EventDetailBuyerComponent implements OnInit {
     schedule.note = str;
     this.scheduleService.putSchedule(schedule).subscribe(res => {
       if (res) {
-        this.inti();
+        this.inti(this.user);
       }
     });
   }

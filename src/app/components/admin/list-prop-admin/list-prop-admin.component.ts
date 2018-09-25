@@ -99,7 +99,7 @@ export class ListPropAdminComponent implements OnInit {
   }
   getPropAll() {
     this.numOfFilters = 0;
-    this.propertyService.getAll().subscribe(prop => {
+    this.propertyService.getAllSpecial().subscribe(prop => {
       this.properties = prop;
       console.log(prop);
       this.setRows(prop);
@@ -110,8 +110,15 @@ export class ListPropAdminComponent implements OnInit {
 
     properties.forEach(property => {
       let typePop = 'Vende';
+      let iconName;
       if (property.isRent) {
         typePop = 'Renta';
+      }
+      if (property.typeOfProperty === 'departamento') {
+        iconName = 'business';
+      }
+      if (property.typeOfProperty === 'casa') {
+        iconName = 'home';
       }
       rows.push({
         _id: property._id,
@@ -122,6 +129,7 @@ export class ListPropAdminComponent implements OnInit {
         timestamp: property.timestamp,
         typePop: typePop,
         isBuy: property.isBuy,
+        iconName: iconName,
       });
     });
     this.rows = rows;

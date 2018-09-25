@@ -106,7 +106,7 @@ export class MainAdminComponent implements OnInit {
       });
     });
     schedules.forEach(schedule => {
-      if (!schedule.administrator) {
+      if (!schedule.administrator && !schedule.personal) {
         allData.push({
           type: 'schedule',
           time: schedule.timestamp.toString(),

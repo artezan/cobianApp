@@ -2,8 +2,10 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ISchedule } from '../../../models/schedule.model';
 import { BuyerService } from '../../../services/buyer.service';
 import { UserSessionService } from '../../../services/user-session.service';
-import { NavController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
 import { NavigationExtras, Router } from '@angular/router';
+import { AdviserService } from '../../../services/adviser.service';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-calendar-buyer',
@@ -34,16 +36,28 @@ export class CalendarBuyerComponent implements OnInit {
     private userSessionService: UserSessionService,
     private navController: NavController,
     private router: Router,
+    private adviserService: AdviserService,
+    private storage: Storage,
+    private toastController: ToastController,
   ) {
     this.monthNumber = new Date().getMonth();
     this.year = new Date().getFullYear();
   }
   ngOnInit() {
-    const buyer = this.userSessionService.userSession.value;
-    this.buyerService.getBuyerById(buyer.id).subscribe(b => {
-      this.schedule = b.schedule;
-      this.isLoad = true;
-    });
+    const user = this.userSessionService.userSession.value;
+    if (user.type === 'buyer') {
+      // buyer
+      this.buyerService.getBuyerById(user.id).subscribe(b => {
+        this.schedule = b.schedule;
+        this.isLoad = true;
+      });
+    } else if ((user.type = 'adviser')) {
+      // adv
+      this.adviserService.getAdviserById(user.id).subscribe(b => {
+        this.schedule = b.schedule;
+        this.isLoad = true;
+      });
+    }
   }
   calendarSelect(item: { year: number; month: number; day: number }) {
     if (item.day !== 0) {
@@ -74,6 +88,23 @@ export class CalendarBuyerComponent implements OnInit {
       this.monthNumber = 0;
     } else {
       this.monthNumber++;
+    }
+  }
+  async toastPresent(m = 'Eventos pendientes hoy') {
+    const isPresent = await this.storage.get('alert-today');
+    if (+isPresent !== new Date().getDate()) {
+      const toast = await this.toastController.create({
+        message: m,
+        showCloseButton: true,
+        position: 'bottom',
+        closeButtonText: 'OK',
+        cssClass: 'toast-alert',
+        duration: 50000,
+      });
+      toast.present();
+      toast.onWillDismiss().then(() => {
+        this.storage.set('alert-today', new Date().getDate());
+      });
     }
   }
 }

@@ -46,6 +46,9 @@ export class PersonalScheduleComponent implements OnInit {
     if (user.type === 'administrator') {
       this.schedule.administrator = user.id;
     }
+    if (user.type === 'adviser') {
+      this.schedule.personal = user.id;
+    }
   }
 
   dateSelect(event) {

@@ -155,6 +155,18 @@ export class AppComponent {
       icon: 'stats',
       userType: 'adviser',
     },
+    {
+      title: 'Perfil',
+      url: '/new-edit-adviser',
+      icon: 'contact',
+      userType: 'adviser',
+    },
+    {
+      title: 'Simulador Match',
+      url: '/simulate-search-admin',
+      icon: 'heart-empty',
+      userType: 'adviser',
+    },
   ];
 
   isDevice: boolean;

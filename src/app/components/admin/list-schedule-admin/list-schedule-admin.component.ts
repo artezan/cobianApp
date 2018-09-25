@@ -11,6 +11,7 @@ import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { ScheduleService } from '../../../services/schedule.service';
 import { FormatDatesFront, FormatHoursFront } from '../../../_config/_helpers';
 import { Storage } from '@ionic/storage';
+import { IUserSession } from '../../../models/userSession.model';
 
 @Component({
   selector: 'app-list-schedule-admin',
@@ -40,6 +41,7 @@ export class ListScheduleAdminComponent implements OnInit {
   dateDaySelect;
   isAll: boolean;
   dayItem;
+  user: IUserSession;
   constructor(
     private buyerService: BuyerService,
     private userSessionService: UserSessionService,
@@ -52,6 +54,7 @@ export class ListScheduleAdminComponent implements OnInit {
     private storage: Storage,
     public route: ActivatedRoute,
   ) {
+    this.user = userService.userSession.value;
     this.monthNumber = new Date().getMonth();
     this.year = new Date().getFullYear();
   }
@@ -95,13 +98,14 @@ export class ListScheduleAdminComponent implements OnInit {
       const user = this.userService.userSession.value;
       console.log(schedules);
       if (user.type === 'administrator') {
-        this.schedule = schedules;
-      } else {
-        schedules.forEach(s => {
-          if (!s.administrator) {
-            this.schedule.push(s);
-          }
-        });
+        this.schedule = schedules.filter(s => !s.personal);
+      } else if (user.type === 'adviser') {
+        this.schedule = schedules.filter(
+          s =>
+            (s.adviser && s.adviser._id === user.id) ||
+            (s.personal && s.personal === user.id),
+        );
+        console.log(this.schedule);
       }
       this.schedule.sort((a, b) => {
         // Turn your strings into dates, and then subtract them
@@ -141,6 +145,7 @@ export class ListScheduleAdminComponent implements OnInit {
         this.getEvents();
       });
   }
+  // dialogs
   async presentAlertConfirm(id) {
     const alert = await this.alertController.create({
       header: 'Eliminar evento',
@@ -172,6 +177,76 @@ export class ListScheduleAdminComponent implements OnInit {
         this.deleteEvent(id);
       }
     });
+  }
+  /**
+   * Calificar visita
+   */
+  async presentAlertVisit(schedule: ISchedule) {
+    const alert = await this.alertController.create({
+      header: 'Calificar',
+      subHeader: 'Califica la visita realizada',
+      inputs: [
+        {
+          name: 'radio2',
+          type: 'radio',
+          label: 'No hay interés',
+          value: 'gris',
+        },
+        {
+          name: 'radio3',
+          type: 'radio',
+          label: 'Poco interés',
+          value: 'verde',
+        },
+        {
+          name: 'radio4',
+          type: 'radio',
+          label: 'Oportunidad de venta',
+          value: 'amarillo',
+        },
+        {
+          name: 'radio5',
+          type: 'radio',
+          label: 'Venta muy probable',
+          value: 'rojo',
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          },
+        },
+        {
+          text: 'Ok',
+          role: 'ok',
+          handler: () => {
+            console.log('Confirm Ok');
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+    await alert.onWillDismiss().then(res => {
+      if (res.role === 'ok') {
+        schedule.scoreByAdviser = res.data.values;
+        schedule.status = 'rojo';
+        this.putEvent(schedule);
+      }
+    });
+  }
+  // end dialogs
+  putEvent(schedule: ISchedule) {
+    this.scheduleService
+      .putSchedule(schedule)
+      .toPromise()
+      .then(() => {
+        this.getEvents();
+      });
   }
   async toastPresent(m = 'Eventos pendientes hoy') {
     const isPresent = await this.storage.get('alert-today');
@@ -231,5 +306,10 @@ export class ListScheduleAdminComponent implements OnInit {
   }
   formatHours(hours, minutes) {
     return FormatHoursFront(hours, minutes);
+  }
+  comparateDate(year, month, day): boolean {
+    const today = new Date().getTime();
+    const date = new Date(year, month, day).getTime();
+    return date < today;
   }
 }

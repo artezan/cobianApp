@@ -46,6 +46,11 @@ export interface ISchedule {
   note?: string;
   _id?: string;
   administrator?: string;
+  personal?: string;
+  /**
+   * Calificacion
+   */
+  scoreByAdviser?: 'verde' | 'gris' | 'amarillo' | 'rojo' | 'azul';
 }
 export interface IScheduleGet {
   /**
@@ -91,4 +96,12 @@ export interface IScheduleGet {
   note?: string;
   _id?: string;
   administrator?: string;
+  /**
+   * Evento personal
+   */
+  personal?: string;
+  /**
+   * Calificacion
+   */
+  scoreByAdviser?: 'verde' | 'gris' | 'amarillo' | 'rojo' | 'azul';
 }

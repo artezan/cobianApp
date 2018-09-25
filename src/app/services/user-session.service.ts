@@ -37,6 +37,7 @@ export class UserSessionService {
   }
   public loggout(): void {
     this.storage.remove('userSession');
+    this.storage.remove('alert-adv');
     // localStorage.removeItem('userSession');
     this.userSession.next({
       name: undefined,

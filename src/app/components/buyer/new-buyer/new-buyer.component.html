@@ -348,6 +348,7 @@
         <div style="text-align: right">
           <ion-button [disabled]="!loginForm2.form.valid" color="secondary" (click)="checkUser()" slot="end" *ngIf="!isEdit">Crear</ion-button>
           <ion-button [disabled]="!loginForm2.form.valid" color="secondary" (click)="editUser()" slot="end" *ngIf="isEdit">Editar</ion-button>
+
           <!--  <ion-button *ngIf="isCorrect === true" color="success" (click)="check()" slot="end">Correcto, puede
                   continuar</ion-button> -->
 

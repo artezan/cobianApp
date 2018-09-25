@@ -9,6 +9,8 @@ import { ToastController, AlertController, Platform } from '@ionic/angular';
 import { OfertService } from '../../../services/ofert.service';
 import { IOfert } from '../../../models/ofert.model';
 import { GoalService } from '../../../services/goal.service';
+import { UserSessionService } from '../../../services/user-session.service';
+import { IUserSession } from '../../../models/userSession.model';
 
 @Component({
   selector: 'app-list-goals',
@@ -25,7 +27,7 @@ export class ListGoalsComponent implements OnInit {
   goals: IGoal[] = [];
   // numofFilters
   numOfFilters = 0;
-
+  user: IUserSession;
   constructor(
     private goalService: GoalService,
     private platform: Platform,
@@ -33,7 +35,9 @@ export class ListGoalsComponent implements OnInit {
     public alertController: AlertController,
     public toastController: ToastController,
     public route: ActivatedRoute,
+    private userSession: UserSessionService,
   ) {
+    this.user = userSession.userSession.value;
     this.isDesktop = platform.is('desktop');
     if (this.isDesktop) {
       this.openMenu = true;
@@ -99,11 +103,19 @@ export class ListGoalsComponent implements OnInit {
   getGoalAll() {
     this.isLoading = false;
     this.numOfFilters = 0;
-    this.goalService.getGoal().subscribe(goal => {
-      this.goals = goal;
-      console.log(goal);
-      this.setRows(this.goals);
-    });
+    if (this.user.type === 'adviser') {
+      this.goalService.getGoal().subscribe(goal => {
+        this.goals = goal.filter(g => {
+          return !!g.adviser.find(adv => adv._id === this.user.id);
+        });
+        this.setRows(this.goals);
+      });
+    } else {
+      this.goalService.getGoal().subscribe(goal => {
+        this.goals = goal;
+        this.setRows(this.goals);
+      });
+    }
   }
   newOfert() {
     this.router.navigate(['new-edit-goal']);

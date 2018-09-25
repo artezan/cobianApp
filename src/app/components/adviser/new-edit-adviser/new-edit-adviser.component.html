@@ -70,7 +70,7 @@
               <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
             </mat-form-field>
             <!-- buyers -->
-            <div class="flex-container2">
+            <div *ngIf="user.type !== 'adviser'" class="flex-container2">
               <div *ngIf="adviser.buyer && adviser.buyer.length > 0">
                 <mat-list role="list">
                   <h3 mat-subheader>Clientes del Asesor</h3>

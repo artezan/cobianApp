@@ -168,6 +168,8 @@
 <ng-template #Device>
   <ion-list>
     <ion-item lines="inset" *ngFor="let row of dataSource.data">
+      <ion-icon *ngIf="isIcon" style="color: #F5811E" [name]="row.iconName" slot="start"></ion-icon>
+      <!-- <ion-icon  style="color: #F5811E" name="home" slot="start"></ion-icon> -->
       <ion-label text-wrap>
         <span *ngFor="let column of columns; let ii=index">
           <!-- title -->

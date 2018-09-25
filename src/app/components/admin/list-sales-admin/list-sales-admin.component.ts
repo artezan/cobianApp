@@ -15,6 +15,8 @@ import { PropertyFilter } from '../../../_config/_helpers';
 import { SaleService } from '../../../services/sale.service';
 import { ISale } from '../../../models/sale.model';
 import { IAdviser } from '../../../models/adviser.model';
+import { IUserSession } from '../../../models/userSession.model';
+import { UserSessionService } from '../../../services/user-session.service';
 
 @Component({
   selector: 'app-list-sales-admin',
@@ -35,7 +37,7 @@ export class ListSalesAdminComponent implements OnInit {
   totalSalesOfRent: number;
   totalSalesOfBuy: number;
   totalCost: number;
-
+  user: IUserSession;
   constructor(
     private propertyService: PropertyService,
     private platform: Platform,
@@ -45,7 +47,9 @@ export class ListSalesAdminComponent implements OnInit {
     public navCtr: NavController,
     public route: ActivatedRoute,
     private salesService: SaleService,
+    private userSession: UserSessionService,
   ) {
+    this.user = userSession.userSession.value;
     this.isDesktop = platform.is('desktop');
     if (this.isDesktop) {
       this.openMenu = true;
@@ -108,12 +112,19 @@ export class ListSalesAdminComponent implements OnInit {
   }
   getSales() {
     this.isLoading = false;
-    this.salesService.getSale().subscribe(sales => {
-      console.log(sales);
-      this.sales = sales;
-      this.setRows(sales);
-      this.getSumary(sales);
-    });
+    if (this.user.type === 'adviser') {
+      this.salesService.getSaleByIdAdv(this.user.id).subscribe(sales => {
+        this.sales = sales;
+        this.setRows(sales);
+        this.getSumary(sales);
+      });
+    } else {
+      this.salesService.getSale().subscribe(sales => {
+        this.sales = sales;
+        this.setRows(sales);
+        this.getSumary(sales);
+      });
+    }
   }
   setRows(sales: ISale[]) {
     const rows = [];
