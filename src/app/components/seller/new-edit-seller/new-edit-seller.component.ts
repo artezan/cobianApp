@@ -6,6 +6,8 @@ import { NavController } from '@ionic/angular';
 import { PropertyService } from '../../../services/property.service';
 import { Observable } from 'rxjs';
 import { IProperty } from '../../../models/property.model';
+import { UserSessionService } from '../../../services/user-session.service';
+import { IUserSession } from '../../../models/userSession.model';
 
 @Component({
   selector: 'app-new-edit-seller',
@@ -20,13 +22,17 @@ export class NewEditSellerComponent implements OnInit {
   errorToShowMat = 'Dato obligatorio';
   seller: ISeller = {};
   properties$: Observable<IProperty[]>;
+  user: IUserSession;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private sellerService: SellerService,
     private navCtr: NavController,
     private propertyService: PropertyService,
-  ) {}
+    private userSession: UserSessionService,
+  ) {
+    this.user = userSession.userSession.value;
+  }
 
   ngOnInit() {
     this.getProperties();
@@ -49,13 +55,30 @@ export class NewEditSellerComponent implements OnInit {
           this.seller.property = arr;
         });
         this.isNew = false;
+      } else if (this.user.type === 'seller') {
+        this.sellerService.getSellerById(this.user.id).subscribe(s => {
+          Object.keys(s).forEach(key => {
+            if (s[key] === false) {
+              s[key] = 'false';
+            } else if (s[key] === true) {
+              s[key] = 'true';
+            }
+          });
+          if (s.property && s.property.length > 0) {
+            arr = <any>s.property.map(p => p._id);
+          }
+          delete s.property;
+          this.seller = s;
+          this.seller.property = arr;
+        });
+        this.isNew = false;
       } else {
         this.isNew = true;
       }
     });
   }
   getProperties() {
-    this.properties$ = this.propertyService.getAll();
+    this.properties$ = this.propertyService.getAllSpecial();
   }
   newCustomer() {
     this.sellerService.newSeller(this.seller).subscribe(s => {
@@ -73,12 +96,15 @@ export class NewEditSellerComponent implements OnInit {
       const toast: NavigationExtras = {
         queryParams: { res: ' Propietario Editado' },
       };
-      /**
-       * Es para recargar el componente previo
-       */
-      this.router
-        .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
-        .then(() => this.router.navigate(['list-seller-admin'], toast));
+      if (this.user.type === 'seller') {
+        this.router
+          .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+          .then(() => this.router.navigate(['list-buyer-admin'], toast));
+      } else {
+        this.router
+          .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+          .then(() => this.router.navigate(['list-seller-admin'], toast));
+      }
     });
   }
   getPopMessage(event) {

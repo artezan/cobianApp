@@ -66,6 +66,18 @@ export class LoginComponent implements OnInit {
             data.data[0].password,
           );
           this.isFind = true;
+          // seller
+          if (data.type === 'seller') {
+            this.isLogin = true;
+            load.dismiss();
+            this.navController.navigateRoot('list-buyer-admin', false);
+          }
+          // office
+          if (data.type === 'office') {
+            this.isLogin = true;
+            load.dismiss();
+            this.navController.navigateRoot('list-buyer-admin', false);
+          }
           // adviser
           if (data.type === 'adviser') {
             this.isLogin = true;

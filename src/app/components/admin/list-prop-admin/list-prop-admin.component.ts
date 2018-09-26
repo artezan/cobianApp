@@ -10,6 +10,9 @@ import {
 } from '@ionic/angular';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { PropertyFilter } from '../../../_config/_helpers';
+import { IUserSession } from '../../../models/userSession.model';
+import { UserSessionService } from '../../../services/user-session.service';
+import { SellerService } from '../../../services/seller.service';
 
 @Component({
   selector: 'app-list-prop-admin',
@@ -26,6 +29,7 @@ export class ListPropAdminComponent implements OnInit {
   properties: IProperty[] = [];
   // numofFilters
   numOfFilters = 0;
+  user: IUserSession;
 
   constructor(
     private propertyService: PropertyService,
@@ -35,7 +39,10 @@ export class ListPropAdminComponent implements OnInit {
     public toastController: ToastController,
     public navCtr: NavController,
     public route: ActivatedRoute,
+    private userSession: UserSessionService,
+    private sellerService: SellerService,
   ) {
+    this.user = userSession.userSession.value;
     this.isDesktop = platform.is('desktop');
     if (this.isDesktop) {
       this.openMenu = true;
@@ -98,12 +105,24 @@ export class ListPropAdminComponent implements OnInit {
     this.getPropAll();
   }
   getPropAll() {
-    this.numOfFilters = 0;
-    this.propertyService.getAllSpecial().subscribe(prop => {
-      this.properties = prop;
-      console.log(prop);
-      this.setRows(prop);
-    });
+    if (this.user.type === 'seller') {
+      this.numOfFilters = 0;
+      this.propertyService.getAllSpecial().subscribe(prop => {
+        this.sellerService.getSellerById(this.user.id).subscribe(seller => {
+          this.properties = prop.filter(p => {
+            return !!seller.property.find(ps => ps._id === p._id);
+          });
+          this.setRows(this.properties);
+        });
+      });
+    } else {
+      this.numOfFilters = 0;
+      this.propertyService.getAllSpecial().subscribe(prop => {
+        this.properties = prop;
+        console.log(prop);
+        this.setRows(prop);
+      });
+    }
   }
   setRows(properties: IProperty[]) {
     const rows = [];

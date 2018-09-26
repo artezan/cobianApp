@@ -1,6 +1,7 @@
 import { IBuyer } from './buyer.model';
 import { IProperty } from './property.model';
 import { IAdviser } from './adviser.model';
+import { ISeller } from './seller.model';
 
 export interface ISchedule {
   /**
@@ -35,7 +36,7 @@ export interface ISchedule {
   /**
    *  Asesor
    */
-  // seller?: ISeller;
+  seller?: ISeller;
   /**
    * Estado
    */
@@ -85,7 +86,7 @@ export interface IScheduleGet {
   /**
    *  Asesor
    */
-  // seller?: ISeller;
+  seller?: ISeller;
   /**
    * Estado
    */
@@ -104,4 +105,9 @@ export interface IScheduleGet {
    * Calificacion
    */
   scoreByAdviser?: 'verde' | 'gris' | 'amarillo' | 'rojo' | 'azul';
+}
+export interface CheckSchedule {
+  buyerCan?: boolean;
+  adviserCan?: boolean;
+  propertyCan?: boolean;
 }

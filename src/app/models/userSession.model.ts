@@ -5,7 +5,8 @@ export interface IUserSession {
     | 'seller'
     | 'adviser'
     | 'management'
-    | 'maker';
+    | 'maker'
+    | 'office';
   name?: string;
   id?: string;
   password?: string;

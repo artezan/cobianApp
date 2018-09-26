@@ -17,6 +17,7 @@ import { ISale } from '../../../models/sale.model';
 import { IAdviser } from '../../../models/adviser.model';
 import { IUserSession } from '../../../models/userSession.model';
 import { UserSessionService } from '../../../services/user-session.service';
+import { SellerService } from '../../../services/seller.service';
 
 @Component({
   selector: 'app-list-sales-admin',
@@ -48,6 +49,7 @@ export class ListSalesAdminComponent implements OnInit {
     public route: ActivatedRoute,
     private salesService: SaleService,
     private userSession: UserSessionService,
+    private sellerService: SellerService,
   ) {
     this.user = userSession.userSession.value;
     this.isDesktop = platform.is('desktop');
@@ -117,6 +119,16 @@ export class ListSalesAdminComponent implements OnInit {
         this.sales = sales;
         this.setRows(sales);
         this.getSumary(sales);
+      });
+    } else if (this.user.type === 'seller') {
+      this.salesService.getSale().subscribe(sales => {
+        this.sellerService.getSellerById(this.user.id).subscribe(seller => {
+          this.sales = sales.filter(s => {
+            return !!seller.property.find(p => p._id === s.property._id);
+          });
+          this.setRows(this.sales);
+          this.getSumary(this.sales);
+        });
       });
     } else {
       this.salesService.getSale().subscribe(sales => {

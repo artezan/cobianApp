@@ -170,10 +170,20 @@ export class ListGoalsComponent implements OnInit {
   }
   edit(item) {
     console.log(item);
-    const data: NavigationExtras = {
-      queryParams: { id: item._id },
-    };
-    this.router.navigate(['new-edit-goal'], data);
+    if (item.isByManagement && this.user.type !== 'adviser') {
+      const data: NavigationExtras = {
+        queryParams: { id: item._id },
+      };
+      this.router.navigate(['new-edit-goal'], data);
+    } else if (this.user.type === 'adviser') {
+      this.presentToast('Acceso denegado');
+    }
+    if (!item.isByManagement) {
+      const data: NavigationExtras = {
+        queryParams: { id: item._id },
+      };
+      this.router.navigate(['new-edit-goal'], data);
+    }
     // this.navCtr.navigateRoot('new-buyer', false, data);
   }
   deleted(c: IGoal) {

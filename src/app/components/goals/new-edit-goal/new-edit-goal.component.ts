@@ -145,7 +145,7 @@ export class NewEditGoalComponent implements OnInit {
   private getSet() {
     // user
     const user = this.userService.userSession.value;
-    if (user.type === 'administrator' || user.type === 'management') {
+    if (user.type === 'administrator' || user.type === 'office') {
       this.goal.isByManagement = true;
     } else {
       this.goal.isByManagement = false;

@@ -78,6 +78,7 @@ export class EventDetailBuyerComponent implements OnInit {
   getAllSchedule() {
     if (this.isAll === true) {
       this.scheduleToShow = this.schedule;
+      console.log(this.scheduleToShow);
     }
   }
   getActualSchedule() {

@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ISchedule } from '../models/schedule.model';
+import {
+  ISchedule,
+  IScheduleGet,
+  CheckSchedule,
+} from '../models/schedule.model';
 import { END_POINT } from '../_config/api.end-points';
 import { map } from 'rxjs/operators';
 
@@ -33,6 +37,11 @@ export class ScheduleService {
   public deltedScheduleById(id: string): Observable<ISchedule> {
     return this.http
       .delete(END_POINT.SCHEDULE + id)
+      .pipe(map((data: any) => data.data));
+  }
+  public checkSchedule(schedule: IScheduleGet): Observable<CheckSchedule> {
+    return this.http
+      .post(END_POINT.SCHEDULE_CHECK, schedule)
       .pipe(map((data: any) => data.data));
   }
 }

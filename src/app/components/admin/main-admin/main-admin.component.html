@@ -133,6 +133,13 @@
                           <p>{{item.data.schedules.adviser.name}}</p>
                         </ion-label>
                       </ion-item>
+                      <ion-item lines="none" *ngIf="item.data.schedules.seller">
+                        <ion-icon slot="start" class="color-item-secondary" name="cash"></ion-icon>
+                        <ion-label slot="start" text-wrap>
+                          <p><b>Vendedor:</b> </p>
+                          <p>{{item.data.schedules.seller.name}}</p>
+                        </ion-label>
+                      </ion-item>
                       <ion-item lines="none" *ngIf="item.data.schedules.property">
                         <ion-icon slot="start" class="color-item-secondary" name="home"></ion-icon>
                         <ion-label slot="start" text-wrap>

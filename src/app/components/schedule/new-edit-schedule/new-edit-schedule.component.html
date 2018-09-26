@@ -30,7 +30,7 @@
               <mat-error *ngIf="b.dirty || b.touched">Anotar Comprador</mat-error>
             </mat-form-field>
             <!-- lista de asesores -->
-            <div *ngIf="b.value && (user.type !== 'adviser' && user.type !== 'management' )">
+            <div *ngIf="b.value && (user.type !== 'adviser' && user.type !== 'seller') && (schedule && !schedule.seller )">
               <mat-radio-group style="margin-bottom: 2%;" (change)="getAdvAll(ad.value)" class="example-radio-group"
                 [(ngModel)]="item" #ad="ngModel" id="ad" name="ad" required>
                 <span class="example-radio-group" *ngIf="(buyerSelect$ | async)?.adviser && (buyerSelect$ | async)?.adviser.length > 0">
@@ -66,8 +66,8 @@
             <!-- prop -->
             <mat-form-field appearance="outline">
               <mat-label>Propiedad a visitar</mat-label>
-              <mat-select (selectionChange)="getAddress(property.value)" [(ngModel)]="schedule.property" #property="ngModel"
-                id="property" name="property" required>
+              <mat-select [disabled]="user.type !== 'seller' && schedule.seller" (selectionChange)="getAddress(property.value)"
+                [(ngModel)]="schedule.property" #property="ngModel" id="property" name="property" required>
                 <mat-option *ngFor="let prop of properties$ | async" [value]="prop._id">
                   {{prop.name}}
                 </mat-option>
@@ -134,9 +134,16 @@
           <mat-card-actions align="end">
             <div style="margin-right: 2%">
               <span [matTooltip]=errorToShow [matTooltipClass]="'tooltip-size'" (mouseenter)="getPopMessage($event)">
-                <button *ngIf="isNew" id="submitUser" mat-raised-button color="primary" (click)="checkHoursAdviser('new')"
-                  [disabled]="!newUserForm.form.valid">Crear</button>
-                <button *ngIf="!isNew" id="submitUser" mat-raised-button color="primary" (click)="checkHoursAdviser('edit')">Editar</button>
+                <!-- no seller -->
+                <button *ngIf="isNew && user.type !== 'seller'" id="submitUser" mat-raised-button color="primary"
+                  (click)="checkHoursAdviser('new')" [disabled]="!newUserForm.form.valid">Crear</button>
+                <button *ngIf="!isNew && (user.type !== 'seller' && !schedule.seller)" id="submitUser"
+                  mat-raised-button color="primary" (click)="checkHoursAdviser('edit')">Editar</button>
+                <!-- seller -->
+                <button *ngIf="isNew && (user.type === 'seller')" id="submitUser" mat-raised-button color="primary"
+                  (click)="checkScheduleSeller('new')" [disabled]="!newUserForm.form.valid">Crear</button>
+                <button *ngIf="!isNew && (user.type === 'seller' || schedule.seller )" id="submitUser"
+                  mat-raised-button color="accent" (click)="checkScheduleSeller('edit')">Editar</button>
               </span>
             </div>
 

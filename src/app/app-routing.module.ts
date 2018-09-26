@@ -42,6 +42,8 @@ import { DetailBuildAdminComponent } from './components/admin/detail-build-admin
 import { ListSalespropAdminComponent } from './components/admin/list-salesprop-admin/list-salesprop-admin.component';
 import { DetailSalespropAdminComponent } from './components/admin/detail-salesprop-admin/detail-salesprop-admin.component';
 import { ListSalesAdminComponent } from './components/admin/list-sales-admin/list-sales-admin.component';
+import { ListOfficeAdminComponent } from './components/admin/list-office-admin/list-office-admin.component';
+import { NewEditOfficeComponent } from './components/office/new-edit-office/new-edit-office.component';
 
 const routes: Routes = [
   // Rutas
@@ -88,6 +90,8 @@ const routes: Routes = [
   { path: 'list-salesprop-admin', component: ListSalespropAdminComponent },
   { path: 'detail-salesprop-admin', component: DetailSalespropAdminComponent },
   { path: 'list-sales-admin', component: ListSalesAdminComponent },
+  { path: 'list-office-admin', component: ListOfficeAdminComponent },
+  { path: 'new-edit-office', component: NewEditOfficeComponent },
 ];
 
 @NgModule({

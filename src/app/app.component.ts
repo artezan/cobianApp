@@ -71,6 +71,12 @@ export class AppComponent {
       userType: 'administrator',
     },
     {
+      title: 'Oficinistas',
+      url: '/list-office-admin',
+      icon: 'desktop',
+      userType: 'administrator',
+    },
+    {
       title: 'Propiedades',
       url: '/list-prop-admin',
       icon: 'business',
@@ -166,6 +172,122 @@ export class AppComponent {
       url: '/simulate-search-admin',
       icon: 'heart-empty',
       userType: 'adviser',
+    },
+    // Seller
+    {
+      title: 'Consumidores',
+      url: '/list-buyer-admin',
+      icon: 'clipboard',
+      userType: 'seller',
+    },
+    {
+      title: 'Propiedades',
+      url: '/list-prop-admin',
+      icon: 'business',
+      userType: 'seller',
+    },
+    {
+      title: 'Eventos',
+      url: '/list-schedule-admin',
+      icon: 'calendar',
+      userType: 'seller',
+    },
+    {
+      title: 'Perfil',
+      url: '/new-edit-seller',
+      icon: 'contact',
+      userType: 'seller',
+    },
+    {
+      title: 'Simulador Match',
+      url: '/simulate-search-admin',
+      icon: 'heart-empty',
+      userType: 'seller',
+    },
+    // office
+    {
+      title: 'Consumidores',
+      url: '/list-buyer-admin',
+      icon: 'clipboard',
+      userType: 'office',
+    },
+    {
+      title: 'Asesores',
+      url: '/list-adviser-admin',
+      icon: 'people',
+      userType: 'office',
+    },
+    {
+      title: 'Vendedores',
+      url: '/list-seller-admin',
+      icon: 'cash',
+      userType: 'office',
+    },
+    {
+      title: 'Propiedades',
+      url: '/list-prop-admin',
+      icon: 'business',
+      userType: 'office',
+    },
+    {
+      title: 'Créditos',
+      url: '/list-credit-admin',
+      icon: 'document',
+      userType: 'office',
+    },
+    {
+      title: 'Ofertas',
+      url: '/list-ofert-admin',
+      icon: 'card',
+      userType: 'office',
+    },
+    {
+      title: 'Obras',
+      url: '/list-build-admin',
+      icon: 'construct',
+      userType: 'office',
+    },
+    {
+      title: 'Constructores',
+      url: '/list-maker-admin',
+      icon: 'walk',
+      userType: 'office',
+    },
+    {
+      title: 'Eventos',
+      url: '/list-schedule-admin',
+      icon: 'calendar',
+      userType: 'office',
+    },
+    {
+      title: 'Metas',
+      url: '/list-goals-admin',
+      icon: 'stats',
+      userType: 'office',
+    },
+    {
+      title: 'Simulador Match',
+      url: '/simulate-search-admin',
+      icon: 'heart-empty',
+      userType: 'office',
+    },
+    {
+      title: 'Propiedades Apartadas',
+      url: '/list-salesprop-admin',
+      icon: 'timer',
+      userType: 'office',
+    },
+    {
+      title: 'Propiedades Aquiridas',
+      url: '/list-sales-admin',
+      icon: 'trending-up',
+      userType: 'office',
+    },
+    {
+      title: 'Perfil',
+      url: '/new-edit-office',
+      icon: 'contact',
+      userType: 'office',
     },
   ];
 

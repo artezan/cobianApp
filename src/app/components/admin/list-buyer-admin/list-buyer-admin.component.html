@@ -54,12 +54,12 @@
   </ng-template>
 </ion-content>
 <!-- fab placed to the bottom end -->
-<ion-fab vertical="bottom" horizontal="start" slot="fixed">
+<ion-fab *ngIf="user.type !== 'seller'" vertical="bottom" horizontal="start" slot="fixed">
   <ion-fab-button (click)="newBuyer()" *ngIf="isLoading" color="secondary">
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>
 </ion-fab>
-<ion-footer *ngIf="user.type === 'adviser' && sales">
+<ion-footer *ngIf="(user.type === 'adviser' || user.type === 'seller') && sales">
   <ion-toolbar>
     <ion-buttons slot="end">
       <ion-button (click)="sendToTotalSales()" fill="solid" color="secondary">

@@ -77,7 +77,7 @@
         <ion-card-content>
           <ion-label>
             <ion-icon name="person"></ion-icon>
-            <b>Tiene una cita con {{schedule.adviser.name}}</b>
+            <b>Tiene una cita con {{schedule.adviser ? schedule.adviser.name : schedule.seller.name}}</b>
           </ion-label>
           <ion-icon name="pin"></ion-icon>
           Direccion {{schedule.property.zone}}

@@ -97,7 +97,8 @@ export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
       if (changes.rows.currentValue) {
         this.dataSource = new MatTableDataSource(changes.rows.currentValue);
         this.realData = changes.rows.currentValue;
-        this.dataSource.paginator = this.paginator;
+        // paginator works !!
+        setTimeout(() => (this.dataSource.paginator = this.paginator));
         this.dataSource.sort = this.sort;
         console.log(this.dataSource.data);
       }

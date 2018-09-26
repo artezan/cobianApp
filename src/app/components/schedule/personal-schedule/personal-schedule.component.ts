@@ -45,8 +45,7 @@ export class PersonalScheduleComponent implements OnInit {
     const user = this.userSessionService.userSession.value;
     if (user.type === 'administrator') {
       this.schedule.administrator = user.id;
-    }
-    if (user.type === 'adviser') {
+    } else {
       this.schedule.personal = user.id;
     }
   }

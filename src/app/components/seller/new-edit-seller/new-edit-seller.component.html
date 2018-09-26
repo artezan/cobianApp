@@ -72,8 +72,9 @@
             <!-- prop -->
             <mat-form-field appearance="outline">
               <mat-label>Propiedades del Vendedor</mat-label>
-              <mat-select [(ngModel)]="seller.property" #property="ngModel" id="property" name="property" multiple>
-                <mat-option *ngFor="let prop of properties$ | async" [value]="prop._id">
+              <mat-select [disabled]="user.type === 'seller'" [(ngModel)]="seller.property" #property="ngModel" id="property"
+                name="property" multiple>
+                <mat-option [disabled]="prop.isBuy" *ngFor="let prop of properties$ | async" [value]="prop._id">
                   {{prop.name}}
                 </mat-option>
               </mat-select>

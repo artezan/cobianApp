@@ -29,6 +29,8 @@ import { AdviserService } from '../../../services/adviser.service';
 import { Storage } from '@ionic/storage';
 import { SaleService } from '../../../services/sale.service';
 import { ISale } from '../../../models/sale.model';
+import { SellerService } from '../../../services/seller.service';
+import { ISeller } from '../../../models/seller.model';
 
 @Component({
   selector: 'app-list-buyer-admin',
@@ -63,6 +65,7 @@ export class ListBuyerAdminComponent implements OnInit {
     private userSession: UserSessionService,
     private storage: Storage,
     private saleService: SaleService,
+    private sellerService: SellerService,
   ) {
     this.user = userSession.userSession.value;
     this.isDesktop = platform.is('desktop');
@@ -106,7 +109,10 @@ export class ListBuyerAdminComponent implements OnInit {
         prop: 'acction',
         type: 'buttons',
         buttonEdit: true,
-        buttonDeleted: this.user.type === 'administrator' ? true : false,
+        buttonDeleted:
+          this.user.type === 'administrator' || this.user.type === 'office'
+            ? true
+            : false,
         buttonDetails: true,
       },
     ];
@@ -114,7 +120,7 @@ export class ListBuyerAdminComponent implements OnInit {
   }
   getBuyerAll() {
     this.numOfFilters = 0;
-    if (this.user.type === 'administrator' || this.user.type === 'management') {
+    if (this.user.type === 'administrator' || this.user.type === 'office') {
       // si es admin
       this.buyerService.getBuyerAll().subscribe(buyers => {
         this.realData = buyers;
@@ -133,6 +139,24 @@ export class ListBuyerAdminComponent implements OnInit {
         this.buyers = buyerFilter;
         this.setRows(this.realData);
         this.getTotalSales();
+      });
+    } else if (this.user.type === 'seller') {
+      // si es seller
+      this.toastPresent(`Bienvenido ${this.user.name}`);
+      this.buyerService.getBuyerAll().subscribe(buyers => {
+        this.sellerService.getSellerById(this.user.id).subscribe(seller => {
+          console.log(buyers);
+          console.log(seller);
+          // todos lo que le dieron me guta a las propiedades del seller
+          const buyerFilter = buyers.filter(b => {
+            return !!b.statusBuyerProperty.find(sbp => {
+              return !!seller.property.find(p => p._id === sbp.property._id);
+            });
+          });
+          console.log(buyerFilter);
+          this.setRows(buyerFilter);
+          this.getTotalSalesBySeller(seller);
+        });
       });
     }
   }
@@ -197,7 +221,13 @@ export class ListBuyerAdminComponent implements OnInit {
   getTotalSales() {
     this.saleService.getSaleByIdAdv(this.user.id).subscribe(sales => {
       this.sales = sales;
-      console.log(sales);
+    });
+  }
+  getTotalSalesBySeller(seller: ISeller) {
+    this.saleService.getSale().subscribe(sales => {
+      this.sales = sales.filter(s => {
+        return !!seller.property.find(p => p._id === s.property._id);
+      });
     });
   }
   sendToTotalSales() {
@@ -277,7 +307,7 @@ export class ListBuyerAdminComponent implements OnInit {
         position: 'bottom',
         showCloseButton: false,
         cssClass: 'toast-adv',
-        duration: 5000,
+        duration: 4000,
         mode: 'ios',
       });
       toast.present();

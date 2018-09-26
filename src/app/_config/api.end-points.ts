@@ -1,6 +1,6 @@
 // const ip = 'https://cobianback.herokuapp.com/';
-// const ip = 'http://localhost:3004/';
-const ip = 'http://31.220.52.51:3004/';
+const ip = 'http://localhost:3004/';
+// const ip = 'http://31.220.52.51:3004/';
 
 const apiUrl = ip + 'api/v1/';
 const userSession = 'usersession/';
@@ -16,6 +16,7 @@ const statusBuyerProperty = 'status/';
 const credit = 'credit/';
 const schedule = 'schedule/';
 const scheduleId = 'byscheduleid/';
+const scheduleCheck = 'checkschedule/';
 const upgradeStatus = 'upgradelevelbyid/';
 const ofert = 'ofert/';
 const ofertId = 'byofertid/';
@@ -39,6 +40,8 @@ const bystatusid = 'bystatusid/';
 const sale = 'sale/';
 const bysaleid = 'bysaleid/';
 const byadviserid = 'byadviserid/';
+const office = 'office/';
+const byofficeid = 'byofficeid/';
 
 export const END_POINT = {
   IP: ip,
@@ -64,6 +67,7 @@ export const END_POINT = {
   CREDIT_ID: apiUrl + credit + creditById,
   // schedule
   SCHEDULE: apiUrl + schedule,
+  SCHEDULE_CHECK: apiUrl + schedule + scheduleCheck,
   SCHEDULE_ID: apiUrl + schedule + scheduleId,
   // ofert
   OFERT: apiUrl + ofert,
@@ -92,4 +96,7 @@ export const END_POINT = {
   SALE: apiUrl + sale,
   SALE_ID: apiUrl + sale + bysaleid,
   SALE_ADV_ID: apiUrl + sale + byadviserid,
+  // Oficinista
+  OFFICE: apiUrl + office,
+  OFFICE_ID: apiUrl + office + byofficeid,
 };

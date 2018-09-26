@@ -106,6 +106,17 @@ export class ListScheduleAdminComponent implements OnInit {
             (s.personal && s.personal === user.id),
         );
         console.log(this.schedule);
+      } else if (user.type === 'office') {
+        this.schedule = schedules.filter(
+          s => !s.administrator || (s.personal && s.personal === user.id),
+        );
+      } else if (user.type === 'seller') {
+        this.schedule = schedules.filter(
+          s =>
+            (s.seller && s.seller._id === user.id) ||
+            (s.personal && s.personal === user.id),
+        );
+        console.log(this.schedule);
       }
       this.schedule.sort((a, b) => {
         // Turn your strings into dates, and then subtract them

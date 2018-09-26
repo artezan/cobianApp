@@ -118,7 +118,10 @@ export class NewBuyerComponent implements OnInit {
       const user = this.userSession.userSession.value;
       // data  administrator buyer seller adviser management
       // ADMIN
-      if (user.type && user.type === 'administrator') {
+      if (
+        user.type &&
+        (user.type === 'administrator' || user.type === 'office')
+      ) {
         // this.router.navigate(['list-buyer-admin']);
         const toast: NavigationExtras = {
           queryParams: { res: ' Comprador Creado' },
@@ -172,7 +175,7 @@ export class NewBuyerComponent implements OnInit {
     this.buyerService.putBuyer(this.newBuyer).subscribe(val => {
       const user = this.userSession.userSession.value;
       // data  administrator buyer seller adviser management
-      if (user.type && user.type === 'administrator') {
+      if (user.type && user.type !== 'buyer') {
         // this.navController.navigateRoot('list-buyer-admin');
         // this.router.navigate('/list-buyer-admin');
         const toast: NavigationExtras = {
