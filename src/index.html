@@ -1,10 +1,11 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
   <meta charset="utf-8">
-  <title>Ionic App</title>
+  <title>CobianApp</title>
 
   <base href="/" />
 
@@ -17,9 +18,21 @@
   <!-- add to homescreen for ios -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-
+  <!-- one Signal -->
+  <link rel="manifest" href="/manifest.json" />
+  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async="async"></script>
+  <!--  <script>
+    var OneSignal = window.OneSignal || [];
+    OneSignal.push(function () {
+      OneSignal.init({
+        appId: "03441d74-5974-4324-8dce-c7cd5c9dcfd9",
+      });
+    });
+  </script> -->
 </head>
+
 <body>
   <app-root></app-root>
 </body>
+
 </html>

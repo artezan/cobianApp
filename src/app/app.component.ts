@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Platform, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -12,7 +12,7 @@ import { IUserSession } from './models/userSession.model';
   selector: 'app-root',
   templateUrl: 'app.component.html',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   public appPages = [
     // buyer
     {
@@ -314,6 +314,35 @@ export class AppComponent {
         this.user = undefined;
         this.navController.navigateRoot('login', false);
       }
+    });
+  }
+  ngOnInit() {
+    const OneSignal = window['OneSignal'] || [];
+    console.log('Init OneSignal');
+    OneSignal.push([
+      'init',
+      {
+        appId: '03441d74-5974-4324-8dce-c7cd5c9dcfd9',
+        autoRegister: false,
+        allowLocalhostAsSecureOrigin: true,
+        notifyButton: {
+          enable: false,
+        },
+      },
+    ]);
+    console.log('OneSignal Initialized');
+    OneSignal.push(function() {
+      console.log('Register For Push');
+      OneSignal.push(['registerForPushNotifications']);
+    });
+    OneSignal.push(function() {
+      // Occurs when the user's subscription changes to a new value.
+      OneSignal.on('subscriptionChange', function(isSubscribed) {
+        console.log('The users subscription state is now:', isSubscribed);
+        OneSignal.getUserId().then(function(userId) {
+          console.log('User ID is', userId);
+        });
+      });
     });
   }
 
