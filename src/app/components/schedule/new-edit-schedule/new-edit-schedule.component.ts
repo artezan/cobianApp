@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   ISchedule,
   IScheduleGet,
@@ -6,7 +6,12 @@ import {
 } from '../../../models/schedule.model';
 import { Observable } from 'rxjs';
 import { IProperty } from '../../../models/property.model';
-import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+  NavigationExtras,
+  NavigationEnd,
+} from '@angular/router';
 import { SellerService } from '../../../services/seller.service';
 import { NavController, AlertController } from '@ionic/angular';
 import { PropertyService } from '../../../services/property.service';
@@ -15,11 +20,12 @@ import { BuyerService } from '../../../services/buyer.service';
 import { IAdviser } from '../../../models/adviser.model';
 import { map } from 'rxjs/operators';
 import { AdviserService } from '../../../services/adviser.service';
-import { MatDatepickerInputEvent } from '@angular/material';
+import { MatDatepickerInputEvent, MatDialog } from '@angular/material';
 import { Moment } from 'moment';
 import { ScheduleService } from '../../../services/schedule.service';
 import { UserSessionService } from '../../../services/user-session.service';
 import { IUserSession } from '../../../models/userSession.model';
+import { DialogGeneralComponent } from '../../general/dialog-general/dialog-general.component';
 
 @Component({
   selector: 'app-new-edit-schedule',
@@ -40,6 +46,7 @@ export class NewEditScheduleComponent implements OnInit {
   item;
   adviserBefore: string;
   user: IUserSession;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -51,6 +58,7 @@ export class NewEditScheduleComponent implements OnInit {
     public alertController: AlertController,
     private userSession: UserSessionService,
     private sellerService: SellerService,
+    public dialog: MatDialog,
   ) {
     this.user = userSession.userSession.value;
   }
@@ -205,7 +213,7 @@ export class NewEditScheduleComponent implements OnInit {
       });
     });
   }
-  async newSchedule() {
+  newSchedule() {
     this.schedule.status = 'verde';
     console.log(this.schedule);
     this.scheduleService.newSchedule(<ISchedule>this.schedule).subscribe(s => {
@@ -239,21 +247,24 @@ export class NewEditScheduleComponent implements OnInit {
         });
       });
     });
+    console.log('%c nuevo', 'color: #f5811e;');
   }
   editCustomerSeller() {
-    this.scheduleService.putSchedule(<ISchedule>this.schedule).subscribe(() => {
-      const toast: NavigationExtras = {
-        queryParams: { res: ' Evento Editado' },
-      };
-      // this.router.navigate(['list-seller-admin'], toast);
-      // this.navCtr.navigateRoot('list-schedule-admin');
-      /**
-       * Es para recargar el componente previo
-       */
-      this.router
-        .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
-        .then(() => this.router.navigate(['list-schedule-admin'], toast));
-    });
+    this.scheduleService
+      .putSchedule(<ISchedule>this.schedule)
+      .subscribe(async () => {
+        const toast: NavigationExtras = {
+          queryParams: { res: ' Evento Editado' },
+        };
+        // this.router.navigate(['list-schedule-admin'], toast);
+        // this.navCtr.navigateRoot('list-schedule-admin');
+        const p = await this.router.navigateByUrl('/RefrshComponent', {
+          skipLocationChange: true,
+        });
+        if (p) {
+          this.router.navigate(['list-schedule-admin'], toast);
+        }
+      });
   }
   editCustomer() {
     this.schedule.status = 'verde';
@@ -298,191 +309,160 @@ export class NewEditScheduleComponent implements OnInit {
       }
     }
 
-    this.scheduleService.putSchedule(<ISchedule>this.schedule).subscribe(() => {
-      const toast: NavigationExtras = {
-        queryParams: { res: ' Evento Editado' },
-      };
-      // this.router.navigate(['list-seller-admin'], toast);
-      // this.navCtr.navigateRoot('list-schedule-admin');
-      /**
-       * Es para recargar el componente previo
-       */
-      this.router
+    this.scheduleService
+      .putSchedule(<ISchedule>this.schedule)
+      .subscribe(async () => {
+        const toast: NavigationExtras = {
+          queryParams: { res: ' Evento Editado' },
+        };
+        // this.router.navigate(['list-schedule-admin'], toast);
+        // this.navCtr.navigateRoot('list-schedule-admin');
+        /**
+         * Es para recargar el componente previo
+         */
+        /*  this.router
         .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
-        .then(() => this.router.navigate(['list-schedule-admin'], toast));
-    });
-  }
-  checkHoursAdviser(type: 'edit' | 'new') {
-    console.log(this.schedule);
-    this.adviserService.getAdviserById(this.schedule.adviser).subscribe(adv => {
-      if (
-        this.schedule.hour < adv.hourStart ||
-        this.schedule.hour > adv.hourEnd
-      ) {
-        this.presentAlertConfirm(type, adv.hourStart, adv.hourEnd);
-      } else {
-        this.presentAlertConfirm2(type);
-      }
-    });
-  }
-  async checkScheduleSeller(type: 'edit' | 'new') {
-    let message;
-    let isPresent: boolean;
-    const check = await this.checkSchedule();
-    console.log(check);
-    if (!check.propertyCan) {
-      message = 'La propiedad elegida esta ocupada a esa hora';
-      isPresent = true;
-    } else if (!check.buyerCan) {
-      message = `El Cliente elegido esta ocupado a esa hora`;
-      isPresent = true;
-    } else if (!check.propertyCan) {
-      message = `El Asesor elegido esta ocupado a esa hora`;
-      isPresent = true;
-    } else {
-      isPresent = false;
-    }
-    const alert = await this.alertController.create({
-      header: 'Advertencia',
-      message: message,
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: blah => {
-            console.log('Confirm Cancel: blah');
-          },
-        },
-        {
-          text: 'Continuar',
-          role: 'ok',
-          handler: () => {
-            /* this.deleted(buyer);
-            this.getBuyerAll(); */
-          },
-        },
-      ],
-    });
-    if (isPresent) {
-      await alert.present();
-    } else {
-      if (type === 'new') {
-        this.newScheduleSeller();
-      } else {
-        this.editCustomerSeller();
-      }
-    }
-    // IMPORTANTE ASYNC !!!!!
-    await alert.onWillDismiss().then(res => {
-      if (res.role === 'ok') {
-        if (type === 'new') {
-          this.newScheduleSeller();
-        } else {
-          this.editCustomerSeller();
+        .then(() => this.router.navigate(['list-schedule-admin'], toast)); */
+        const p = await this.router.navigate(['RefrshComponent'], {
+          skipLocationChange: true,
+        });
+        if (p) {
+          this.router.navigate(['list-schedule-admin'], toast);
         }
+      });
+  }
+  // START VER errores de horarios
+  // checa adv horario
+  async checkHoursAdviser(): Promise<boolean> {
+    const adv = await this.advData();
+    const promise = new Promise<boolean>((resolve, reject) => {
+      try {
+        if (
+          this.schedule.hour < adv.hourStart ||
+          this.schedule.hour > adv.hourEnd
+        ) {
+          // no puede a esa hora
+          resolve(true);
+        } else {
+          // si puede
+          resolve(false);
+        }
+        console.log(this.schedule);
+      } catch (error) {
+        // error
       }
     });
+    const result = await promise;
+    return result;
   }
-  async presentAlertConfirm(type: 'edit' | 'new', hourStart, hourEnd) {
-    const alert = await this.alertController.create({
-      header: 'Advertencia',
-      message: `El Asesor asignado tine una disponibilidad de ${hourStart} a ${hourEnd}`,
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: blah => {
-            console.log('Confirm Cancel: blah');
-          },
-        },
-        {
-          text: 'Continuar',
-          role: 'ok',
-          handler: () => {
-            /* this.deleted(buyer);
-            this.getBuyerAll(); */
-          },
-        },
-      ],
-    });
+  private async advData() {
+    return await this.adviserService
+      .getAdviserById(this.schedule.adviser)
+      .toPromise();
+  }
 
-    await alert.present();
-    // IMPORTANTE ASYNC !!!!!
-    await alert.onWillDismiss().then(res => {
-      if (res.role === 'ok') {
-        this.presentAlertConfirm2(type);
-      }
-    });
+  //  ve errores de calendario
+  async checkSchedule(): Promise<CheckSchedule> {
+    return await this.scheduleService.checkSchedule(this.schedule).toPromise();
   }
-  async presentAlertConfirm2(type: 'edit' | 'new') {
-    let message;
-    let isPresent: boolean;
-    const check = await this.checkSchedule();
-    console.log(check);
-    if (!check.propertyCan) {
-      message = 'La propiedad elegida esta ocupada a esa hora';
-      isPresent = true;
-    } else if (!check.buyerCan) {
-      message = `El Cliente elegido esta ocupado a esa hora`;
-      isPresent = true;
-    } else if (!check.adviserCan) {
-      message = `El Asesor elegido esta ocupado a esa hora`;
-      isPresent = true;
-    } else {
-      isPresent = false;
+  // END VER
+
+  // START dialog
+  async dialogs(checkAdv: boolean, type: 'edit' | 'new', user) {
+    // checa adv
+    let presentDialogAdv = false;
+    let checkSchedule = true;
+    let result = false;
+    if (checkAdv) {
+      presentDialogAdv = await this.checkHoursAdviser();
     }
-    const alert = await this.alertController.create({
-      header: 'Advertencia',
-      message: message,
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: blah => {
-            console.log('Confirm Cancel: blah');
-          },
-        },
-        {
-          text: 'Continuar',
-          role: 'ok',
-          handler: () => {
-            /* this.deleted(buyer);
-            this.getBuyerAll(); */
-          },
-        },
-      ],
-    });
-    if (isPresent) {
-      await alert.present();
-    } else {
-      if (type === 'new') {
-        this.newSchedule();
+    if (presentDialogAdv) {
+      checkSchedule = await this.dialogAdv();
+    }
+    if (checkSchedule) {
+      const check = await this.checkSchedule();
+      const isOk = check.adviserCan && check.buyerCan && check.propertyCan;
+      if (!isOk) {
+        result = await this.dialogSchedule(check);
       } else {
+        result = true;
+      }
+    }
+    if (result) {
+      if (type === 'new' && user === 'seller') {
+        this.newScheduleSeller();
+      } else if (type === 'edit' && user === 'seller') {
+        this.editCustomerSeller();
+      } else if (type === 'new' && user !== 'seller') {
+        this.newSchedule();
+      } else if (type === 'edit' && user !== 'seller') {
         this.editCustomer();
       }
     }
-    // IMPORTANTE ASYNC !!!!!
-    await alert.onWillDismiss().then(res => {
-      if (res.role === 'ok') {
-        if (type === 'new') {
-          this.newSchedule();
-        } else {
-          this.editCustomer();
-        }
-      }
+  }
+  private async dialogSchedule(check): Promise<boolean> {
+    let message;
+    console.log(check);
+    if (!check.propertyCan) {
+      message = 'La propiedad elegida esta ocupada a esa hora';
+    } else if (!check.buyerCan) {
+      message = `El Cliente elegido esta ocupado a esa hora`;
+    } else if (!check.adviserCan) {
+      message = `El Asesor elegido esta ocupado a esa hora`;
+    }
+    const dialogRef = this.dialog.open(DialogGeneralComponent, {
+      maxWidth: '50%',
+      minWidth: '20%',
+      data: {
+        header: 'Advertencia',
+        subHeader: 'Se empalman horarios',
+        body: message,
+        isform: false,
+      },
     });
+    const promise = new Promise<boolean>((resolve, reject) => {
+      try {
+        const sub = dialogRef.componentInstance.buttons.subscribe(res => {
+          resolve(res);
+        });
+      } catch (error) {}
+    });
+    console.log(await promise);
+    const result = await promise;
+    return result;
   }
 
-  async checkSchedule() {
-    return await this.scheduleService.checkSchedule(this.schedule).toPromise();
+  async dialogAdv(): Promise<boolean> {
+    const adv = await this.advData();
+    const dialogRef = this.dialog.open(DialogGeneralComponent, {
+      maxWidth: '50%',
+      minWidth: '20%',
+      data: {
+        header: 'Advertencia',
+        subHeader: 'El horario no coincide con el asesor',
+        body: `El asesor <b>${adv.name}</b> tiene un horario de <b>${
+          adv.hourStart
+        }</b> a <b>${adv.hourEnd}</b>`,
+        isform: false,
+      },
+    });
+    const promise = new Promise<boolean>((resolve, reject) => {
+      try {
+        const sub = dialogRef.componentInstance.buttons.subscribe(res => {
+          resolve(res);
+        });
+      } catch (error) {}
+    });
+    console.log(await promise);
+    const result = await promise;
+    return result;
   }
+  // END dialog
+
   getDate(day, month, year) {
     return new Date(year, month, day);
   }
-  getPopMessage(event) {
+  /*  getPopMessage(event) {
     const isDisabled = (<HTMLInputElement>document.getElementById('submitUser'))
       .disabled;
     if (isDisabled) {
@@ -490,8 +470,8 @@ export class NewEditScheduleComponent implements OnInit {
     } else {
       this.errorToShow = '';
     }
-  }
-  getMatError($event) {
+  } */
+  /* getMatError($event) {
     if ($event.target.validity.valueMissing) {
       this.errorToShowMat = 'Dato obligatorio';
     }
@@ -507,5 +487,5 @@ export class NewEditScheduleComponent implements OnInit {
     if ($event.target.validity.rangeUnderflow) {
       this.errorToShowMat = 'Debe ser mayor a 0\n';
     }
-  }
+  } */
 }

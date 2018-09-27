@@ -105,6 +105,7 @@ import { DetailSalespropAdminComponent } from './components/admin/detail-salespr
 import { ListSalesAdminComponent } from './components/admin/list-sales-admin/list-sales-admin.component';
 import { ListOfficeAdminComponent } from './components/admin/list-office-admin/list-office-admin.component';
 import { NewEditOfficeComponent } from './components/office/new-edit-office/new-edit-office.component';
+import { DialogGeneralComponent } from './components/general/dialog-general/dialog-general.component';
 
 @NgModule({
   declarations: [
@@ -165,8 +166,9 @@ import { NewEditOfficeComponent } from './components/office/new-edit-office/new-
     ListSalesAdminComponent,
     ListOfficeAdminComponent,
     NewEditOfficeComponent,
+    DialogGeneralComponent,
   ],
-  entryComponents: [],
+  entryComponents: [DialogGeneralComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

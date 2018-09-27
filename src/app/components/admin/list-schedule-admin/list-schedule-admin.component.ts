@@ -57,19 +57,20 @@ export class ListScheduleAdminComponent implements OnInit {
     this.user = userService.userSession.value;
     this.monthNumber = new Date().getMonth();
     this.year = new Date().getFullYear();
-  }
-  ngOnInit() {
     this.route.queryParams.subscribe(params => {
       if (params['res']) {
         this.presentToast(params['res']);
       }
     });
+    this.getEvents();
+    this.isAll = true;
+  }
+  ngOnInit() {
     /* const buyer = this.userSessionService.userSession.value;
     this.buyerService.getBuyerById(buyer.id).subscribe(b => {
       this.schedule = b.schedule;
       this.isLoad = true;
     }); */
-    this.getEvents();
   }
   calendarSelect(item: { year: number; month: number; day: number }) {
     if (item.day !== 0) {
@@ -96,7 +97,7 @@ export class ListScheduleAdminComponent implements OnInit {
     this.isAll = true;
     this.scheduleService.getSchedule().subscribe(schedules => {
       const user = this.userService.userSession.value;
-      console.log(schedules);
+      console.table(this.schedule);
       if (user.type === 'administrator') {
         this.schedule = schedules.filter(s => !s.personal);
       } else if (user.type === 'adviser') {
@@ -105,7 +106,6 @@ export class ListScheduleAdminComponent implements OnInit {
             (s.adviser && s.adviser._id === user.id) ||
             (s.personal && s.personal === user.id),
         );
-        console.log(this.schedule);
       } else if (user.type === 'office') {
         this.schedule = schedules.filter(
           s => !s.administrator || (s.personal && s.personal === user.id),
@@ -116,7 +116,6 @@ export class ListScheduleAdminComponent implements OnInit {
             (s.seller && s.seller._id === user.id) ||
             (s.personal && s.personal === user.id),
         );
-        console.log(this.schedule);
       }
       this.schedule.sort((a, b) => {
         // Turn your strings into dates, and then subtract them

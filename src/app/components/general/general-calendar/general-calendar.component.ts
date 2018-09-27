@@ -158,11 +158,11 @@ export class GeneralCalendarComponent implements OnInit, OnChanges {
     ];
 
     // Temp values to get the number of days in current month, and previous month. Also getting the day of the week.
-    var tempDate = new Date(tempMonth + ' 1 ,' + year);
+    // var tempDate = new Date(tempMonth + ' 1 ,' + year);
+    var tempDate = new Date(year, month, 1);
     var tempweekday = tempDate.getDay();
     var tempweekday2 = tempweekday;
     var dayAmount = totalDays[month];
-
     // After getting the first day of the week for the month, padding the other days for that week with the previous months days.  IE, if the first day of the week is on a Thursday, then this fills in Sun - Wed with the last months dates, counting down from the last day on Wed, until Sunday.
     while (tempweekday > 0) {
       padding += '<td ></td>';
@@ -172,6 +172,7 @@ export class GeneralCalendarComponent implements OnInit, OnChanges {
     // Filling in the calendar with the current month days in the correct location along.
     while (i <= +dayAmount) {
       // Determining when to start a new row
+
       if (tempweekday2 > 6) {
         tempweekday2 = 0;
         padding += '</tr><tr >';

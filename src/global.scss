@@ -12,6 +12,10 @@ $mdc-theme-primary: #000000; // primary color
 $mdc-theme-secondary: #f5811e; // secondary color F58634
 @import '~@angular-mdc/theme/material';
 
+app-refre {
+  z-index: 0 !important;
+}
+
 .split-pane-md.split-pane-visible>.split-pane-side {
   max-width: 10% !important;
 }

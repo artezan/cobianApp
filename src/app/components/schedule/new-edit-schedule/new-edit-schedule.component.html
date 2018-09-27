@@ -98,8 +98,8 @@
               </mat-form-field>
               :
               <mat-form-field style="width: 70px;" appearance="outline">
-                <input max=59 min=0 type="number" matInput [(ngModel)]="schedule.minute" #minute="ngModel" id="minute"
-                  name="minute" required>
+                <input type="number" matInput [(ngModel)]="schedule.minute" #minute="ngModel" id="minute" name="minute"
+                  required>
               </mat-form-field>
               <!-- pm/am -->
               <mat-form-field style="width: 71px;
@@ -133,18 +133,19 @@
           </div>
           <mat-card-actions align="end">
             <div style="margin-right: 2%">
-              <span [matTooltip]=errorToShow [matTooltipClass]="'tooltip-size'" (mouseenter)="getPopMessage($event)">
-                <!-- no seller -->
-                <button *ngIf="isNew && user.type !== 'seller'" id="submitUser" mat-raised-button color="primary"
-                  (click)="checkHoursAdviser('new')" [disabled]="!newUserForm.form.valid">Crear</button>
-                <button *ngIf="!isNew && (user.type !== 'seller' && !schedule.seller)" id="submitUser"
-                  mat-raised-button color="primary" (click)="checkHoursAdviser('edit')">Editar</button>
-                <!-- seller -->
-                <button *ngIf="isNew && (user.type === 'seller')" id="submitUser" mat-raised-button color="primary"
-                  (click)="checkScheduleSeller('new')" [disabled]="!newUserForm.form.valid">Crear</button>
-                <button *ngIf="!isNew && (user.type === 'seller' || schedule.seller )" id="submitUser"
-                  mat-raised-button color="accent" (click)="checkScheduleSeller('edit')">Editar</button>
-              </span>
+
+              <!-- no seller -->
+
+              <button *ngIf="isNew && user.type !== 'seller'" id="submitUser" mat-raised-button color="primary" (click)="dialogs(true,'new','admin')"
+                [disabled]="!newUserForm.form.valid">Crear</button>
+
+              <button *ngIf="!isNew && (user.type !== 'seller' && !schedule.seller)" id="submitUser" mat-raised-button
+                color="primary" (click)="dialogs(true,'edit','admin')">Editar</button>
+              <!-- seller -->
+              <button *ngIf="isNew && (user.type === 'seller')" id="submitUser" mat-raised-button color="primary"
+                (click)="dialogs(false,'new','seller')" [disabled]="!newUserForm.form.valid">Crear</button>
+              <button *ngIf="!isNew && (user.type === 'seller' || schedule.seller )" mat-raised-button color="accent"
+                (click)="dialogs(false,'edit','seller')">Editar</button>
             </div>
 
 
