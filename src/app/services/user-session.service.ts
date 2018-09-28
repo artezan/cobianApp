@@ -125,6 +125,13 @@ export class UserSessionService {
         _id: id.toString(),
         type: type,
       });
+      OneSignalDektop.on('subscriptionChange', function(isSubscribed) {
+        console.log('The user subscription state is now:', isSubscribed);
+        OneSignalDektop.sendTags({
+          _id: id.toString(),
+          type: type,
+        });
+      });
     });
   }
   oneSignalCordova(id, type) {
