@@ -7,6 +7,7 @@ import { END_POINT } from '../_config/api.end-points';
 import { Storage } from '@ionic/storage';
 import { CONST_GENERAL } from '../_config/_const-general';
 import { Platform } from '@ionic/angular';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -43,7 +44,7 @@ export class UserSessionService {
     // onesignal
     if (this.platform.is('cordova')) {
       this.oneSignalCordova(id, type);
-    } else {
+    } else if (environment.production) {
       this.oneSignalDesktop(id, type);
     }
   }
@@ -60,7 +61,7 @@ export class UserSessionService {
     });
     if (this.platform.is('cordova')) {
       this.oneSignalLogoutCordova();
-    } else {
+    } else if (environment.production) {
       this.oneSignalLogoutDesktop();
     }
   }

@@ -100,7 +100,6 @@ export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
         // paginator works !!
         setTimeout(() => (this.dataSource.paginator = this.paginator));
         this.dataSource.sort = this.sort;
-        console.log(this.dataSource.data);
       }
     }
   }
