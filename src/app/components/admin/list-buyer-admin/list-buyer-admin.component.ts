@@ -308,7 +308,6 @@ export class ListBuyerAdminComponent implements OnInit {
         showCloseButton: false,
         cssClass: 'toast-adv',
         duration: 4000,
-        mode: 'ios',
       });
       toast.present();
       toast.onWillDismiss().then(() => {

@@ -5,13 +5,19 @@ import { map } from 'rxjs/operators';
 import { IUserSession } from '../models/userSession.model';
 import { END_POINT } from '../_config/api.end-points';
 import { Storage } from '@ionic/storage';
+import { CONST_GENERAL } from '../_config/_const-general';
+import { Platform } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserSessionService {
   public userSession = new BehaviorSubject<IUserSession>({});
-  constructor(private http: HttpClient, private storage: Storage) {}
+  constructor(
+    private http: HttpClient,
+    private storage: Storage,
+    private platform: Platform,
+  ) {}
 
   public logginUserSession(name, password): Observable<any> {
     const concatSession = btoa(name + ':' + password);
@@ -34,7 +40,14 @@ export class UserSessionService {
     });
     // localStorage.setItem('userSession', JSON.stringify(currentData));
     this.storage.set('userSession', currentData);
+    // onesignal
+    if (this.platform.is('cordova')) {
+      this.oneSignalCordova(id, type);
+    } else {
+      this.oneSignalDesktop(id, type);
+    }
   }
+
   public loggout(): void {
     this.storage.remove('userSession');
     this.storage.remove('alert-adv');
@@ -45,7 +58,13 @@ export class UserSessionService {
       id: undefined,
       password: undefined,
     });
+    if (this.platform.is('cordova')) {
+      this.oneSignalLogoutCordova();
+    } else {
+      this.oneSignalLogoutDesktop();
+    }
   }
+
   // inicia antes que la app mandando un Promise en cada respuesta
   checkValidSession(): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -79,5 +98,58 @@ export class UserSessionService {
         }
       });
     });
+  }
+  //  one signal
+  private oneSignalDesktop(id: any, type: any) {
+    const OneSignalDektop = window['OneSignal'] || [];
+    console.log('Init OneSignal');
+    OneSignalDektop.push(function() {
+      OneSignalDektop.init({
+        appId: CONST_GENERAL.ONESIGNAL_APP_ID,
+        autoRegister: true,
+        notifyButton: {
+          enable: false,
+        },
+        promptOptions: {
+          actionMessage:
+            'Nos gustaría notificarle cuando se mande un nuevo programa',
+          acceptButtonText: 'Permitir',
+          cancelButtonText: 'No gracias',
+        },
+      });
+      OneSignalDektop.getUserId(function(userId) {
+        console.log('OneSignal User ID:', userId);
+      });
+      OneSignalDektop.sendTags({
+        _id: id.toString(),
+        type: type,
+      });
+    });
+  }
+  oneSignalCordova(id, type) {
+    /* const notificationOpenedCallback = function(jsonData) {
+      alert('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+    }; */
+    const oneSignal = window['plugins'].OneSignal;
+    oneSignal.startInit(
+      CONST_GENERAL.ONESIGNAL_APP_ID,
+      CONST_GENERAL.googleProjectNumber,
+    );
+    /* oneSignal.handleNotificationOpened(notificationOpenedCallback); */
+    oneSignal.sendTags({
+      _id: id.toString(),
+      type: type,
+    });
+    oneSignal.endInit();
+  }
+  private oneSignalLogoutDesktop() {
+    const OneSignalD = window['OneSignal'] || [];
+    console.log('Delete OneSignal');
+    OneSignalD.push(function() {
+      OneSignalD.deleteTags(['_id', 'type']);
+    });
+  }
+  private oneSignalLogoutCordova() {
+    window['plugins'].OneSignal.deleteTags(['_id', 'type']);
   }
 }

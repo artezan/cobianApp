@@ -7,6 +7,7 @@ import { Storage } from '@ionic/storage';
 import { UserSessionService } from './services/user-session.service';
 import { Router } from '@angular/router';
 import { IUserSession } from './models/userSession.model';
+import { CONST_GENERAL } from './_config/_const-general';
 
 @Component({
   selector: 'app-root',
@@ -294,6 +295,7 @@ export class AppComponent implements OnInit {
   isDevice: boolean;
   isLoggin = false;
   user: IUserSession;
+  typeDevice: string;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -317,33 +319,19 @@ export class AppComponent implements OnInit {
     });
   }
   ngOnInit() {
-    const OneSignal = window['OneSignal'] || [];
-    console.log('Init OneSignal');
-    OneSignal.push([
-      'init',
-      {
-        appId: '03441d74-5974-4324-8dce-c7cd5c9dcfd9',
-        autoRegister: false,
-        allowLocalhostAsSecureOrigin: true,
-        notifyButton: {
-          enable: false,
-        },
-      },
-    ]);
-    console.log('OneSignal Initialized');
-    OneSignal.push(function() {
-      console.log('Register For Push');
-      OneSignal.push(['registerForPushNotifications']);
-    });
-    OneSignal.push(function() {
-      // Occurs when the user's subscription changes to a new value.
-      OneSignal.on('subscriptionChange', function(isSubscribed) {
-        console.log('The users subscription state is now:', isSubscribed);
-        OneSignal.getUserId().then(function(userId) {
-          console.log('User ID is', userId);
-        });
-      });
-    });
+    console.log(this.platform.is('cordova'));
+    this.typeDevice = this.platform.is('cordova') ? 'cordova' : 'no cordova';
+    /*  if (this.platform.is('cordova')) {
+      const notificationOpenedCallback = function(jsonData) {
+        alert('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+      };
+      window['plugins'].OneSignal.startInit(
+        CONST_GENERAL.ONESIGNAL_APP_ID,
+        CONST_GENERAL.googleProjectNumber,
+      )
+        .handleNotificationOpened(notificationOpenedCallback)
+        .endInit();
+    } */
   }
 
   initializeApp() {

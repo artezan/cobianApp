@@ -1,5 +1,7 @@
 {
   "name": "cobianApp",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
