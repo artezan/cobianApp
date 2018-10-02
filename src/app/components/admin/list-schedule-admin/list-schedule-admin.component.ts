@@ -12,6 +12,10 @@ import { ScheduleService } from '../../../services/schedule.service';
 import { FormatDatesFront, FormatHoursFront } from '../../../_config/_helpers';
 import { Storage } from '@ionic/storage';
 import { IUserSession } from '../../../models/userSession.model';
+import { INotification } from '../../../models/notification.model';
+import { OnesignalService } from '../../../services/onesignal.service';
+import { SellerService } from '../../../services/seller.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list-schedule-admin',
@@ -53,6 +57,8 @@ export class ListScheduleAdminComponent implements OnInit {
     private toastController: ToastController,
     private storage: Storage,
     public route: ActivatedRoute,
+    private oneSignalService: OnesignalService,
+    private sellerService: SellerService,
   ) {
     this.user = userService.userSession.value;
     this.monthNumber = new Date().getMonth();
@@ -249,8 +255,39 @@ export class ListScheduleAdminComponent implements OnInit {
       }
     });
   }
+  async getSellerOfProperty(propId) {
+    return await this.sellerService
+      .getSellerAll()
+      .pipe(
+        map(sellers =>
+          sellers.find(s => !!s.property.find(p => p._id === propId)),
+        ),
+      )
+      .toPromise();
+  }
   // end dialogs
-  putEvent(schedule: ISchedule) {
+  async putEvent(schedule: ISchedule) {
+    const seller = await this.getSellerOfProperty(schedule.property._id);
+    this.notification(
+      'Calificación de Visita',
+      `El asesor ${
+        this.userSessionService.userSession.value.name
+      } calificó como "${
+        schedule.scoreByAdviser === 'rojo'
+          ? 'Venta muy probable'
+          : schedule.scoreByAdviser === 'amarillo'
+            ? 'Oportunidad de venta'
+            : schedule.scoreByAdviser === 'verde'
+              ? 'Poco interés'
+              : 'Sin interés'
+      }" la visita a la propiedad ${schedule.property.name} con el comprador ${
+        schedule.buyer.name
+      }`,
+      'rojo',
+      'schedule',
+      ['administrator', 'office'],
+      seller === undefined ? undefined : [seller._id],
+    );
     this.scheduleService
       .putSchedule(schedule)
       .toPromise()
@@ -321,5 +358,31 @@ export class ListScheduleAdminComponent implements OnInit {
     const today = new Date().getTime();
     const date = new Date(year, month, day).getTime();
     return date < today;
+  }
+  private notification(
+    title,
+    message,
+    status,
+    type,
+    tags,
+    receiversId: string[],
+  ) {
+    // notificacion
+    const notification: INotification = {
+      title: title,
+      message: message,
+      tags: tags,
+      receiversId: receiversId,
+      senderId: this.userSessionService.userSession.value.id,
+      status: status,
+      type: type,
+    };
+    // onesignal
+    this.oneSignalService
+      .postOneSignalByTag(notification.title, message, tags, receiversId)
+      .subscribe(() => {
+        // guardar noti
+        this.oneSignalService.newNotification(notification).subscribe();
+      });
   }
 }

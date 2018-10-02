@@ -7,6 +7,9 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { SellerService } from '../../../services/seller.service';
 import { NavController } from '@ionic/angular';
 import { MakerService } from '../../../services/maker.service';
+import { INotification } from '../../../models/notification.model';
+import { UserSessionService } from '../../../services/user-session.service';
+import { OnesignalService } from '../../../services/onesignal.service';
 
 @Component({
   selector: 'app-new-edit-maker',
@@ -30,6 +33,8 @@ export class NewEditMakerComponent implements OnInit {
     private navCtr: NavController,
     private buildService: BuildService,
     private makerService: MakerService,
+    private userSessionService: UserSessionService,
+    private oneSignalService: OnesignalService,
   ) {}
 
   ngOnInit() {
@@ -68,6 +73,14 @@ export class NewEditMakerComponent implements OnInit {
         if (findIndex === -1) {
           build.maker.push(s);
           this.buildService.putBuild(build).subscribe(() => {
+            this.notification(
+              'Nueva Obra',
+              `Se le ha asignado: ${build.name}`,
+              'verde',
+              'build',
+              undefined,
+              [this.maker._id],
+            );
             console.log('add');
             const toast: NavigationExtras = {
               queryParams: { res: 'Nuevo Cosntructor Agregado' },
@@ -92,6 +105,14 @@ export class NewEditMakerComponent implements OnInit {
         if (findIndex === -1) {
           build.maker.push(this.maker);
           this.buildService.putBuild(build).subscribe(() => {
+            this.notification(
+              'Nueva Obra',
+              `Se le ha asignado: ${build.name}`,
+              'verde',
+              'build',
+              undefined,
+              [this.maker._id],
+            );
             console.log('add');
           });
         }
@@ -106,6 +127,15 @@ export class NewEditMakerComponent implements OnInit {
         });
       });
     } else {
+      //
+      this.notification(
+        'Nueva Obra',
+        `Se le ha asignado nueva obra`,
+        'verde',
+        'build',
+        undefined,
+        [this.maker._id],
+      );
       this.putMaker();
     }
   }
@@ -118,6 +148,32 @@ export class NewEditMakerComponent implements OnInit {
         .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
         .then(() => this.router.navigate(['list-maker-admin'], toast));
     });
+  }
+  private notification(
+    title,
+    message,
+    status,
+    type,
+    tags,
+    receiversId: string[],
+  ) {
+    // notificacion
+    const notification: INotification = {
+      title: title,
+      message: message,
+      tags: tags,
+      receiversId: receiversId,
+      senderId: this.userSessionService.userSession.value.id,
+      status: status,
+      type: type,
+    };
+    // onesignal
+    this.oneSignalService
+      .postOneSignalByTag(notification.title, message, tags, receiversId)
+      .subscribe(() => {
+        // guardar noti
+        this.oneSignalService.newNotification(notification).subscribe();
+      });
   }
 
   getPopMessage(event) {

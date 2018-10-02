@@ -9,6 +9,8 @@ import { IStatusBuyerProperty } from '../../../models/statusBuyerProperty.model'
 import { IProperty } from '../../../models/property.model';
 import { IBuyer } from '../../../models/buyer.model';
 import { PropertyService } from '../../../services/property.service';
+import { INotification } from '../../../models/notification.model';
+import { OnesignalService } from '../../../services/onesignal.service';
 
 @Component({
   selector: 'app-ofert-buyer',
@@ -29,6 +31,7 @@ export class OfertBuyerComponent implements OnInit {
     private ofertService: OfertService,
     private statusBuyerPropertyService: StatusBuyerPropertyService,
     private propertyService: PropertyService,
+    private oneSignalService: OnesignalService,
   ) {
     this.getOfert();
   }
@@ -48,6 +51,7 @@ export class OfertBuyerComponent implements OnInit {
     });
   }
   respondOfert(str: string, ofert: IOfert, isAccept: boolean) {
+    const buyer = this.userSessionService.userSession.value;
     const find = this.statusBuyerProperty.find(
       (s: any) => s.property._id === ofert.property._id,
     );
@@ -67,6 +71,13 @@ export class OfertBuyerComponent implements OnInit {
     ofert.isAccept = isAccept;
     this.ofertService.putOfert(ofert).subscribe(res => {
       if (res) {
+        this.notification(
+          'Respuesta de oferta',
+          `La oferta del ${buyer.name} ha sido ${str}`,
+          ofert.status,
+          'ofert',
+          ['office', 'administrator'],
+        );
         this.getOfert();
         this.presentToast('Oferta ' + str);
       }
@@ -79,5 +90,28 @@ export class OfertBuyerComponent implements OnInit {
       duration: 3000,
     });
     toast.present();
+  }
+  public notification(title, message, status, type, tags) {
+    // notificacion
+    const notification: INotification = {
+      title: title,
+      message: message,
+      tags: tags,
+      senderId: this.userSessionService.userSession.value.id,
+      status: status,
+      type: type,
+    };
+    // onesignal
+    this.oneSignalService
+      .postOneSignalByTag(notification.title, message, [
+        'office',
+        'administrator',
+      ])
+      .subscribe(() => {
+        // guardar noti
+        this.oneSignalService
+          .newNotification(notification)
+          .subscribe(n => console.log(n));
+      });
   }
 }

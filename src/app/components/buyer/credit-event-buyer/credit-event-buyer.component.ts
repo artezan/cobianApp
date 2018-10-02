@@ -12,6 +12,8 @@ import { StatusBuyerPropertyService } from '../../../services/status-buyer-prope
 import { ScheduleService } from '../../../services/schedule.service';
 import { ISchedule } from '../../../models/schedule.model';
 import { FormatHoursFront } from '../../../_config/_helpers';
+import { INotification } from '../../../models/notification.model';
+import { OnesignalService } from '../../../services/onesignal.service';
 
 @Component({
   selector: 'app-credit-event-buyer',
@@ -54,6 +56,7 @@ export class CreditEventBuyerComponent implements OnInit {
     public toastController: ToastController,
     private statusBuyerPropertyService: StatusBuyerPropertyService,
     private scheduleService: ScheduleService,
+    private oneSignalService: OnesignalService,
   ) {
     this.route.queryParams.subscribe(params => {
       if (params.id) {
@@ -76,16 +79,17 @@ export class CreditEventBuyerComponent implements OnInit {
       const isCreditFinded = buyerGet.credit.find(
         credit => credit.property._id === propertyId,
       );
+      // cambiar a filters si tine varias
       const isScheduleFinded = buyer.schedule.find(
         s => s.property._id === propertyId,
       );
-      console.log(buyer);
       if (isCreditFinded) {
         this.credit = isCreditFinded;
         this.hasCredit = true;
       }
       if (isScheduleFinded) {
         this.schedule = isScheduleFinded;
+        console.log(this.schedule);
         this.hasSchedule = true;
       }
       this.isLoad = true;
@@ -105,6 +109,14 @@ export class CreditEventBuyerComponent implements OnInit {
             property.name
           }"`,
         };
+        // Crear notif
+        this.notification(
+          'Solicitud de crédito',
+          credit.notes,
+          credit.status,
+          'credit',
+          ['office', 'administrator'],
+        );
         this.creditService.newCredit(credit).subscribe(c => {
           if (c) {
             this.buyerService.getBuyerById(buyerId).subscribe(b => {
@@ -124,6 +136,7 @@ export class CreditEventBuyerComponent implements OnInit {
       });
   }
   respondOfert(str: string, isAcept: boolean) {
+    const buyerName = this.userSessionService.userSession.value.name;
     this.statusBuyerPropertyService
       .upgradeStatus(this.statusBuyerPropertyId, 'rojo')
       .subscribe(c => console.log(c));
@@ -131,6 +144,14 @@ export class CreditEventBuyerComponent implements OnInit {
     this.credit.notes = str;
     this.credit.isAccept = isAcept;
     this.creditService.putCredit(this.credit).subscribe(res => {
+      // Crear notif
+      this.notification(
+        'Respuesta de crédito',
+        `El cliente ${buyerName} ha ${str} un crédito`,
+        this.credit.status,
+        'credit',
+        ['office', 'administrator'],
+      );
       if (res) {
         this.getBuyerById(this.propertyId);
         this.presentToast('Credito ' + str);
@@ -163,6 +184,14 @@ export class CreditEventBuyerComponent implements OnInit {
           day: this.daySelect,
           hour: this.hourSelect,
         };
+        // Crear notif
+        this.notification(
+          'Solicitud de visita',
+          newSchedule.note,
+          newSchedule.status,
+          'schedule',
+          ['office', 'administrator'],
+        );
         this.scheduleService.newSchedule(newSchedule).subscribe(s => {
           if (s) {
             this.buyerService.getBuyerById(buyer.id).subscribe(b => {
@@ -182,12 +211,26 @@ export class CreditEventBuyerComponent implements OnInit {
       });
   }
   respondSchedule(str: string) {
+    const buyerName = this.userSessionService.userSession.value.name;
     if (str === 'Aceptado') {
       this.schedule.status = 'amarillo';
+      // noti schedule
+      this.notificationBySchedule(this.schedule);
     } else {
       this.schedule.status = 'gris';
     }
     this.schedule.note = str;
+    // Crear notif
+    this.notification(
+      'Respuesta de visita',
+      `El cliente ${buyerName} ha ${str} la visita a ${
+        this.schedule.property.name
+      }`,
+      this.schedule.status,
+      'schedule',
+      ['office', 'administrator'],
+      this.schedule.adviser._id,
+    );
     this.scheduleService.putSchedule(this.schedule).subscribe(res => {
       if (res) {
         this.getBuyerById(this.propertyId);
@@ -205,5 +248,71 @@ export class CreditEventBuyerComponent implements OnInit {
   }
   formatHours(hours, minutes) {
     return FormatHoursFront(hours, minutes);
+  }
+  public notification(
+    title,
+    message,
+    status,
+    type,
+    tags,
+    receiversId?: string,
+  ) {
+    // notificacion
+    const notification: INotification = {
+      title: title,
+      message: message,
+      tags: tags,
+      receiversId: [receiversId],
+      senderId: this.userSessionService.userSession.value.id,
+      status: status,
+      type: type,
+    };
+    // onesignal
+    this.oneSignalService
+      .postOneSignalByTag(
+        notification.title,
+        message,
+        status === 'rojo' ? ['office', 'administrator'] : ['office'],
+        receiversId !== undefined ? [receiversId] : undefined,
+      )
+      .subscribe(() => {
+        // guardar noti
+        this.oneSignalService
+          .newNotification(notification)
+          .subscribe(n => console.log(n));
+      });
+  }
+  public notificationBySchedule(schedule?: ISchedule) {
+    // onesignal
+    this.oneSignalService
+      .postOneSignalBySchedule(
+        'Recordatorio de evento',
+        `Tienes un evento con direccion ${schedule.address} en propiedad: ${
+          schedule.property.name
+        } a las ${schedule.hour}hrs`,
+        new Date(
+          schedule.year,
+          schedule.month,
+          schedule.day,
+          schedule.hour,
+          schedule.minute,
+        ),
+        undefined,
+        [this.userSessionService.userSession.value.id, schedule.adviser._id],
+      )
+      .subscribe(() => {
+        // guardar noti
+      });
+    /*  this.oneSignalService
+      .postOneSignalBySchedule(
+        'Recordatorio de evento',
+        `sch`,
+        new Date(2018, 9, 2, 11, 45),
+        [],
+        ['5b9be3590ec7e6001335105c', '5baba37a0beeaa15d074e954'],
+      )
+      .subscribe(e => {
+        console.log(e);
+      }); */
   }
 }

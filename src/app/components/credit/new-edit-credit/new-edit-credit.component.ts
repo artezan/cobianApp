@@ -6,6 +6,9 @@ import { NavController } from '@ionic/angular';
 import { PropertyService } from '../../../services/property.service';
 import { CreditService } from '../../../services/credit.service';
 import { StatusBuyerPropertyService } from '../../../services/status-buyer-property.service';
+import { INotification } from '../../../models/notification.model';
+import { UserSessionService } from '../../../services/user-session.service';
+import { OnesignalService } from '../../../services/onesignal.service';
 
 @Component({
   selector: 'app-new-edit-credit',
@@ -30,6 +33,8 @@ export class NewEditCreditComponent implements OnInit {
     private navCtr: NavController,
     private propertyService: PropertyService,
     private statusBuyerPropertyService: StatusBuyerPropertyService,
+    private userSession: UserSessionService,
+    private oneSignalService: OnesignalService,
   ) {
     this.isLoad = false;
     this.route.queryParams.subscribe(params => {
@@ -68,6 +73,17 @@ export class NewEditCreditComponent implements OnInit {
           .subscribe(c => console.log(c));
       });
     this.credit.files = this.files.split(',');
+    // noti
+    if (this.credit.status === 'amarillo') {
+      this.notification(
+        'Propuesta de crédito',
+        `Nueva propuesta de crédito para ${this.credit.property.name}`,
+        'amarillo',
+        'credit',
+        this.buyer,
+      );
+    }
+
     this.creditService.putCredit(<ICredit>this.credit).subscribe(s => {
       const toast: NavigationExtras = {
         queryParams: { res: 'Credito Editado' },
@@ -90,6 +106,24 @@ export class NewEditCreditComponent implements OnInit {
       this.router.navigate(['list-seller-admin'], toast);
       this.navCtr.navigateRoot('list-seller-admin', true, toast);
     }); */
+  }
+  public notification(title, message, status, type, receiversId: string) {
+    // notificacion
+    const notification: INotification = {
+      title: title,
+      message: message,
+      receiversId: [receiversId],
+      senderId: this.userSession.userSession.value.id,
+      status: status,
+      type: type,
+    };
+    // onesignal
+    this.oneSignalService
+      .postOneSignalByTag(notification.title, message, undefined, [receiversId])
+      .subscribe(() => {
+        // guardar noti
+        this.oneSignalService.newNotification(notification).subscribe();
+      });
   }
   getPopMessage(event) {
     const isDisabled = (<HTMLInputElement>document.getElementById('submitUser'))

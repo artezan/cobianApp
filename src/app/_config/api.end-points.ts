@@ -1,6 +1,6 @@
 // const ip = 'https://cobianback.herokuapp.com/';
-// const ip = 'http://localhost:3004/';
-const ip = 'http://31.220.52.51:3004/';
+const ip = 'http://localhost:3004/';
+// const ip = 'http://31.220.52.51:3004/';
 
 const apiUrl = ip + 'api/v1/';
 const userSession = 'usersession/';
@@ -42,6 +42,9 @@ const bysaleid = 'bysaleid/';
 const byadviserid = 'byadviserid/';
 const office = 'office/';
 const byofficeid = 'byofficeid/';
+const notification = 'notification/';
+const notificatiosSearch = 'search/';
+const onesignal = 'https://onesignal.com/api/v1/notifications';
 
 export const END_POINT = {
   IP: ip,
@@ -99,4 +102,9 @@ export const END_POINT = {
   // Oficinista
   OFFICE: apiUrl + office,
   OFFICE_ID: apiUrl + office + byofficeid,
+  // Notifi
+  NOTIFICATION: apiUrl + notification,
+  NOTIFICATION_SEARCH: apiUrl + notification + notificatiosSearch,
+  // OneSignal
+  ONESIGNAL: onesignal,
 };

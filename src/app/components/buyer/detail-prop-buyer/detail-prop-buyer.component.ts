@@ -9,6 +9,10 @@ import { UserSessionService } from '../../../services/user-session.service';
 import { ToastController } from '@ionic/angular';
 import { IStatusBuyerProperty } from '../../../models/statusBuyerProperty.model';
 import { StatusBuyerPropertyService } from '../../../services/status-buyer-property.service';
+import { OnesignalService } from '../../../services/onesignal.service';
+import { SellerService } from '../../../services/seller.service';
+import { map } from 'rxjs/operators';
+import { INotification } from '../../../models/notification.model';
 
 @Component({
   selector: 'app-detail-prop-buyer',
@@ -28,6 +32,8 @@ export class DetailPropBuyerComponent implements OnInit {
     private userSessionService: UserSessionService,
     public toastController: ToastController,
     private statusBPService: StatusBuyerPropertyService,
+    private oneSignalService: OnesignalService,
+    private sellerService: SellerService,
   ) {
     this.route.queryParams.subscribe(params => {
       console.log(params.id);
@@ -45,6 +51,18 @@ export class DetailPropBuyerComponent implements OnInit {
       console.log(this.property);
       this.isLoad = true;
     });
+  }
+  async getSellerOfProperty() {
+    return await this.sellerService
+      .getSellerAll()
+      .pipe(
+        map(sellers =>
+          sellers.find(
+            s => !!s.property.find(p => p._id === this.property._id),
+          ),
+        ),
+      )
+      .toPromise();
   }
   getlikeProperty(id: string) {
     const buyer = this.userSessionService.userSession.value;
@@ -98,6 +116,8 @@ export class DetailPropBuyerComponent implements OnInit {
       this.statusBPService.newStatusBuyerProperty(sBP).subscribe(res => {
         buyer.statusBuyerProperty.push(res._id);
         this.buyerService.putBuyer(buyer).subscribe(val => {
+          // crar noti
+          this.notification();
           if (val) {
             this.presentToast('Te ha gustado esta propiedad');
           }
@@ -106,6 +126,33 @@ export class DetailPropBuyerComponent implements OnInit {
     }
     this.isLiked = !this.isLiked;
   }
+  public async notification() {
+    // seller
+    const seller = await this.getSellerOfProperty();
+    // mensaje
+    const m = `${
+      this.userSessionService.userSession.value.name
+    } ha indicado que le gusta ${this.property.name}`;
+    // notificacion
+    const notification: INotification = {
+      title: 'Interés en una Propiedad',
+      message: m,
+      tags: ['office', 'administrator'],
+      receiversId: [seller._id],
+      senderId: this.userSessionService.userSession.value.id,
+      status: 'verde',
+      type: 'like',
+    };
+    console.log(seller);
+    // onesignal
+    this.oneSignalService
+      .postOneSignalByTag(notification.title, m, ['office'], [seller._id])
+      .subscribe(() => {
+        // guardar noti
+        this.oneSignalService.newNotification(notification).subscribe();
+      });
+  }
+
   async presentToast(message: string) {
     const toast = await this.toastController.create({
       message: message,

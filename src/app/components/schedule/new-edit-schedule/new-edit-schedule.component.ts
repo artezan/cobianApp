@@ -26,6 +26,8 @@ import { ScheduleService } from '../../../services/schedule.service';
 import { UserSessionService } from '../../../services/user-session.service';
 import { IUserSession } from '../../../models/userSession.model';
 import { DialogGeneralComponent } from '../../general/dialog-general/dialog-general.component';
+import { INotification } from '../../../models/notification.model';
+import { OnesignalService } from '../../../services/onesignal.service';
 
 @Component({
   selector: 'app-new-edit-schedule',
@@ -59,6 +61,7 @@ export class NewEditScheduleComponent implements OnInit {
     private userSession: UserSessionService,
     private sellerService: SellerService,
     public dialog: MatDialog,
+    private oneSignalService: OnesignalService,
   ) {
     this.user = userSession.userSession.value;
   }
@@ -182,7 +185,11 @@ export class NewEditScheduleComponent implements OnInit {
       this.schedule.adviser = item;
     }
   }
-  newScheduleSeller() {
+  async getPropById(id) {
+    return await this.propertyService.getPropertyById(id).toPromise();
+  }
+  async newScheduleSeller() {
+    const prop = await this.getPropById(this.schedule.property);
     this.schedule.status = 'verde';
     this.schedule.seller = <any>this.user.id;
     console.log(this.schedule);
@@ -193,13 +200,20 @@ export class NewEditScheduleComponent implements OnInit {
           this.sellerService.getSellerById(this.user.id).subscribe(seller => {
             seller.schedule.push(<ISchedule>s._id);
             this.sellerService.putSeller(seller).subscribe(() => {
+              this.notification(
+                'Nuevo Evento',
+                `Se ha agendado una propuesta de evento con el vendedor ${
+                  seller.name
+                } en propiedad: ${prop.name}`,
+                'amarillo',
+                'schedule',
+                undefined,
+                [this.schedule.buyer],
+              );
               const toast: NavigationExtras = {
                 queryParams: { res: 'Evento de Vendedor Creado' },
               };
               // this.navCtr.navigateRoot('list-schedule-admin');
-              /**
-               * Es para recargar el componente previo
-               */
               this.router
                 .navigateByUrl('/RefrshComponent', {
                   skipLocationChange: true,
@@ -213,6 +227,11 @@ export class NewEditScheduleComponent implements OnInit {
       });
     });
   }
+  // start get by id
+  async getSchedulebyId(id) {
+    return await this.scheduleService.getScheduleById(id).toPromise();
+  }
+  //
   newSchedule() {
     this.schedule.status = 'verde';
     console.log(this.schedule);
@@ -230,7 +249,19 @@ export class NewEditScheduleComponent implements OnInit {
                 adv.buyer.push(<any>this.schedule.buyer);
               }
               adv.schedule.push(<ISchedule>s._id);
-              this.adviserService.putAdviser(adv).subscribe(() => {
+              this.adviserService.putAdviser(adv).subscribe(async () => {
+                const schedule = await this.getSchedulebyId(s._id);
+                // noti
+                this.notification(
+                  'Nuevo Evento',
+                  `Se ha generado una propuesta de evento en ${
+                    schedule.property.name
+                  }`,
+                  'verde',
+                  'schedule',
+                  undefined,
+                  [schedule.adviser._id, schedule.buyer._id],
+                );
                 const toast: NavigationExtras = {
                   queryParams: { res: ' Evento Creado' },
                 };
@@ -250,12 +281,22 @@ export class NewEditScheduleComponent implements OnInit {
     console.log('%c nuevo', 'color: #f5811e;');
   }
   editCustomerSeller() {
+    this.schedule.status = 'verde';
     this.scheduleService
       .putSchedule(<ISchedule>this.schedule)
       .subscribe(async () => {
+        const prop = await this.getPropById(this.schedule.property);
         const toast: NavigationExtras = {
           queryParams: { res: ' Evento Editado' },
         };
+        this.notification(
+          'Evento Editado',
+          `Actualización de propuesta de evento en propiedad ${prop.name}`,
+          'amarillo',
+          'schedule',
+          undefined,
+          [this.schedule.buyer],
+        );
         // this.router.navigate(['list-schedule-admin'], toast);
         // this.navCtr.navigateRoot('list-schedule-admin');
         const p = await this.router.navigateByUrl('/RefrshComponent', {
@@ -312,6 +353,18 @@ export class NewEditScheduleComponent implements OnInit {
     this.scheduleService
       .putSchedule(<ISchedule>this.schedule)
       .subscribe(async () => {
+        const schedule = await this.getSchedulebyId(this.schedule._id);
+        // noti
+        this.notification(
+          'Nuevo Evento',
+          `Se ha respondido una propuesta de evento en ${
+            schedule.property.name
+          }`,
+          'verde',
+          'schedule',
+          undefined,
+          [schedule.buyer._id],
+        );
         const toast: NavigationExtras = {
           queryParams: { res: ' Evento Editado' },
         };
@@ -462,30 +515,51 @@ export class NewEditScheduleComponent implements OnInit {
   getDate(day, month, year) {
     return new Date(year, month, day);
   }
-  /*  getPopMessage(event) {
-    const isDisabled = (<HTMLInputElement>document.getElementById('submitUser'))
-      .disabled;
-    if (isDisabled) {
-      this.errorToShow = 'Verificar datos ingresados';
-    } else {
-      this.errorToShow = '';
-    }
-  } */
-  /* getMatError($event) {
-    if ($event.target.validity.valueMissing) {
-      this.errorToShowMat = 'Dato obligatorio';
-    }
-    if ($event.target.validity.patternMismatch) {
-      this.errorToShowMat = 'Solo números, letras, guiones y puntos\n';
-    }
-    if ($event.target.validity.tooShort) {
-      this.errorToShowMat = 'Ingrese al menos 4 caracteres\n';
-    }
-    if ($event.target.validity.tooLong) {
-      this.errorToShowMat = 'Máximo 255 caracteres\n';
-    }
-    if ($event.target.validity.rangeUnderflow) {
-      this.errorToShowMat = 'Debe ser mayor a 0\n';
-    }
-  } */
+  // noti
+  private notification(
+    title,
+    message,
+    status,
+    type,
+    tags,
+    receiversId: string[],
+  ) {
+    // notificacion
+    const notification: INotification = {
+      title: title,
+      message: message,
+      tags: tags,
+      receiversId: receiversId,
+      senderId: this.userSession.userSession.value.id,
+      status: status,
+      type: type,
+    };
+    // onesignal
+    this.oneSignalService
+      .postOneSignalByTag(notification.title, message, tags, receiversId)
+      .subscribe(() => {
+        // guardar noti
+        this.oneSignalService.newNotification(notification).subscribe();
+      });
+  }
+  private notificationBySchedule(schedule: ISchedule) {
+    // onesignal
+    this.oneSignalService
+      .postOneSignalBySchedule(
+        'Recordatorio de evento',
+        `Tienes un evento con direccion ${schedule.address} en propiedad: ${
+          schedule.property.name
+        } a las ${schedule.hour}hrs`,
+        new Date(
+          schedule.year,
+          schedule.month,
+          schedule.day,
+          schedule.hour,
+          schedule.minute,
+        ),
+        undefined,
+        [schedule.buyer._id, schedule.adviser._id],
+      )
+      .subscribe(() => {});
+  }
 }

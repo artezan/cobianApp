@@ -7,6 +7,8 @@ import { ToastController, Platform, AlertController } from '@ionic/angular';
 import { FormatDatesFront, FormatHoursFront } from '../../../_config/_helpers';
 import { END_POINT } from '../../../_config/api.end-points';
 import { IUserSession } from '../../../models/userSession.model';
+import { INotification } from '../../../models/notification.model';
+import { OnesignalService } from '../../../services/onesignal.service';
 
 @Component({
   selector: 'app-detail-build-admin',
@@ -41,6 +43,7 @@ export class DetailBuildAdminComponent implements OnInit {
     public toastController: ToastController,
     private platform: Platform,
     private alertController: AlertController,
+    private oneSignalService: OnesignalService,
   ) {
     this.user = userSessionService.userSession.value;
     this.route.queryParams.subscribe(params => {
@@ -85,12 +88,23 @@ export class DetailBuildAdminComponent implements OnInit {
   }
   changeGoal() {
     this.buildService.putBuild(this.build).subscribe(() => {
+      let m;
       this.getPercent(this.build.timeLine);
       if (this.percent === 100) {
         this.presentToast('Se ha completado una Obra');
+        m = 'Se ha completado una Obra';
       } else {
         this.presentToast('Se ha modificado una Fase');
+        m = 'Se ha modificado una Fase';
       }
+      this.notification(
+        m,
+        `Actualizacion de ${this.build.name}`,
+        'amarillo',
+        'build',
+        undefined,
+        this.build.maker.map(maker => maker._id),
+      );
     });
   }
   changeGrid(value) {
@@ -208,6 +222,29 @@ export class DetailBuildAdminComponent implements OnInit {
         });
         // put al build
         this.buildService.putBuild(this.build).subscribe(() => {
+          // noti
+          if (this.user.type === 'maker') {
+            this.notification(
+              'Nueva Foto',
+              `El constructor ${
+                this.user.name
+              } ha subido una foto de la construcción ${this.build.name}`,
+              'amarillo',
+              'build',
+              ['office'],
+              this.build.maker.map(m => m._id),
+            );
+          } else {
+            this.notification(
+              'Nueva Foto',
+              `Se ha subido una foto de la construcción ${this.build.name}`,
+              'amarillo',
+              'build',
+              undefined,
+              this.build.maker.map(m => m._id),
+            );
+          }
+
           this.presentToast('Imagen Subida');
         });
       }
@@ -276,5 +313,31 @@ export class DetailBuildAdminComponent implements OnInit {
     });
 
     await alert.present();
+  }
+  private notification(
+    title,
+    message,
+    status,
+    type,
+    tags,
+    receiversId: string[],
+  ) {
+    // notificacion
+    const notification: INotification = {
+      title: title,
+      message: message,
+      tags: tags,
+      receiversId: receiversId,
+      senderId: this.userSessionService.userSession.value.id,
+      status: status,
+      type: type,
+    };
+    // onesignal
+    this.oneSignalService
+      .postOneSignalByTag(notification.title, message, tags, receiversId)
+      .subscribe(() => {
+        // guardar noti
+        this.oneSignalService.newNotification(notification).subscribe();
+      });
   }
 }

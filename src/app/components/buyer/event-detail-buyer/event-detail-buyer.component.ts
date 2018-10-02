@@ -7,6 +7,8 @@ import { ScheduleService } from '../../../services/schedule.service';
 import { FormatHoursFront, FormatDatesFront } from '../../../_config/_helpers';
 import { IUserSession } from '../../../models/userSession.model';
 import { AdviserService } from '../../../services/adviser.service';
+import { OnesignalService } from '../../../services/onesignal.service';
+import { INotification } from '../../../models/notification.model';
 
 @Component({
   selector: 'app-event-detail-buyer',
@@ -26,6 +28,7 @@ export class EventDetailBuyerComponent implements OnInit {
     private buyerService: BuyerService,
     private scheduleService: ScheduleService,
     private adviserService: AdviserService,
+    private oneSignalService: OnesignalService,
   ) {
     this.user = this.userSessionService.userSession.value;
     if (this.user.type === 'buyer') {
@@ -94,6 +97,19 @@ export class EventDetailBuyerComponent implements OnInit {
     const schedule = this.schedule.find(s => s._id === scheduleId);
     if (str === 'Aceptado') {
       schedule.status = 'amarillo';
+      // noti schedule
+      this.notificationBySchedule(schedule);
+      // Crear notif
+      this.notification(
+        'Respuesta de visita',
+        `El cliente ${
+          this.userSessionService.userSession.value.name
+        } ha ${str} la visita a ${schedule.property.name}`,
+        schedule.status,
+        'schedule',
+        ['office', 'administrator'],
+        [schedule.adviser ? schedule.adviser._id : schedule.seller._id],
+      );
     } else {
       schedule.status = 'gris';
     }
@@ -110,5 +126,56 @@ export class EventDetailBuyerComponent implements OnInit {
   formatDates(year, month, day) {
     const date = new Date();
     FormatDatesFront(date);
+  }
+  // noti
+  private notification(
+    title,
+    message,
+    status,
+    type,
+    tags,
+    receiversId: string[],
+  ) {
+    // notificacion
+    const notification: INotification = {
+      title: title,
+      message: message,
+      tags: tags,
+      receiversId: receiversId,
+      senderId: this.userSessionService.userSession.value.id,
+      status: status,
+      type: type,
+    };
+    // onesignal
+    this.oneSignalService
+      .postOneSignalByTag(notification.title, message, tags, receiversId)
+      .subscribe(() => {
+        // guardar noti
+        this.oneSignalService.newNotification(notification).subscribe();
+      });
+  }
+  public notificationBySchedule(schedule?: ISchedule) {
+    console.log(schedule);
+    // onesignal
+    this.oneSignalService
+      .postOneSignalBySchedule(
+        'Recordatorio de evento',
+        `Tienes un evento con direccion ${schedule.address} en propiedad: ${
+          schedule.property.name
+        } a las ${schedule.hour}hrs`,
+        new Date(
+          schedule.year,
+          schedule.month,
+          schedule.day,
+          schedule.hour,
+          schedule.minute,
+        ),
+        undefined,
+        [
+          this.userSessionService.userSession.value.id,
+          schedule.adviser ? schedule.adviser._id : schedule.seller._id,
+        ],
+      )
+      .subscribe(() => {});
   }
 }

@@ -9,6 +9,8 @@ import { NavComponent } from '@ionic/core';
 import { NavController } from '@ionic/angular';
 import { UserSessionService } from '../../../services/user-session.service';
 import { IUserSession } from '../../../models/userSession.model';
+import { INotification } from '../../../models/notification.model';
+import { OnesignalService } from '../../../services/onesignal.service';
 
 @Component({
   selector: 'app-new-edit-adviser',
@@ -33,6 +35,7 @@ export class NewEditAdviserComponent implements OnInit {
     private buyerService: BuyerService,
     private navCtr: NavController,
     private userSession: UserSessionService,
+    private oneSignalService: OnesignalService,
   ) {
     this.user = userSession.userSession.value;
   }
@@ -69,6 +72,15 @@ export class NewEditAdviserComponent implements OnInit {
           const arr = buyer.adviser.map(ad => ad._id);
           arr.push(adv._id);
           buyer.adviser = <any>arr;
+          // noti
+          this.notification(
+            'Nuevo Cliente Asignado',
+            `Se le ha asignado el cliente: ${buyer.name}`,
+            'verde',
+            'buyer',
+            undefined,
+            [adv._id],
+          );
           this.buyerService.putBuyer(buyer).subscribe(() => {});
         }
       });
@@ -138,8 +150,43 @@ export class NewEditAdviserComponent implements OnInit {
       const arr = buyer.adviser.map(adv => adv._id);
       arr.push(adviserId);
       buyer.adviser = <any>arr;
+      // noti
+      this.notification(
+        'Nuevo Cliente Asignado',
+        `Se le ha asignado el cliente: ${buyer.name}`,
+        'verde',
+        'buyer',
+        undefined,
+        [adviserId],
+      );
       this.buyerService.putBuyer(buyer).subscribe(() => console.log('act'));
     }
+  }
+  private notification(
+    title,
+    message,
+    status,
+    type,
+    tags,
+    receiversId: string[],
+  ) {
+    // notificacion
+    const notification: INotification = {
+      title: title,
+      message: message,
+      tags: tags,
+      receiversId: receiversId,
+      senderId: this.userSession.userSession.value.id,
+      status: status,
+      type: type,
+    };
+    // onesignal
+    this.oneSignalService
+      .postOneSignalByTag(notification.title, message, tags, receiversId)
+      .subscribe(() => {
+        // guardar noti
+        this.oneSignalService.newNotification(notification).subscribe();
+      });
   }
   getPopMessage(event) {
     const isDisabled = (<HTMLInputElement>document.getElementById('submitUser'))

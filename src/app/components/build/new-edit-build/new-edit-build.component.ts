@@ -8,6 +8,9 @@ import { PropertyService } from '../../../services/property.service';
 import { BuildService } from '../../../services/build.service';
 import { MakerService } from '../../../services/maker.service';
 import { FormStr } from '../../general/form-str-list/form-str-list.component';
+import { INotification } from '../../../models/notification.model';
+import { UserSessionService } from '../../../services/user-session.service';
+import { OnesignalService } from '../../../services/onesignal.service';
 
 @Component({
   selector: 'app-new-edit-build',
@@ -41,6 +44,8 @@ export class NewEditBuildComponent implements OnInit {
     private buildService: BuildService,
     private makerService: MakerService,
     private platform: Platform,
+    private userSessionService: UserSessionService,
+    private oneSignalService: OnesignalService,
   ) {
     this.isDesktop = platform.is('desktop');
   }
@@ -106,10 +111,17 @@ export class NewEditBuildComponent implements OnInit {
     });
   }
   newCustomer() {
-    console.log('new');
-
     this.build.maker = this.maker;
     this.buildService.newBuild(this.build).subscribe(b => {
+      this.notification(
+        'Nueva Obra',
+        `Se le ha asignado: ${this.build.name}`,
+        'verde',
+        'build',
+        undefined,
+        <any>b.maker,
+      );
+
       b.maker.forEach(m => {
         console.log(m);
         const maker = { _id: m, build: b };
@@ -136,6 +148,15 @@ export class NewEditBuildComponent implements OnInit {
     });
   }
   setMakers() {
+    // noti
+    this.notification(
+      'Asignación de Obra',
+      `Se le ha asignado: ${this.build.name}`,
+      'verde',
+      'build',
+      undefined,
+      <any>this.maker,
+    );
     this.maker.forEach(element => {
       const indexFinded = this.build.maker.findIndex(m => m._id === element);
       if (indexFinded === -1) {
@@ -170,5 +191,31 @@ export class NewEditBuildComponent implements OnInit {
     if ($event.target.validity.rangeUnderflow) {
       this.errorToShowMat = 'Debe ser mayor a 0\n';
     }
+  }
+  private notification(
+    title,
+    message,
+    status,
+    type,
+    tags,
+    receiversId: string[],
+  ) {
+    // notificacion
+    const notification: INotification = {
+      title: title,
+      message: message,
+      tags: tags,
+      receiversId: receiversId,
+      senderId: this.userSessionService.userSession.value.id,
+      status: status,
+      type: type,
+    };
+    // onesignal
+    this.oneSignalService
+      .postOneSignalByTag(notification.title, message, tags, receiversId)
+      .subscribe(() => {
+        // guardar noti
+        this.oneSignalService.newNotification(notification).subscribe();
+      });
   }
 }

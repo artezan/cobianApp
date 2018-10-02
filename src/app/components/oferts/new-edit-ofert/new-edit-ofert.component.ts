@@ -11,6 +11,9 @@ import { Observable } from 'rxjs';
 import { IBuyer } from '../../../models/buyer.model';
 import { IProperty } from '../../../models/property.model';
 import { BuyerService } from '../../../services/buyer.service';
+import { INotification } from '../../../models/notification.model';
+import { OnesignalService } from '../../../services/onesignal.service';
+import { UserSessionService } from '../../../services/user-session.service';
 
 @Component({
   selector: 'app-new-edit-ofert',
@@ -32,6 +35,7 @@ export class NewEditOfertComponent implements OnInit {
   buyers;
   isEmpty: boolean;
   OfertsBuyer: string[];
+  ofertForNot;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -40,6 +44,8 @@ export class NewEditOfertComponent implements OnInit {
     private propertyService: PropertyService,
     private buyerService: BuyerService,
     private statusBuyerPropertyService: StatusBuyerPropertyService,
+    private oneSignalService: OnesignalService,
+    private userSession: UserSessionService,
   ) {
     this.isLoad = false;
     buyerService.getBuyerAll().subscribe(buyers => {
@@ -48,7 +54,6 @@ export class NewEditOfertComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params['id']) {
         this.ofertService.getOfertById(params['id']).subscribe(ofert => {
-          console.log(ofert);
           this.ofert = <any>ofert;
           this.buyer = this.ofert.buyer._id;
           this.property = this.ofert.property._id;
@@ -74,27 +79,43 @@ export class NewEditOfertComponent implements OnInit {
   }
 
   ngOnInit() {}
-  editOfert() {
+  async getPropName(id) {
+    return await this.propertyService.getPropertyById(id).toPromise();
+  }
+  async editOfert() {
     this.update('amarillo', this.ofert.buyer, this.ofert.property);
     this.ofert.status = 'amarillo';
     this.ofert.files = this.files.split(',');
+    const prop = await this.getPropName(this.ofert.property);
+    this.notification(
+      'Actualización de Oferta',
+      `Se ha actualizado la oferta para ${prop.name}`,
+      'amarillo',
+      'ofert',
+      <any>this.ofert.buyer,
+    );
     this.ofertService.putOfert(this.ofert).subscribe(s => {
       const toast: NavigationExtras = {
         queryParams: { res: 'Oferta Editada' },
       };
       // this.router.navigate(['list-credit-admin'], toast);
       // this.navCtr.navigateRoot('list-ofert-admin', true, toast);
-      /**
-       * Es para recargar el componente previo
-       */
       this.router
         .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
         .then(() => this.router.navigate(['list-ofert-admin'], toast));
     });
   }
-  newOfert() {
+  async newOfert() {
     this.ofert.files = this.files.split(',');
     this.ofert.status = 'amarillo';
+    const prop = await this.getPropName(this.ofert.property);
+    this.notification(
+      'Nueva Oferta',
+      `Se ha creado oferta para ${prop.name}`,
+      'amarillo',
+      'ofert',
+      <any>this.ofert.buyer,
+    );
     this.ofertService.newOfert(this.ofert).subscribe(o => {
       this.update('amarillo', this.ofert.buyer, this.ofert.property);
       this.OfertsBuyer.push(o._id);
@@ -133,6 +154,25 @@ export class NewEditOfertComponent implements OnInit {
         this.isEmpty = true;
       }
     });
+  }
+  // noti
+  public notification(title, message, status, type, receiversId: string) {
+    // notificacion
+    const notification: INotification = {
+      title: title,
+      message: message,
+      receiversId: [receiversId],
+      senderId: this.userSession.userSession.value.id,
+      status: status,
+      type: type,
+    };
+    // onesignal
+    this.oneSignalService
+      .postOneSignalByTag(notification.title, message, undefined, [receiversId])
+      .subscribe(() => {
+        // guardar noti
+        this.oneSignalService.newNotification(notification).subscribe();
+      });
   }
   getPopMessage(event) {
     const isDisabled = (<HTMLInputElement>document.getElementById('submitUser'))

@@ -9,6 +9,8 @@ import { StatusBuyerPropertyService } from '../../../services/status-buyer-prope
 import { IStatusBuyerProperty } from '../../../models/statusBuyerProperty.model';
 import { IBuyer } from '../../../models/buyer.model';
 import { AlertInput } from '@ionic/core';
+import { INotification } from '../../../models/notification.model';
+import { OnesignalService } from '../../../services/onesignal.service';
 
 @Component({
   selector: 'app-detail-prop-admin',
@@ -29,6 +31,7 @@ export class DetailPropAdminComponent implements OnInit {
     public toastController: ToastController,
     private statusBPService: StatusBuyerPropertyService,
     public alertController: AlertController,
+    private oneSignalService: OnesignalService,
   ) {
     this.route.queryParams.subscribe(params => {
       console.log(params.id);
@@ -49,6 +52,14 @@ export class DetailPropAdminComponent implements OnInit {
   setPropToBuyer(data: string[]) {
     data.forEach(buyerId => {
       if (buyerId !== '') {
+        // noti
+        this.notification(
+          'Sugerencia de Propiedad',
+          `Se ha sugerido la propiedad ${this.property.name}`,
+          'gris',
+          'property',
+          buyerId,
+        );
         this.buyerService.getBuyerById(buyerId).subscribe(b => {
           b.property.push(<any>this.property._id);
           this.buyerService.putBuyer(b).subscribe(() => {
@@ -118,5 +129,24 @@ export class DetailPropAdminComponent implements OnInit {
         this.setPropToBuyer(res.data.values);
       }
     });
+  }
+  // noti
+  private notification(title, message, status, type, receiversId: string) {
+    // notificacion
+    const notification: INotification = {
+      title: title,
+      message: message,
+      receiversId: [receiversId],
+      senderId: this.userSessionService.userSession.value.id,
+      status: status,
+      type: type,
+    };
+    // onesignal
+    this.oneSignalService
+      .postOneSignalByTag(notification.title, message, undefined, [receiversId])
+      .subscribe(() => {
+        // guardar noti
+        this.oneSignalService.newNotification(notification).subscribe();
+      });
   }
 }
