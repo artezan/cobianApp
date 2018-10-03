@@ -10,14 +10,15 @@ import { Platform } from '@ionic/angular';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class UserSessionService {
   public userSession = new BehaviorSubject<IUserSession>({});
+  private isInitOne = false;
   constructor(
     private http: HttpClient,
     private storage: Storage,
-    private platform: Platform,
+    private platform: Platform
   ) {}
 
   public logginUserSession(name, password): Observable<any> {
@@ -31,20 +32,20 @@ export class UserSessionService {
       type: type,
       name: name,
       id: id,
-      password: password,
+      password: password
     };
     this.userSession.next({
       name: name,
       type: type,
       id: id,
-      password: password,
+      password: password
     });
     // localStorage.setItem('userSession', JSON.stringify(currentData));
     this.storage.set('userSession', currentData);
     // onesignal
     if (this.platform.is('cordova')) {
       this.oneSignalCordova(id, type);
-    } else if (environment.production) {
+    } else if (environment.production && !this.isInitOne) {
       this.oneSignalDesktop(id, type);
     }
   }
@@ -57,16 +58,16 @@ export class UserSessionService {
       name: undefined,
       type: undefined,
       id: undefined,
-      password: undefined,
+      password: undefined
     });
     if (this.platform.is('cordova')) {
       this.oneSignalLogoutCordova();
-    } else if (environment.production) {
+    } else if (environment.production && this.isInitOne) {
       this.oneSignalLogoutDesktop();
     }
   }
 
-  // inicia antes que la app mandando un Promise en cada respuesta
+  // inicia antes que la app mandando un Promise en cada respuesta environment.production &&
   checkValidSession(): Promise<any> {
     return new Promise((resolve, reject) => {
       // ve si hay un usuario en el localstore
@@ -82,7 +83,7 @@ export class UserSessionService {
                   data.data[0].name,
                   data.type,
                   data.data[0]._id,
-                  data.data[0].password,
+                  data.data[0].password
                 );
                 return resolve(true);
                 // usuario o contrasena caducada
@@ -109,30 +110,31 @@ export class UserSessionService {
         appId: CONST_GENERAL.ONESIGNAL_APP_ID,
         autoRegister: true,
         notifyButton: {
-          enable: false,
+          enable: false
         },
         promptOptions: {
           actionMessage:
             'Nos gustaría notificarle cuando se mande un nuevo programa',
           acceptButtonText: 'Permitir',
-          cancelButtonText: 'No gracias',
-        },
+          cancelButtonText: 'No gracias'
+        }
       });
       OneSignalDektop.getUserId(function(userId) {
         console.log('OneSignal User ID:', userId);
       });
       OneSignalDektop.sendTags({
         _id: id.toString(),
-        type: type,
+        type: type
       });
       OneSignalDektop.on('subscriptionChange', function(isSubscribed) {
         console.log('The user subscription state is now:', isSubscribed);
         OneSignalDektop.sendTags({
           _id: id.toString(),
-          type: type,
+          type: type
         });
       });
     });
+    this.isInitOne = true;
   }
   oneSignalCordova(id, type) {
     /* const notificationOpenedCallback = function(jsonData) {
@@ -141,12 +143,12 @@ export class UserSessionService {
     const oneSignal = window['plugins'].OneSignal;
     oneSignal.startInit(
       CONST_GENERAL.ONESIGNAL_APP_ID,
-      CONST_GENERAL.googleProjectNumber,
+      CONST_GENERAL.googleProjectNumber
     );
     /* oneSignal.handleNotificationOpened(notificationOpenedCallback); */
     oneSignal.sendTags({
       _id: id.toString(),
-      type: type,
+      type: type
     });
     oneSignal.endInit();
   }
@@ -156,6 +158,7 @@ export class UserSessionService {
     OneSignalD.push(function() {
       OneSignalD.deleteTags(['_id', 'type']);
     });
+    this.isInitOne = false;
   }
   private oneSignalLogoutCordova() {
     window['plugins'].OneSignal.deleteTags(['_id', 'type']);
