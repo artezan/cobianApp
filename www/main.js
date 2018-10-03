@@ -13475,7 +13475,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 var LoginComponent = /** @class */ (function () {
-    function LoginComponent(userSession, router, navController, menuController, storage, loadingController, platform) {
+    function LoginComponent(userSession, router, navController, menuController, storage, loadingController) {
         var _this = this;
         this.userSession = userSession;
         this.router = router;
@@ -13483,10 +13483,7 @@ var LoginComponent = /** @class */ (function () {
         this.menuController = menuController;
         this.storage = storage;
         this.loadingController = loadingController;
-        this.platform = platform;
         this.isFind = true;
-        this.isDevice = this.platform.is('cordova');
-        // console.log(this.platform.is('desktop'));
         this.storage.keys().then(function (keys) {
             var keyUserSession = keys.find(function (key) { return key === 'userSession'; });
             if (!keyUserSession) {
@@ -13545,7 +13542,7 @@ var LoginComponent = /** @class */ (function () {
                                     _this.isLogin = true;
                                     load.dismiss();
                                     var query = {
-                                        queryParams: { id: maker[0].build },
+                                        queryParams: { id: maker[0].build }
                                     };
                                     _this.router.navigate(['detail-build-admin'], query);
                                 }
@@ -13579,7 +13576,7 @@ var LoginComponent = /** @class */ (function () {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.loadingController.create({
                             message: 'Iniciando...',
-                            translucent: true,
+                            translucent: true
                         })];
                     case 1:
                         loading = _a.sent();
@@ -13601,15 +13598,14 @@ var LoginComponent = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-login',
             template: __webpack_require__(/*! ./login.component.html */ "./src/app/components/login/login.component.html"),
-            styles: [__webpack_require__(/*! ./login.component.scss */ "./src/app/components/login/login.component.scss")],
+            styles: [__webpack_require__(/*! ./login.component.scss */ "./src/app/components/login/login.component.scss")]
         }),
         __metadata("design:paramtypes", [_services_user_session_service__WEBPACK_IMPORTED_MODULE_1__["UserSessionService"],
             _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"],
             _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["NavController"],
             _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["MenuController"],
             _ionic_storage__WEBPACK_IMPORTED_MODULE_4__["Storage"],
-            _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["LoadingController"],
-            _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["Platform"]])
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_3__["LoadingController"]])
     ], LoginComponent);
     return LoginComponent;
 }());

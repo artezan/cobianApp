@@ -4,8 +4,7 @@ import { Router, NavigationExtras } from '@angular/router';
 import {
   NavController,
   MenuController,
-  LoadingController,
-  Platform,
+  LoadingController
 } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { IUserSession } from '../../models/userSession.model';
@@ -14,7 +13,7 @@ import { IMaker } from '../../models/maker.model';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
   emailInput: string;
@@ -29,11 +28,8 @@ export class LoginComponent implements OnInit {
     private navController: NavController,
     private menuController: MenuController,
     private storage: Storage,
-    public loadingController: LoadingController,
-    private platform: Platform,
+    public loadingController: LoadingController
   ) {
-    this.isDevice = this.platform.is('cordova');
-    // console.log(this.platform.is('desktop'));
     this.storage.keys().then(keys => {
       const keyUserSession = keys.find(key => key === 'userSession');
       if (!keyUserSession) {
@@ -63,7 +59,7 @@ export class LoginComponent implements OnInit {
             data.data[0].name,
             data.type,
             data.data[0]._id,
-            data.data[0].password,
+            data.data[0].password
           );
           this.isFind = true;
           // seller
@@ -90,7 +86,7 @@ export class LoginComponent implements OnInit {
             this.isLogin = true;
             load.dismiss();
             const query: NavigationExtras = {
-              queryParams: { id: maker[0].build },
+              queryParams: { id: maker[0].build }
             };
             this.router.navigate(['detail-build-admin'], query);
           }
@@ -115,7 +111,7 @@ export class LoginComponent implements OnInit {
   async presentLoadingWithOptions() {
     const loading = await this.loadingController.create({
       message: 'Iniciando...',
-      translucent: true,
+      translucent: true
     });
     return await loading;
   }
