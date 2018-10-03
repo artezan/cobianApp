@@ -43,11 +43,13 @@ export class UserSessionService {
     // localStorage.setItem('userSession', JSON.stringify(currentData));
     this.storage.set('userSession', currentData);
     // onesignal
-    /*  if (this.platform.is('cordova')) {
-      this.oneSignalCordova(id, type);
-    } else if (environment.production && !this.isInitOne) {
-      this.oneSignalDesktop(id, type);
-    } */
+    this.platform.ready().then(c => {
+      if (this.platform.is('cordova')) {
+        this.oneSignalCordova(id, type);
+      } else if (environment.production && !this.isInitOne) {
+        this.oneSignalDesktop(id, type);
+      }
+    });
   }
 
   public loggout(): void {
