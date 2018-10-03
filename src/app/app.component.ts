@@ -13,7 +13,7 @@ import { CONST_GENERAL } from './_config/_const-general';
   selector: 'app-root',
   templateUrl: 'app.component.html'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   public appPages = [
     // buyer
     {
@@ -317,21 +317,6 @@ export class AppComponent implements OnInit {
         this.navController.navigateRoot('login', false);
       }
     });
-  }
-  ngOnInit() {
-    console.log(this.platform.is('cordova'));
-    // this.typeDevice = this.platform.is('cordova') ? 'cordova' : 'no cordova';
-    /*  if (this.platform.is('cordova')) {
-      const notificationOpenedCallback = function(jsonData) {
-        alert('notificationOpenedCallback: ' + JSON.stringify(jsonData));
-      };
-      window['plugins'].OneSignal.startInit(
-        CONST_GENERAL.ONESIGNAL_APP_ID,
-        CONST_GENERAL.googleProjectNumber,
-      )
-        .handleNotificationOpened(notificationOpenedCallback)
-        .endInit();
-    } */
   }
 
   initializeApp() {
