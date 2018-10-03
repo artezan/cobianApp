@@ -46,7 +46,7 @@ export class UserSessionService {
     if (this.platform.is('cordova')) {
       this.oneSignalCordova(id, type);
     } else if (environment.production && !this.isInitOne) {
-      this.oneSignalDesktop(id, type);
+      // this.oneSignalDesktop(id, type);
     }
   }
 
@@ -63,7 +63,7 @@ export class UserSessionService {
     if (this.platform.is('cordova')) {
       this.oneSignalLogoutCordova();
     } else if (environment.production && this.isInitOne) {
-      this.oneSignalLogoutDesktop();
+      // this.oneSignalLogoutDesktop();
     }
   }
 
