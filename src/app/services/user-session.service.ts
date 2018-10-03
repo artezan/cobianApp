@@ -46,7 +46,7 @@ export class UserSessionService {
     if (this.platform.is('cordova')) {
       this.oneSignalCordova(id, type);
     } else if (environment.production && !this.isInitOne) {
-      // this.oneSignalDesktop(id, type);
+      this.oneSignalDesktop(id, type);
     }
   }
 
@@ -60,11 +60,14 @@ export class UserSessionService {
       id: undefined,
       password: undefined
     });
-    if (this.platform.is('cordova')) {
-      this.oneSignalLogoutCordova();
-    } else if (environment.production && this.isInitOne) {
-      // this.oneSignalLogoutDesktop();
-    }
+    this.platform.ready().then(c => {
+      console.log(c);
+      if (this.platform.is('cordova')) {
+        this.oneSignalLogoutCordova();
+      } else if (environment.production && this.isInitOne) {
+        this.oneSignalLogoutDesktop();
+      }
+    });
   }
 
   // inicia antes que la app mandando un Promise en cada respuesta environment.production &&
