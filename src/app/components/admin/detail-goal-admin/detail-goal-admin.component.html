@@ -43,8 +43,8 @@
 
             </ion-card-header>
             <div class="flex-container">
-              <mat-checkbox [disabled]="user.type === 'adviser' && goal.isByManagement" (change)="changeGoal()" *ngFor="let item of goal.goals; let i=index"
-                [(ngModel)]="goal.goals[i].isComplete">{{item.nameGoal}}</mat-checkbox>
+              <mat-checkbox [disabled]="user.type === 'adviser' && goal.isByManagement" (change)="changeGoal($event)"
+                *ngFor="let item of goal.goals; let i=index" [(ngModel)]="goal.goals[i].isComplete">{{item.nameGoal}}</mat-checkbox>
             </div>
             <ion-list style="padding: 5%;" lines="none">
               <ion-list-header>Otros Datos</ion-list-header>

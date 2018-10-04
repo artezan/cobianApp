@@ -80,7 +80,13 @@
             <b>Tiene una cita con {{schedule.adviser ? schedule.adviser.name : schedule.seller.name}}</b>
           </ion-label>
           <ion-icon name="pin"></ion-icon>
-          Direccion {{schedule.property.zone}}
+          Direccion {{schedule.address}}
+          <!-- maps LINK -->
+          <ion-item lines="none">
+            <ion-button [href]="'http://maps.google.com/?q='+schedule.address+', Puebla'" fill="outline" slot="end">
+              Ver Mapa <ion-icon name="navigate"></ion-icon>
+            </ion-button>
+          </ion-item>
         </ion-card-content>
       </span>
       <span *ngIf="schedule.status === 'rojo'">

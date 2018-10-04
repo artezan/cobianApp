@@ -138,7 +138,7 @@ export class DetailPropBuyerComponent implements OnInit {
       title: 'Interés en una Propiedad',
       message: m,
       tags: ['office', 'administrator'],
-      receiversId: [seller._id],
+      receiversId: seller === undefined ? undefined : [seller._id],
       senderId: this.userSessionService.userSession.value.id,
       status: 'verde',
       type: 'like',
@@ -146,7 +146,12 @@ export class DetailPropBuyerComponent implements OnInit {
     console.log(seller);
     // onesignal
     this.oneSignalService
-      .postOneSignalByTag(notification.title, m, ['office'], [seller._id])
+      .postOneSignalByTag(
+        notification.title,
+        m,
+        ['office'],
+        notification.receiversId,
+      )
       .subscribe(() => {
         // guardar noti
         this.oneSignalService.newNotification(notification).subscribe();

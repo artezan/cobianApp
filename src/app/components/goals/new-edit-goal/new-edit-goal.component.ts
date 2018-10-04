@@ -9,6 +9,9 @@ import { Platform } from '@ionic/angular';
 import { UserSessionService } from '../../../services/user-session.service';
 import { IUserSession } from '../../../models/userSession.model';
 import { filter, map } from 'rxjs/operators';
+import { INotification } from '../../../models/notification.model';
+import { OnesignalService } from '../../../services/onesignal.service';
+import { ISchedule } from '../../../models/schedule.model';
 @Component({
   selector: 'app-new-edit-goal',
   templateUrl: './new-edit-goal.component.html',
@@ -32,6 +35,12 @@ export class NewEditGoalComponent implements OnInit {
   arrList: string[] = [];
   numOfItems = 3;
   user: IUserSession;
+  // noti
+  yearNoti: number;
+  monthNoti: number;
+  dayNoti: number;
+  hourNoti: number;
+  minuteNoti: number;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -39,6 +48,7 @@ export class NewEditGoalComponent implements OnInit {
     private adviserService: AdviserService,
     private platform: Platform,
     private userService: UserSessionService,
+    private oneSignalService: OnesignalService,
   ) {
     this.user = userService.userSession.value;
     this.isDesktop = platform.is('desktop');
@@ -47,12 +57,10 @@ export class NewEditGoalComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params['id']) {
         goalService.getGoaltById(params.id).subscribe(goal => {
-          console.log(goal);
           this.goal = goal;
           if (goal.goals && goal.goals.length > 0) {
             this.arrList = goal.goals.map(g => g.nameGoal);
             this.numOfItems = this.arrList.length;
-            console.log(this.arrList);
           }
         });
         this.isNew = false;
@@ -75,6 +83,7 @@ export class NewEditGoalComponent implements OnInit {
     }
   }
   editGoal() {
+    this.goal.notificationOneSignal = this.deleteOneSignal(this.goal);
     // adv
     this.adviserSelect.forEach(adv => {
       const findIndex = this.goal.adviser.findIndex(
@@ -91,9 +100,18 @@ export class NewEditGoalComponent implements OnInit {
     });
     // goal
     this.getSet();
-    console.log(this.goal);
-    console.log(this.arrList);
     this.goalService.putGoal(this.goal).subscribe(() => {
+      this.notification(
+        'Nueva Meta Actualizada',
+        this.goal.isByManagement
+          ? `Se ha actualizado una  meta grupal "${this.goal.title}"`
+          : `Se ha actualizado una  meta individual "${this.goal.title}"`,
+        this.goal.status,
+        'goal',
+        undefined,
+        this.goal.adviser.map(a => a._id),
+      );
+      this.notificationBySchedule(this.goal);
       const toast: NavigationExtras = {
         queryParams: { res: 'Objetivo Editado' },
       };
@@ -105,8 +123,18 @@ export class NewEditGoalComponent implements OnInit {
 
   newGoal() {
     this.getSet();
-    console.log(this.goal);
     this.goalService.newGoal(this.goal).subscribe(newGoal => {
+      this.notification(
+        'Nueva Meta Asignada',
+        this.goal.isByManagement
+          ? `Se ha creado una nueva meta grupal "${this.goal.title}"`
+          : `Se ha creado una nueva meta individual "${this.goal.title}"`,
+        this.goal.status,
+        'goal',
+        undefined,
+        this.goal.adviser.map(a => a._id),
+      );
+      this.notificationBySchedule(this.goal);
       this.adviserSelect.forEach(adv => {
         this.adviserService.getAdviserById(adv._id).subscribe(a => {
           const arr = a.goal.map(g => g._id);
@@ -124,7 +152,6 @@ export class NewEditGoalComponent implements OnInit {
     });
   }
   deleteAdviserOfGoal(adviserId: string) {
-    console.log(adviserId);
     const index = this.goal.adviser.findIndex(adv => adv._id === adviserId);
     this.goal.adviser.splice(index, 1);
     this.adviserService.getAdviserById(adviserId).subscribe(adv => {
@@ -140,6 +167,13 @@ export class NewEditGoalComponent implements OnInit {
       this.goal.day = event.value._i.date;
       this.goal.month = event.value._i.month;
       this.goal.year = event.value._i.year;
+    }
+  }
+  dateSelect2(event) {
+    if (event) {
+      this.dayNoti = event.value._i.date;
+      this.monthNoti = event.value._i.month;
+      this.yearNoti = event.value._i.year;
     }
   }
   private getSet() {
@@ -190,6 +224,74 @@ export class NewEditGoalComponent implements OnInit {
 
   getDate(day, month, year) {
     return new Date(year, month, day);
+  }
+  hourFormat(pmAm) {
+    if (pmAm === 'pm' && this.hourNoti && this.hourNoti < 12) {
+      this.hourNoti = this.hourNoti + 12;
+    }
+  }
+  // noti
+  private notification(
+    title,
+    message,
+    status,
+    type,
+    tags,
+    receiversId: string[],
+  ) {
+    // notificacion
+    const notification: INotification = {
+      title: title,
+      message: message,
+      tags: tags,
+      receiversId: receiversId,
+      senderId: this.userService.userSession.value.id,
+      status: status,
+      type: type,
+    };
+    // onesignal
+    this.oneSignalService
+      .postOneSignalByTag(notification.title, message, tags, receiversId)
+      .subscribe(() => {
+        // guardar noti
+        this.oneSignalService.newNotification(notification).subscribe();
+      });
+  }
+  private notificationBySchedule(goal: IGoal) {
+    const date = this.getDate(goal.day, goal.month, goal.year);
+    // onesignal
+    this.oneSignalService
+      .postOneSignalBySchedule(
+        'Recordatorio de meta',
+        `La meta "${goal.title}" esta por llegar a la fecha límite: ${date}`,
+        new Date(
+          this.yearNoti,
+          this.monthNoti,
+          this.dayNoti,
+          this.hourNoti,
+          this.minuteNoti,
+        ),
+        goal.isByManagement ? ['office', 'administrator'] : undefined,
+        goal.adviser.map(a => a._id),
+      )
+      .subscribe(data => {
+        if (!goal.notificationOneSignal) {
+          goal.notificationOneSignal = [];
+        }
+        goal.notificationOneSignal.push(data.id);
+        this.goalService.putGoal(goal).subscribe();
+      });
+  }
+  private deleteOneSignal(goal: IGoal) {
+    /* const schedule = await this.scheduleService
+      .getScheduleById(scheduleId)
+      .toPromise(); */
+    if (goal.notificationOneSignal && goal.notificationOneSignal.length > 0) {
+      goal.notificationOneSignal.forEach((idN, i) => {
+        this.oneSignalService.deleteOneSignalSchedule(idN).subscribe();
+      });
+      return (goal.notificationOneSignal = []);
+    }
   }
   getPopMessage(event) {
     const isDisabled = (<HTMLInputElement>document.getElementById('submitUser'))

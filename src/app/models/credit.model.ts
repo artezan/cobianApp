@@ -25,6 +25,7 @@ export interface ICredit {
   notes?: string;
   _id?: string;
   isAccept?: boolean;
+  notificationOneSignal?: string[];
 }
 export interface ICreditGet {
   /**
@@ -50,4 +51,5 @@ export interface ICreditGet {
   notes?: string;
   _id?: string;
   isAccept?: boolean;
+  notificationOneSignal?: string[];
 }

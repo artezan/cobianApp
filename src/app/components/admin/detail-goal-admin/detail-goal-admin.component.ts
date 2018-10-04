@@ -6,6 +6,8 @@ import { UserSessionService } from '../../../services/user-session.service';
 import { ToastController, Platform } from '@ionic/angular';
 import { FormatHoursFront, FormatDatesFront } from '../../../_config/_helpers';
 import { IUserSession } from '../../../models/userSession.model';
+import { INotification } from '../../../models/notification.model';
+import { OnesignalService } from '../../../services/onesignal.service';
 
 @Component({
   selector: 'app-detail-goal-admin',
@@ -27,6 +29,7 @@ export class DetailGoalAdminComponent implements OnInit {
     public toastController: ToastController,
     private platform: Platform,
     private userSession: UserSessionService,
+    private oneSignalService: OnesignalService,
   ) {
     this.user = userSession.userSession.value;
     this.route.queryParams.subscribe(params => {
@@ -69,7 +72,7 @@ export class DetailGoalAdminComponent implements OnInit {
     });
     toast.present();
   }
-  changeGoal() {
+  changeGoal(e) {
     this.goal.isComplete = false;
     this.goalService.putGoal(this.goal).subscribe(() => {
       this.getPercent(this.goal.goals);
@@ -78,7 +81,29 @@ export class DetailGoalAdminComponent implements OnInit {
         this.goalService.putGoal(this.goal).subscribe(() => {
           this.presentToast('Se ha completado un objetivo');
         });
+        if (this.user.type !== 'adviser') {
+          this.notification(
+            'Meta lograda',
+            `Se ha completado la meta: "${this.goal.title}"`,
+            'azul',
+            'celebrate',
+            undefined,
+            this.goal.adviser.map(a => a._id),
+          );
+        }
+      } else {
+        if (this.user.type !== 'adviser' && e.checked) {
+          this.notification(
+            'Objetivo Cumplido',
+            `Se ha completado una meta de el objetivo: "${this.goal.title}"`,
+            'rojo',
+            'celebrate',
+            undefined,
+            this.goal.adviser.map(a => a._id),
+          );
+        }
       }
+
       this.presentToast('Se ha modificado una meta');
     });
   }
@@ -91,5 +116,32 @@ export class DetailGoalAdminComponent implements OnInit {
   fortmatDate2(year, montn, day) {
     const date = new Date(year, montn, day);
     return this.formatDates(date);
+  }
+  // noti
+  private notification(
+    title,
+    message,
+    status,
+    type,
+    tags,
+    receiversId: string[],
+  ) {
+    // notificacion
+    const notification: INotification = {
+      title: title,
+      message: message,
+      tags: tags,
+      receiversId: receiversId,
+      senderId: this.userSession.userSession.value.id,
+      status: status,
+      type: type,
+    };
+    // onesignal
+    this.oneSignalService
+      .postOneSignalByTag(notification.title, message, tags, receiversId)
+      .subscribe(c => {
+        // guardar noti
+        this.oneSignalService.newNotification(notification).subscribe();
+      });
   }
 }

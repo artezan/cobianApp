@@ -10,7 +10,8 @@
         <ion-list>
           <ion-menu-toggle auto-hide="false">
             <span *ngFor="let p of appPages">
-              <ion-item [routerDirection]="'root'" [routerLink]="[p.url]" *ngIf="user && user.type === p.userType ">
+              <ion-item [ngClass]="{'background-item-menu':link === p.url }" (click)="link = p.url " [routerDirection]="'root'"
+                [routerLink]="[p.url]" *ngIf="user && (user.type === p.userType || p.userType === 'all') ">
                 <ion-icon slot="start" [name]="p.icon"></ion-icon>
                 <ion-label>
                   {{p.title}}

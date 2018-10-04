@@ -109,8 +109,8 @@ export class ListSalespropAdminComponent implements OnInit {
   }
   setRows(sBPs: IStatusBuyerPropertyGet[]) {
     const rows = [];
-    // CAMBIAR !!! --------------------------
     sBPs.filter(s => s.status === 'rojo').forEach(sBP => {
+      let date: Date;
       // rojo por credito
       const isCredidRed = sBP.buyer.credit.find(
         credit =>
@@ -125,6 +125,23 @@ export class ListSalespropAdminComponent implements OnInit {
           ofert.property === sBP.property._id &&
           ofert.isAccept,
       );
+      if (isOfertRed && isCredidRed) {
+        date =
+          new Date(isCredidRed.timestamp).getTime() >
+          new Date(isOfertRed.timestamp).getTime()
+            ? new Date(isCredidRed.timestamp)
+            : new Date(isOfertRed.timestamp);
+        console.log(isOfertRed);
+        console.log(isCredidRed);
+        console.log(
+          new Date(isCredidRed.timestamp).getTime() >
+            new Date(isOfertRed.timestamp).getTime(),
+        );
+      } else if (isOfertRed) {
+        date = new Date(isOfertRed.timestamp);
+      } else if (isCredidRed) {
+        date = new Date(isCredidRed.timestamp);
+      }
       if (isOfertRed || isCredidRed) {
         rows.push({
           _id: sBP._id,
@@ -132,16 +149,27 @@ export class ListSalespropAdminComponent implements OnInit {
           property: sBP.property.name,
           credit: !!isCredidRed,
           ofert: !!isOfertRed,
-          timestamp: sBP.timestamp,
+          timestamp: date,
         });
       }
+    });
+    rows.sort((a, b) => {
+      // Turn your strings into dates, and then subtract them
+      // to get a value that is either negative, positive, or zero.
+      return <any>new Date(b.timestamp) - <any>new Date(a.timestamp);
     });
     this.rows = rows;
     this.isLoading = true;
   }
   detailProp(item) {
+    // por servicio para seguridad
+    this.statusBPService.timeToBuy = item.timestamp;
     const data: NavigationExtras = {
-      queryParams: { id: item._id, credit: item.credit, ofert: item.ofert },
+      queryParams: {
+        id: item._id,
+        credit: item.credit,
+        ofert: item.ofert,
+      },
     };
     this.router.navigate(['detail-salesprop-admin'], data);
   }

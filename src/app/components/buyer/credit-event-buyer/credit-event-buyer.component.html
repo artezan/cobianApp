@@ -14,6 +14,12 @@
   <!-- si cargado -->
   <ng-template #thenTemplate>
     <!-- credito -->
+    <div style="text-align: center">
+      <ion-chip class="chips-detail" color="secondary">
+        <ion-label>Créditos</ion-label>
+      </ion-chip>
+    </div>
+
     <ng-container *ngIf="hasCredit; then Credit; else noCredit"></ng-container>
     <ng-template #Credit>
 
@@ -91,143 +97,147 @@
     </ng-template>
     <!-- /credito -->
     <!-- schedule -->
-    <ng-container *ngIf="hasSchedule; then Schedule; else noSchedule"></ng-container>
-    <ng-template #Schedule>
-      <ion-card [ngClass]="{'state-verde': schedule.status === 'verde', 
+    <div style="text-align: center">
+      <ion-chip class="chips-detail" color="secondary">
+        <ion-label>Citas</ion-label>
+      </ion-chip>
+    </div>
+    <ion-card *ngFor="let schedule of schedules" [ngClass]="{'state-verde': schedule.status === 'verde', 
         'state-amarillo': schedule.status === 'amarillo',
         'state-rojo': schedule.status === 'rojo',
         'state-gris': schedule.status === 'gris',
         'state-azul': schedule.status === 'azul' }">
-        <span *ngIf="schedule.status === 'gris'">
-          <ion-card-header>
-            <ion-card-subtitle>Estado: Cita Generada</ion-card-subtitle>
-            <ion-card-title text-wrap>En espera</ion-card-title>
-          </ion-card-header>
+      <span *ngIf="schedule.status === 'gris'">
+        <ion-card-header>
+          <ion-card-subtitle>Estado: Cita Generada</ion-card-subtitle>
+          <ion-card-title text-wrap>En espera</ion-card-title>
+        </ion-card-header>
+        <ion-card-content text-wrap>
+          En poco tiempo recibirá respuesta de la cita solicitada
+        </ion-card-content>
+
+      </span>
+
+      <span *ngIf="schedule.status === 'verde'">
+        <ion-card-header>
+          <ion-card-subtitle>Estado: Propuesta Cita</ion-card-subtitle>
+          <ion-card-title text-wrap>Favor de Responder</ion-card-title>
+        </ion-card-header>
+        <ion-card-content text-wrap>
+          <ion-label text-wrap>Detalles de la cita : {{schedule.note}}</ion-label>
+          <ion-list lines="none">
+            <ion-item lines="none" text-wrap> Fecha: {{schedule.day}}/{{schedule.month + 1}}/{{schedule.year}}</ion-item>
+            <ion-item lines="none" text-wrap>Hora: {{formatHours(schedule.hour, schedule.minute)}}</ion-item>
+          </ion-list>
+        </ion-card-content>
+        <!-- Poner en notes Aceptado o Denagado -->
+
+        <ion-item lines="none">
+          <ion-button (click)="respondSchedule('Aceptado', schedule)" color="success" fill="outline" slot="end">
+            Aceptar <ion-icon name="checkmark-circle"></ion-icon>
+          </ion-button>
+          <ion-button (click)="respondSchedule('Denagado', schedule)" color="danger" fill="outline" slot="end">
+            Denegar <ion-icon name="close-circle"></ion-icon>
+          </ion-button>
+
+        </ion-item>
+
+      </span>
+
+
+      <span *ngIf="schedule.status === 'amarillo'">
+        <ion-card-header>
+          <ion-card-subtitle>Estado: Cita Agendada</ion-card-subtitle>
+          <ion-card-title text-wrap>Favor de asistir</ion-card-title>
+        </ion-card-header>
+        <ion-card-content text-wrap>
+          <ion-label text-wrap>Detalles de la cita : {{schedule.note}}</ion-label>
+          <ion-list lines="none">
+            <ion-item lines="none" text-wrap> Fecha: {{schedule.day}}/{{schedule.month + 1}}/{{schedule.year}}</ion-item>
+            <ion-item lines="none" text-wrap>Hora: {{formatHours(schedule.hour, schedule.minute)}} </ion-item>
+          </ion-list>
+        </ion-card-content>
+        <!-- Poner en notes Aceptado o Denagado -->
+
+        <ion-item lines="none">
+          <ion-button [routerLink]="['/calendar-buyer']" fill="outline" slot="end">
+            Ver agenda <ion-icon name="calendar"></ion-icon>
+          </ion-button>
+
+        </ion-item>
+
+      </span>
+
+      <span *ngIf="schedule.status === 'rojo'">
+        <ion-card-header>
+          <ion-card-subtitle>Estado: Visitada</ion-card-subtitle>
+          <!-- Poner en notes Visitada o No Visitada -->
+          <ion-card-title text-wrap> Cita Pasada</ion-card-title>
           <ion-card-content text-wrap>
-            En poco tiempo recibirá respuesta de la cita solicitada
-          </ion-card-content>
-
-        </span>
-
-        <span *ngIf="schedule.status === 'verde'">
-          <ion-card-header>
-            <ion-card-subtitle>Estado: Propuesta Cita</ion-card-subtitle>
-            <ion-card-title text-wrap>Favor de Responder</ion-card-title>
-          </ion-card-header>
-          <ion-card-content text-wrap>
-            <ion-label text-wrap>Detalles de la cita : {{schedule.note}}</ion-label>
-            <ion-list lines="none">
-              <ion-item lines="none" text-wrap> Fecha: {{schedule.day}}/{{schedule.month + 1}}/{{schedule.year}}</ion-item>
-              <ion-item lines="none" text-wrap>Hora: {{formatHours(schedule.hour, schedule.minute)}}</ion-item>
-            </ion-list>
-          </ion-card-content>
-          <!-- Poner en notes Aceptado o Denagado -->
-
-          <ion-item lines="none">
-            <ion-button (click)="respondSchedule('Aceptado')" color="success" fill="outline" slot="end">
-              Aceptar <ion-icon name="checkmark-circle"></ion-icon>
-            </ion-button>
-            <ion-button (click)="respondSchedule('Denagado')" color="danger" fill="outline" slot="end">
-              Denegar <ion-icon name="close-circle"></ion-icon>
-            </ion-button>
-
-          </ion-item>
-
-        </span>
-
-
-        <span *ngIf="schedule.status === 'amarillo'">
-          <ion-card-header>
-            <ion-card-subtitle>Estado: Cita Agendada</ion-card-subtitle>
-            <ion-card-title text-wrap>Favor de asistir</ion-card-title>
-          </ion-card-header>
-          <ion-card-content text-wrap>
-            <ion-label text-wrap>Detalles de la cita : {{schedule.note}}</ion-label>
             <ion-list lines="none">
               <ion-item lines="none" text-wrap> Fecha: {{schedule.day}}/{{schedule.month + 1}}/{{schedule.year}}</ion-item>
               <ion-item lines="none" text-wrap>Hora: {{formatHours(schedule.hour, schedule.minute)}} </ion-item>
             </ion-list>
           </ion-card-content>
-          <!-- Poner en notes Aceptado o Denagado -->
-
-          <ion-item lines="none">
-            <ion-button [routerLink]="['/calendar-buyer']" fill="outline" slot="end">
-              Ver agenda <ion-icon name="calendar"></ion-icon>
-            </ion-button>
-
-          </ion-item>
-
-        </span>
-
-        <span *ngIf="schedule.status === 'rojo'">
-          <ion-card-header>
-            <ion-card-subtitle>Estado: Visita</ion-card-subtitle>
-            <!-- Poner en notes Visitada o No Visitada -->
-            <ion-card-title text-wrap> Asistencia: {{schedule.note}}</ion-card-title>
-            <ion-card-content text-wrap>
-            </ion-card-content>
-          </ion-card-header>
-        </span>
-
-      </ion-card>
-
-    </ng-template>
-    <ng-template #noSchedule>
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title style="display: flex; align-items: center;">
-            <ion-icon name="calendar"></ion-icon> Solicitar Visita
-          </ion-card-title>
         </ion-card-header>
-        <!-- form -->
-        <form #loginForm2="ngForm">
-          <ion-card-content>
-            <ion-label text-wrap><b>Aún no cuentas con alguna cita para esta propiedad</b></ion-label>
-            <ion-label text-wrap>Solicita una de manera gratuita anotando la posible fecha y presionando en el botón:</ion-label>
-            <!-- fecha -->
-            <mat-form-field>
-              <input matInput (dateChange)="dateSelect($event)" [matDatepicker]="picker" (focus)="picker.open()"
-                placeholder="Fecha" required>
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker touchUi #picker></mat-datepicker>
-            </mat-form-field>
-            <!-- day -->
-            <!-- <mdc-text-field label="Dia" type="number" [(ngModel)]="daySelect" #d="ngModel" id="d" name="d" required
+      </span>
+
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title style="display: flex; align-items: center;">
+          <ion-icon name="calendar"></ion-icon> Solicitar Visita
+        </ion-card-title>
+      </ion-card-header>
+      <!-- form -->
+      <form #loginForm2="ngForm">
+        <ion-card-content>
+          <ion-label text-wrap><b>Propuesta de Visita</b></ion-label>
+          <ion-label text-wrap>Solicita una de manera gratuita anotando la posible fecha y presionando en el botón:</ion-label>
+          <!-- fecha -->
+          <mat-form-field>
+            <input matInput (dateChange)="dateSelect($event)" [matDatepicker]="picker" (focus)="picker.open()"
+              placeholder="Fecha" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker touchUi #picker></mat-datepicker>
+          </mat-form-field>
+          <!-- day -->
+          <!-- <mdc-text-field label="Dia" type="number" [(ngModel)]="daySelect" #d="ngModel" id="d" name="d" required
               [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
             <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
               <span *ngIf="d.dirty || d.touched">Anota Dia</span>
             </mdc-text-field-helper-text> -->
-            <!-- mm -->
-            <!--  <ion-item lines="none" class="margin-field" style="    margin-right: 10%;">
+          <!-- mm -->
+          <!--  <ion-item lines="none" class="margin-field" style="    margin-right: 10%;">
               <ion-label>Mes</ion-label>
               <ion-select [(ngModel)]="monthSelect" #me="ngModel" id="me" name="me" required>
                 <ion-select-option *ngFor="let m of months; let i = index" [value]="i">{{m}}</ion-select-option>
               </ion-select>
             </ion-item> -->
-            <!-- aa -->
-            <!-- <mdc-text-field label="Año" type="number" [(ngModel)]="yearSelect" #y="ngModel" id="y" name="y" required
+          <!-- aa -->
+          <!-- <mdc-text-field label="Año" type="number" [(ngModel)]="yearSelect" #y="ngModel" id="y" name="y" required
               [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
             <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
               <span *ngIf="y.dirty || y.touched">Anota Año</span>
             </mdc-text-field-helper-text> -->
-            <!-- hh -->
-            <mdc-text-field label="Hora (formato 24hrs)" type="number" [(ngModel)]="hourSelect" #h="ngModel" id="h"
-              name="h" required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
-            <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
-              <span *ngIf="h.dirty || h.touched">Anota Hora</span>
-            </mdc-text-field-helper-text>
+          <!-- hh -->
+          <mdc-text-field label="Hora (formato 24hrs)" type="number" [(ngModel)]="hourSelect" #h="ngModel" id="h" name="h"
+            required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+          <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+            <span *ngIf="h.dirty || h.touched">Anota Hora</span>
+          </mdc-text-field-helper-text>
 
 
-          </ion-card-content>
-          <ion-item lines="none">
-            <ion-button [disabled]="!hourSelect && !yearSelect" (click)="createSchedule()" color="secondary" fill="outline"
-              slot="end">
-              Solicitar Cita <ion-icon name="send"></ion-icon>
-            </ion-button>
-          </ion-item>
-        </form>
-      </ion-card>
-    </ng-template>
+        </ion-card-content>
+        <ion-item lines="none">
+          <ion-button [disabled]="!hourSelect && !yearSelect" (click)="createSchedule()" color="secondary" fill="outline"
+            slot="end">
+            Solicitar Cita <ion-icon name="send"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </form>
+    </ion-card>
     <!-- /Schedule -->
 
 

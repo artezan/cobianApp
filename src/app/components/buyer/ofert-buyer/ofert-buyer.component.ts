@@ -11,6 +11,8 @@ import { IBuyer } from '../../../models/buyer.model';
 import { PropertyService } from '../../../services/property.service';
 import { INotification } from '../../../models/notification.model';
 import { OnesignalService } from '../../../services/onesignal.service';
+import { map } from 'rxjs/operators';
+import { SellerService } from '../../../services/seller.service';
 
 @Component({
   selector: 'app-ofert-buyer',
@@ -32,11 +34,13 @@ export class OfertBuyerComponent implements OnInit {
     private statusBuyerPropertyService: StatusBuyerPropertyService,
     private propertyService: PropertyService,
     private oneSignalService: OnesignalService,
+    private sellerService: SellerService,
   ) {
     this.getOfert();
   }
 
   ngOnInit() {}
+
   getOfert() {
     const buyerId = this.userSessionService.userSession.value.id;
     this.buyerService.getBuyerById(buyerId).subscribe(buyer => {
@@ -58,26 +62,48 @@ export class OfertBuyerComponent implements OnInit {
     this.statusBuyerPropertyService
       .upgradeStatus(find._id, 'rojo')
       .subscribe(c => {
-        if (isAccept) {
+        /* if (isAccept) {
           const prop = ofert.property;
           prop.dateToApart = new Date();
           this.propertyService
             .putProperty(prop)
             .subscribe(() => console.log('date'));
-        }
+        } */
       });
     ofert.status = 'rojo';
     ofert.notes = str;
     ofert.isAccept = isAccept;
-    this.ofertService.putOfert(ofert).subscribe(res => {
+    this.ofertService.putOfert(ofert).subscribe(async res => {
+      // vendedor id notifica
+      const seller = await this.getSellerOfProperty(ofert.property._id);
+      // arr de ids
+      const arr = this.buyer.adviser
+        .map(a => a._id)
+        .concat(seller === undefined ? '1' : seller._id);
+      const dateToSchedule = new Date(new Date().getTime() + 15 * 86400000);
       if (res) {
         this.notification(
           'Respuesta de oferta',
-          `La oferta del ${buyer.name} ha sido ${str}`,
+          `La oferta del ${buyer.name} para la propiedad: "${
+            ofert.property.name
+          }" ha sido ${str}`,
           ofert.status,
           'ofert',
           ['office', 'administrator'],
+          seller === undefined ? undefined : [seller._id],
         );
+        if (isAccept) {
+          this.notificationBySchedule(
+            'Tiempo de Apartado Superado',
+            `El tiempo de espera ha superado los 15 dias para la oferta de la propiedad: ${
+              ofert.property.name
+            } del cliente ${this.userSessionService.userSession.value.name}`,
+            ['office', 'administrator'],
+            arr,
+            dateToSchedule,
+            ofert,
+          );
+        }
         this.getOfert();
         this.presentToast('Oferta ' + str);
       }
@@ -91,27 +117,62 @@ export class OfertBuyerComponent implements OnInit {
     });
     toast.present();
   }
-  public notification(title, message, status, type, tags) {
+  public notification(
+    title,
+    message,
+    status,
+    type,
+    tags,
+    reciversId: string[],
+  ) {
     // notificacion
     const notification: INotification = {
       title: title,
       message: message,
       tags: tags,
+      receiversId: reciversId,
       senderId: this.userSessionService.userSession.value.id,
       status: status,
       type: type,
     };
     // onesignal
     this.oneSignalService
-      .postOneSignalByTag(notification.title, message, [
-        'office',
-        'administrator',
-      ])
+      .postOneSignalByTag(
+        notification.title,
+        message,
+        ['office', 'administrator'],
+        reciversId,
+      )
       .subscribe(() => {
         // guardar noti
-        this.oneSignalService
-          .newNotification(notification)
-          .subscribe(n => console.log(n));
+        this.oneSignalService.newNotification(notification).subscribe();
       });
+  }
+  private notificationBySchedule(
+    title,
+    message,
+    tags: string[],
+    reciversId: string[],
+    date: Date,
+    ofert: IOfert,
+  ) {
+    // onesignal
+    this.oneSignalService
+      .postOneSignalBySchedule(title, message, date, tags, reciversId)
+      .subscribe(data => {
+        if (!ofert.notificationOneSignal) {
+          ofert.notificationOneSignal = [];
+        }
+        ofert.notificationOneSignal.push(data.id);
+        this.ofertService.putOfert(ofert).subscribe();
+      });
+  }
+  async getSellerOfProperty(id) {
+    return await this.sellerService
+      .getSellerAll()
+      .pipe(
+        map(sellers => sellers.find(s => !!s.property.find(p => p._id === id))),
+      )
+      .toPromise();
   }
 }

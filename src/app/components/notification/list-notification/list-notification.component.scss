@@ -1,0 +1,44 @@
+.back-tab {
+    background-color: var(--ion-color-light)
+}
+
+.user-select-contenet {
+    margin: 3% 20% 2% 20%;
+}
+
+.card-noti-flex {
+    display: flex;
+    flex-direction: row;
+}
+
+.card-icon {
+    align-self: center;
+    margin-left: 10%;
+    margin-right: 3%;
+}
+
+.card-icon-flex {
+    display: flex;
+    width: 50px;
+}
+
+.icon-size {
+    font-size: 2.8em
+}
+
+.detail-button {
+    align-self: flex-end;
+    margin-left: 25%;
+}
+
+@media(max-width: 900px) {
+    .user-select-contenet {
+        margin: 1% 1% 1% 1%;
+    }
+
+    .card-icon {
+        align-self: center;
+        margin-left: 0%;
+        margin-right: 0%;
+    }
+}

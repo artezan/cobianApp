@@ -12,18 +12,26 @@ $mdc-theme-primary: #000000; // primary color
 $mdc-theme-secondary: #f5811e; // secondary color F58634
 @import '~@angular-mdc/theme/material';
 
+
+
+.tabs-color {
+  @include mdc-tab-text-label-color($mdc-theme-secondary);
+  @include mdc-tab-icon-color($mdc-theme-secondary);
+}
+
 app-refre {
   z-index: 0 !important;
 }
+
 .ion-page-invisible {
   opacity: 1 !important;
 }
 
-.split-pane-md.split-pane-visible > .split-pane-side {
+.split-pane-md.split-pane-visible>.split-pane-side {
   max-width: 10% !important;
 }
 
-.split-pane-ios.split-pane-visible > .split-pane-side {
+.split-pane-ios.split-pane-visible>.split-pane-side {
   max-width: 10% !important;
 }
 
@@ -68,20 +76,44 @@ html {
   background-color: var(--ion-color-medium);
 }
 
+.background-gris-light {
+  background-color: #b0b4c3;
+}
+
+.background-item-menu {
+  background-color: #d7d8dc;
+}
+
 .background-verde {
   background-color: var(--ion-color-success);
+}
+
+.background-verde-light {
+  background-color: #caf1d9;
 }
 
 .background-amarillo {
   background-color: var(--ion-color-warning);
 }
 
+.background-amarillo-light {
+  background-color: #fdf5d3;
+}
+
 .background-rojo {
   background-color: var(--ion-color-danger);
 }
 
+.background-rojo-light {
+  background-color: #ecb7b7;
+}
+
 .background-azul {
   background-color: var(--ion-color-blue);
+}
+
+.background-azul-light {
+  background-color: #76b7de;
 }
 
 .my-contenet {

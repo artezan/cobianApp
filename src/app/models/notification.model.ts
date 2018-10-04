@@ -23,6 +23,15 @@ export interface INotification {
   // color
   status?: 'verde' | 'gris' | 'amarillo' | 'rojo' | 'azul';
   // icono
-  type?: string;
+  type?:
+    | 'like'
+    | 'credit'
+    | 'schedule'
+    | 'ofert'
+    | 'property'
+    | 'build'
+    | 'buyer'
+    | 'goal'
+    | 'celebrate';
   _id?: string;
 }

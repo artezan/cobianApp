@@ -10,7 +10,7 @@ import { map } from 'rxjs/operators';
 })
 export class AdministratorService {
   constructor(private http: HttpClient) {}
-  public getBuyerById(id: string): Observable<IAdministrator> {
+  public getAdminById(id: string): Observable<IAdministrator> {
     return this.http
       .get(END_POINT.ADMINISTRATOR + id)
       .pipe(map((data: any) => data.data));

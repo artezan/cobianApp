@@ -6,6 +6,7 @@ import {
   MdcTextFieldModule,
   MdcThemeModule,
   MdcTypographyModule,
+  MdcTabBarModule,
 } from '@angular-mdc/web';
 
 @NgModule({
@@ -16,6 +17,7 @@ import {
     MdcTextFieldModule,
     MdcThemeModule,
     MdcTypographyModule,
+    MdcTabBarModule,
   ],
 })
 export class AppMaterialModule {}

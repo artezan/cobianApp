@@ -28,6 +28,7 @@ import { IUserSession } from '../../../models/userSession.model';
 import { DialogGeneralComponent } from '../../general/dialog-general/dialog-general.component';
 import { INotification } from '../../../models/notification.model';
 import { OnesignalService } from '../../../services/onesignal.service';
+import { FormatDatesFront, FormatHoursFront } from '../../../_config/_helpers';
 
 @Component({
   selector: 'app-new-edit-schedule',
@@ -189,6 +190,12 @@ export class NewEditScheduleComponent implements OnInit {
     return await this.propertyService.getPropertyById(id).toPromise();
   }
   async newScheduleSeller() {
+    const date = this.getDate2(
+      this.schedule.day,
+      this.schedule.month,
+      this.schedule.year,
+    );
+    const hours = this.formatHour(this.schedule.hour, this.schedule.minute);
     const prop = await this.getPropById(this.schedule.property);
     this.schedule.status = 'verde';
     this.schedule.seller = <any>this.user.id;
@@ -204,7 +211,9 @@ export class NewEditScheduleComponent implements OnInit {
                 'Nuevo Evento',
                 `Se ha agendado una propuesta de evento con el vendedor ${
                   seller.name
-                } en propiedad: ${prop.name}`,
+                } en propiedad: ${
+                  prop.name
+                }  con fecha: ${date} y hora: ${hours} `,
                 'amarillo',
                 'schedule',
                 undefined,
@@ -233,6 +242,12 @@ export class NewEditScheduleComponent implements OnInit {
   }
   //
   newSchedule() {
+    const date = this.getDate2(
+      this.schedule.day,
+      this.schedule.month,
+      this.schedule.year,
+    );
+    const hours = this.formatHour(this.schedule.hour, this.schedule.minute);
     this.schedule.status = 'verde';
     console.log(this.schedule);
     this.scheduleService.newSchedule(<ISchedule>this.schedule).subscribe(s => {
@@ -256,7 +271,7 @@ export class NewEditScheduleComponent implements OnInit {
                   'Nuevo Evento',
                   `Se ha generado una propuesta de evento en ${
                     schedule.property.name
-                  }`,
+                  } con fecha: ${date} y hora: ${hours} `,
                   'verde',
                   'schedule',
                   undefined,
@@ -281,6 +296,9 @@ export class NewEditScheduleComponent implements OnInit {
     console.log('%c nuevo', 'color: #f5811e;');
   }
   editCustomerSeller() {
+    if (this.schedule.status === 'amarillo') {
+      this.schedule.notificationOneSignal = this.deleteOneSignal(this.schedule);
+    }
     this.schedule.status = 'verde';
     this.scheduleService
       .putSchedule(<ISchedule>this.schedule)
@@ -308,10 +326,10 @@ export class NewEditScheduleComponent implements OnInit {
       });
   }
   editCustomer() {
+    if (this.schedule.status === 'amarillo') {
+      this.schedule.notificationOneSignal = this.deleteOneSignal(this.schedule);
+    }
     this.schedule.status = 'verde';
-    console.log(this.adviserBefore);
-    console.log(this.schedule.adviser);
-    console.log(this.schedule);
     if (this.adviserBefore === undefined) {
       this.buyerSelect$.subscribe(buyer => {
         if (this.item === 'other') {
@@ -357,13 +375,13 @@ export class NewEditScheduleComponent implements OnInit {
         // noti
         this.notification(
           'Nuevo Evento',
-          `Se ha respondido una propuesta de evento en ${
+          `Se ha generado una propuesta de evento en ${
             schedule.property.name
-          }`,
+          }, en espera de respuesta del Cliente: ${schedule.buyer.name}`,
           'verde',
           'schedule',
           undefined,
-          [schedule.buyer._id],
+          [schedule.buyer._id, schedule.adviser._id],
         );
         const toast: NavigationExtras = {
           queryParams: { res: ' Evento Editado' },
@@ -561,5 +579,27 @@ export class NewEditScheduleComponent implements OnInit {
         [schedule.buyer._id, schedule.adviser._id],
       )
       .subscribe(() => {});
+  }
+  private deleteOneSignal(schedule) {
+    /* const schedule = await this.scheduleService
+      .getScheduleById(scheduleId)
+      .toPromise(); */
+    if (
+      schedule.notificationOneSignal &&
+      schedule.notificationOneSignal.length > 0
+    ) {
+      schedule.notificationOneSignal.forEach((idN, i) => {
+        this.oneSignalService.deleteOneSignalSchedule(idN).subscribe();
+      });
+      return (schedule.notificationOneSignal = []);
+    }
+  }
+  // _helpers
+  getDate2(day, month, year) {
+    const d = new Date(year, month, day);
+    return FormatDatesFront(d);
+  }
+  formatHour(h, m) {
+    return FormatHoursFront(h, m);
   }
 }

@@ -14,6 +14,8 @@ import { ISchedule } from '../../../models/schedule.model';
 import { FormatHoursFront } from '../../../_config/_helpers';
 import { INotification } from '../../../models/notification.model';
 import { OnesignalService } from '../../../services/onesignal.service';
+import { map } from 'rxjs/operators';
+import { SellerService } from '../../../services/seller.service';
 
 @Component({
   selector: 'app-credit-event-buyer',
@@ -45,8 +47,8 @@ export class CreditEventBuyerComponent implements OnInit {
     'Noviembre',
     'Diciembre',
   ];
-  schedule: ISchedule;
-
+  buyer: IBuyer;
+  schedules = [];
   constructor(
     private route: ActivatedRoute,
     private propertyService: PropertyService,
@@ -57,6 +59,7 @@ export class CreditEventBuyerComponent implements OnInit {
     private statusBuyerPropertyService: StatusBuyerPropertyService,
     private scheduleService: ScheduleService,
     private oneSignalService: OnesignalService,
+    private sellerService: SellerService,
   ) {
     this.route.queryParams.subscribe(params => {
       if (params.id) {
@@ -75,23 +78,20 @@ export class CreditEventBuyerComponent implements OnInit {
   getBuyerById(propertyId) {
     const buyerId = this.userSessionService.userSession.value.id;
     this.buyerService.getBuyerById(buyerId).subscribe(buyer => {
+      this.buyer = buyer;
       const buyerGet = <any>buyer;
       const isCreditFinded = buyerGet.credit.find(
         credit => credit.property._id === propertyId,
       );
       // cambiar a filters si tine varias
-      const isScheduleFinded = buyer.schedule.find(
+      const isScheduleFinded = buyer.schedule.filter(
         s => s.property._id === propertyId,
       );
       if (isCreditFinded) {
         this.credit = isCreditFinded;
         this.hasCredit = true;
       }
-      if (isScheduleFinded) {
-        this.schedule = isScheduleFinded;
-        console.log(this.schedule);
-        this.hasSchedule = true;
-      }
+      this.schedules = isScheduleFinded;
       this.isLoad = true;
     });
   }
@@ -116,6 +116,7 @@ export class CreditEventBuyerComponent implements OnInit {
           credit.status,
           'credit',
           ['office', 'administrator'],
+          undefined,
         );
         this.creditService.newCredit(credit).subscribe(c => {
           if (c) {
@@ -139,22 +140,43 @@ export class CreditEventBuyerComponent implements OnInit {
     const buyerName = this.userSessionService.userSession.value.name;
     this.statusBuyerPropertyService
       .upgradeStatus(this.statusBuyerPropertyId, 'rojo')
-      .subscribe(c => console.log(c));
+      .subscribe();
     this.credit.status = 'rojo';
     this.credit.notes = str;
     this.credit.isAccept = isAcept;
-    this.creditService.putCredit(this.credit).subscribe(res => {
+    this.creditService.putCredit(this.credit).subscribe(async res => {
+      const seller = await this.getSellerOfProperty(this.propertyId);
+      const prop = await this.getPropById(this.propertyId);
+      const arr = this.buyer.adviser
+        .map(a => a._id)
+        .concat(seller === undefined ? '1' : seller._id);
+      const dateToSchedule = new Date(new Date().getTime() + 15 * 86400000);
       // Crear notif
       this.notification(
         'Respuesta de crédito',
-        `El cliente ${buyerName} ha ${str} un crédito`,
+        `El cliente ${buyerName} ha ${str} un crédito para la propiedad: ${
+          prop.name
+        }`,
         this.credit.status,
         'credit',
         ['office', 'administrator'],
+        arr,
       );
+      if (isAcept) {
+        this.notificationByApart(
+          'Tiempo de Apartado Superado',
+          `El tiempo de espera ha superado los 15 dias para el crédito de la propiedad: ${
+            prop.name
+          } del cliente ${this.userSessionService.userSession.value.name}`,
+          ['office', 'administrator'],
+          arr,
+          dateToSchedule,
+          this.credit,
+        );
+      }
       if (res) {
         this.getBuyerById(this.propertyId);
-        this.presentToast('Credito ' + str);
+        this.presentToast('Crédito ' + str);
       }
     });
   }
@@ -191,6 +213,7 @@ export class CreditEventBuyerComponent implements OnInit {
           newSchedule.status,
           'schedule',
           ['office', 'administrator'],
+          undefined,
         );
         this.scheduleService.newSchedule(newSchedule).subscribe(s => {
           if (s) {
@@ -210,28 +233,26 @@ export class CreditEventBuyerComponent implements OnInit {
         });
       });
   }
-  respondSchedule(str: string) {
+  respondSchedule(str: string, schedule: ISchedule) {
     const buyerName = this.userSessionService.userSession.value.name;
     if (str === 'Aceptado') {
-      this.schedule.status = 'amarillo';
+      schedule.status = 'amarillo';
       // noti schedule
-      this.notificationBySchedule(this.schedule);
+      this.notificationBySchedule(schedule);
     } else {
-      this.schedule.status = 'gris';
+      schedule.status = 'gris';
     }
-    this.schedule.note = str;
+    schedule.note = str;
     // Crear notif
     this.notification(
       'Respuesta de visita',
-      `El cliente ${buyerName} ha ${str} la visita a ${
-        this.schedule.property.name
-      }`,
-      this.schedule.status,
+      `El cliente ${buyerName} ha ${str} la visita a ${schedule.property.name}`,
+      schedule.status,
       'schedule',
       ['office', 'administrator'],
-      this.schedule.adviser._id,
+      [schedule.adviser._id],
     );
-    this.scheduleService.putSchedule(this.schedule).subscribe(res => {
+    this.scheduleService.putSchedule(schedule).subscribe(res => {
       if (res) {
         this.getBuyerById(this.propertyId);
         this.presentToast('Cita ' + str);
@@ -255,14 +276,14 @@ export class CreditEventBuyerComponent implements OnInit {
     status,
     type,
     tags,
-    receiversId?: string,
+    receiversId: string[],
   ) {
     // notificacion
     const notification: INotification = {
       title: title,
       message: message,
       tags: tags,
-      receiversId: [receiversId],
+      receiversId: receiversId,
       senderId: this.userSessionService.userSession.value.id,
       status: status,
       type: type,
@@ -273,13 +294,11 @@ export class CreditEventBuyerComponent implements OnInit {
         notification.title,
         message,
         status === 'rojo' ? ['office', 'administrator'] : ['office'],
-        receiversId !== undefined ? [receiversId] : undefined,
+        receiversId,
       )
       .subscribe(() => {
         // guardar noti
-        this.oneSignalService
-          .newNotification(notification)
-          .subscribe(n => console.log(n));
+        this.oneSignalService.newNotification(notification).subscribe();
       });
   }
   public notificationBySchedule(schedule?: ISchedule) {
@@ -300,8 +319,12 @@ export class CreditEventBuyerComponent implements OnInit {
         undefined,
         [this.userSessionService.userSession.value.id, schedule.adviser._id],
       )
-      .subscribe(() => {
-        // guardar noti
+      .subscribe(data => {
+        if (!schedule.notificationOneSignal) {
+          schedule.notificationOneSignal = [];
+        }
+        schedule.notificationOneSignal.push(data.id);
+        this.scheduleService.putSchedule(schedule).subscribe();
       });
     /*  this.oneSignalService
       .postOneSignalBySchedule(
@@ -314,5 +337,36 @@ export class CreditEventBuyerComponent implements OnInit {
       .subscribe(e => {
         console.log(e);
       }); */
+  }
+  private notificationByApart(
+    title,
+    message,
+    tags: string[],
+    reciversId: string[],
+    date: Date,
+    credit: ICredit,
+  ) {
+    // onesignal
+    this.oneSignalService
+      .postOneSignalBySchedule(title, message, date, tags, reciversId)
+      .subscribe(data => {
+        if (!credit.notificationOneSignal) {
+          credit.notificationOneSignal = [];
+        }
+        console.log(credit);
+        credit.notificationOneSignal.push(data.id);
+        this.creditService.putCredit(this.credit).subscribe();
+      });
+  }
+  async getSellerOfProperty(id) {
+    return await this.sellerService
+      .getSellerAll()
+      .pipe(
+        map(sellers => sellers.find(s => !!s.property.find(p => p._id === id))),
+      )
+      .toPromise();
+  }
+  async getPropById(id) {
+    return await this.propertyService.getPropertyById(id).toPromise();
   }
 }

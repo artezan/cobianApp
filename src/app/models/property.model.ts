@@ -90,5 +90,8 @@ export interface IProperty {
    * esta comprada
    */
   isBuy?: boolean;
+  /**
+   * NO UTILIZAR
+   */
   dateToApart?: Date;
 }

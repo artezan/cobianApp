@@ -57,6 +57,40 @@
                 </mat-select>
               </mat-form-field>
             </div>
+            <!-- Fecha Recordatorio -->
+            <mat-form-field appearance="outline">
+              <mat-label>Fecha para mandar recordatorio</mat-label>
+              <input (dateChange)="dateSelect2($event)" (focus)="picker2.open()" matInput [matDatepicker]="picker2"
+                placeholder="Selecciona Fecha" required>
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+            <!-- hora -->
+            <mat-label style="margin-bottom: 2%;">Anote Hora de Recordatorio </mat-label>
+            <div>
+              <mat-form-field style="width: 70px;" appearance="outline">
+                <input type="number" style="text-align: right;" matInput [(ngModel)]="hourNoti" #hour2="ngModel" id="hour2"
+                  name="hour2" required>
+
+              </mat-form-field>
+              :
+              <mat-form-field style="width: 70px;" appearance="outline">
+                <input type="number" matInput [(ngModel)]="minuteNoti" #minute2="ngModel" id="minute2" name="minute2"
+                  required>
+              </mat-form-field>
+              <!-- pm/am -->
+              <mat-form-field style="width: 71px;
+                margin-left: 1%;" appearance="outline">
+                <mat-select value='am' (selectionChange)="hourFormat2(ampm2.value)" #ampm2>
+                  <mat-option value="pm">
+                    PM
+                  </mat-option>
+                  <mat-option value="am">
+                    AM
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
             <!-- title -->
             <mat-form-field appearance="outline">
               <mat-label>Titulo del evento</mat-label>
@@ -79,7 +113,8 @@
               <span [matTooltip]=errorToShow [matTooltipClass]="'tooltip-size'" (mouseenter)="getPopMessage($event)">
                 <button *ngIf="isNew" id="submitUser" mat-raised-button color="primary" (click)="newSchedule()"
                   [disabled]="!newUserForm.form.valid">Crear</button>
-                <button *ngIf="!isNew" id="submitUser" mat-raised-button color="primary" (click)="editSchedule()">Editar</button>
+                <button *ngIf="!isNew" id="submitUser" mat-raised-button color="primary" (click)="editSchedule()"
+                  [disabled]="!newUserForm.form.valid">Editar</button>
               </span>
             </div>
 

@@ -36,4 +36,5 @@ export interface IGoal {
     }
   ];
   _id?: string;
+  notificationOneSignal?: string[];
 }

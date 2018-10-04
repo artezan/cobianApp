@@ -18,6 +18,9 @@ import { map } from 'rxjs/operators';
 import { IAdviser } from '../../../models/adviser.model';
 import { SaleService } from '../../../services/sale.service';
 import { ISale } from '../../../models/sale.model';
+import { OnesignalService } from '../../../services/onesignal.service';
+import { INotification } from '../../../models/notification.model';
+import { SellerService } from '../../../services/seller.service';
 
 @Component({
   selector: 'app-detail-salesprop-admin',
@@ -33,6 +36,7 @@ export class DetailSalespropAdminComponent implements OnInit {
   percent: number;
   dayRest: number;
   outerStrokeColor = '#f5811e';
+  idsNotification: string[] = [];
   constructor(
     private statusBPService: StatusBuyerPropertyService,
     private userSession: UserSessionService,
@@ -44,6 +48,8 @@ export class DetailSalespropAdminComponent implements OnInit {
     public byuerService: BuyerService,
     public saleService: SaleService,
     private router: Router,
+    private oneSignalService: OnesignalService,
+    private sellerService: SellerService,
   ) {
     this.isDesktop = platform.is('desktop');
   }
@@ -62,21 +68,30 @@ export class DetailSalespropAdminComponent implements OnInit {
           this.isCredit = true;
         }
 
-        this.getSBPById(params['id']);
+        this.getSBPById(params['id'], this.statusBPService.timeToBuy);
       }
     });
   }
-  getSBPById(id: string) {
+  getSBPById(id: string, timestamp) {
     this.statusBPService.getStatusBuyerPropertyById(id).subscribe(sBP => {
       this.isLoad = true;
-      console.log(sBP);
       // 15 dias - 100%
-      const diffDays = 15 - this.deDiffDays(sBP.timestamp);
+      const diffDays = 15 - this.deDiffDays(timestamp);
       if (diffDays > 0) {
         this.dayRest = diffDays;
         this.percent = (diffDays * 100) / 15;
       }
       this.sBP = <any>sBP;
+      this.getOferts(this.sBP).forEach(ofert => {
+        this.idsNotification = this.idsNotification.concat(
+          ofert.notificationOneSignal,
+        );
+      });
+      this.getCredits(this.sBP).forEach(cred => {
+        this.idsNotification = this.idsNotification.concat(
+          cred.notificationOneSignal,
+        );
+      });
     });
   }
   private deDiffDays(dateToDiference: Date) {
@@ -162,9 +177,7 @@ export class DetailSalespropAdminComponent implements OnInit {
 
     await alert.present();
     await alert.onWillDismiss().then(res => {
-      console.log(res);
       if (res.role === 'ok') {
-        console.log(res);
         this.presentAlertCheckbox(res.data.values.price, res.data.values.note);
       }
     });
@@ -206,14 +219,14 @@ export class DetailSalespropAdminComponent implements OnInit {
 
     await alert.present();
     await alert.onWillDismiss().then(res => {
-      console.log(res);
       if (res.role === 'ok') {
         this.changeStatus(res.data.values, note, price);
       }
     });
   }
   // cambiar status
-  changeStatus(adv, note, price) {
+  async changeStatus(adv, note, price) {
+    const seller = await this.getSellerOfProperty(this.sBP.property._id);
     const Sale = {
       adviser: adv,
       isRent: this.sBP.property.isRent,
@@ -222,12 +235,23 @@ export class DetailSalespropAdminComponent implements OnInit {
       note: note,
       price: +price,
     };
-    console.log(Sale);
     this.statusBPService.upgradeStatus(this.sBP._id, 'azul').subscribe(() => {
       this.saleService.newSale(<any>Sale).subscribe(sale => {
         const prop = { _id: this.sBP.property._id, isBuy: true };
         this.propertyService.putProperty(prop).subscribe(() => {
-          console.log(sale);
+          this.notification(
+            'Propiedad Adquirida',
+            `La propiedad: ${
+              this.sBP.property.name
+            } ha sido adquirida por el cliente: "${this.sBP.buyer.name}"`,
+            'azul',
+            'property',
+            ['administrator', 'office'],
+            seller === undefined
+              ? [Sale.buyer, Sale.adviser]
+              : [seller._id, Sale.buyer, Sale.adviser],
+          );
+          this.deleteNotification(this.idsNotification);
           const toast: NavigationExtras = {
             queryParams: { res: 'Venta Concretada' },
           };
@@ -240,5 +264,48 @@ export class DetailSalespropAdminComponent implements OnInit {
   }
   formatDates(date: Date) {
     return FormatDatesFront(date);
+  }
+  deleteNotification(ids: string[]) {
+    ids.forEach(id => {
+      this.oneSignalService
+        .deleteOneSignalSchedule(id)
+        .subscribe(c => console.log(c));
+    });
+  }
+  private notification(
+    title,
+    message,
+    status,
+    type,
+    tags,
+    receiversId: string[],
+  ) {
+    // notificacion
+    const notification: INotification = {
+      title: title,
+      message: message,
+      tags: tags,
+      receiversId: receiversId,
+      senderId: this.userSession.userSession.value.id,
+      status: status,
+      type: type,
+    };
+    // onesignal
+    this.oneSignalService
+      .postOneSignalByTag(notification.title, message, tags, receiversId)
+      .subscribe(() => {
+        // guardar noti
+        this.oneSignalService.newNotification(notification).subscribe();
+      });
+  }
+  private async getSellerOfProperty(propertyId) {
+    return await this.sellerService
+      .getSellerAll()
+      .pipe(
+        map(sellers =>
+          sellers.find(s => !!s.property.find(p => p._id === propertyId)),
+        ),
+      )
+      .toPromise();
   }
 }

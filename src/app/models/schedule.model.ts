@@ -52,6 +52,7 @@ export interface ISchedule {
    * Calificacion
    */
   scoreByAdviser?: 'verde' | 'gris' | 'amarillo' | 'rojo' | 'azul';
+  notificationOneSignal?: string[];
 }
 export interface IScheduleGet {
   /**
@@ -105,6 +106,7 @@ export interface IScheduleGet {
    * Calificacion
    */
   scoreByAdviser?: 'verde' | 'gris' | 'amarillo' | 'rojo' | 'azul';
+  notificationOneSignal?: string[];
 }
 export interface CheckSchedule {
   buyerCan?: boolean;

@@ -98,6 +98,40 @@
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
+            <!-- Fecha -->
+            <mat-form-field appearance="outline">
+              <mat-label>Fecha para mandar recordatorio</mat-label>
+              <input (dateChange)="dateSelect2($event)" (focus)="picker2.open()" matInput [matDatepicker]="picker2"
+                placeholder="Selecciona Fecha" required>
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+            <!-- hora -->
+            <mat-label style="margin-bottom: 2%;">Anote Hora de recordatorio </mat-label>
+            <div>
+              <mat-form-field style="width: 70px;" appearance="outline">
+                <input type="number" style="text-align: right;" matInput [(ngModel)]="hourNoti" #hour="ngModel" id="hour"
+                  name="hour" required>
+
+              </mat-form-field>
+              :
+              <mat-form-field style="width: 70px;" appearance="outline">
+                <input type="number" matInput [(ngModel)]="minuteNoti" #minute="ngModel" id="minute" name="minute"
+                  required>
+              </mat-form-field>
+              <!-- pm/am -->
+              <mat-form-field style="width: 71px;
+              margin-left: 1%;" appearance="outline">
+                <mat-select value='am' (selectionChange)="hourFormat(ampm.value)" #ampm>
+                  <mat-option value="pm">
+                    PM
+                  </mat-option>
+                  <mat-option value="am">
+                    AM
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
             <!-- GENERAL str list -->
             <app-form-str-list nameTitle="Lista de Objetivos" nameItems="Objetivo" (arrList)="arrList = $event"
               [arrStr]="arrList" [numOfItems]="numOfItems"></app-form-str-list>

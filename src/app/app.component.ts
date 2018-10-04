@@ -11,7 +11,7 @@ import { CONST_GENERAL } from './_config/_const-general';
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html'
+  templateUrl: 'app.component.html',
 })
 export class AppComponent {
   public appPages = [
@@ -20,282 +20,287 @@ export class AppComponent {
       title: 'Propiedades',
       url: '/list-prop-buyer',
       icon: 'business',
-      userType: 'buyer'
+      userType: 'buyer',
     },
     {
       title: 'Calendario',
       url: '/calendar-buyer',
       icon: 'calendar',
-      userType: 'buyer'
+      userType: 'buyer',
     },
     {
       title: 'Lista de deseos',
       url: '/inter-prop-buyer',
       icon: 'heart',
-      userType: 'buyer'
+      userType: 'buyer',
     },
     {
       title: 'Ofertas',
       url: '/ofert-buyer',
       icon: 'clipboard',
-      userType: 'buyer'
+      userType: 'buyer',
     },
     {
       title: 'Editar Perfil',
       url: '/new-buyer',
       icon: 'contact',
-      userType: 'buyer'
+      userType: 'buyer',
     },
     // admin
     {
       title: 'Principal',
       url: '/main-admin',
       icon: 'home',
-      userType: 'administrator'
+      userType: 'administrator',
     },
     {
       title: 'Consumidores',
       url: '/list-buyer-admin',
       icon: 'clipboard',
-      userType: 'administrator'
+      userType: 'administrator',
     },
     {
       title: 'Asesores',
       url: '/list-adviser-admin',
       icon: 'people',
-      userType: 'administrator'
+      userType: 'administrator',
     },
     {
       title: 'Vendedores',
       url: '/list-seller-admin',
       icon: 'cash',
-      userType: 'administrator'
+      userType: 'administrator',
     },
     {
       title: 'Oficinistas',
       url: '/list-office-admin',
       icon: 'desktop',
-      userType: 'administrator'
+      userType: 'administrator',
     },
     {
       title: 'Propiedades',
       url: '/list-prop-admin',
       icon: 'business',
-      userType: 'administrator'
+      userType: 'administrator',
     },
     {
       title: 'Créditos',
       url: '/list-credit-admin',
       icon: 'document',
-      userType: 'administrator'
+      userType: 'administrator',
     },
     {
       title: 'Ofertas',
       url: '/list-ofert-admin',
       icon: 'card',
-      userType: 'administrator'
+      userType: 'administrator',
     },
     {
       title: 'Obras',
       url: '/list-build-admin',
       icon: 'construct',
-      userType: 'administrator'
+      userType: 'administrator',
     },
     {
       title: 'Constructores',
       url: '/list-maker-admin',
       icon: 'walk',
-      userType: 'administrator'
+      userType: 'administrator',
     },
     {
       title: 'Eventos',
       url: '/list-schedule-admin',
       icon: 'calendar',
-      userType: 'administrator'
+      userType: 'administrator',
     },
     {
       title: 'Metas',
       url: '/list-goals-admin',
       icon: 'stats',
-      userType: 'administrator'
+      userType: 'administrator',
     },
     {
       title: 'Simulador Match',
       url: '/simulate-search-admin',
       icon: 'heart-empty',
-      userType: 'administrator'
+      userType: 'administrator',
     },
     {
       title: 'Propiedades Apartadas',
       url: '/list-salesprop-admin',
       icon: 'timer',
-      userType: 'administrator'
+      userType: 'administrator',
     },
     {
       title: 'Propiedades Aquiridas',
       url: '/list-sales-admin',
       icon: 'trending-up',
-      userType: 'administrator'
+      userType: 'administrator',
     },
     // asesores
     {
       title: 'Consumidores',
       url: '/list-buyer-admin',
       icon: 'clipboard',
-      userType: 'adviser'
+      userType: 'adviser',
     },
     {
       title: 'Propiedades',
       url: '/list-prop-admin',
       icon: 'business',
-      userType: 'adviser'
+      userType: 'adviser',
     },
     {
       title: 'Eventos',
       url: '/list-schedule-admin',
       icon: 'calendar',
-      userType: 'adviser'
+      userType: 'adviser',
     },
     {
       title: 'Metas',
       url: '/list-goals-admin',
       icon: 'stats',
-      userType: 'adviser'
+      userType: 'adviser',
     },
     {
       title: 'Perfil',
       url: '/new-edit-adviser',
       icon: 'contact',
-      userType: 'adviser'
+      userType: 'adviser',
     },
     {
       title: 'Simulador Match',
       url: '/simulate-search-admin',
       icon: 'heart-empty',
-      userType: 'adviser'
+      userType: 'adviser',
     },
     // Seller
     {
       title: 'Consumidores',
       url: '/list-buyer-admin',
       icon: 'clipboard',
-      userType: 'seller'
+      userType: 'seller',
     },
     {
       title: 'Propiedades',
       url: '/list-prop-admin',
       icon: 'business',
-      userType: 'seller'
+      userType: 'seller',
     },
     {
       title: 'Eventos',
       url: '/list-schedule-admin',
       icon: 'calendar',
-      userType: 'seller'
+      userType: 'seller',
     },
     {
       title: 'Perfil',
       url: '/new-edit-seller',
       icon: 'contact',
-      userType: 'seller'
+      userType: 'seller',
     },
     {
       title: 'Simulador Match',
       url: '/simulate-search-admin',
       icon: 'heart-empty',
-      userType: 'seller'
+      userType: 'seller',
     },
     // office
     {
       title: 'Consumidores',
       url: '/list-buyer-admin',
       icon: 'clipboard',
-      userType: 'office'
+      userType: 'office',
     },
     {
       title: 'Asesores',
       url: '/list-adviser-admin',
       icon: 'people',
-      userType: 'office'
+      userType: 'office',
     },
     {
       title: 'Vendedores',
       url: '/list-seller-admin',
       icon: 'cash',
-      userType: 'office'
+      userType: 'office',
     },
     {
       title: 'Propiedades',
       url: '/list-prop-admin',
       icon: 'business',
-      userType: 'office'
+      userType: 'office',
     },
     {
       title: 'Créditos',
       url: '/list-credit-admin',
       icon: 'document',
-      userType: 'office'
+      userType: 'office',
     },
     {
       title: 'Ofertas',
       url: '/list-ofert-admin',
       icon: 'card',
-      userType: 'office'
+      userType: 'office',
     },
     {
       title: 'Obras',
       url: '/list-build-admin',
       icon: 'construct',
-      userType: 'office'
+      userType: 'office',
     },
     {
       title: 'Constructores',
       url: '/list-maker-admin',
       icon: 'walk',
-      userType: 'office'
+      userType: 'office',
     },
     {
       title: 'Eventos',
       url: '/list-schedule-admin',
       icon: 'calendar',
-      userType: 'office'
+      userType: 'office',
     },
     {
       title: 'Metas',
       url: '/list-goals-admin',
       icon: 'stats',
-      userType: 'office'
+      userType: 'office',
     },
     {
       title: 'Simulador Match',
       url: '/simulate-search-admin',
       icon: 'heart-empty',
-      userType: 'office'
+      userType: 'office',
     },
     {
       title: 'Propiedades Apartadas',
       url: '/list-salesprop-admin',
       icon: 'timer',
-      userType: 'office'
+      userType: 'office',
     },
     {
       title: 'Propiedades Aquiridas',
       url: '/list-sales-admin',
       icon: 'trending-up',
-      userType: 'office'
+      userType: 'office',
     },
     {
       title: 'Perfil',
       url: '/new-edit-office',
       icon: 'contact',
-      userType: 'office'
-    }
+      userType: 'office',
+    },
+    // list-notification
+    {
+      title: 'Notificaciones',
+      url: '/list-notification',
+      icon: 'notifications',
+      userType: 'all',
+    },
   ];
-
-  isDevice: boolean;
   isLoggin = false;
   user: IUserSession;
-  typeDevice: string;
+  link: string;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -303,7 +308,7 @@ export class AppComponent {
     private storage: Storage,
     private userSessionService: UserSessionService,
     private router: Router,
-    private navController: NavController
+    private navController: NavController,
   ) {
     this.initializeApp();
     userSessionService.userSession.subscribe(user => {
@@ -315,6 +320,15 @@ export class AppComponent {
         this.isLoggin = false;
         this.user = undefined;
         this.navController.navigateRoot('login', false);
+        /*  this.router
+          .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+          .then(() => this.router.navigate(['login'])); */
+      }
+      // item select
+      if (user.type === 'administrator') {
+        this.link = '/main-admin';
+      } else {
+        this.link = '/list-buyer-admin';
       }
     });
   }

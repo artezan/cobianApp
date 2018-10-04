@@ -13,10 +13,10 @@ export class OnesignalService {
   constructor(private http: HttpClient) {}
   public search(
     id?: string,
-    tags?: string[],
+    tags?: string,
     pageNumber = 1,
     nPerPage = 10,
-  ): Observable<INotification> {
+  ): Observable<INotification[]> {
     const body = {
       id,
       pageNumber,
@@ -36,7 +36,7 @@ export class OnesignalService {
   }
   public putNotification(notification: INotification): Observable<boolean> {
     return this.http
-      .put(END_POINT.PROPERTY + notification._id, notification)
+      .put(END_POINT.NOTIFICATION + notification._id, notification)
       .pipe(map((data: any) => data.data));
   }
   /**
@@ -64,9 +64,7 @@ export class OnesignalService {
       filters: filters,
     };
     console.log(body);
-    return this.http
-      .post(END_POINT.ONESIGNAL, body, { headers: headers })
-      .pipe(map((data: any) => data.data));
+    return this.http.post(END_POINT.ONESIGNAL, body, { headers: headers });
   }
   public postOneSignalBySchedule(
     headings: string,
@@ -74,8 +72,9 @@ export class OnesignalService {
     date: Date,
     tags?: string[],
     usersId?: string[],
+    prevTimeSet = 30,
   ): Observable<any> {
-    const prevTime = 30 * 60000;
+    const prevTime = prevTimeSet * 60000;
     const schedule = new Date(date).getTime() - prevTime;
     const headers = new HttpHeaders({
       Authorization: `Basic ${CONST_GENERAL.REST_API_KEY}`,
@@ -90,9 +89,31 @@ export class OnesignalService {
       send_after: new Date(schedule).toString(),
     };
     console.log(body);
-    return this.http
-      .post(END_POINT.ONESIGNAL, body, { headers: headers })
-      .pipe(map((data: any) => data.data));
+    return this.http.post(END_POINT.ONESIGNAL, body, { headers: headers });
+  }
+  public deleteOneSignalSchedule(notificationId) {
+    const headers = new HttpHeaders({
+      Authorization: `Basic ${CONST_GENERAL.REST_API_KEY}`,
+      'Content-Type': 'application/json; charset=utf-8',
+    });
+    return this.http.delete(
+      `${END_POINT.ONESIGNAL}/${notificationId}?app_id=${
+        CONST_GENERAL.ONESIGNAL_APP_ID
+      }`,
+      { headers: headers },
+    );
+  }
+  public getAllNotificationOneSignal(): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Basic ${CONST_GENERAL.REST_API_KEY}`,
+      'Content-Type': 'application/json; charset=utf-8',
+    });
+    return this.http.get(
+      `https://onesignal.com/api/v1/notifications?app_id=${
+        CONST_GENERAL.ONESIGNAL_APP_ID
+      }`,
+      { headers: headers },
+    );
   }
   // helpers
   private filterByTags(tags: string[], usersId: string[]) {

@@ -15,6 +15,7 @@ import {
 } from '../../../models/statusBuyerProperty.model';
 import { Platform } from '@ionic/angular';
 import { FormatHoursFront } from '../../../_config/_helpers';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-main-admin',
@@ -161,15 +162,20 @@ export class MainAdminComponent implements OnInit {
   }
   getScheduleToday() {
     const adminId = this.userSessionService.userSession.value.id;
-    this.adminService.getBuyerById(adminId).subscribe(admin => {
-      this.schedule = admin.schedule;
-      const dateToday = new Date();
-      this.getByDay(
-        dateToday.getFullYear(),
-        dateToday.getMonth(),
-        dateToday.getDate(),
-      );
-    });
+    this.scheduleService
+      .getSchedule()
+      .pipe(
+        map(s => s.filter(f => f.administrator && f.administrator === adminId)),
+      )
+      .subscribe(schedule => {
+        this.schedule = schedule;
+        const dateToday = new Date();
+        this.getByDay(
+          dateToday.getFullYear(),
+          dateToday.getMonth(),
+          dateToday.getDate(),
+        );
+      });
   }
   getByDay(year: number, month: number, day: number) {
     const isFinded = this.schedule.filter(

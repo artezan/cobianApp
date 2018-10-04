@@ -44,6 +44,7 @@ import { DetailSalespropAdminComponent } from './components/admin/detail-salespr
 import { ListSalesAdminComponent } from './components/admin/list-sales-admin/list-sales-admin.component';
 import { ListOfficeAdminComponent } from './components/admin/list-office-admin/list-office-admin.component';
 import { NewEditOfficeComponent } from './components/office/new-edit-office/new-edit-office.component';
+import { ListNotificationComponent } from './components/notification/list-notification/list-notification.component';
 
 const routes: Routes = [
   // Rutas
@@ -92,6 +93,7 @@ const routes: Routes = [
   { path: 'list-sales-admin', component: ListSalesAdminComponent },
   { path: 'list-office-admin', component: ListOfficeAdminComponent },
   { path: 'new-edit-office', component: NewEditOfficeComponent },
+  { path: 'list-notification', component: ListNotificationComponent },
 ];
 
 @NgModule({

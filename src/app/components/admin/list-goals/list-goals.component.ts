@@ -60,7 +60,7 @@ export class ListGoalsComponent implements OnInit {
       },
       {
         name: 'Número de Asesores',
-        prop: 'adviser',
+        prop: 'numAdviser',
         type: 'normal',
       },
       {
@@ -156,7 +156,8 @@ export class ListGoalsComponent implements OnInit {
       console.log(properties);
       rows.push({
         _id: goal._id,
-        adviser: goal.adviser.length,
+        numAdviser: goal.adviser.length,
+        adviser: goal.adviser,
         isByManagement: goal.isByManagement,
         title: goal.title,
         content: goal.content,
@@ -168,21 +169,26 @@ export class ListGoalsComponent implements OnInit {
     this.rows = rows;
     this.isLoading = true;
   }
-  edit(item) {
+  edit(item: IGoal) {
     console.log(item);
     if (item.isByManagement && this.user.type !== 'adviser') {
       const data: NavigationExtras = {
         queryParams: { id: item._id },
       };
       this.router.navigate(['new-edit-goal'], data);
-    } else if (this.user.type === 'adviser') {
+    } else if (item.isByManagement && this.user.type === 'adviser') {
       this.presentToast('Acceso denegado');
     }
     if (!item.isByManagement) {
-      const data: NavigationExtras = {
-        queryParams: { id: item._id },
-      };
-      this.router.navigate(['new-edit-goal'], data);
+      const isFind = item.adviser.find(adv => adv._id === this.user.id);
+      if (isFind) {
+        const data: NavigationExtras = {
+          queryParams: { id: item._id },
+        };
+        this.router.navigate(['new-edit-goal'], data);
+      } else {
+        this.presentToast('Acceso denegado');
+      }
     }
     // this.navCtr.navigateRoot('new-buyer', false, data);
   }

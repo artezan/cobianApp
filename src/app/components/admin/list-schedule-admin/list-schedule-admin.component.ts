@@ -153,7 +153,13 @@ export class ListScheduleAdminComponent implements OnInit {
     };
     this.router.navigate(['personal-schedule'], data);
   }
-  deleteEvent(id) {
+  async deleteEvent(id) {
+    const schedule = await this.scheduleService.getScheduleById(id).toPromise();
+    if (schedule.notificationOneSignal) {
+      schedule.notificationOneSignal.forEach(idN => {
+        this.oneSignalService.deleteOneSignalSchedule(idN).subscribe();
+      });
+    }
     this.scheduleService
       .deltedScheduleById(id)
       .toPromise()
@@ -165,7 +171,7 @@ export class ListScheduleAdminComponent implements OnInit {
   async presentAlertConfirm(id) {
     const alert = await this.alertController.create({
       header: 'Eliminar evento',
-      message: `¿Desea eliminar evento ?`,
+      message: `¿Desea eliminar evento?`,
       buttons: [
         {
           text: 'Cancelar',
@@ -305,7 +311,7 @@ export class ListScheduleAdminComponent implements OnInit {
         position: 'bottom',
         closeButtonText: 'OK',
         cssClass: 'toast-alert',
-        duration: 50000,
+        duration: 5000,
       });
       toast.present();
       toast.onWillDismiss().then(() => {

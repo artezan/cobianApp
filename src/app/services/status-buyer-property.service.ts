@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class StatusBuyerPropertyService {
+  public timeToBuy: Date;
   constructor(private http: HttpClient) {}
   public newStatusBuyerProperty(
     sBP: IStatusBuyerProperty,
