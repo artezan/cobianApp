@@ -114,42 +114,40 @@ export class UserSessionService {
   private oneSignalDesktop(id: any, type: any) {
     const OneSignalDektop = window['OneSignal'] || [];
     console.log('Init OneSignal');
-    OneSignalDektop.push(function() {
-      OneSignalDektop.init({
-        appId: CONST_GENERAL.ONESIGNAL_APP_ID,
-        autoRegister: true,
-        notifyButton: {
-          enable: false,
-        },
-        promptOptions: {
-          actionMessage:
-            'Nos gustaría notificarle cuando se mande un nuevo programa',
-          acceptButtonText: 'Permitir',
-          cancelButtonText: 'No gracias',
-        },
-        notificationClickHandlerMatch:
-          'exact' /* See above documentation: 'origin' relaxes tab matching requirements, 'exact' is default */,
-        notificationClickHandlerAction:
-          'navigate' /* See above documentation: 'focus' does not navigate the targeted tab, 'navigate' is default */,
-      });
-      OneSignalDektop.getUserId(function(userId) {
-        console.log('OneSignal User ID:', userId);
-      });
-      OneSignalDektop.sendTags({
-        _id: id.toString(),
-        type: type,
-      });
-      OneSignalDektop.on('subscriptionChange', function(isSubscribed) {
-        console.log('The user subscription state is now:', isSubscribed);
+    OneSignalDektop.push([
+      'addListenerForNotificationOpened',
+      function(da) {
+        console.log('Received NotificationOpened:');
+        console.log(da);
+        OneSignalDektop.init({
+          appId: CONST_GENERAL.ONESIGNAL_APP_ID,
+          autoRegister: true,
+          notifyButton: {
+            enable: false,
+          },
+          promptOptions: {
+            actionMessage:
+              'Nos gustaría notificarle cuando se mande un nuevo programa',
+            acceptButtonText: 'Permitir',
+            cancelButtonText: 'No gracias',
+          },
+        });
+        OneSignalDektop.getUserId(function(userId) {
+          console.log('OneSignal User ID:', userId);
+        });
         OneSignalDektop.sendTags({
           _id: id.toString(),
           type: type,
         });
-      });
-      OneSignalDektop.on('opened', function(da) {
-        console.log('The user subscription state is now:', da);
-      });
-    });
+        OneSignalDektop.on('subscriptionChange', function(isSubscribed) {
+          console.log('The user subscription state is now:', isSubscribed);
+          OneSignalDektop.sendTags({
+            _id: id.toString(),
+            type: type,
+          });
+        });
+      },
+    ]);
     OneSignalDektop.push([
       'addListenerForNotificationOpened',
       function(data) {
