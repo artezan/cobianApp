@@ -146,15 +146,17 @@ export class UserSessionService {
           type: type,
         });
       });
-      OneSignalDektop.push([
-        'addListenerForNotificationOpened',
-        function(data) {
-          console.log('Received NotificationOpened:');
-          console.log(data);
-        },
-      ]);
+      OneSignalDektop.on('opened', function(da) {
+        console.log('The user subscription state is now:', da);
+      });
     });
-
+    OneSignalDektop.push([
+      'addListenerForNotificationOpened',
+      function(data) {
+        console.log('Received NotificationOpened:');
+        console.log(data);
+      },
+    ]);
     this.isInitOne = true;
   }
   oneSignalCordova(id, type) {
