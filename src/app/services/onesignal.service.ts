@@ -27,6 +27,15 @@ export class OnesignalService {
       .post(END_POINT.NOTIFICATION_SEARCH, body)
       .pipe(map((data: any) => data.data));
   }
+  public notRead(id: string, tags: string): Observable<INotification[]> {
+    const body = {
+      id,
+      tags,
+    };
+    return this.http
+      .post(END_POINT.NOTIFICATION_NOT_READ, body)
+      .pipe(map((data: any) => data.data));
+  }
   public newNotification(
     notification: INotification,
   ): Observable<INotification> {

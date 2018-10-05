@@ -43,6 +43,7 @@ const byadviserid = 'byadviserid/';
 const office = 'office/';
 const byofficeid = 'byofficeid/';
 const notification = 'notification/';
+const notificatiosNoRead = 'noread/';
 const notificatiosSearch = 'search/';
 const onesignal = 'https://onesignal.com/api/v1/notifications';
 
@@ -105,6 +106,7 @@ export const END_POINT = {
   // Notifi
   NOTIFICATION: apiUrl + notification,
   NOTIFICATION_SEARCH: apiUrl + notification + notificatiosSearch,
+  NOTIFICATION_NOT_READ: apiUrl + notification + notificatiosNoRead,
   // OneSignal
   ONESIGNAL: onesignal,
 };

@@ -16,9 +16,9 @@ export class UserSessionService {
   public userSession = new BehaviorSubject<IUserSession>({});
   private isInitOne = false;
   /**
-   * solo para el menu
+   * solo para mandar a notificaciones en android
    */
-  public activateMenu: string;
+  public activateMenu = new BehaviorSubject<string>('');
   constructor(
     private http: HttpClient,
     private storage: Storage,
@@ -165,15 +165,14 @@ export class UserSessionService {
     this.isInitOne = true;
   }
   oneSignalCordova(id, type) {
-    /* const notificationOpenedCallback = function(jsonData) {
-      alert('notificationOpenedCallback: ' + JSON.stringify(jsonData));
-    }; */
     const oneSignal = window['plugins'].OneSignal;
     oneSignal.startInit(
       CONST_GENERAL.ONESIGNAL_APP_ID,
       CONST_GENERAL.googleProjectNumber,
     );
-    /* oneSignal.handleNotificationOpened(notificationOpenedCallback); */
+    oneSignal.handleNotificationOpened(() => {
+      this.activateMenu.next('list-notification');
+    });
     oneSignal.sendTags({
       _id: id.toString(),
       type: type,

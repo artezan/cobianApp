@@ -4,7 +4,7 @@ import { Router, NavigationExtras } from '@angular/router';
 import {
   NavController,
   MenuController,
-  LoadingController
+  LoadingController,
 } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { IUserSession } from '../../models/userSession.model';
@@ -13,7 +13,7 @@ import { IMaker } from '../../models/maker.model';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   emailInput: string;
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     private navController: NavController,
     private menuController: MenuController,
     private storage: Storage,
-    public loadingController: LoadingController
+    public loadingController: LoadingController,
   ) {
     this.storage.keys().then(keys => {
       const keyUserSession = keys.find(key => key === 'userSession');
@@ -59,26 +59,41 @@ export class LoginComponent implements OnInit {
             data.data[0].name,
             data.type,
             data.data[0]._id,
-            data.data[0].password
+            data.data[0].password,
           );
           this.isFind = true;
           // seller
           if (data.type === 'seller') {
             this.isLogin = true;
             load.dismiss();
-            this.navController.navigateRoot('list-buyer-admin', false);
+            const noty = this.userSession.activateMenu.value;
+            if (noty && noty !== '') {
+              this.router.navigate([noty]);
+            } else {
+              this.navController.navigateRoot('list-buyer-admin', false);
+            }
           }
           // office
           if (data.type === 'office') {
             this.isLogin = true;
             load.dismiss();
-            this.navController.navigateRoot('list-buyer-admin', false);
+            const noty = this.userSession.activateMenu.value;
+            if (noty && noty !== '') {
+              this.router.navigate([noty]);
+            } else {
+              this.navController.navigateRoot('list-buyer-admin', false);
+            }
           }
           // adviser
           if (data.type === 'adviser') {
             this.isLogin = true;
             load.dismiss();
-            this.navController.navigateRoot('list-buyer-admin', false);
+            const noty = this.userSession.activateMenu.value;
+            if (noty && noty !== '') {
+              this.router.navigate([noty]);
+            } else {
+              this.navController.navigateRoot('list-buyer-admin', false);
+            }
           }
           // maker
           if (data.type === 'maker') {
@@ -86,21 +101,36 @@ export class LoginComponent implements OnInit {
             this.isLogin = true;
             load.dismiss();
             const query: NavigationExtras = {
-              queryParams: { id: maker[0].build }
+              queryParams: { id: maker[0].build },
             };
-            this.router.navigate(['detail-build-admin'], query);
+            const noty = this.userSession.activateMenu.value;
+            if (noty && noty !== '') {
+              this.router.navigate([noty]);
+            } else {
+              this.router.navigate(['detail-build-admin'], query);
+            }
           }
           // buyer
           if (data.type === 'buyer') {
             this.isLogin = true;
             load.dismiss();
-            this.navController.navigateRoot('list-prop-buyer', false);
+            const noty = this.userSession.activateMenu.value;
+            if (noty && noty !== '') {
+              this.router.navigate([noty]);
+            } else {
+              this.navController.navigateRoot('list-prop-buyer', false);
+            }
           }
           //  admin
           if (data.type === 'administrator') {
             this.isLogin = true;
             load.dismiss();
-            this.navController.navigateRoot('main-admin', false);
+            const noty = this.userSession.activateMenu.value;
+            if (noty && noty !== '') {
+              this.router.navigate([noty]);
+            } else {
+              this.navController.navigateRoot('main-admin', false);
+            }
           }
         } else {
           load.dismiss();
@@ -111,7 +141,7 @@ export class LoginComponent implements OnInit {
   async presentLoadingWithOptions() {
     const loading = await this.loadingController.create({
       message: 'Iniciando...',
-      translucent: true
+      translucent: true,
     });
     return await loading;
   }

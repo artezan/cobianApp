@@ -9,6 +9,9 @@ import { Router } from '@angular/router';
 import { IUserSession } from './models/userSession.model';
 import { CONST_GENERAL } from './_config/_const-general';
 import { map } from 'rxjs/operators';
+import { SocketIoService } from './services/socket-io.service';
+import { BehaviorSubject } from 'rxjs';
+import { OnesignalService } from './services/onesignal.service';
 
 @Component({
   selector: 'app-root',
@@ -302,6 +305,7 @@ export class AppComponent {
   isLoggin = false;
   user: IUserSession;
   link: string;
+  numOfNewNoti: BehaviorSubject<number>;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -310,8 +314,13 @@ export class AppComponent {
     private userSessionService: UserSessionService,
     private router: Router,
     private navController: NavController,
+    private socketIOService: SocketIoService,
+    private oneSignalService: OnesignalService,
   ) {
     this.initializeApp();
+    this.getNotification();
+    this.numOfNewNoti = socketIOService.numOfNewNoti;
+    socketIOService.numOfNewNoti.subscribe(c => console.log(c));
     userSessionService.userSession.subscribe(user => {
       if (user.name) {
         this.isLoggin = true;
@@ -334,7 +343,16 @@ export class AppComponent {
     });
     router.events.pipe(map((m: any) => m.url)).subscribe(r => {
       if (r !== undefined) {
-        this.link = r;
+        const urlSet = this.appPages.map(ap => ap.url).find(url => url === r);
+        if (urlSet) {
+          this.link = r;
+        }
+      }
+    });
+    // android one signal
+    userSessionService.activateMenu.subscribe(str => {
+      if (str !== '') {
+        navController.navigateRoot(str);
       }
     });
   }
@@ -353,4 +371,19 @@ export class AppComponent {
         .then(() => this.router.navigate(['login'])); */
     });
   }
+  getNotification() {
+    this.socketIOService.onNewPost().subscribe(n => {
+      const isForMe =
+        !!n.receiversId.find(r => r === this.user.id) ||
+        !!n.tags.find(t => t === this.user.type);
+      console.log(isForMe);
+      console.log(n);
+      if (isForMe) {
+        this.socketIOService.addNum();
+      }
+    });
+  }
+  /*  setNotificationStart(){
+    this.oneSignalService
+  } */
 }

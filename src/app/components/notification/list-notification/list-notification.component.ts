@@ -7,6 +7,7 @@ import { IUserSession } from '../../../models/userSession.model';
 import { INotification } from '../../../models/notification.model';
 import { FormatDatesFront } from '../../../_config/_helpers';
 import { Router } from '@angular/router';
+import { SocketIoService } from '../../../services/socket-io.service';
 
 @Component({
   selector: 'app-list-notification',
@@ -32,8 +33,10 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
     private userSessionService: UserSessionService,
     private platform: Platform,
     private oneSignalService: OnesignalService,
+    private socketIOService: SocketIoService,
     private router: Router,
   ) {
+    this.isLoad = false;
     this.isDesktop = platform.is('desktop');
     this.user = userSessionService.userSession.value;
     this.getNotification(this.user, this.pageNumber);
@@ -108,8 +111,6 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
         n => n.type === 'schedule',
       );
     }
-    console.log(this.notificationsOld);
-    console.log(numTab);
   }
   getNotification(user: IUserSession, pageNumber) {
     this.oneSignalService
@@ -139,10 +140,10 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
     this.notificationsNew = this.notificationsNewBack;
     this.notificationsOld = this.notificationsOldBack;
     this.pageNumber++;
-    console.log(this.pageNumber);
     this.getNotification(this.user, this.pageNumber);
   }
   ngOnDestroy() {
+    this.socketIOService.resetNum();
     this.notificationsNew.forEach(n => {
       n.readBy.push({
         readAt: new Date(),
@@ -189,6 +190,7 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
         this.router.navigate(['list-buyer-admin']);
       }
     }
+    this.ngOnDestroy();
   }
   // helpers
   formatDates(date) {
