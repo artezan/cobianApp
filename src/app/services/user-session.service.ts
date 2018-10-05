@@ -8,6 +8,7 @@ import { Storage } from '@ionic/storage';
 import { CONST_GENERAL } from '../_config/_const-general';
 import { Platform } from '@ionic/angular';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,7 @@ export class UserSessionService {
     private http: HttpClient,
     private storage: Storage,
     private platform: Platform,
+    private router: Router,
   ) {}
 
   public logginUserSession(name, password): Observable<any> {
@@ -142,14 +144,16 @@ export class UserSessionService {
           type: type,
         });
       });
+      OneSignalDektop.push([
+        'addListenerForNotificationOpened',
+        function(data) {
+          console.log('Received NotificationOpened:');
+          console.log(data);
+          this.router.navigate(['list-notification']);
+        },
+      ]);
     });
-    OneSignalDektop.push([
-      'addListenerForNotificationOpened',
-      function(data) {
-        console.log('Received NotificationOpened:');
-        console.log(data);
-      },
-    ]);
+
     this.isInitOne = true;
   }
   oneSignalCordova(id, type) {
