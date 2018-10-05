@@ -15,9 +15,14 @@
   <div class="user-select-contenet">
     <ng-container *ngIf="isLoad; then thenTemplate; else elseTemplate"></ng-container>
     <ng-template #thenTemplate>
-      <h3 *ngIf="notificationsNew.length > 0">
+      <!-- <h3 *ngIf="notificationsNew.length > 0">
         Nuevas
-      </h3>
+      </h3> -->
+      <div *ngIf="notificationsNew.length > 0" style="text-align: center">
+        <ion-chip class="chips-detail" color="secondary">
+          <ion-label>Nuevas</ion-label>
+        </ion-chip>
+      </div>
       <span *ngFor="let notification of notificationsNew">
 
         <!-- card -->
@@ -49,7 +54,7 @@
                 {{notification.message}}
               </ion-card-content>
               <ion-item lines="none">
-                <ion-button color="secondary" slot="end">
+                <ion-button (click)="goToDetails(notification)" color="secondary" slot="end">
                   Detalles
                 </ion-button>
               </ion-item>
@@ -60,9 +65,14 @@
         </ion-card>
         <!--/ card -->
       </span>
-      <h3 *ngIf="notificationsOld.length > 0">
+      <!--  <h3 *ngIf="notificationsOld.length > 0">
         Leidas
-      </h3>
+      </h3> -->
+      <div *ngIf="notificationsOld.length > 0" style="text-align: center">
+        <ion-chip class="chips-detail" color="secondary">
+          <ion-label>Leidas</ion-label>
+        </ion-chip>
+      </div>
       <span *ngFor="let notification of notificationsOld">
         <!-- card -->
         <ion-card>
@@ -88,7 +98,7 @@
                 {{notification.message}}
               </ion-card-content>
               <ion-item lines="none">
-                <ion-button color="secondary" slot="end">
+                <ion-button (click)="goToDetails(notification)" color="secondary" slot="end">
                   Detalles
                 </ion-button>
               </ion-item>
@@ -100,7 +110,10 @@
         <!--/ card -->
       </span>
       <div style="text-align: center;">
-        <ion-button (click)="loadMore()" shape="round">Cargar más</ion-button>
+        <ion-button *ngIf="user.type === 'administrator' || user.type === 'office'" (click)="loadMore(); demoTabBar.activateTab(0)"
+          shape="round">Cargar más</ion-button>
+        <ion-button *ngIf="user.type === 'buyer'" (click)="loadMore(); demoTabBar2.activateTab(0)" shape="round">Cargar
+          más</ion-button>
       </div>
     </ng-template>
     <ng-template #elseTemplate>
@@ -115,14 +128,25 @@
 </ion-content>
 
 <!-- tab notification -->
-<ion-footer class="back-tab">
-  <mdc-tab-bar (activated)="logTab($event)" stacked>
+<ion-footer class="back-tab" [hidden]="user.type !== 'administrator' && user.type !== 'office'">
+  <mdc-tab-bar #demoTabBar (activated)="logTab($event)" stacked>
     <mdc-tab-scroller>
       <mdc-tab class="tabs-color" label="Todos" icon="assignment_active"></mdc-tab>
       <mdc-tab class="tabs-color" label="Clientes" icon="people"></mdc-tab>
       <mdc-tab class="tabs-color" label="Eventos" icon="calendar_today"></mdc-tab>
       <mdc-tab class="tabs-color" label="Asesores" icon="supervised_user_circle"></mdc-tab>
       <mdc-tab class="tabs-color" label="Propiedades" icon="business"></mdc-tab>
+    </mdc-tab-scroller>
+  </mdc-tab-bar>
+</ion-footer>
+<!-- buyer -->
+<ion-footer class="back-tab" [hidden]="user.type !== 'buyer'">
+  <mdc-tab-bar #demoTabBar2 (activated)="logTab2($event)" stacked>
+    <mdc-tab-scroller>
+      <mdc-tab class="tabs-color" label="Todos" icon="assignment_active"></mdc-tab>
+      <mdc-tab class="tabs-color" label="Ofertas" icon="monetization_on"></mdc-tab>
+      <mdc-tab class="tabs-color" label="Créditos" icon="payment"></mdc-tab>
+      <mdc-tab class="tabs-color" label="Eventos" icon="calendar_today"></mdc-tab>
     </mdc-tab-scroller>
   </mdc-tab-bar>
 </ion-footer>

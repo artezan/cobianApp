@@ -12,12 +12,23 @@ $mdc-theme-primary: #000000; // primary color
 $mdc-theme-secondary: #f5811e; // secondary color F58634
 @import '~@angular-mdc/theme/material';
 
-
+.mdc-tab__ripple::before,
+.mdc-tab__ripple::after {
+  background-color: var(--ion-color-secondary);
+}
 
 .tabs-color {
   @include mdc-tab-text-label-color($mdc-theme-secondary);
   @include mdc-tab-icon-color($mdc-theme-secondary);
+  @include mdc-states-base-color($mdc-theme-secondary);
 }
+
+.mdc-tab-indicator>.mdc-tab-indicator__content--underline {
+  background-color: $mdc-theme-secondary;
+  background-color: $mdc-theme-secondary;
+}
+
+
 
 app-refre {
   z-index: 0 !important;
@@ -135,6 +146,16 @@ html {
 @media (max-width: 900px) {
   .my-contenet {
     margin: 1% 1% 1% 1% !important;
+  }
+
+  .mdc-tab--stacked {
+    height: 62px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .tabs-color .mdc-tab__text-label {
+    font-size: x-small;
   }
 }
 

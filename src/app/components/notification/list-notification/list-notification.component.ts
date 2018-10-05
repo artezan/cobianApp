@@ -6,6 +6,7 @@ import { OnesignalService } from '../../../services/onesignal.service';
 import { IUserSession } from '../../../models/userSession.model';
 import { INotification } from '../../../models/notification.model';
 import { FormatDatesFront } from '../../../_config/_helpers';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-notification',
@@ -19,7 +20,9 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
   user: IUserSession;
   notifications: INotification[] = [];
   notificationsNew: INotification[] = [];
+  notificationsNewBack: INotification[] = [];
   notificationsOld: INotification[] = [];
+  notificationsOldBack: INotification[] = [];
   pageNumber = 1;
   isNew = true;
   Title;
@@ -29,6 +32,7 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
     private userSessionService: UserSessionService,
     private platform: Platform,
     private oneSignalService: OnesignalService,
+    private router: Router,
   ) {
     this.isDesktop = platform.is('desktop');
     this.user = userSessionService.userSession.value;
@@ -37,8 +41,75 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {}
   logTab(event: MdcTabActivatedEvent): void {
-    console.log(event.index);
-    this.section = event.index;
+    this.notificationsNew = this.notificationsNewBack;
+    this.notificationsOld = this.notificationsOldBack;
+    const numTab = event.index;
+    if (numTab === 1) {
+      this.notificationsNew = this.notificationsNew.filter(
+        n =>
+          n.type === 'buyer' ||
+          n.type === 'like' ||
+          n.type === 'credit' ||
+          n.type === 'ofert',
+      );
+      this.notificationsOld = this.notificationsOld.filter(
+        n =>
+          n.type === 'buyer' ||
+          n.type === 'like' ||
+          n.type === 'credit' ||
+          n.type === 'ofert',
+      );
+    } else if (numTab === 2) {
+      this.notificationsNew = this.notificationsNew.filter(
+        n => n.type === 'schedule',
+      );
+      this.notificationsOld = this.notificationsOld.filter(
+        n => n.type === 'schedule',
+      );
+    } else if (numTab === 3) {
+      this.notificationsNew = this.notificationsNew.filter(
+        n => n.type === 'celebrate' || n.type === 'goal',
+      );
+      this.notificationsOld = this.notificationsOld.filter(
+        n => n.type === 'celebrate' || n.type === 'goal',
+      );
+    } else if (numTab === 4) {
+      this.notificationsNew = this.notificationsNew.filter(
+        n => n.type === 'build' || n.type === 'property',
+      );
+      this.notificationsOld = this.notificationsOld.filter(
+        n => n.type === 'build' || n.type === 'property',
+      );
+    }
+  }
+  logTab2(event: MdcTabActivatedEvent): void {
+    this.notificationsNew = this.notificationsNewBack;
+    this.notificationsOld = this.notificationsOldBack;
+    const numTab = event.index;
+    if (numTab === 1) {
+      this.notificationsNew = this.notificationsNew.filter(
+        n => n.type === 'ofert',
+      );
+      this.notificationsOld = this.notificationsOld.filter(
+        n => n.type === 'ofert',
+      );
+    } else if (numTab === 2) {
+      this.notificationsNew = this.notificationsNew.filter(
+        n => n.type === 'credit',
+      );
+      this.notificationsOld = this.notificationsOld.filter(
+        n => n.type === 'credit',
+      );
+    } else if (numTab === 3) {
+      this.notificationsNew = this.notificationsNew.filter(
+        n => n.type === 'schedule',
+      );
+      this.notificationsOld = this.notificationsOld.filter(
+        n => n.type === 'schedule',
+      );
+    }
+    console.log(this.notificationsOld);
+    console.log(numTab);
   }
   getNotification(user: IUserSession, pageNumber) {
     this.oneSignalService
@@ -47,6 +118,8 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
         if (pageNumber === 1) {
           this.notificationsNew = nts.filter(n => this.isNewTitle(n.readBy));
           this.notificationsOld = nts.filter(n => !this.isNewTitle(n.readBy));
+          this.notificationsNewBack = this.notificationsNew;
+          this.notificationsOldBack = this.notificationsOld;
         } else {
           this.notificationsNew = [
             ...this.notificationsNew,
@@ -56,14 +129,15 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
             ...this.notificationsOld,
             ...nts.filter(n => !this.isNewTitle(n.readBy)),
           ];
+          this.notificationsNewBack = this.notificationsNew;
+          this.notificationsOldBack = this.notificationsOld;
         }
-
-        console.log(this.notificationsNew);
-        console.log(this.notificationsOld);
         this.isLoad = true;
       });
   }
   loadMore() {
+    this.notificationsNew = this.notificationsNewBack;
+    this.notificationsOld = this.notificationsOldBack;
     this.pageNumber++;
     console.log(this.pageNumber);
     this.getNotification(this.user, this.pageNumber);
@@ -76,6 +150,45 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
       });
       this.oneSignalService.putNotification(n).subscribe();
     });
+  }
+  goToDetails(n: INotification) {
+    if (n.type === 'build') {
+      this.router.navigate(['list-build-admin']);
+    } else if (n.type === 'buyer') {
+      this.router.navigate(['list-buyer-admin']);
+    } else if (n.type === 'celebrate' || n.type === 'goal') {
+      this.router.navigate(['list-goals-admin']);
+    } else if (n.type === 'property') {
+      if (this.user.type === 'buyer') {
+        this.router.navigate(['inter-prop-buyer']);
+      } else {
+        this.router.navigate(['list-prop-admin']);
+      }
+    } else if (n.type === 'schedule') {
+      if (this.user.type === 'buyer') {
+        this.router.navigate(['calendar-buyer']);
+      } else {
+        this.router.navigate(['list-schedule-admin']);
+      }
+    } else if (n.type === 'ofert') {
+      if (this.user.type === 'buyer') {
+        this.router.navigate(['ofert-buyer']);
+      } else {
+        this.router.navigate(['list-ofert-admin']);
+      }
+    } else if (n.type === 'credit') {
+      if (this.user.type === 'buyer') {
+        this.router.navigate(['inter-prop-buyer']);
+      } else {
+        this.router.navigate(['list-credit-admin']);
+      }
+    } else if (n.type === 'like') {
+      if (this.user.type === 'buyer') {
+        this.router.navigate(['inter-prop-buyer']);
+      } else {
+        this.router.navigate(['list-buyer-admin']);
+      }
+    }
   }
   // helpers
   formatDates(date) {

@@ -8,6 +8,7 @@ import { UserSessionService } from './services/user-session.service';
 import { Router } from '@angular/router';
 import { IUserSession } from './models/userSession.model';
 import { CONST_GENERAL } from './_config/_const-general';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -329,6 +330,11 @@ export class AppComponent {
         this.link = '/main-admin';
       } else {
         this.link = '/list-buyer-admin';
+      }
+    });
+    router.events.pipe(map((m: any) => m.url)).subscribe(r => {
+      if (r !== undefined) {
+        this.link = r;
       }
     });
   }

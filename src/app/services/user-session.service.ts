@@ -15,6 +15,10 @@ import { environment } from '../../environments/environment';
 export class UserSessionService {
   public userSession = new BehaviorSubject<IUserSession>({});
   private isInitOne = false;
+  /**
+   * solo para el menu
+   */
+  public activateMenu: string;
   constructor(
     private http: HttpClient,
     private storage: Storage,
@@ -139,6 +143,13 @@ export class UserSessionService {
         });
       });
     });
+    OneSignalDektop.push([
+      'addListenerForNotificationOpened',
+      function(data) {
+        console.log('Received NotificationOpened:');
+        console.log(data);
+      },
+    ]);
     this.isInitOne = true;
   }
   oneSignalCordova(id, type) {
