@@ -128,7 +128,7 @@ export class UserSessionService {
           cancelButtonText: 'No gracias',
         },
         notificationClickHandlerMatch:
-          'exact' /* See above documentation: 'origin' relaxes tab matching requirements, 'exact' is default */,
+          'origin' /* See above documentation: 'origin' relaxes tab matching requirements, 'exact' is default */,
         notificationClickHandlerAction:
           'navigate' /* See above documentation: 'focus' does not navigate the targeted tab, 'navigate' is default */,
         /* ... */
