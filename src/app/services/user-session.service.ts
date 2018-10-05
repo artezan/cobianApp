@@ -127,11 +127,6 @@ export class UserSessionService {
           acceptButtonText: 'Permitir',
           cancelButtonText: 'No gracias',
         },
-        notificationClickHandlerMatch:
-          'origin' /* See above documentation: 'origin' relaxes tab matching requirements, 'exact' is default */,
-        notificationClickHandlerAction:
-          'navigate' /* See above documentation: 'focus' does not navigate the targeted tab, 'navigate' is default */,
-        /* ... */
       });
       OneSignalDektop.getUserId(function(userId) {
         console.log('OneSignal User ID:', userId);
@@ -151,6 +146,21 @@ export class UserSessionService {
         console.log('Received NotificationOpened:');
         console.log(data);
       });
+      OneSignalDektop.on('notificationDisplay', function(event) {
+        console.warn('OneSignal notification displayed:', event);
+        /*
+        {
+            "id": "ce31de29-e1b0-4961-99ee-080644677cd7",
+            "heading": "OneSignal Test Message",
+            "content": "This is an example notification.",
+            "url": "https://onesignal.com?_osp=do_not_open",
+            "icon": "https://onesignal.com/images/notification_logo.png"
+        }
+        */
+      });
+      OneSignalDektop.setDefaultNotificationUrl(
+        'http://31.220.52.51:3002/list-notification',
+      );
     });
     this.isInitOne = true;
   }
