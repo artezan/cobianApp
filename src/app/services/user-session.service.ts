@@ -129,6 +129,10 @@ export class UserSessionService {
           acceptButtonText: 'Permitir',
           cancelButtonText: 'No gracias',
         },
+        notificationClickHandlerMatch:
+          'exact' /* See above documentation: 'origin' relaxes tab matching requirements, 'exact' is default */,
+        notificationClickHandlerAction:
+          'navigate' /* See above documentation: 'focus' does not navigate the targeted tab, 'navigate' is default */,
       });
       OneSignalDektop.getUserId(function(userId) {
         console.log('OneSignal User ID:', userId);
@@ -144,15 +148,14 @@ export class UserSessionService {
           type: type,
         });
       });
-      OneSignalDektop.push([
-        'addListenerForNotificationOpened',
-        function(data) {
-          console.log('Received NotificationOpened:');
-          console.log(data);
-          this.router.navigate(['list-notification']);
-        },
-      ]);
     });
+    OneSignalDektop.push([
+      'addListenerForNotificationOpened',
+      function(data) {
+        console.log('Received NotificationOpened:');
+        console.log(data);
+      },
+    ]);
 
     this.isInitOne = true;
   }
