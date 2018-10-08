@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/operators';
 import { END_POINT } from '../_config/api.end-points';
 import { INotification } from '../models/notification.model';
@@ -75,6 +75,15 @@ export class OnesignalService {
     console.log(body);
     return this.http.post(END_POINT.ONESIGNAL, body, { headers: headers });
   }
+  /**
+   * Notif. con fecha
+   * @param headings titulo
+   * @param contents contenido
+   * @param date fecha a mandar
+   * @param tags grupos
+   * @param usersId usuarios id
+   * @param prevTimeSet minutos antes de evento
+   */
   public postOneSignalBySchedule(
     headings: string,
     contents: string,

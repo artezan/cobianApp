@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { IAdviser } from '../../../models/adviser.model';
 import { AdviserService } from '../../../services/adviser.service';
 import { BuyerService } from '../../../services/buyer.service';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import { IBuyer } from '../../../models/buyer.model';
 import { NavComponent } from '@ionic/core';
 import { NavController } from '@ionic/angular';

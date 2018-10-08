@@ -4,7 +4,7 @@ import {
   IScheduleGet,
   CheckSchedule,
 } from '../../../models/schedule.model';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import { IProperty } from '../../../models/property.model';
 import {
   ActivatedRoute,

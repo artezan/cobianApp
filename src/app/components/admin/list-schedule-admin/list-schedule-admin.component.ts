@@ -102,8 +102,8 @@ export class ListScheduleAdminComponent implements OnInit {
 
     this.isAll = true;
     this.scheduleService.getSchedule().subscribe(schedules => {
+      // console.log('schedules', schedules);
       const user = this.userService.userSession.value;
-      console.table(this.schedule);
       if (user.type === 'administrator') {
         this.schedule = schedules.filter(s => !s.personal);
       } else if (user.type === 'adviser') {
@@ -177,9 +177,7 @@ export class ListScheduleAdminComponent implements OnInit {
           text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: blah => {
-            console.log('Confirm Cancel: blah');
-          },
+          handler: blah => {},
         },
         {
           text: 'Sí',
@@ -238,16 +236,12 @@ export class ListScheduleAdminComponent implements OnInit {
           text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: () => {
-            console.log('Confirm Cancel');
-          },
+          handler: () => {},
         },
         {
           text: 'Ok',
           role: 'ok',
-          handler: () => {
-            console.log('Confirm Ok');
-          },
+          handler: () => {},
         },
       ],
     });
@@ -303,7 +297,6 @@ export class ListScheduleAdminComponent implements OnInit {
   }
   async toastPresent(m = 'Eventos pendientes hoy') {
     const isPresent = await this.storage.get('alert-today');
-    console.log(isPresent);
     if (+isPresent !== new Date().getDate()) {
       const toast = await this.toastController.create({
         message: m,

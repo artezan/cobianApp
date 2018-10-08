@@ -3,7 +3,7 @@ import { IOffice } from '../models/office.model';
 import { END_POINT } from '../_config/api.end-points';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({
   providedIn: 'root',

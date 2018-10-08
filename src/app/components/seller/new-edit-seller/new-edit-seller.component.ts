@@ -4,7 +4,7 @@ import { NavigationExtras, ActivatedRoute, Router } from '@angular/router';
 import { SellerService } from '../../../services/seller.service';
 import { NavController } from '@ionic/angular';
 import { PropertyService } from '../../../services/property.service';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import { IProperty } from '../../../models/property.model';
 import { UserSessionService } from '../../../services/user-session.service';
 import { IUserSession } from '../../../models/userSession.model';

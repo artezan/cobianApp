@@ -10,7 +10,7 @@ import { IUserSession } from './models/userSession.model';
 import { CONST_GENERAL } from './_config/_const-general';
 import { map } from 'rxjs/operators';
 import { SocketIoService } from './services/socket-io.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { OnesignalService } from './services/onesignal.service';
 
 @Component({
@@ -320,11 +320,12 @@ export class AppComponent {
     this.initializeApp();
     this.getNotification();
     this.numOfNewNoti = socketIOService.numOfNewNoti;
-    socketIOService.numOfNewNoti.subscribe(c => console.log(c));
+    // socketIOService.numOfNewNoti.subscribe(c => console.log(c));
     userSessionService.userSession.subscribe(user => {
       if (user.name) {
         this.isLoggin = true;
         this.user = user;
+        this.setNotificationStart(user.id, user.type);
         // no hay en local manda a login
       } else {
         this.isLoggin = false;
@@ -371,19 +372,23 @@ export class AppComponent {
         .then(() => this.router.navigate(['login'])); */
     });
   }
+  // num of no read
   getNotification() {
     this.socketIOService.onNewPost().subscribe(n => {
       const isForMe =
         !!n.receiversId.find(r => r === this.user.id) ||
         !!n.tags.find(t => t === this.user.type);
-      console.log(isForMe);
-      console.log(n);
       if (isForMe) {
         this.socketIOService.addNum();
       }
     });
   }
-  /*  setNotificationStart(){
-    this.oneSignalService
-  } */
+  setNotificationStart(id, tags) {
+    this.oneSignalService.notRead(id, tags).subscribe(nts => {
+      console.log('no read', nts);
+      nts.forEach(n => {
+        this.socketIOService.addNum();
+      });
+    });
+  }
 }

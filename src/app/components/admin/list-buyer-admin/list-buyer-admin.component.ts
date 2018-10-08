@@ -22,7 +22,7 @@ import {
 import { BuyersFilters } from '../../../_config/_helpers';
 import { MatDrawer } from '@angular/material';
 import { NavigationExtras, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import { UserSessionService } from '../../../services/user-session.service';
 import { IUserSession } from '../../../models/userSession.model';
 import { AdviserService } from '../../../services/adviser.service';

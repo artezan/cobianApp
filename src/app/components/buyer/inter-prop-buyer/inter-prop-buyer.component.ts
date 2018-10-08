@@ -3,7 +3,7 @@ import { BuyerService } from '../../../services/buyer.service';
 import { UserSessionService } from '../../../services/user-session.service';
 import { map } from 'rxjs/operators';
 import { IStatusBuyerPropertyGet } from '../../../models/statusBuyerProperty.model';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import { IProperty } from '../../../models/property.model';
 import { NavigationExtras, Router } from '@angular/router';
 

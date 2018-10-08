@@ -7,7 +7,7 @@ import { PropertyService } from '../../../services/property.service';
 import { StatusBuyerPropertyService } from '../../../services/status-buyer-property.service';
 import { ICredit } from '../../../models/credit.model';
 import { OfertService } from '../../../services/ofert.service';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import { IBuyer } from '../../../models/buyer.model';
 import { IProperty } from '../../../models/property.model';
 import { BuyerService } from '../../../services/buyer.service';

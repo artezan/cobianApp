@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PropertyService } from '../../../services/property.service';
 import { IProperty } from '../../../models/property.model';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import { UserSessionService } from '../../../services/user-session.service';
 import { ToastController } from '@ionic/angular';
 import { IStatusBuyerProperty } from '../../../models/statusBuyerProperty.model';

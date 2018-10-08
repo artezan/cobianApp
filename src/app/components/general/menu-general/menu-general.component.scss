@@ -1,0 +1,29 @@
+#notification-button {
+    position: relative;
+    width: 42px;
+    top: 1px;
+    right: 1px;
+    overflow: visible !important;
+}
+
+
+
+
+#cart-btn {
+    position: relative;
+}
+
+#cart-badge {
+    position: absolute;
+    top: 1px;
+    right: 2px;
+    font-size: x-small;
+}
+
+.notifications-badge {
+    background-color: #FF1744;
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    border-radius: 100%;
+}

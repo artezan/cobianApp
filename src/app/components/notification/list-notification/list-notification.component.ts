@@ -28,6 +28,7 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
   isNew = true;
   Title;
   isLoad: boolean;
+  isSpinner = false;
 
   constructor(
     private userSessionService: UserSessionService,
@@ -40,6 +41,7 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
     this.isDesktop = platform.is('desktop');
     this.user = userSessionService.userSession.value;
     this.getNotification(this.user, this.pageNumber);
+    this.getNotificationRealTime();
   }
 
   ngOnInit() {}
@@ -133,10 +135,12 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
           this.notificationsNewBack = this.notificationsNew;
           this.notificationsOldBack = this.notificationsOld;
         }
+        this.isSpinner = false;
         this.isLoad = true;
       });
   }
   loadMore() {
+    this.isSpinner = true;
     this.notificationsNew = this.notificationsNewBack;
     this.notificationsOld = this.notificationsOldBack;
     this.pageNumber++;
@@ -152,7 +156,25 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
       this.oneSignalService.putNotification(n).subscribe();
     });
   }
+  private markAsRead(noti: INotification) {
+    noti.readBy.push({
+      readAt: new Date(),
+      readerId: this.user.id,
+    });
+    this.oneSignalService.putNotification(noti).subscribe(() => {
+      this.socketIOService.minusOne();
+      const indexFind = this.notificationsNew.findIndex(
+        n => n._id === noti._id,
+      );
+      if (indexFind !== -1) {
+        this.notificationsNew.splice(indexFind, 1);
+        this.notificationsNewBack = this.notificationsNew;
+      }
+    });
+  }
+
   goToDetails(n: INotification) {
+    this.markAsRead(n);
     if (n.type === 'build') {
       this.router.navigate(['list-build-admin']);
     } else if (n.type === 'buyer') {
@@ -190,7 +212,12 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
         this.router.navigate(['list-buyer-admin']);
       }
     }
-    this.ngOnDestroy();
+  }
+  getNotificationRealTime() {
+    this.socketIOService.onNewPost().subscribe(ntf => {
+      this.notificationsNew.push(ntf);
+      this.notificationsNewBack = this.notificationsNew;
+    });
   }
   // helpers
   formatDates(date) {

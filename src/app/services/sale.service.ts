@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ISale } from '../models/sale.model';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import { END_POINT } from '../_config/api.end-points';
 import { map } from 'rxjs/operators';
 

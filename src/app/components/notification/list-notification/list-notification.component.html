@@ -110,10 +110,14 @@
         <!--/ card -->
       </span>
       <div style="text-align: center;">
-        <ion-button *ngIf="user.type === 'administrator' || user.type === 'office'" (click)="loadMore(); demoTabBar.activateTab(0)"
-          shape="round">Cargar más</ion-button>
-        <ion-button *ngIf="user.type === 'buyer'" (click)="loadMore(); demoTabBar2.activateTab(0)" shape="round">Cargar
-          más</ion-button>
+        <ion-button *ngIf="user.type !== 'buyer'" (click)="loadMore(); demoTabBar.activateTab(0)" shape="round">
+          <ion-spinner *ngIf="isSpinner" style="color: white" name="bubbles"></ion-spinner>Cargar
+          más
+        </ion-button>
+        <ion-button *ngIf="user.type === 'buyer'" (click)="loadMore(); demoTabBar2.activateTab(0)" shape="round">
+          <ion-spinner *ngIf="isSpinner" style="color: white" name="bubbles"></ion-spinner>Cargar
+          más
+        </ion-button>
       </div>
     </ng-template>
     <ng-template #elseTemplate>
@@ -128,7 +132,7 @@
 </ion-content>
 
 <!-- tab notification -->
-<ion-footer class="back-tab" [hidden]="user.type !== 'administrator' && user.type !== 'office'">
+<ion-footer class="back-tab" [hidden]="user.type === 'buyer'">
   <mdc-tab-bar #demoTabBar (activated)="logTab($event)" stacked>
     <mdc-tab-scroller>
       <mdc-tab class="tabs-color" label="Todos" icon="assignment_active"></mdc-tab>

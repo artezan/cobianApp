@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import {
   ISchedule,
   IScheduleGet,
@@ -27,6 +27,14 @@ export class ScheduleService {
   public getSchedule(): Observable<ISchedule[]> {
     return this.http
       .get(END_POINT.SCHEDULE)
+      .pipe(map((data: any) => data.data));
+  }
+  public getSchedulePage(
+    pageNumber: number,
+    nPerPage = 10,
+  ): Observable<ISchedule[]> {
+    return this.http
+      .post(END_POINT.SCHEDULE_PAGE, { pageNumber, nPerPage })
       .pipe(map((data: any) => data.data));
   }
   public getScheduleById(id: string): Observable<ISchedule> {

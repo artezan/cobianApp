@@ -14,7 +14,7 @@ import {
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
 import { TableColumsModel } from '../../../models/tableColums.model';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
   selector: 'app-general-table',

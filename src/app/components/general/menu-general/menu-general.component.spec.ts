@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BarLineComponent } from './bar-line.component';
+import { MenuGeneralComponent } from './menu-general.component';
 
-describe('BarLineComponent', () => {
-  let component: BarLineComponent;
-  let fixture: ComponentFixture<BarLineComponent>;
+describe('MenuGeneralComponent', () => {
+  let component: MenuGeneralComponent;
+  let fixture: ComponentFixture<MenuGeneralComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BarLineComponent ]
+      declarations: [ MenuGeneralComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BarLineComponent);
+    fixture = TestBed.createComponent(MenuGeneralComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

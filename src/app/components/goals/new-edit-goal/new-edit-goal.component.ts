@@ -3,7 +3,7 @@ import { IGoal } from '../../../models/goal.model';
 import { GoalService } from '../../../services/goal.service';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { AdviserService } from '../../../services/adviser.service';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import { IAdviser } from '../../../models/adviser.model';
 import { Platform } from '@ionic/angular';
 import { UserSessionService } from '../../../services/user-session.service';

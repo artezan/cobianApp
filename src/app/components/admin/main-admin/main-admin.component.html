@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <!--  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-menu-button style="color: white !important"></ion-menu-button>
     </ion-buttons>
@@ -7,7 +7,8 @@
       Administrador
     </ion-title>
 
-  </ion-toolbar>
+  </ion-toolbar> -->
+  <app-menu-general [isMenuButton]=true [colorMenuButton]="'white'" [titleMenu]="'Administrador'" [buttonNotification]="'notifications'"></app-menu-general>
   <ion-toolbar [ngClass]="{'desktop-tabs': isDesktop}" color="primary">
     <ion-segment color="secondary" (ionChange)="segmentChanged($event)">
       <ion-segment-button checked value="movementsSegment">
@@ -30,22 +31,47 @@
       <span [ngSwitch]="segment">
         <!-- movementsSegment -->
         <span *ngSwitchCase="'movementsSegment'">
-          <!-- filtros -->
-          <div class="filters-buttons-conteiner   ">
-            <mat-button-toggle-group style="flex-wrap: wrap" (change)="getByType($event.value)">
-              <mat-button-toggle value="schedule">Eventos</mat-button-toggle>
-              <mat-button-toggle value="ofert">Ofertas</mat-button-toggle>
-              <mat-button-toggle value="sbp">Estados</mat-button-toggle>
-              <mat-button-toggle value="credit">Créditos</mat-button-toggle>
-              <mat-button-toggle checked value="all">Todos</mat-button-toggle>
-            </mat-button-toggle-group>
-          </div>
-
+          <!-- titulos -->
           <h2>Movimientos en el sistema </h2>
           <p>Se muestra cada acción realizada en el sistema con su estado</p>
+          <!-- filtros -->
+          <div class="filters-conteiner">
+            <div class="filters-day">
+              <mat-form-field appearance="fill">
+                <mat-label>Filtrar por tiempo</mat-label>
+                <mat-select #time [(ngModel)]="filterTime" (valueChange)="filterTime = time.value; getFiltersGeneral()"
+                  placeholder="Fitrar Días">
+                  <mat-option value=7>
+                    7 Días
+                  </mat-option>
+                  <mat-option value=14>
+                    14 Días
+                  </mat-option>
+                  <mat-option value=30>
+                    Último mes
+                  </mat-option>
+                </mat-select>
+                <button mat-button *ngIf="filterTime" matSuffix mat-icon-button aria-label="Clear" (click)="filterTime = undefined; getFiltersGeneral()">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+            <div class="filters-toogle">
+              <mat-button-toggle-group [value]="matButtonToggleGroup" style="flex-wrap: wrap" (change)="matButtonToggleGroup = $event.value; getFiltersGeneral(); ">
+                <mat-button-toggle value="schedule">Eventos</mat-button-toggle>
+                <mat-button-toggle value="ofert">Ofertas</mat-button-toggle>
+                <mat-button-toggle value="sbp">Estados</mat-button-toggle>
+                <mat-button-toggle value="credit">Créditos</mat-button-toggle>
+                <mat-button-toggle value="all">Todos</mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+
+          </div>
+
+
           <!-- <ion-row justify-content-around> -->
           <ion-row>
-            <ion-col size-md="6" size-lg="6" size-xl="6" *ngFor="let item of allData">
+            <ion-col size="12" size-md="6" size-lg="6" size-xl="6" *ngFor="let item of allData">
               <!-- 
               decide que carta
               ofert
@@ -296,8 +322,13 @@
 
 
           </ion-row>
-
-
+          <!-- Cargar mas -->
+          <div style="text-align: center; margin-top: 1%">
+            <ion-button (click)="loadMore();getFiltersGeneral()" shape="round">
+              <ion-spinner *ngIf="isSpinner" style="color: white" name="bubbles"></ion-spinner>
+              {{titleButton}}
+            </ion-button>
+          </div>
         </span>
         <!-- eventsSegment -->
         <span *ngSwitchCase="'eventsSegment'">
@@ -321,7 +352,7 @@
             </ion-list>
             <ion-grid>
               <ion-row>
-                <ion-col size-md="6" size-lg="6" size-xl="6" *ngFor="let schedule of scheduleToShow">
+                <ion-col size-sm="6" size-md="6" size-lg="6" size-xl="6" size="12" *ngFor="let schedule of scheduleToShow">
                   <ion-card [ngClass]="{
                 'desktop-card': isDesktop  }">
                     <ion-card-header>
@@ -332,10 +363,22 @@
                       <ion-card-title text-wrap>{{schedule.title}}</ion-card-title>
                     </ion-card-header>
                     <ion-card-content text-wrap>
-                      <ion-label text-wrap><b>Detalles del evento:</b></ion-label>
-                      <ion-label text-wrap>{{schedule.note}}</ion-label>
-                      <ion-label text-wrap><b>Dirección: </b></ion-label>
-                      <ion-label text-wrap>{{schedule.address}}</ion-label>
+                      <ion-item lines="none">
+                        <ion-icon slot="start" class="color-item-secondary" name="clipboard"></ion-icon>
+                        <ion-label text-wrap><b>Detalles del evento:</b>
+                          <p>
+                            {{schedule.note}}
+                          </p>
+                        </ion-label>
+                      </ion-item>
+                      <ion-item lines="none">
+                        <ion-icon slot="start" class="color-item-secondary" name="pin"></ion-icon>
+                        <ion-label text-wrap><b>Dirección: </b>
+                          <p>{{schedule.address}}</p>
+                          <a [href]="'http://maps.google.com/?q='+schedule.address+', Puebla'">Ver mapa</a>
+                          <!-- https://www.google.com/maps/search/?api=1&parameters -->
+                        </ion-label>
+                      </ion-item>
 
                     </ion-card-content>
                   </ion-card>

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import { INotification } from '../models/notification.model';
 import { END_POINT } from '../_config/api.end-points';
 import * as io from 'socket.io-client';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Injectable({
   providedIn: 'root',
@@ -33,5 +33,9 @@ export class SocketIoService {
   public resetNum() {
     this.cont = 0;
     this.numOfNewNoti.next(0);
+  }
+  public minusOne() {
+    this.cont--;
+    this.numOfNewNoti.next(this.cont);
   }
 }

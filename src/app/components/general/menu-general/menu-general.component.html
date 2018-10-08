@@ -1,0 +1,20 @@
+<ion-toolbar color="primary">
+  <ion-buttons slot="start">
+    <ion-back-button *ngIf="!isMenuButton" [ngStyle]="{'color': colorMenuButton }"></ion-back-button>
+    <ion-menu-button *ngIf="isMenuButton" [ngStyle]="{'color': colorMenuButton }"></ion-menu-button>
+  </ion-buttons>
+  <ion-title>
+    {{titleMenu}}
+  </ion-title>
+  <ion-buttons slot="end">
+    <ion-button *ngIf="buttonNotification &&  (numOfNewNoti | async) > 0 && !isDesktop" id="cart-btn" [routerDirection]="'root'"
+      routerLink="/list-notification">
+      <ion-icon slot="icon-only" [name]="buttonNotification">
+      </ion-icon>
+      <ion-badge *ngIf=" (numOfNewNoti | async) > 0" id="cart-badge" color="danger">{{(numOfNewNoti | async)}}</ion-badge>
+    </ion-button>
+    <ion-button *ngIf="buttonEnd2" [ngStyle]="{'color': colorMenuButton }">
+      <ion-icon slot="icon-only" [name]="buttonEnd2"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>

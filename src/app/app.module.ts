@@ -27,7 +27,6 @@ import { InterPropBuyerComponent } from './components/buyer/inter-prop-buyer/int
 import { CreditEventBuyerComponent } from './components/buyer/credit-event-buyer/credit-event-buyer.component';
 import { MainAdminComponent } from './components/admin/main-admin/main-admin.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BarLineComponent } from './components/general/bar-line/bar-line.component';
 import {
   MatButtonModule,
   MatCheckboxModule,
@@ -107,6 +106,7 @@ import { ListOfficeAdminComponent } from './components/admin/list-office-admin/l
 import { NewEditOfficeComponent } from './components/office/new-edit-office/new-edit-office.component';
 import { DialogGeneralComponent } from './components/general/dialog-general/dialog-general.component';
 import { ListNotificationComponent } from './components/notification/list-notification/list-notification.component';
+import { MenuGeneralComponent } from './components/general/menu-general/menu-general.component';
 
 @NgModule({
   declarations: [
@@ -124,7 +124,6 @@ import { ListNotificationComponent } from './components/notification/list-notifi
     InterPropBuyerComponent,
     CreditEventBuyerComponent,
     MainAdminComponent,
-    BarLineComponent,
     GeneralTableComponent,
     ListBuyerAdminComponent,
     GeneralSkeletonComponent,
@@ -169,6 +168,7 @@ import { ListNotificationComponent } from './components/notification/list-notifi
     NewEditOfficeComponent,
     DialogGeneralComponent,
     ListNotificationComponent,
+    MenuGeneralComponent,
   ],
   entryComponents: [DialogGeneralComponent],
   imports: [

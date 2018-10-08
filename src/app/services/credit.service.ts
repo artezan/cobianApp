@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import { ICredit } from '../models/credit.model';
 import { HttpClient } from '@angular/common/http';
 import { END_POINT } from '../_config/api.end-points';

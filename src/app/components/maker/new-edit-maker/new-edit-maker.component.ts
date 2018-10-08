@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IMaker } from '../../../models/maker.model';
 import { IBuild } from '../../../models/build.model';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 import { BuildService } from '../../../services/build.service';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { SellerService } from '../../../services/seller.service';
