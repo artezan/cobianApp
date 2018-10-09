@@ -31,13 +31,14 @@ export class LoginComponent implements OnInit {
     public loadingController: LoadingController,
   ) {
     this.storage.keys().then(keys => {
-      const keyUserSession = keys.find(key => key === 'userSession');
+      const keyUserSession = keys.find(key => key === 'userSessionCurrent');
       if (!keyUserSession) {
         this.isLogin = false;
         userSession.loggout();
       } else {
-        storage.get('userSession').then((val: IUserSession) => {
-          this.emailInput = val.name;
+        storage.get('userSessionCurrent').then((val: IUserSession) => {
+          console.log('val', val);
+          this.emailInput = val.email;
           this.passInput = val.password;
           this.login();
         });
@@ -60,6 +61,7 @@ export class LoginComponent implements OnInit {
             data.type,
             data.data[0]._id,
             data.data[0].password,
+            data.data[0].email,
           );
           this.isFind = true;
           // seller

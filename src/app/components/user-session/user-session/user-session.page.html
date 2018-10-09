@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button style="color: white !important"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Agregar Cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="user-select-contenet">
+    <ion-card>
+      <div class="center-login">
+        <img src="assets/cobian-light.jpg" style="max-width: 10em" width="50%" height="50%" alt="">
+      </div>
+      <ion-card-header class="center-text">
+        <ion-card-title>Agregar cuenta</ion-card-title>
+      </ion-card-header>
+      <div *ngIf="!isFind" style="margin-top: 2%; margin-bottom: 2%; text-align: center;">
+        <span class="alert alert-danger ">
+          Error usuario y/o contraseña inválido
+        </span>
+      </div>
+      <div class="form-center">
+        <form #loginForm="ngForm">
+          <mdc-text-field class="color-text-field" label="Correo" [(ngModel)]="emailInput" #email="ngModel" id="email"
+            name="email" required [outline]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+          <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+            <span *ngIf="email.dirty || email.touched">Anota correo</span>
+          </mdc-text-field-helper-text>
+          <mdc-text-field class="color-text-field" (keyup)="pressEnter($event)" label="Contraseña" type="password"
+            [(ngModel)]="passInput" #pass="ngModel" id="pass" name="pass" required [outline]="true" [required]="true"
+            [helperText]="weightHelper"></mdc-text-field>
+          <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+            <span *ngIf="pass.dirty || pass.touched">Anota Contraseña</span>
+          </mdc-text-field-helper-text>
+
+          <ion-button color="primary" shape="round" expand="block" (click)="login()">Agregar</ion-button>
+        </form>
+      </div>
+      <div class="space-buttons"></div>
+    </ion-card>
+  </div>
+
+</ion-content>

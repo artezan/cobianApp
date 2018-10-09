@@ -93,7 +93,8 @@ const routes: Routes = [
   { path: 'list-sales-admin', component: ListSalesAdminComponent },
   { path: 'list-office-admin', component: ListOfficeAdminComponent },
   { path: 'new-edit-office', component: NewEditOfficeComponent },
-  { path: 'list-notification', component: ListNotificationComponent },
+  { path: 'list-notification', component: ListNotificationComponent },  { path: 'user-session', loadChildren: './components/user-session/user-session/user-session.module#UserSessionPageModule' },
+
 ];
 
 @NgModule({

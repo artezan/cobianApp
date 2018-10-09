@@ -43,11 +43,12 @@
               <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
                 <span *ngIf="email.dirty || email.touched">Anota email</span>
               </mdc-text-field-helper-text> -->
-          <!-- telefono -->
-          <mdc-text-field label="Telefono" type="number" [(ngModel)]="newBuyer.phone" #phone="ngModel" id="phone" name="phone"
-            required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+
+          <!-- email -->
+          <mdc-text-field label="Correo" [(ngModel)]="newBuyer.email" #email="ngModel" id="email" name="email" required
+            [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
           <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
-            <span *ngIf="phone.dirty || phone.touched">Anota telefono</span>
+            <span *ngIf="email.dirty || email.touched">Anota Correo</span>
           </mdc-text-field-helper-text>
 
         </ion-card-content>
@@ -73,12 +74,12 @@
         <ion-card-content>
           <div class="flex-container">
 
-            <!-- email -->
             <div>
-              <mdc-text-field label="Correo" [(ngModel)]="newBuyer.email" #email="ngModel" id="email" name="email"
-                required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+              <!-- telefono -->
+              <mdc-text-field label="Telefono" type="number" [(ngModel)]="newBuyer.phone" #phone="ngModel" id="phone"
+                name="phone" required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
               <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
-                <span *ngIf="email.dirty || email.touched">Anota Correo</span>
+                <span *ngIf="phone.dirty || phone.touched">Anota telefono</span>
               </mdc-text-field-helper-text>
             </div>
 
@@ -195,6 +196,12 @@
                 <span *ngIf="y.dirty || y.touched">Anota Año</span>
               </mdc-text-field-helper-text>
             </div>
+            <!-- <mat-form-field>
+              <input matInput (dateChange)="dateSelect($event)" [matDatepicker]="picker" (focus)="picker.open()"
+                placeholder="Fecha" required>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker touchUi #picker></mat-datepicker>
+            </mat-form-field> -->
 
             <!-- city -->
             <ion-item lines="none" class="margin-field">

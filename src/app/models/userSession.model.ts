@@ -10,4 +10,5 @@ export interface IUserSession {
   name?: string;
   id?: string;
   password?: string;
+  email?: string;
 }

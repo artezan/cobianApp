@@ -8,7 +8,8 @@
     </ion-title>
 
   </ion-toolbar> -->
-  <app-menu-general [isMenuButton]=true [colorMenuButton]="'white'" [titleMenu]="'Administrador'" [buttonNotification]="'notifications'"></app-menu-general>
+  <app-menu-general [isMenuButton]=true [colorMenuButton]="'white'" [titleMenu]="'Administrador'" [buttonNotification]="'notifications'"
+    [buttonUser]="'person'"></app-menu-general>
   <ion-toolbar [ngClass]="{'desktop-tabs': isDesktop}" color="primary">
     <ion-segment color="secondary" (ionChange)="segmentChanged($event)">
       <ion-segment-button checked value="movementsSegment">

@@ -29,11 +29,11 @@
               <mat-error *ngIf="lastName.dirty || lastName.touched">Anotar Apellido</mat-error>
             </mat-form-field>
             <!-- email -->
-            <!--  <mat-form-field appearance="outline">
-                <mat-label>Correo</mat-label>
-                <input matInput [(ngModel)]="seller.email" #email="ngModel" id="email" name="email" required>
-                <mat-error *ngIf="email.dirty || email.touched">Anotar Correo</mat-error>
-              </mat-form-field> -->
+            <mat-form-field appearance="outline">
+              <mat-label>Correo</mat-label>
+              <input matInput [(ngModel)]="seller.email" #email="ngModel" id="email" name="email" required>
+              <mat-error *ngIf="email.dirty || email.touched">Anotar Correo</mat-error>
+            </mat-form-field>
             <!-- city -->
             <mat-form-field appearance="outline">
               <mat-label>Ciudad</mat-label>

@@ -8,6 +8,7 @@ export interface IAdministrator {
   name?: string;
   password?: string;
   schedule?: ISchedule[];
+  email?: string;
   //   goal?:;
   _id?: string;
 }
@@ -18,6 +19,7 @@ export interface IAdministratorPOST {
   schedule?: string[];
   //   goal?:;
   _id?: string;
+  email?: string;
 }
 export interface IEvents {
   data?: {

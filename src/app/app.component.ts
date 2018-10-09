@@ -365,7 +365,7 @@ export class AppComponent {
     });
   }
   logout() {
-    this.storage.remove('userSession').then(() => {
+    this.storage.remove('userSessionCurrent').then(() => {
       this.navController.navigateRoot('login', false);
       /* this.router
         .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
@@ -384,6 +384,7 @@ export class AppComponent {
     });
   }
   setNotificationStart(id, tags) {
+    this.socketIOService.resetNum();
     this.oneSignalService.notRead(id, tags).subscribe(nts => {
       console.log('no read', nts);
       nts.forEach(n => {

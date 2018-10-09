@@ -25,27 +25,30 @@ export class UserSessionService {
     private platform: Platform,
   ) {}
 
-  public logginUserSession(name, password): Observable<any> {
-    const concatSession = btoa(name + ':' + password);
+  public logginUserSession(email, password): Observable<any> {
+    const concatSession = btoa(email + ':' + password);
     return this.http
       .get(END_POINT.USER_SESSION + concatSession)
       .pipe(map((data: any) => data.data));
   }
-  public setUserSession(name, type, id, password): void {
+  public setUserSession(name, type, id, password, email: string): void {
     const currentData: IUserSession = {
       type: type,
       name: name,
       id: id,
       password: password,
+      email: email,
     };
     this.userSession.next({
       name: name,
       type: type,
       id: id,
       password: password,
+      email: email,
     });
     // localStorage.setItem('userSession', JSON.stringify(currentData));
-    this.storage.set('userSession', currentData);
+    this.storage.set('userSessionCurrent', currentData);
+    this.saveSession(currentData);
     // onesignal
     this.platform.ready().then(c => {
       if (this.platform.is('cordova')) {
@@ -57,7 +60,8 @@ export class UserSessionService {
   }
 
   public loggout(): void {
-    this.storage.remove('userSession');
+    this.storage.remove('userSessionCurrent');
+    // this.storage.remove('userSessionSaved');
     this.storage.remove('alert-adv');
     // localStorage.removeItem('userSession');
     this.userSession.next({
@@ -65,6 +69,7 @@ export class UserSessionService {
       type: undefined,
       id: undefined,
       password: undefined,
+      email: undefined,
     });
     this.platform.ready().then(c => {
       console.log(c);
@@ -75,16 +80,64 @@ export class UserSessionService {
       }
     });
   }
+  public loggoutWithoutStore(): void {
+    this.storage.remove('alert-adv');
+    // localStorage.removeItem('userSession');
+    this.userSession.next({
+      name: undefined,
+      type: undefined,
+      id: undefined,
+      password: undefined,
+      email: undefined,
+    });
+    this.platform.ready().then(c => {
+      console.log(c);
+      if (this.platform.is('cordova')) {
+        this.oneSignalLogoutCordova();
+      } else if (environment.production && this.isInitOne) {
+        this.oneSignalLogoutDesktop();
+      }
+    });
+  }
+  public async saveSession(newUser: IUserSession) {
+    const keys = await this.storage.keys();
+    const isFind = keys.find(k => k === 'userSessionSaved');
+    if (isFind) {
+      const sessions: IUserSession[] = await this.storage.get(
+        'userSessionSaved',
+      );
+      const indexFinded = sessions.findIndex(s => s.id === newUser.id);
+      if (indexFinded !== -1) {
+        sessions[indexFinded] = newUser;
+      } else {
+        sessions.push(newUser);
+      }
+      this.storage.set('userSessionSaved', sessions);
+    } else {
+      this.storage.set('userSessionSaved', [newUser]);
+    }
+  }
+  public async removeSession(session: IUserSession) {
+    const sessions: IUserSession[] = await this.storage.get('userSessionSaved');
+    const indexFinded = sessions.findIndex(s => s.id === session.id);
+    if (indexFinded !== -1) {
+      sessions.splice(indexFinded, 1);
+      this.storage.set('userSessionSaved', sessions);
+    }
+  }
+  public async getSessionsSaved(): Promise<IUserSession[]> {
+    return await this.storage.get('userSessionSaved');
+  }
 
   // inicia antes que la app mandando un Promise en cada respuesta environment.production &&
   checkValidSession(): Promise<any> {
     return new Promise((resolve, reject) => {
       // ve si hay un usuario en el localstore
       this.storage.keys().then(keys => {
-        const keyUserSession = keys.find(key => key === 'userSession');
+        const keyUserSession = keys.find(key => key === 'userSessionCurrent');
         if (keyUserSession) {
-          this.storage.get('userSession').then((val: IUserSession) => {
-            this.logginUserSession(val.name, val.password).subscribe(data => {
+          this.storage.get('userSessionCurrent').then((val: IUserSession) => {
+            this.logginUserSession(val.email, val.password).subscribe(data => {
               // data  administrator buyer seller adviser management
 
               if (data !== 'error') {
@@ -93,6 +146,7 @@ export class UserSessionService {
                   data.type,
                   data.data[0]._id,
                   data.data[0].password,
+                  data.data[0].email,
                 );
                 return resolve(true);
                 // usuario o contrasena caducada

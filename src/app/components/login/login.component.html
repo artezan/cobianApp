@@ -36,10 +36,10 @@
   </div>
   <div class="grandParentContaniner">
     <form #loginForm="ngForm">
-      <mdc-text-field class="color-text-field" label="Nombre" [(ngModel)]="emailInput" #email="ngModel" id="email" name="email"
+      <mdc-text-field class="color-text-field" label="Correo" [(ngModel)]="emailInput" #email="ngModel" id="email" name="email"
         required [outline]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
       <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
-        <span *ngIf="email.dirty || email.touched">Anota nombre</span>
+        <span *ngIf="email.dirty || email.touched">Anota correo</span>
       </mdc-text-field-helper-text>
       <mdc-text-field class="color-text-field" (keyup)="pressEnter($event)" label="Contraseña" type="password"
         [(ngModel)]="passInput" #pass="ngModel" id="pass" name="pass" required [outline]="true" [required]="true"

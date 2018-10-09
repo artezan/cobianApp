@@ -13,8 +13,8 @@
       </ion-icon>
       <ion-badge *ngIf=" (numOfNewNoti | async) > 0" id="cart-badge" color="danger">{{(numOfNewNoti | async)}}</ion-badge>
     </ion-button>
-    <ion-button *ngIf="buttonEnd2" [ngStyle]="{'color': colorMenuButton }">
-      <ion-icon slot="icon-only" [name]="buttonEnd2"></ion-icon>
+    <ion-button (click)="presentPopover($event)" *ngIf="buttonUser" [ngStyle]="{'color': colorMenuButton }">
+      <ion-icon slot="icon-only" [name]="buttonUser"></ion-icon>
     </ion-button>
   </ion-buttons>
 </ion-toolbar>

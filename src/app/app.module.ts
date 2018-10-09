@@ -107,6 +107,7 @@ import { NewEditOfficeComponent } from './components/office/new-edit-office/new-
 import { DialogGeneralComponent } from './components/general/dialog-general/dialog-general.component';
 import { ListNotificationComponent } from './components/notification/list-notification/list-notification.component';
 import { MenuGeneralComponent } from './components/general/menu-general/menu-general.component';
+import { PopoverComponent } from './components/general/popover/popover.component';
 
 @NgModule({
   declarations: [
@@ -169,8 +170,9 @@ import { MenuGeneralComponent } from './components/general/menu-general/menu-gen
     DialogGeneralComponent,
     ListNotificationComponent,
     MenuGeneralComponent,
+    PopoverComponent,
   ],
-  entryComponents: [DialogGeneralComponent],
+  entryComponents: [DialogGeneralComponent, PopoverComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

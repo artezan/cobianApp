@@ -297,6 +297,7 @@ export class ListScheduleAdminComponent implements OnInit {
   }
   async toastPresent(m = 'Eventos pendientes hoy') {
     const isPresent = await this.storage.get('alert-today');
+    console.log(isPresent);
     if (+isPresent !== new Date().getDate()) {
       const toast = await this.toastController.create({
         message: m,

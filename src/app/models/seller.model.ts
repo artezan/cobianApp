@@ -31,4 +31,5 @@ export interface ISeller {
    */
   city?: string;
   _id?: string;
+  email?: string;
 }

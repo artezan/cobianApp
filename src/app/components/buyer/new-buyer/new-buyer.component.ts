@@ -157,6 +157,7 @@ export class NewBuyerComponent implements OnInit {
             'buyer',
             buyer._id,
             buyer.password,
+            buyer.email,
           );
           this.navController.navigateRoot('list-prop-buyer', false);
         }
