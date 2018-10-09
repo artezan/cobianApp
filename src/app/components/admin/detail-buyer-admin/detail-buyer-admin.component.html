@@ -1,15 +1,16 @@
-<!-- <ion-header>
-  <ion-toolbar color="primary">
+<!-- <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button style="color: white !important"></ion-back-button>
     </ion-buttons>
     <ion-title>
       Detalles
     </ion-title>
-  </ion-toolbar>
-</ion-header> -->
-<app-menu-general [isMenuButton]='false' [colorMenuButton]="'white'" [titleMenu]="'Detalles'" [buttonNotification]="'notifications'"
-  [buttonUser]="'person'"></app-menu-general>
+  </ion-toolbar> -->
+<ion-header>
+  <app-menu-general [isMenuButton]="'back'" [colorMenuButton]="'white'" [titleMenu]="'Movimientos Clientes'"
+    [buttonNotification]="'notifications'" [buttonUser]="'person'"></app-menu-general>
+</ion-header>
+
 <ion-content padding>
   <ion-grid fixed>
     <ng-container *ngIf="isLoad; then thenTemplate; else elseTemplate"></ng-container>

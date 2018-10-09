@@ -176,7 +176,7 @@ import { PopoverComponent } from './components/general/popover/popover.component
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    // IonicModule.forRoot({ mode: 'ios' }),
+    // IonicModule.forRoot({ mode: 'ios' }), { backButtonText: '' }
     IonicModule.forRoot({ backButtonText: '' }),
     IonicStorageModule.forRoot(),
     AppRoutingModule,

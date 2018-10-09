@@ -158,7 +158,7 @@ export class ListPropAdminComponent implements OnInit {
     const data: NavigationExtras = {
       queryParams: { id: 'new' },
     };
-    this.navCtr.navigateRoot('new-edit-prop');
+    this.router.navigate(['new-edit-prop']);
   }
   edit(item) {
     const data: NavigationExtras = {

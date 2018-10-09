@@ -1,4 +1,4 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar translucent color="primary">
     <ion-buttons slot="start">
       <ion-back-button style="color: white !important"></ion-back-button>
@@ -7,20 +7,25 @@
       Eventos
     </ion-title>
   </ion-toolbar>
+</ion-header> -->
+<ion-header>
+  <app-menu-general [isMenuButton]="'back'" [colorMenuButton]="'white'" [titleMenu]="'Eventos'" [buttonUser]="'person'"></app-menu-general>
 </ion-header>
 <ion-content padding>
   <!-- Toggles in a List -->
   <ion-list lines="none">
     <ion-item lines="none">
-      <ion-label>Mostrar Todos</ion-label>
-      <ion-toggle [(ngModel)]="isAll" (ionChange)="getAllSchedule();getActualSchedule()"></ion-toggle>
+      <!--  <ion-label>Mostrar Todos</ion-label>
+      <ion-toggle [(ngModel)]="isAll" (ionChange)="getAllSchedule();getActualSchedule()"></ion-toggle> -->
+      <ion-button (click)="isAll = !isAll;getAllSchedule();getActualSchedule()">{{isAll ? 'Mostrando Todos':'Mostrando
+        Actuales'}}</ion-button>
     </ion-item>
-    <ion-item lines="none" *ngIf="!isAll">
+    <!--  <ion-item lines="none" *ngIf="!isAll">
       <ion-chip color="secondary">
         <ion-label>Mostrando Actuales
         </ion-label>
       </ion-chip>
-    </ion-item>
+    </ion-item> -->
 
   </ion-list>
   <!-- eventos -->

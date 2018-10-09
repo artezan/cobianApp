@@ -1,4 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { SocketIoService } from '../../../services/socket-io.service';
 import { IUserSession } from '../../../models/userSession.model';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
@@ -10,13 +16,13 @@ import { PopoverComponent } from '../popover/popover.component';
   templateUrl: './menu-general.component.html',
   styleUrls: ['./menu-general.component.scss'],
 })
-export class MenuGeneralComponent implements OnInit {
+export class MenuGeneralComponent implements OnInit, OnChanges {
   /**
-   * true menu,
-   * false back
+   *menu,
+   *back
    */
   @Input()
-  isMenuButton: boolean;
+  isMenuButton: string;
   @Input()
   colorMenuButton: string;
   @Input()
@@ -37,7 +43,15 @@ export class MenuGeneralComponent implements OnInit {
     this.numOfNewNoti = this.socketIOService.numOfNewNoti;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log('backbutton', this.isMenuButton);
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
+    if (changes.isMenuButton.currentValue) {
+      this.isMenuButton = changes.isMenuButton.currentValue;
+    }
+  }
   async presentPopover(ev: any) {
     // await this.popoverController.componentOnReady();
     const popover = await this.popoverController.create({

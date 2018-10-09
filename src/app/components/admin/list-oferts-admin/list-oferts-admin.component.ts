@@ -99,7 +99,7 @@ export class ListOfertsAdminComponent implements OnInit {
     });
   }
   newOfert() {
-    this.navCtr.navigateRoot('new-edit-ofert');
+    this.router.navigate(['new-edit-ofert']);
   }
   setRows(oferts: IOfert[]) {
     const rows = [];

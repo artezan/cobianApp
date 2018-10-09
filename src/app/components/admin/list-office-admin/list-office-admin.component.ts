@@ -93,7 +93,7 @@ export class ListOfficeAdminComponent implements OnInit {
     });
   }
   newOffice() {
-    this.navCtr.navigateRoot('new-edit-office');
+    this.router.navigate(['new-edit-office']);
   }
   setRows(offices: IOffice[]) {
     const rows = [];

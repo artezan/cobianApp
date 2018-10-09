@@ -1,7 +1,7 @@
 <ion-toolbar color="primary">
   <ion-buttons slot="start">
-    <ion-back-button *ngIf="!isMenuButton" [ngStyle]="{'color': colorMenuButton }"></ion-back-button>
-    <ion-menu-button *ngIf="isMenuButton" [ngStyle]="{'color': colorMenuButton }"></ion-menu-button>
+    <ion-back-button *ngIf="isMenuButton === 'back'" [ngStyle]="{'color': colorMenuButton }"></ion-back-button>
+    <ion-menu-button *ngIf="isMenuButton === 'menu'" [ngStyle]="{'color': colorMenuButton }"></ion-menu-button>
   </ion-buttons>
   <ion-title>
     {{titleMenu}}

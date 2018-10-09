@@ -1,4 +1,4 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-menu-button style="color: white !important"></ion-menu-button>
@@ -7,6 +7,9 @@
       Propiedades
     </ion-title>
   </ion-toolbar>
+</ion-header> -->
+<ion-header>
+  <app-menu-general [isMenuButton]="'menu'" [colorMenuButton]="'white'" [titleMenu]="'Propiedades'" [buttonUser]="'person'"></app-menu-general>
 </ion-header>
 <ion-content padding>
   <!-- cargar o no -->

@@ -1,4 +1,4 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button style="color: white !important"></ion-back-button>
@@ -7,6 +7,10 @@
       Detalles
     </ion-title>
   </ion-toolbar>
+</ion-header> -->
+<ion-header>
+  <app-menu-general [isMenuButton]="'back'" [colorMenuButton]="'white'" [titleMenu]="'Detalles Propiedades'"
+    [buttonNotification]="'notifications'" [buttonUser]="'person'"></app-menu-general>
 </ion-header>
 <ion-content padding>
   <ion-grid fixed>

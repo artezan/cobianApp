@@ -1,4 +1,4 @@
-<ion-header>
+<!-- <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-menu-button style="color: white !important"></ion-menu-button>
@@ -8,6 +8,10 @@
     </ion-title>
 
   </ion-toolbar>
+</ion-header> -->
+<ion-header>
+  <app-menu-general [isMenuButton]="'menu'" [colorMenuButton]="'white'" [titleMenu]="'Propietarios'"
+    [buttonNotification]="'notifications'" [buttonUser]="'person'"></app-menu-general>
 </ion-header>
 <ion-content padding>
   <ng-container *ngIf="isLoading; then Load; else noLoad"></ng-container>
