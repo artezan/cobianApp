@@ -12,8 +12,8 @@
   <app-menu-general [isMenuButton]="'menu'" [colorMenuButton]="'white'" [titleMenu]="'Notificaciones'" [buttonUser]="'person'"></app-menu-general>
 </ion-header>
 
-<ion-content>
-  <!-- 10 iniciales -->
+<ion-content (ionScroll)="onScroll($event)" [scrollEvents]="true" (sectionChange)="onSectionChange($event)">
+
 
   <div class="user-select-contenet">
     <ng-container *ngIf="isLoad; then thenTemplate; else elseTemplate"></ng-container>
@@ -21,7 +21,7 @@
       <!-- <h3 *ngIf="notificationsNew.length > 0">
         Nuevas
       </h3> -->
-      <div *ngIf="notificationsNew.length > 0" style="text-align: center">
+      <div *ngIf="notificationsNew.length > 0" style="text-align: center" id="Nuevas">
         <ion-chip class="chips-detail" color="secondary">
           <ion-label>Nuevas</ion-label>
         </ion-chip>
@@ -71,8 +71,8 @@
       <!--  <h3 *ngIf="notificationsOld.length > 0">
         Leidas
       </h3> -->
-      <div *ngIf="notificationsOld.length > 0" style="text-align: center">
-        <ion-chip class="chips-detail" color="secondary">
+      <div *ngIf="notificationsOld.length > 0" style="text-align: center" appScrollTitle id="Leidas" #algo>
+        <ion-chip class="chips-detail " color="secondary">
           <ion-label>Leidas</ion-label>
         </ion-chip>
       </div>

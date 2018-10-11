@@ -27,6 +27,7 @@ export class DialogGeneralComponent implements OnInit {
     hideButtonCancel?: boolean;
     isRating?: boolean;
     isform?: boolean;
+    okButton?: string;
   };
   constructor(
     public dialogRef: MatDialogRef<DialogGeneralComponent>,
@@ -38,6 +39,7 @@ export class DialogGeneralComponent implements OnInit {
       hideButtonCancel?: boolean;
       isRating?: boolean;
       isform?: boolean;
+      okButton?: string;
     },
   ) {
     this.dataInput = data;

@@ -43,11 +43,8 @@ export class MenuGeneralComponent implements OnInit, OnChanges {
     this.numOfNewNoti = this.socketIOService.numOfNewNoti;
   }
 
-  ngOnInit() {
-    console.log('backbutton', this.isMenuButton);
-  }
+  ngOnInit() {}
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
     if (changes.isMenuButton.currentValue) {
       this.isMenuButton = changes.isMenuButton.currentValue;
     }

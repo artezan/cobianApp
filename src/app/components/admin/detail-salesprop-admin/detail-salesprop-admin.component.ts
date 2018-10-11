@@ -239,6 +239,7 @@ export class DetailSalespropAdminComponent implements OnInit {
       this.saleService.newSale(<any>Sale).subscribe(sale => {
         const prop = { _id: this.sBP.property._id, isBuy: true };
         this.propertyService.putProperty(prop).subscribe(() => {
+          // Propiedad Adquirida => sirve para modal con estrella
           this.notification(
             'Propiedad Adquirida',
             `La propiedad: ${

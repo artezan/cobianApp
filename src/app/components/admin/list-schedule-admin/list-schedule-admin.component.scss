@@ -1,16 +1,9 @@
-/* .toast-alert {
-    .toast-container {
-        background-color: #ffcdcd;
-        border-left: 5px solid red;
-        color: black
-    }
-
-    .toast-button {
-        color: black
-    }
-} */
 .icon-chip-detail {
     border-radius: 50%;
     background-color: black;
     color: white;
+}
+
+mat-panel-description {
+    justify-content: flex-end
 }

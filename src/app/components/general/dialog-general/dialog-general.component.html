@@ -4,6 +4,7 @@
   <span *ngIf="dataInput.body" [innerHTML]="dataInput.body"></span>
   <span *ngIf="dataInput.isform">
     <form #newUserForm="ngForm">
+
       <!--  <mat-form-field appearance="outline">
         <mat-label>Estado </mat-label>
         <mat-select [(ngModel)]="statusTicket" #status="ngModel" id="status" name="status">
@@ -22,8 +23,9 @@
     </form>
   </span>
 </mat-dialog-content>
-<mat-dialog-actions>
-  <button color="primary" (click)="buttonsResponse(true)" mat-button mat-dialog-close>Ok</button>
-  <button color="warn" *ngIf="!dataInput.hideButtonCancel" mat-button mat-dialog-close (click)="buttonsResponse(false)">Cancelar</button>
+<mat-dialog-actions style="justify-content: flex-end;">
+  <button color="accent" (click)="buttonsResponse(true)" mat-button mat-flat-button mat-dialog-close>{{dataInput.okButton
+    ? dataInput.okButton : 'Ok'}}</button>
+  <button color="warn" *ngIf="!dataInput.hideButtonCancel" mat-button mat-dialog-close mat-stroked-button (click)="buttonsResponse(false)">Cancelar</button>
   <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
 </mat-dialog-actions>

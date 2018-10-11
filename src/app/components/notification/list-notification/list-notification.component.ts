@@ -8,6 +8,9 @@ import { INotification } from '../../../models/notification.model';
 import { FormatDatesFront } from '../../../_config/_helpers';
 import { Router } from '@angular/router';
 import { SocketIoService } from '../../../services/socket-io.service';
+import { DialogGeneralComponent } from '../../general/dialog-general/dialog-general.component';
+import { MatDialog } from '@angular/material';
+import { END_POINT } from '../../../_config/api.end-points';
 
 @Component({
   selector: 'app-list-notification',
@@ -29,6 +32,7 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
   Title;
   isLoad: boolean;
   isSpinner = false;
+  currentSection: string;
 
   constructor(
     private userSessionService: UserSessionService,
@@ -36,6 +40,7 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
     private oneSignalService: OnesignalService,
     private socketIOService: SocketIoService,
     private router: Router,
+    public dialog: MatDialog,
   ) {
     this.isLoad = false;
     this.isDesktop = platform.is('desktop');
@@ -135,6 +140,15 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
           this.notificationsNewBack = this.notificationsNew;
           this.notificationsOldBack = this.notificationsOld;
         }
+        const isCelebrate = this.notificationsNew.filter(
+          n => n.type === 'celebrate' || n.title === 'Propiedad Adquirida',
+        );
+        console.log('cele', isCelebrate);
+        if (isCelebrate.length > 0) {
+          isCelebrate.forEach(n => {
+            this.dialogCelebrate(n);
+          });
+        }
         this.isSpinner = false;
         this.isLoad = true;
       });
@@ -169,6 +183,8 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
       if (indexFind !== -1) {
         this.notificationsNew.splice(indexFind, 1);
         this.notificationsNewBack = this.notificationsNew;
+        this.notificationsOld.push(noti);
+        this.notificationsOldBack = this.notificationsOld;
       }
     });
   }
@@ -219,6 +235,24 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
       this.notificationsNewBack = this.notificationsNew;
     });
   }
+  // dialog
+  private async dialogCelebrate(n: INotification) {
+    const dialogRef = this.dialog.open(DialogGeneralComponent, {
+      /*  maxWidth: '50%',
+      minWidth: '20%', */
+      data: {
+        header: 'Felicidades',
+        subHeader: n.message,
+        body: `<img src="${END_POINT.IP}celebrate.png">`,
+        isform: false,
+        hideButtonCancel: true,
+        okButton: 'Gracias',
+      },
+    });
+    const sub = dialogRef.componentInstance.buttons.subscribe(res => {
+      this.markAsRead(n);
+    });
+  }
   // helpers
   formatDates(date) {
     return FormatDatesFront(date);
@@ -262,5 +296,16 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
     } else if (str === 'celebrate') {
       return 'check_circle_outline';
     }
+  }
+  onSectionChange(sectionId: string) {
+    console.log('sectionId', sectionId);
+    this.currentSection = sectionId;
+  }
+
+  scrollTo(section) {
+    document.querySelector('#' + section).scrollIntoView();
+  }
+  onScroll(e) {
+    // console.log(e);
   }
 }

@@ -128,6 +128,7 @@ export class ListScheduleAdminComponent implements OnInit {
         // to get a value that is either negative, positive, or zero.
         return <any>new Date(b.timestamp) - <any>new Date(a.timestamp);
       });
+      // console.log(this.schedule);
       this.isLoad = true;
     });
   }
@@ -349,6 +350,10 @@ export class ListScheduleAdminComponent implements OnInit {
     } else if (state === 'rojo') {
       return 'Cita pasada';
     } else if (state === 'azul') {
+    } else if (state === undefined) {
+      return 'Evento Personal';
+    } else if (state === 'gris') {
+      return 'Solicitud de Cita';
     }
   }
   formatHours(hours, minutes) {

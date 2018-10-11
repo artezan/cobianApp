@@ -112,7 +112,7 @@ export class AppComponent {
       userType: 'administrator',
     },
     {
-      title: 'Eventos',
+      title: 'Calendario',
       url: '/list-schedule-admin',
       icon: 'calendar',
       userType: 'administrator',
@@ -155,7 +155,7 @@ export class AppComponent {
       userType: 'adviser',
     },
     {
-      title: 'Eventos',
+      title: 'Calendario',
       url: '/list-schedule-admin',
       icon: 'calendar',
       userType: 'adviser',
@@ -192,7 +192,7 @@ export class AppComponent {
       userType: 'seller',
     },
     {
-      title: 'Eventos',
+      title: 'Calendario',
       url: '/list-schedule-admin',
       icon: 'calendar',
       userType: 'seller',
@@ -259,7 +259,7 @@ export class AppComponent {
       userType: 'office',
     },
     {
-      title: 'Eventos',
+      title: 'Calendario',
       url: '/list-schedule-admin',
       icon: 'calendar',
       userType: 'office',
