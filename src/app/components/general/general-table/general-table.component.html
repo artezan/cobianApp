@@ -218,21 +218,11 @@
         </span>
 
       </ion-label>
-      <!--   <ion-buttons slot="end">
-        <ion-button (click)="getEvents()" slot="end">
-          <ion-icon mode="md" slot="icon-only" name="clipboard"></ion-icon>
-        </ion-button>
-        <ion-button (click)="fowardOne()" slot="end">
-          <ion-icon mode="ios" slot="icon-only" name="arrow-forward"></ion-icon>
-        </ion-button>
-      </ion-buttons> -->
+      <!-- botones -->
       <div *ngFor="let column of columns;">
         <button *ngIf="column.type === 'buttons' && column.buttonDetails" mat-icon-button color="primary" (click)="detailsItem(row)">
           <mat-icon>info</mat-icon>
         </button>
-        <!--  <button *ngIf="column.type === 'buttons' && column.buttonDeleted" mat-icon-button color="primary" (click)="detailsItem(row)">
-          <mat-icon>delete</mat-icon>
-        </button> -->
         <a *ngIf="column.type === 'phone'" mat-icon-button color="primary" [href]="'tel:'+row[column.prop]">
           <mat-icon>phone</mat-icon>
         </a>

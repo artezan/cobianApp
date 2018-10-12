@@ -57,6 +57,7 @@ import {
   MatDatepickerModule,
   NativeDateModule,
   MAT_DATE_LOCALE,
+  MatProgressBarModule,
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { GeneralTableComponent } from './components/general/general-table/general-table.component';
@@ -108,6 +109,7 @@ import { DialogGeneralComponent } from './components/general/dialog-general/dial
 import { ListNotificationComponent } from './components/notification/list-notification/list-notification.component';
 import { MenuGeneralComponent } from './components/general/menu-general/menu-general.component';
 import { PopoverComponent } from './components/general/popover/popover.component';
+import { SearchSelectComponent } from './components/general/search-select/search-select.component';
 
 @NgModule({
   declarations: [
@@ -171,8 +173,13 @@ import { PopoverComponent } from './components/general/popover/popover.component
     ListNotificationComponent,
     MenuGeneralComponent,
     PopoverComponent,
+    SearchSelectComponent,
   ],
-  entryComponents: [DialogGeneralComponent, PopoverComponent],
+  entryComponents: [
+    DialogGeneralComponent,
+    PopoverComponent,
+    SearchSelectComponent,
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -212,6 +219,7 @@ import { PopoverComponent } from './components/general/popover/popover.component
     MatCheckboxModule,
     MatProgressSpinnerModule,
     MatDividerModule,
+    MatProgressBarModule,
     CdkTableModule,
     MatDatepickerModule,
     NativeDateModule,

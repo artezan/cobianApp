@@ -11,6 +11,11 @@ import { UserSessionService } from '../../../services/user-session.service';
 import { IUserSession } from '../../../models/userSession.model';
 import { INotification } from '../../../models/notification.model';
 import { OnesignalService } from '../../../services/onesignal.service';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  SearchSelectComponent,
+  SearchDialog,
+} from '../../general/search-select/search-select.component';
 
 @Component({
   selector: 'app-new-edit-adviser',
@@ -36,6 +41,7 @@ export class NewEditAdviserComponent implements OnInit {
     private navCtr: NavController,
     private userSession: UserSessionService,
     private oneSignalService: OnesignalService,
+    public dialog: MatDialog,
   ) {
     this.user = userSession.userSession.value;
   }
@@ -187,6 +193,49 @@ export class NewEditAdviserComponent implements OnInit {
         // guardar noti
         this.oneSignalService.newNotification(notification).subscribe();
       });
+  }
+  // dialog
+  public async searchBuyers() {
+    const buyers = await this.buyerService.getBuyerAll().toPromise();
+    console.log(buyers);
+    const dialogRef = this.dialog.open(SearchSelectComponent, {
+      /*  maxWidth: '50%',
+        minWidth: '20%', */
+      data: <SearchDialog>{
+        header:
+          'Buscar clientes para asignar un asesor, seleccione uno o varios',
+        hideButtonCancel: true,
+        okButton: 'OK',
+        isMultiple: true,
+        rows: buyers,
+        typeFilter: 'filter-buyer',
+        columns: [
+          {
+            name: 'Nombre',
+            prop: 'name',
+            type: 'normal',
+          },
+          {
+            name: 'Apellido',
+            prop: 'fatherLastName',
+            type: 'normal',
+          },
+          {
+            name: 'Fecha Alta',
+            prop: 'timestamp',
+            type: 'date',
+          },
+          {
+            name: 'Estado',
+            prop: 'statusBuyerProperty',
+            type: 'statusBuyerProperty',
+          },
+        ],
+      },
+    });
+    const sub = dialogRef.componentInstance.buttons.subscribe(res => {
+      console.log('resp search', res);
+    });
   }
   getPopMessage(event) {
     const isDisabled = (<HTMLInputElement>document.getElementById('submitUser'))

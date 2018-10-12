@@ -1,0 +1,78 @@
+<!-- contenido -->
+<mat-progress-bar *ngIf="!isLoad" mode='indeterminate' color="accent"></mat-progress-bar>
+<mat-drawer-container class="side-container" autosize>
+  <h2 mat-dialog-title>{{dataInput.header}}</h2>
+  <!-- Default Searchbar -->
+  <ion-searchbar (ionClear)="search(undefined)" (keyup)="search(Search.value)" #Search animated placeholder="Buscar"
+    mat-dialog-title></ion-searchbar>
+
+  <!-- contenido de filtros -->
+  <mat-drawer position="end" #drawer class="sidenav" [mode]="'over'" [opened]="false">
+    <app-general-filter-buyer *ngIf="dataInput.typeFilter === 'filter-buyer'" (filters)="getFilters($event)" (resetAll)="getBuyerAll()"
+      (closeMenu)="drawer.close()"></app-general-filter-buyer>
+  </mat-drawer>
+  <!-- /contenido de filtros -->
+  <!-- filtros boton -->
+  <ion-item *ngIf="!isDesktop" lines="none">
+    <ion-button (click)="drawer.toggle()" slot="end" color="secondary" fill="outline">
+      <ion-icon name="funnel"></ion-icon>Filtros({{numOfFilters}})
+    </ion-button>
+  </ion-item>
+
+  <!-- /filtros boton -->
+
+  <!-- button -->
+  <mat-dialog-content>
+    <span *ngIf="dataInput.body" [innerHTML]="dataInput.body"></span>
+    <!-- Multiple -->
+    <span *ngIf="dataInput.isMultiple">
+      <!-- Checkboxes in a List -->
+      <ion-list>
+        <ion-item *ngFor="let row of dataInput.rows;">
+          <ion-label text-wrap>
+            <span *ngFor="let column of dataInput.columns; let i=index">
+              <p *ngIf="column.type === 'normal'"> {{row[column.prop]}} </p>
+              <p *ngIf="column.type === 'date'"> {{formatDates(row[column.prop])}}</p>
+              <span *ngIf="column.type === 'statusBuyerProperty'">
+                <ion-chip *ngFor="let sbp of row[column.prop]" [ngClass]="{
+                  'background-gris': sbp.status === 'gris', 
+                  'background-verde': sbp.status === 'verde',
+                  'background-amarillo': sbp.status === 'amarillo',
+                  'background-rojo': sbp.status === 'rojo',
+                  'background-azul': sbp.status === 'azul'
+              }">
+                  <ion-label>{{sbp.property.name}}</ion-label>
+                </ion-chip>
+                <ion-chip style="padding: 2%" class="background-gris" *ngIf="row[column.prop].length === 0">
+                  Sin interés
+                </ion-chip>
+              </span>
+            </span>
+          </ion-label>
+          <!-- <ion-checkbox slot="end" [(ngModel)]="entry.isChecked"></ion-checkbox> -->
+          <ion-checkbox (ionChange)="ionChangeCheckBox(row, $event.detail.checked)" slot="start"></ion-checkbox>
+        </ion-item>
+      </ion-list>
+    </span>
+    <!-- Solo uno -->
+    <span *ngIf="!dataInput.isMultiple">
+      <ion-list>
+        <ion-radio-group>
+          <ion-item>
+            <ion-label>Cord</ion-label>
+            <ion-radio value="cord"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+    </span>
+
+  </mat-dialog-content>
+  <mat-dialog-actions style="justify-content: flex-end;">
+    <button color="accent" (click)="buttonsResponse(true)" mat-button mat-flat-button mat-dialog-close>{{dataInput.okButton
+      ? dataInput.okButton : 'Ok'}}</button>
+    <button color="warn" *ngIf="!dataInput.hideButtonCancel" mat-button mat-dialog-close mat-stroked-button (click)="buttonsResponse(false)">Cancelar</button>
+
+  </mat-dialog-actions>
+  <br><br>
+  <!-- /contenido -->
+</mat-drawer-container>

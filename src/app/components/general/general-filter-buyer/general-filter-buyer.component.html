@@ -16,8 +16,8 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<!-- <div class="main"> -->
-<ion-content fullscreen>
+<div class="main">
+  <!-- <ion-content fullscreen> -->
   <ion-list>
     <ion-radio-group [(ngModel)]="status" (ionChange)="applyFilters()">
       <ion-list-header>
@@ -81,7 +81,7 @@
     </ion-label>
     <ion-input (ionChange)="applyFilters()" type="number" [(ngModel)]="yearInput" #day="ngModel" id="day" name="day"></ion-input>
   </ion-item>
-</ion-content>
+  <!-- </ion-content> -->
 
 
-<!-- </div> -->
+</div>

@@ -20,7 +20,6 @@ import { BuyerService } from '../../../services/buyer.service';
 import { IAdviser } from '../../../models/adviser.model';
 import { map } from 'rxjs/operators';
 import { AdviserService } from '../../../services/adviser.service';
-import { MatDatepickerInputEvent, MatDialog } from '@angular/material';
 import { Moment } from 'moment';
 import { ScheduleService } from '../../../services/schedule.service';
 import { UserSessionService } from '../../../services/user-session.service';
@@ -29,6 +28,7 @@ import { DialogGeneralComponent } from '../../general/dialog-general/dialog-gene
 import { INotification } from '../../../models/notification.model';
 import { OnesignalService } from '../../../services/onesignal.service';
 import { FormatDatesFront, FormatHoursFront } from '../../../_config/_helpers';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-new-edit-schedule',
