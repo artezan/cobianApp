@@ -46,17 +46,14 @@ export class NewEditMakerComponent implements OnInit {
           this.maker = m;
           if (m.build) {
             this.oldBuild = m.build._id;
+            this.maker.build = this.oldBuild;
           } else {
-            const obj = { _id: '' };
-            this.maker.build = obj;
           }
           console.log(m);
           this.isLoad = true;
         });
         this.isNew = false;
       } else {
-        const obj = { _id: '' };
-        this.maker.build = obj;
         this.isNew = true;
         this.isLoad = true;
       }
@@ -67,40 +64,57 @@ export class NewEditMakerComponent implements OnInit {
   }
   newCustomer() {
     this.makerService.newMaker(this.maker).subscribe(s => {
-      // add
-      this.buildService.getBuildById(this.maker.build._id).subscribe(build => {
-        const findIndex = build.maker.findIndex(m => m._id === this.maker._id);
-        if (findIndex === -1) {
-          build.maker.push(s);
-          this.buildService.putBuild(build).subscribe(() => {
-            this.notification(
-              'Nueva Obra',
-              `Se le ha asignado: ${build.name}`,
-              'verde',
-              'build',
-              undefined,
-              [this.maker._id],
+      if (s.build !== undefined) {
+        this.buildService
+          .getBuildById(<any>this.maker.build)
+          .subscribe(build => {
+            const findIndex = build.maker.findIndex(
+              m => m._id === this.maker._id,
             );
-            console.log('add');
-            const toast: NavigationExtras = {
-              queryParams: { res: 'Nuevo Cosntructor Agregado' },
-            };
-            // this.router.navigate(['list-seller-admin'], toast);
-            this.router
-              .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
-              .then(() => this.router.navigate(['list-maker-admin'], toast));
+            if (findIndex === -1) {
+              build.maker.push(s);
+              this.buildService.putBuild(build).subscribe(() => {
+                this.notification(
+                  'Nueva Obra',
+                  `Se le ha asignado: ${build.name}`,
+                  'verde',
+                  'build',
+                  undefined,
+                  [this.maker._id],
+                );
+                console.log('add');
+                const toast: NavigationExtras = {
+                  queryParams: { res: 'Nuevo Cosntructor Agregado' },
+                };
+                // this.router.navigate(['list-seller-admin'], toast);
+                this.router
+                  .navigateByUrl('/RefrshComponent', {
+                    skipLocationChange: true,
+                  })
+                  .then(() =>
+                    this.router.navigate(['list-maker-admin'], toast),
+                  );
+              });
+            }
           });
-        }
-      });
+      } else {
+        const toast: NavigationExtras = {
+          queryParams: { res: 'Nuevo Cosntructor Agregado' },
+        };
+        this.router
+          .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
+          .then(() => this.router.navigate(['list-maker-admin'], toast));
+      }
+      // add
     });
   }
   editCustomer() {
     console.log(this.oldBuild);
-    console.log(this.maker.build._id);
-    if (this.oldBuild && this.oldBuild !== this.maker.build._id) {
+    console.log(this.maker.build);
+    if (this.oldBuild && this.oldBuild !== this.maker.build) {
       console.log('a');
       // add
-      this.buildService.getBuildById(this.maker.build._id).subscribe(build => {
+      this.buildService.getBuildById(<any>this.maker.build).subscribe(build => {
         const findIndex = build.maker.findIndex(m => m._id === this.maker._id);
         if (findIndex === -1) {
           build.maker.push(this.maker);

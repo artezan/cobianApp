@@ -84,6 +84,13 @@
               </mat-select>
               <mat-error *ngIf="property.dirty || property.touched">Anotar Tipo</mat-error>
             </mat-form-field>
+
+            <div>
+              <button [disabled]="user.type === 'seller'" mat-raised-button color="primary" (click)="searchProp()">
+                <ion-spinner *ngIf="isSpinner" style="color: white" name="bubbles"></ion-spinner>
+                Buscar Propiedades
+              </button>
+            </div>
           </div>
           <mat-card-actions align="end">
             <div style="margin-right: 2%">

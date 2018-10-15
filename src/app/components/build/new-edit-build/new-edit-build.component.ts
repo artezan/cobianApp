@@ -11,6 +11,13 @@ import { FormStr } from '../../general/form-str-list/form-str-list.component';
 import { INotification } from '../../../models/notification.model';
 import { UserSessionService } from '../../../services/user-session.service';
 import { OnesignalService } from '../../../services/onesignal.service';
+import { FormatDatesFront } from '../../../_config/_helpers';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  SearchSelectComponent,
+  SearchDialog,
+} from '../../general/search-select/search-select.component';
+import { map } from 'rxjs/internal/operators/map';
 
 @Component({
   selector: 'app-new-edit-build',
@@ -38,6 +45,7 @@ export class NewEditBuildComponent implements OnInit {
   arrDate2 = [];
   isDesktop: any;
   isPhasesValid = false;
+  isSpinner: boolean;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -46,6 +54,7 @@ export class NewEditBuildComponent implements OnInit {
     private platform: Platform,
     private userSessionService: UserSessionService,
     private oneSignalService: OnesignalService,
+    public dialog: MatDialog,
   ) {
     this.isDesktop = platform.is('desktop');
   }
@@ -121,6 +130,9 @@ export class NewEditBuildComponent implements OnInit {
         undefined,
         <any>b.maker,
       );
+      b.timeLine.forEach(tm => {
+        this.notificationBySchedule(tm, b.name, b);
+      });
 
       b.maker.forEach(m => {
         console.log(m);
@@ -136,6 +148,7 @@ export class NewEditBuildComponent implements OnInit {
     });
   }
   editCustomer() {
+    this.build.notificationOneSignal = this.deleteOneSignal(this.build);
     this.setMakers();
     // this.build.maker = this.maker;
     this.buildService.putBuild(this.build).subscribe(() => {
@@ -163,6 +176,69 @@ export class NewEditBuildComponent implements OnInit {
         this.build.maker.push(element);
         const maker = { _id: element, build: this.build };
         this.makerService.putMaker(maker).subscribe(() => console.log('add'));
+      }
+    });
+  }
+  // dialog
+  public async searchBuyers() {
+    this.isSpinner = true;
+    const makers: any = await this.makerService
+      .getMakerAll()
+      .pipe(
+        map(arr =>
+          arr.map((maker: any) => {
+            if (maker.build) {
+              maker.buildName = <any>maker.build.name;
+            } else {
+              maker.buildName = <any>'';
+            }
+            return maker;
+          }),
+        ),
+      )
+      .toPromise();
+    console.log(makers);
+    this.isSpinner = false;
+    const dialogRef = this.dialog.open(SearchSelectComponent, {
+      /*  maxWidth: '50%',
+        minWidth: '20%', */
+      data: <SearchDialog>{
+        header:
+          'Buscar constructores para asignarle una obra, seleccione uno o varios',
+        hideButtonCancel: true,
+        okButton: 'OK',
+        isMultiple: true,
+        filtersDetail: false,
+        itemsIdDisable: makers.filter(m => m.buildName !== '').map(m => m._id),
+        rows: makers,
+        typeFilter: 'filter-makers',
+        columns: [
+          {
+            name: 'Nombre',
+            prop: 'name',
+            type: 'normal',
+          },
+          {
+            name: 'Apellido',
+            prop: 'lastName',
+            type: 'normal',
+          },
+          {
+            name: 'Fecha Alta',
+            prop: 'timestamp',
+            type: 'date',
+          },
+          {
+            name: 'Obra',
+            prop: 'buildName',
+            type: 'normal',
+          },
+        ],
+      },
+    });
+    const sub = dialogRef.componentInstance.buttons.subscribe(res => {
+      if (res.options) {
+        this.maker = res.arrSelect.map(r => r._id);
       }
     });
   }
@@ -217,5 +293,50 @@ export class NewEditBuildComponent implements OnInit {
         // guardar noti
         this.oneSignalService.newNotification(notification).subscribe();
       });
+  }
+  private notificationBySchedule(timeLine, buildName, build: IBuild) {
+    const date = this.getDate(
+      timeLine.dayToEnd,
+      timeLine.monthToEnd,
+      timeLine.yearToEnd,
+    );
+    // onesignal
+    this.oneSignalService
+      .postOneSignalBySchedule(
+        'Recordatorio de Fase',
+        `La fase "${
+          timeLine.namePhase
+        }" de la obra ${buildName} llegó a la fecha límite: ${date}`,
+        new Date(
+          timeLine.yearToEnd,
+          timeLine.monthToEnd,
+          timeLine.dayToEnd,
+          10,
+          40,
+        ),
+        ['office', 'administrator'],
+        build.maker === undefined ? undefined : build.maker.map(m => m._id),
+      )
+      .subscribe(data => {
+        if (!build.notificationOneSignal) {
+          build.notificationOneSignal = [];
+        }
+        build.notificationOneSignal.push(data.id);
+        this.buildService.putBuild(build).subscribe();
+      });
+  }
+  private deleteOneSignal(build: IBuild) {
+    /* const schedule = await this.scheduleService
+      .getScheduleById(scheduleId)
+      .toPromise(); */
+    if (build.notificationOneSignal && build.notificationOneSignal.length > 0) {
+      build.notificationOneSignal.forEach((idN, i) => {
+        this.oneSignalService.deleteOneSignalSchedule(idN).subscribe();
+      });
+      return (build.notificationOneSignal = []);
+    }
+  }
+  getDate(day, month, year) {
+    return FormatDatesFront(new Date(year, month, day));
   }
 }

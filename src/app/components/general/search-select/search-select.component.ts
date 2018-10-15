@@ -6,9 +6,20 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { BuyersFilters } from '../../../_config/_helpers';
+import {
+  BuyersFilters,
+  PropertyFilter,
+  OnlyDates,
+} from '../../../_config/_helpers';
 import { BuyerService } from '../../../services/buyer.service';
 import { IBuyer } from '../../../models/buyer.model';
+import { PropertyService } from '../../../services/property.service';
+import { IProperty } from '../../../models/property.model';
+import { MakerService } from '../../../services/maker.service';
+import { IMaker } from '../../../models/maker.model';
+import { map } from 'rxjs/internal/operators/map';
+import { AdviserService } from '../../../services/adviser.service';
+import { IAdviser } from '../../../models/adviser.model';
 
 export interface SearchDialog {
   header: string;
@@ -17,12 +28,19 @@ export interface SearchDialog {
   okButton?: string;
   rows?: any[];
   isMultiple?: boolean;
-  typeFilter: 'filter-buyer';
+  typeFilter:
+    | 'filter-buyer'
+    | 'filter-prop'
+    | 'filter-prop2'
+    | 'filter-makers'
+    | 'filter-adv';
   columns: {
     name: string;
     prop: string;
     type: string;
   }[];
+  itemsIdDisable?: string[];
+  filtersDetail?: boolean;
 }
 
 @Component({
@@ -41,16 +59,62 @@ export class SearchSelectComponent implements OnInit {
   statusChange = new EventEmitter();
   statusTicket: string;
   buyers: IBuyer[];
+  properties: IProperty[];
+  makers: IMaker[];
+  advisers: IAdviser[];
   public dataInput: SearchDialog;
   private dataInput2: SearchDialog;
   constructor(
     public dialogRef: MatDialogRef<SearchSelectComponent>,
     @Inject(MAT_DIALOG_DATA) public data: SearchDialog,
     private buyerService: BuyerService,
+    private propService: PropertyService,
+    private makersService: MakerService,
+    private advService: AdviserService,
   ) {
+    // recibe items
     this.dataInput = data;
+    // tipo de items
     if (this.dataInput.typeFilter === 'filter-buyer') {
+      // busca todos los items
       buyerService.getBuyerAll().subscribe(b => (this.buyers = b));
+    } else if (this.dataInput.typeFilter === 'filter-prop') {
+      propService.getAllSpecial().subscribe(prop => (this.properties = prop));
+    } else if (this.dataInput.typeFilter === 'filter-prop2') {
+      propService.getAll().subscribe(prop => (this.properties = prop));
+    } else if (this.dataInput.typeFilter === 'filter-makers') {
+      makersService
+        .getMakerAll()
+        .pipe(
+          map(arr =>
+            arr.map((maker: any) => {
+              if (maker.build) {
+                maker.buildName = <any>maker.build.name;
+              } else {
+                maker.buildName = <any>'';
+              }
+              return maker;
+            }),
+          ),
+        )
+        .subscribe(m => (this.makers = m));
+    } else if (this.dataInput.typeFilter === 'filter-adv') {
+      advService
+        .getAdviserAll()
+        .pipe(
+          map(arr =>
+            arr.map((adviser: any) => {
+              adviser.numOfBuyer = `Número de Clientes: ${
+                adviser.buyer.length
+              }`;
+              adviser.range = `Disponible de ${adviser.hourStart} a ${
+                adviser.hourEnd
+              }`;
+              return adviser;
+            }),
+          ),
+        )
+        .subscribe(a => (this.advisers = a));
     }
   }
   /*   onNoClick(): void {
@@ -91,12 +155,57 @@ export class SearchSelectComponent implements OnInit {
       this.numOfFilters = numFilters;
     }
   }
+  getFiltersProp(filters: IProperty) {
+    const advFinded = this.properties.filter(prop => {
+      const temp = PropertyFilter(filters, prop);
+      this.numOfFilters = temp.numOfFilters;
+      return temp.isHope;
+    });
+    //  setea buyers
+    this.dataInput.rows = advFinded;
+  }
+  getFiltersAdv(filters: {
+    day: number;
+    month: number;
+    year: number;
+    status: string;
+    hourStart: number;
+    hourEnd: number;
+  }) {
+    const advFinded = this.advisers.filter(adv => OnlyDates(adv, filters));
+    //  setea buyers
+    this.dataInput.rows = advFinded;
+    // num filters
+    let numFilters = 0;
+    if (filters.day) {
+      numFilters++;
+    }
+    if (filters.month) {
+      numFilters++;
+    }
+    if (filters.year) {
+      numFilters++;
+    }
+    if (filters.status) {
+      numFilters++;
+    }
+    if (filters.hourEnd) {
+      numFilters++;
+    }
+    if (filters.hourStart) {
+      numFilters++;
+    }
+    this.numOfFilters = numFilters;
+  }
   async getBuyerAll() {
     this.isLoad = false;
     // const buyers = await this.buyerService.getBuyerAll().toPromise();
     this.dataInput.rows = this.buyers;
     this.isLoad = true;
     return await true;
+  }
+  getPropAll() {
+    this.dataInput.rows = this.properties;
   }
   formatDates(dateInput: Date): string {
     const day: string = new Date(dateInput).getDate().toString();
@@ -115,28 +224,47 @@ export class SearchSelectComponent implements OnInit {
       }
     }
   }
+  ionChangeRadioButton(row) {
+    this.arrSelect[0] = row;
+  }
   async search(str: string) {
-    if (str === undefined) {
+    if (this.dataInput.typeFilter === 'filter-buyer') {
       this.dataInput.rows = this.buyers;
+    } else if (this.dataInput.typeFilter === 'filter-prop') {
+      this.dataInput.rows = this.properties;
+    } else if (this.dataInput.typeFilter === 'filter-prop2') {
+      this.dataInput.rows = this.properties;
+    } else if (this.dataInput.typeFilter === 'filter-makers') {
+      this.dataInput.rows = this.makers;
+    } else if (this.dataInput.typeFilter === 'filter-adv') {
+      this.dataInput.rows = this.advisers;
+    }
+    if (str === undefined) {
     } else {
-      if (this.dataInput.typeFilter === 'filter-buyer') {
-        this.dataInput.rows = this.buyers;
-        // if (await this.getBuyerAll()) {
-        const searchString = row => {
-          return (
-            Object.values(row).filter(
-              v =>
-                v
-                  .toString()
-                  .toLocaleLowerCase()
-                  .indexOf(str.toLocaleLowerCase()) >= 0,
-            ).length > 0
-          );
-        };
-        const filter = this.dataInput.rows.filter(row => searchString(row));
-        this.dataInput.rows = filter;
-        // }
-      }
+      const searchString = row => {
+        return (
+          Object.values(row).filter(
+            v =>
+              v
+                .toString()
+                .toLocaleLowerCase()
+                .indexOf(str.toLocaleLowerCase()) >= 0,
+          ).length > 0
+        );
+      };
+      const filter = this.dataInput.rows.filter(row => searchString(row));
+      this.dataInput.rows = filter;
+    }
+  }
+  // _helpers
+  isDisable(idInput: string) {
+    if (
+      this.dataInput.itemsIdDisable &&
+      this.dataInput.itemsIdDisable.length > 0
+    ) {
+      return this.dataInput.itemsIdDisable.some(id => id === idInput);
+    } else {
+      return false;
     }
   }
 }

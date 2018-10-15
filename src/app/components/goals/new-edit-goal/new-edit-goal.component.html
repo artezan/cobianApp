@@ -23,29 +23,10 @@
         <mat-card [ngClass]="{'desktop-card': isDesktop }">
           <mat-card-title>Datos del Objetivo</mat-card-title>
 
-          <div class="flex-container2" *ngIf="goal.adviser && goal.adviser.length > 0">
-            <!-- list adv -->
-            <mat-list role="list">
-              <h3 mat-subheader>Asesores del Objetivo</h3>
-              <mat-list-item role="listitem" *ngFor="let adv of goal.adviser">
-                {{adv.name}} {{adv.lastName}}
-                <!-- <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="schedule.adviser=undefined"></button> -->
-                <button matTooltip="Eliminar" mat-icon-button (click)="deleteAdviserOfGoal(adv._id)">
-                  <mat-icon color="warn">clear</mat-icon>
-                </button>
-              </mat-list-item>
-            </mat-list>
-          </div>
+
 
           <div class="flex-container">
-            <!-- adv -->
-            <mat-form-field appearance="outline">
-              <mat-label>Asesores</mat-label>
-              <mat-select [(ngModel)]="adviserSelect" #adviserSelect2="ngModel" id="adviserSelect2" name="adviserSelect2"
-                [required]="isNew" multiple>
-                <mat-option *ngFor="let adv of advisers$ | async" [value]="adv">{{adv.name}} {{adv.lastName}}</mat-option>
-              </mat-select>
-            </mat-form-field>
+
             <!-- title -->
             <mat-form-field appearance="outline">
               <mat-label>Titulo</mat-label>
@@ -135,6 +116,35 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
+            </div>
+            <div *ngIf="goal.adviser && goal.adviser.length > 0">
+              <!-- list adv -->
+              <h4>Asesores del Objetivo</h4>
+              <mat-list role="list">
+                <mat-list-item role="listitem" *ngFor="let adv of goal.adviser">
+                  {{adv.name}} {{adv.lastName}}
+                  <!-- <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="schedule.adviser=undefined"></button> -->
+                  <button matTooltip="Eliminar" mat-icon-button (click)="deleteAdviserOfGoal(adv._id)">
+                    <mat-icon color="warn">clear</mat-icon>
+                  </button>
+                </mat-list-item>
+              </mat-list>
+            </div>
+            <!-- adv -->
+            <h4>{{adviserSelect.length === 0 ? 'Asignar Nuevos Asesores' : 'Asesores Nuevos Seleccionados'}}
+            </h4>
+            <mat-list>
+              <mat-list-item *ngFor="let adv of adviserSelect; let i=index">{{ adv.name }} {{ adv.lastName }}
+                <button mat-icon-button (click)="adviserSelect.splice(i, 1)">
+                  <mat-icon color="warn">clear</mat-icon>
+                </button>
+              </mat-list-item>
+            </mat-list>
+            <div style="padding: 0 16px; margin-bottom: 2%;">
+              <button mat-stroked-button color="accent" (click)="searchAdv()">
+                <ion-spinner *ngIf="isSpinner" color="secondary" name="bubbles"></ion-spinner>
+                Agregar Asesor
+              </button>
             </div>
             <!-- GENERAL str list -->
             <app-form-str-list nameTitle="Lista de Objetivos" nameItems="Objetivo" (arrList)="arrList = $event"

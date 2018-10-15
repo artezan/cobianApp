@@ -23,16 +23,27 @@
           <mat-card-title>Complete los campos</mat-card-title>
           <div class="flex-container">
             <!-- makers -->
-            <mat-form-field appearance="outline">
-              <mat-label>Constructores de la obra</mat-label>
-              <mat-select [(value)]="maker" [(ngModel)]="maker" #property="ngModel" id="property" name="property"
-                multiple>
-                <mat-option [disabled]="prop.build" *ngFor="let prop of makers" [value]="prop._id">
-                  {{prop.name}} <small *ngIf="prop.build">Pertenece a: {{prop.build.name}} </small>
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="property.dirty || property.touched">Selcciona</mat-error>
-            </mat-form-field>
+            <div>
+              <mat-form-field style="width: 100%" appearance="outline">
+                <mat-label>Constructores de la obra</mat-label>
+                <mat-select [(value)]="maker" [(ngModel)]="maker" #property="ngModel" id="property" name="property"
+                  multiple>
+                  <mat-option [disabled]="prop.build" *ngFor="let prop of makers" [value]="prop._id">
+                    {{prop.name}} <small *ngIf="prop.build">Pertenece a: {{prop.build.name}} </small>
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="property.dirty || property.touched">Selcciona</mat-error>
+
+              </mat-form-field>
+              <div>
+                <button mat-raised-button color="primary" (click)="searchBuyers()">
+                  <ion-spinner *ngIf="isSpinner" style="color: white" name="bubbles"></ion-spinner>
+                  Buscar Constructores
+                </button>
+              </div>
+            </div>
+
+
             <!-- name -->
             <mat-form-field appearance="outline">
               <mat-label>Nombre</mat-label>

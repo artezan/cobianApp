@@ -16,8 +16,8 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<!-- <div class="main"> -->
-<ion-content fullscreen>
+<div class="main">
+  <!-- <ion-content fullscreen> -->
   <ion-list>
     <ion-list-header>
       <ion-label>Fecha</ion-label>
@@ -53,7 +53,19 @@
     </ion-label>
     <ion-input (ionChange)="applyFilters()" type="number" [(ngModel)]="yearInput" #day="ngModel" id="day" name="day"></ion-input>
   </ion-item>
-</ion-content>
+  <ion-item>
+    <ion-label>
+      Hora de inicio
+    </ion-label>
+    <ion-input (ionChange)="applyFilters()" type="number" [(ngModel)]="hourStartInput" #hs="ngModel" id="hs" name="hs"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>
+      Hora Fin
+    </ion-label>
+    <ion-input (ionChange)="applyFilters()" type="number" [(ngModel)]="hourEndInput" #he="ngModel" id="he" name="he"></ion-input>
+  </ion-item>
+  <!-- </ion-content> -->
 
 
-<!-- </div> -->
+</div>

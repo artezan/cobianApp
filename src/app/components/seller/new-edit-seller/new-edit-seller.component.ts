@@ -8,6 +8,11 @@ import { Observable } from 'rxjs/internal/Observable';
 import { IProperty } from '../../../models/property.model';
 import { UserSessionService } from '../../../services/user-session.service';
 import { IUserSession } from '../../../models/userSession.model';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  SearchSelectComponent,
+  SearchDialog,
+} from '../../general/search-select/search-select.component';
 
 @Component({
   selector: 'app-new-edit-seller',
@@ -23,6 +28,7 @@ export class NewEditSellerComponent implements OnInit {
   seller: ISeller = {};
   properties$: Observable<IProperty[]>;
   user: IUserSession;
+  isSpinner: boolean;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -30,6 +36,7 @@ export class NewEditSellerComponent implements OnInit {
     private navCtr: NavController,
     private propertyService: PropertyService,
     private userSession: UserSessionService,
+    public dialog: MatDialog,
   ) {
     this.user = userSession.userSession.value;
   }
@@ -104,6 +111,51 @@ export class NewEditSellerComponent implements OnInit {
         this.router
           .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
           .then(() => this.router.navigate(['list-seller-admin'], toast));
+      }
+    });
+  }
+  // dialog
+  public async searchProp() {
+    this.isSpinner = true;
+    const prop = await this.propertyService.getAllSpecial().toPromise();
+    this.isSpinner = false;
+    console.log(prop);
+    const dialogRef = this.dialog.open(SearchSelectComponent, {
+      /*  maxWidth: '50%',
+        minWidth: '20%', */
+      data: <SearchDialog>{
+        header: 'Buscar Propiedades del Vendedor',
+        hideButtonCancel: true,
+        okButton: 'OK',
+        isMultiple: true,
+        itemsIdDisable:
+          this.seller.property !== undefined
+            ? [
+                ...this.seller.property,
+                ...prop.filter(p => p.isBuy === true).map(p => p._id),
+              ]
+            : prop.filter(p => p.isBuy === true).map(p => p._id),
+        rows: prop,
+        typeFilter: 'filter-prop',
+        columns: [
+          {
+            name: 'Nombre',
+            prop: 'name',
+            type: 'normal',
+          },
+          {
+            name: 'Fecha Alta',
+            prop: 'timestamp',
+            type: 'date',
+          },
+        ],
+      },
+    });
+    const sub = dialogRef.componentInstance.buttons.subscribe(res => {
+      console.log(res);
+      if (res.options) {
+        this.seller.property = res.arrSelect;
+        console.log(this.seller);
       }
     });
   }

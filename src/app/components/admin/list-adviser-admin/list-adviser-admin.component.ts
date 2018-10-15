@@ -79,6 +79,11 @@ export class ListAdviserAdminComponent implements OnInit {
         prop: 'numOfBuyers',
         type: 'normal',
       },
+      {
+        name: 'Disponibilidad',
+        prop: 'range',
+        type: 'normal',
+      },
       /* {
         name: '# Renta/Venta',
         prop: 'numOfSale',
@@ -109,6 +114,7 @@ export class ListAdviserAdminComponent implements OnInit {
 
     advisers.forEach((adviser, i) => {
       let numOfBuyers = 0;
+      const range = `De ${adviser.hourStart} a ${adviser.hourEnd}`;
       if (adviser.buyer) {
         numOfBuyers = adviser.buyer.length;
       }
@@ -118,11 +124,12 @@ export class ListAdviserAdminComponent implements OnInit {
         lastName: adviser.lastName,
         timestamp: adviser.timestamp,
         numOfBuyers: numOfBuyers,
+        range: range,
         // numOfSale: arr[i],
       });
-      this.rows = rows;
-      this.isLoading = true;
     });
+    this.rows = rows;
+    this.isLoading = true;
   }
   getNumOfSales(advisers: IAdviser[]) {
     const arrNum: number[] = [];
@@ -205,8 +212,11 @@ export class ListAdviserAdminComponent implements OnInit {
     month: number;
     year: number;
     status: string;
+    hourStart?: number;
+    hourEnd?: number;
   }) {
     const advFinded = this.adviser.filter(adv => OnlyDates(adv, filters));
+    console.log(advFinded);
     //  setea buyers
     this.setRows(advFinded);
     // num filters

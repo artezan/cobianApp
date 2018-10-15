@@ -158,8 +158,12 @@ export function OnlyDates(
     day: number;
     month: number;
     year: number;
+    hourStart?: number;
+    hourEnd?: number;
   },
 ) {
+  console.log('fil', filtersApply);
+  console.log('some', some);
   let isOK = true;
   const buyerDate = new Date(some.timestamp);
   // si existe
@@ -177,6 +181,19 @@ export function OnlyDates(
   // si existe
   if (filtersApply.year !== undefined && filtersApply.year !== null) {
     if (buyerDate.getFullYear() !== filtersApply.year) {
+      isOK = false;
+    }
+  }
+  // si existe
+  if (filtersApply.hourEnd !== undefined && filtersApply.hourEnd !== null) {
+    if (some.hourEnd < filtersApply.hourEnd) {
+      isOK = false;
+    }
+  }
+  // si existe
+  if (filtersApply.hourStart !== undefined && filtersApply.hourStart !== null) {
+    if (some.hourStart > filtersApply.hourStart) {
+      console.log(false);
       isOK = false;
     }
   }

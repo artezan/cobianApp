@@ -34,6 +34,13 @@
                 </mat-select>
                 <mat-error *ngIf="bu.dirty || bu.touched">Selecciona</mat-error>
               </mat-form-field>
+              <div>
+                <button [disabled]="!isNew" style="margin-bottom: 2%;" mat-raised-button color="primary" (click)="searchBuyers()">
+                  <ion-spinner *ngIf="isSpinner" style="color: white" name="bubbles"></ion-spinner>
+                  <ion-icon name="search"></ion-icon>
+                  Buscar Clientes
+                </button>
+              </div>
               <!-- prop -->
               <mat-form-field *ngIf="bu.value && !isEmpty" appearance="outline">
                 <mat-label>Propiedad de Interés</mat-label>

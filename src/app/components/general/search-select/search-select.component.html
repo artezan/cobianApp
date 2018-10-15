@@ -10,10 +10,12 @@
   <mat-drawer position="end" #drawer class="sidenav" [mode]="'over'" [opened]="false">
     <app-general-filter-buyer *ngIf="dataInput.typeFilter === 'filter-buyer'" (filters)="getFilters($event)" (resetAll)="getBuyerAll()"
       (closeMenu)="drawer.close()"></app-general-filter-buyer>
+    <app-filter-adviser *ngIf="dataInput.typeFilter === 'filter-adv'" (filters)="getFiltersAdv($event)" (resetAll)="dataInput.rows = advisers"
+      (closeMenu)="drawer.close()" [isDesktop]="false"></app-filter-adviser>
   </mat-drawer>
   <!-- /contenido de filtros -->
   <!-- filtros boton -->
-  <ion-item *ngIf="!isDesktop" lines="none">
+  <ion-item *ngIf="dataInput.filtersDetail" lines="none">
     <ion-button (click)="drawer.toggle()" slot="end" color="secondary" fill="outline">
       <ion-icon name="funnel"></ion-icon>Filtros({{numOfFilters}})
     </ion-button>
@@ -50,7 +52,8 @@
             </span>
           </ion-label>
           <!-- <ion-checkbox slot="end" [(ngModel)]="entry.isChecked"></ion-checkbox> -->
-          <ion-checkbox (ionChange)="ionChangeCheckBox(row, $event.detail.checked)" slot="start"></ion-checkbox>
+          <ion-checkbox [disabled]="isDisable(row._id)" (ionChange)="ionChangeCheckBox(row, $event.detail.checked)"
+            slot="start"></ion-checkbox>
         </ion-item>
       </ion-list>
     </span>
@@ -58,9 +61,28 @@
     <span *ngIf="!dataInput.isMultiple">
       <ion-list>
         <ion-radio-group>
-          <ion-item>
-            <ion-label>Cord</ion-label>
-            <ion-radio value="cord"></ion-radio>
+          <ion-item *ngFor="let row of dataInput.rows;">
+            <ion-label text-wrap>
+              <span *ngFor="let column of dataInput.columns; let i=index">
+                <p *ngIf="column.type === 'normal'"> {{row[column.prop]}} </p>
+                <p *ngIf="column.type === 'date'"> {{formatDates(row[column.prop])}}</p>
+                <span *ngIf="column.type === 'statusBuyerProperty'">
+                  <ion-chip *ngFor="let sbp of row[column.prop]" [ngClass]="{
+                    'background-gris': sbp.status === 'gris', 
+                    'background-verde': sbp.status === 'verde',
+                    'background-amarillo': sbp.status === 'amarillo',
+                    'background-rojo': sbp.status === 'rojo',
+                    'background-azul': sbp.status === 'azul'
+                }">
+                    <ion-label>{{sbp.property.name}}</ion-label>
+                  </ion-chip>
+                  <ion-chip style="padding: 2%" class="background-gris" *ngIf="row[column.prop].length === 0">
+                    Sin interés
+                  </ion-chip>
+                </span>
+              </span>
+            </ion-label>
+            <ion-radio [checked]="isDisable(row._id)" (click)="ionChangeRadioButton(row)" slot="start"></ion-radio>
           </ion-item>
         </ion-radio-group>
       </ion-list>

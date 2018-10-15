@@ -29,6 +29,10 @@ import { INotification } from '../../../models/notification.model';
 import { OnesignalService } from '../../../services/onesignal.service';
 import { FormatDatesFront, FormatHoursFront } from '../../../_config/_helpers';
 import { MatDialog } from '@angular/material/dialog';
+import {
+  SearchSelectComponent,
+  SearchDialog,
+} from '../../general/search-select/search-select.component';
 
 @Component({
   selector: 'app-new-edit-schedule',
@@ -49,6 +53,7 @@ export class NewEditScheduleComponent implements OnInit {
   item;
   adviserBefore: string;
   user: IUserSession;
+  isSpinner: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -601,5 +606,152 @@ export class NewEditScheduleComponent implements OnInit {
   }
   formatHour(h, m) {
     return FormatHoursFront(h, m);
+  }
+  // dialog
+  public async searchBuyers() {
+    this.isSpinner = true;
+    const buyers = await this.buyerService.getBuyerAll().toPromise();
+    this.isSpinner = false;
+    const dialogRef = this.dialog.open(SearchSelectComponent, {
+      /*  maxWidth: '50%',
+      minWidth: '20%', */
+      data: <SearchDialog>{
+        header: 'Buscar clientes para cita, seleccione uno o varios',
+        hideButtonCancel: true,
+        okButton: 'OK',
+        isMultiple: false,
+        filtersDetail: true,
+        rows: buyers,
+        typeFilter: 'filter-buyer',
+        columns: [
+          {
+            name: 'Nombre',
+            prop: 'name',
+            type: 'normal',
+          },
+          {
+            name: 'Apellido',
+            prop: 'fatherLastName',
+            type: 'normal',
+          },
+          {
+            name: 'Fecha Alta',
+            prop: 'timestamp',
+            type: 'date',
+          },
+          {
+            name: 'Estado',
+            prop: 'statusBuyerProperty',
+            type: 'statusBuyerProperty',
+          },
+        ],
+      },
+    });
+    const sub = dialogRef.componentInstance.buttons.subscribe(res => {
+      if (res.options) {
+        this.schedule.buyer = res.arrSelect[0]._id;
+        this.getAdvByBuyer();
+      }
+    });
+  }
+  // dialog
+  public async searchAdv() {
+    this.isSpinner = true;
+    const adv = await this.adviserService
+      .getAdviserAll()
+      .pipe(
+        map(arr =>
+          arr.map((adviser: any) => {
+            adviser.numOfBuyer = `Número de Clientes: ${adviser.buyer.length}`;
+            adviser.range = `Disponible de ${adviser.hourStart} a ${
+              adviser.hourEnd
+            }`;
+            return adviser;
+          }),
+        ),
+      )
+      .toPromise();
+    this.isSpinner = false;
+    const dialogRef = this.dialog.open(SearchSelectComponent, {
+      /*  maxWidth: '50%',
+      minWidth: '20%', */
+      data: <SearchDialog>{
+        header: 'Buscar asesor para cita, seleccione uno o varios',
+        hideButtonCancel: true,
+        okButton: 'OK',
+        isMultiple: false,
+        filtersDetail: true,
+        rows: adv,
+        typeFilter: 'filter-adv',
+        columns: [
+          {
+            name: 'Nombre',
+            prop: 'name',
+            type: 'normal',
+          },
+          {
+            name: 'Apellido',
+            prop: 'fatherLastName',
+            type: 'normal',
+          },
+          {
+            name: 'Fecha Alta',
+            prop: 'timestamp',
+            type: 'date',
+          },
+          {
+            name: '# De Consumidores',
+            prop: 'numOfBuyer',
+            type: 'normal',
+          },
+          {
+            name: 'Disponibilidad',
+            prop: 'range',
+            type: 'normal',
+          },
+        ],
+      },
+    });
+    const sub = dialogRef.componentInstance.buttons.subscribe(res => {
+      if (res.options) {
+        this.schedule.adviser = res.arrSelect[0]._id;
+      }
+    });
+  }
+  public async searchProp() {
+    this.isSpinner = true;
+    const prop = await this.propertyService.getAll().toPromise();
+    this.isSpinner = false;
+    console.log(prop);
+    const dialogRef = this.dialog.open(SearchSelectComponent, {
+      /*  maxWidth: '50%',
+        minWidth: '20%', */
+      data: <SearchDialog>{
+        header: 'Buscar Propiedades para Cita',
+        hideButtonCancel: true,
+        okButton: 'OK',
+        isMultiple: false,
+        rows: prop,
+        typeFilter: 'filter-prop2',
+        columns: [
+          {
+            name: 'Nombre',
+            prop: 'name',
+            type: 'normal',
+          },
+          {
+            name: 'Fecha Alta',
+            prop: 'timestamp',
+            type: 'date',
+          },
+        ],
+      },
+    });
+    const sub = dialogRef.componentInstance.buttons.subscribe(res => {
+      if (res.options) {
+        this.schedule.property = res.arrSelect[0]._id;
+        this.getAddress(res.arrSelect[0]._id);
+      }
+    });
   }
 }

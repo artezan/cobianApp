@@ -33,6 +33,7 @@ export class NewEditAdviserComponent implements OnInit {
   buyerSelect$: Observable<IBuyer>;
   buyerInput: IBuyer[] = [];
   user: IUserSession;
+  isSpinner = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -196,8 +197,9 @@ export class NewEditAdviserComponent implements OnInit {
   }
   // dialog
   public async searchBuyers() {
+    this.isSpinner = true;
     const buyers = await this.buyerService.getBuyerAll().toPromise();
-    console.log(buyers);
+    this.isSpinner = false;
     const dialogRef = this.dialog.open(SearchSelectComponent, {
       /*  maxWidth: '50%',
         minWidth: '20%', */
@@ -207,6 +209,14 @@ export class NewEditAdviserComponent implements OnInit {
         hideButtonCancel: true,
         okButton: 'OK',
         isMultiple: true,
+        filtersDetail: true,
+        itemsIdDisable:
+          this.adviser.buyer !== undefined
+            ? [
+                ...this.buyerInput.map(b => b._id),
+                ...this.adviser.buyer.map(b => b._id),
+              ]
+            : this.buyerInput.map(b => b._id),
         rows: buyers,
         typeFilter: 'filter-buyer',
         columns: [
@@ -234,7 +244,11 @@ export class NewEditAdviserComponent implements OnInit {
       },
     });
     const sub = dialogRef.componentInstance.buttons.subscribe(res => {
-      console.log('resp search', res);
+      console.log(res);
+      if (res.options) {
+        this.buyerInput = [...res.arrSelect, ...this.buyerInput];
+        console.log(this.buyerInput);
+      }
     });
   }
   getPopMessage(event) {

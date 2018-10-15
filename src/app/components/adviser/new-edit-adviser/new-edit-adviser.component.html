@@ -75,18 +75,33 @@
                       <mat-icon color="warn">clear</mat-icon>
                     </button>
                   </mat-list-item>
+                  <mat-divider style="position: relative;"></mat-divider>
                 </mat-list>
               </div>
-              <mat-form-field appearance="outline">
+              <!--    <mat-form-field appearance="outline">
                 <mat-label>Asignar Clientes</mat-label>
-                <mat-select [(ngModel)]="buyerInput" #b="ngModel" id="b" name="b" multiple>
+                <mat-select [(ngModel)]="buyerInput" [value]="buyerInput" #b="ngModel" id="b" name="b" multiple>
                   <mat-option *ngFor="let buyer of buyers$ | async" [value]="buyer">
                     {{buyer.name}} {{buyer.fatherLastName}}
                   </mat-option>
                 </mat-select>
-              </mat-form-field>
-              <div>
-                <button mat-raised-button color="primary" (click)="searchBuyers()">Búsqueda Avanzada</button>
+              </mat-form-field> -->
+              <mat-list>
+                <h3 mat-subheader>{{buyerInput.length === 0 ? 'Asignar Nuevos clientes' : 'Clientes Nuevos
+                  Seleccionados'}}
+                </h3>
+                <mat-list-item *ngFor="let buyer of buyerInput; let i=index">{{ buyer.name }} {{ buyer.fatherLastName
+                  }}
+                  <button mat-icon-button (click)="buyerInput.splice(i, 1)">
+                    <mat-icon color="warn">clear</mat-icon>
+                  </button>
+                </mat-list-item>
+              </mat-list>
+              <div style="margin-bottom: 1%;">
+                <button mat-stroked-button color="accent" (click)="searchBuyers()">
+                  <ion-spinner *ngIf="isSpinner" color="secondary" name="bubbles"></ion-spinner>
+                  Buscar Clientes
+                </button>
               </div>
 
             </div>

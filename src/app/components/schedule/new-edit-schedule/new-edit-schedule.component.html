@@ -22,6 +22,18 @@
         <mat-card>
           <mat-card-title>Complete los campos</mat-card-title>
           <div class="flex-container">
+            <!-- title -->
+            <mat-form-field appearance="outline">
+              <mat-label>Titulo del evento</mat-label>
+              <input matInput [(ngModel)]="schedule.title" #title="ngModel" id="title" name="title" required>
+              <mat-error *ngIf="title.dirty || title.touched">Anotar Titulo</mat-error>
+
+            </mat-form-field>
+            <!-- note -->
+            <mat-form-field appearance="outline">
+              <mat-label>Notas</mat-label>
+              <textarea matInput [(ngModel)]="schedule.note" #note="ngModel" id="note" name="note"></textarea>
+            </mat-form-field>
             <!-- buyer -->
             <mat-form-field appearance="outline">
               <mat-label>Cliente</mat-label>
@@ -33,6 +45,12 @@
               </mat-select>
               <mat-error *ngIf="b.dirty || b.touched">Anotar Comprador</mat-error>
             </mat-form-field>
+            <div>
+              <button mat-stroked-button color="accent" (click)="searchBuyers()">
+                <ion-spinner *ngIf="isSpinner" color="secondary" name="bubbles"></ion-spinner>
+                Buscar Clientes
+              </button>
+            </div>
             <!-- lista de asesores -->
             <div *ngIf="b.value && (user.type !== 'adviser' && user.type !== 'seller') && (schedule && !schedule.seller )">
               <mat-radio-group style="margin-bottom: 2%;" (change)="getAdvAll(ad.value)" class="example-radio-group"
@@ -64,8 +82,14 @@
               <button mat-button *ngIf="ad2.value" matSuffix mat-icon-button aria-label="Clear" (click)="schedule.adviser=undefined">
                 <mat-icon>close</mat-icon>
               </button>
-              <mat-error *ngIf="ad2.dirty || ad2.touched">Anotar Comprador</mat-error>
+              <mat-error *ngIf="ad2.dirty || ad2.touched">Anotar Asesor</mat-error>
             </mat-form-field>
+            <div>
+              <button *ngIf=" item === 'other'" mat-stroked-button color="accent" (click)="searchAdv()">
+                <ion-spinner *ngIf="isSpinner" color="secondary" name="bubbles"></ion-spinner>
+                Buscar Asesor
+              </button>
+            </div>
 
             <!-- prop -->
             <mat-form-field appearance="outline">
@@ -76,8 +100,14 @@
                   {{prop.name}}
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="property.dirty || property.touched">Anotar Propiedad</mat-error>
+              <mat-error *ngIf="property.dirty ">Anotar Propiedad</mat-error>
             </mat-form-field>
+            <div>
+              <button [disabled]="user.type !== 'seller' && schedule.seller" mat-stroked-button color="accent" (click)="searchProp()">
+                <ion-spinner *ngIf="isSpinner" color="secondary" name="bubbles"></ion-spinner>
+                Buscar Propiedad
+              </button>
+            </div>
 
             <!-- address -->
             <mat-form-field appearance="outline">
@@ -118,21 +148,7 @@
                 </mat-select>
               </mat-form-field>
             </div>
-            <!-- title -->
-            <mat-form-field appearance="outline">
-              <mat-label>Titulo del evento</mat-label>
-              <input matInput [(ngModel)]="schedule.title" #title="ngModel" id="title" name="title" required>
-              <mat-error *ngIf="title.dirty || title.touched">Anotar Titulo</mat-error>
 
-            </mat-form-field>
-            <!-- note -->
-            <mat-form-field appearance="outline">
-              <mat-label>Notas</mat-label>
-              <textarea matInput [(ngModel)]="schedule.note" #note="ngModel" id="note" name="note"></textarea>
-            </mat-form-field>
-            <!-- <div class="alert-schedule">
-              El Asesor seleccionado tiene una disponibilidad de 8 a 6 hrs
-            </div> -->
 
           </div>
           <mat-card-actions align="end">

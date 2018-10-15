@@ -41,4 +41,5 @@ export interface IBuild {
    */
   city?: string;
   _id?: string;
+  notificationOneSignal?: string[];
 }

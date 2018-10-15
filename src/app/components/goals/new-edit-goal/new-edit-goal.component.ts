@@ -12,6 +12,11 @@ import { filter, map } from 'rxjs/operators';
 import { INotification } from '../../../models/notification.model';
 import { OnesignalService } from '../../../services/onesignal.service';
 import { ISchedule } from '../../../models/schedule.model';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  SearchDialog,
+  SearchSelectComponent,
+} from '../../general/search-select/search-select.component';
 @Component({
   selector: 'app-new-edit-goal',
   templateUrl: './new-edit-goal.component.html',
@@ -41,6 +46,7 @@ export class NewEditGoalComponent implements OnInit {
   dayNoti: number;
   hourNoti: number;
   minuteNoti: number;
+  isSpinner: boolean;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -49,6 +55,7 @@ export class NewEditGoalComponent implements OnInit {
     private platform: Platform,
     private userService: UserSessionService,
     private oneSignalService: OnesignalService,
+    public dialog: MatDialog,
   ) {
     this.user = userService.userSession.value;
     this.isDesktop = platform.is('desktop');
@@ -292,6 +299,77 @@ export class NewEditGoalComponent implements OnInit {
       });
       return (goal.notificationOneSignal = []);
     }
+  }
+  // dialog
+  public async searchAdv() {
+    this.isSpinner = true;
+    const adv = await this.adviserService
+      .getAdviserAll()
+      .pipe(
+        map(arr =>
+          arr.map((adviser: any) => {
+            adviser.numOfBuyer = `Número de Clientes: ${adviser.buyer.length}`;
+            adviser.range = `Disponible de ${adviser.hourStart} a ${
+              adviser.hourEnd
+            }`;
+            return adviser;
+          }),
+        ),
+      )
+      .toPromise();
+    this.isSpinner = false;
+    const dialogRef = this.dialog.open(SearchSelectComponent, {
+      /*  maxWidth: '50%',
+      minWidth: '20%', */
+      data: <SearchDialog>{
+        header: 'Buscar asesor para objetivo, seleccione uno o varios',
+        hideButtonCancel: true,
+        okButton: 'OK',
+        isMultiple: true,
+        itemsIdDisable: this.isNew
+          ? this.adviserSelect.map(a => a._id)
+          : [
+              ...this.goal.adviser.map(a => a._id),
+              ...this.adviserSelect.map(a => a._id),
+            ],
+        filtersDetail: true,
+        rows: adv,
+        typeFilter: 'filter-adv',
+        columns: [
+          {
+            name: 'Nombre',
+            prop: 'name',
+            type: 'normal',
+          },
+          {
+            name: 'Apellido',
+            prop: 'fatherLastName',
+            type: 'normal',
+          },
+          {
+            name: 'Fecha Alta',
+            prop: 'timestamp',
+            type: 'date',
+          },
+          {
+            name: '# De Consumidores',
+            prop: 'numOfBuyer',
+            type: 'normal',
+          },
+          {
+            name: 'Disponibilidad',
+            prop: 'range',
+            type: 'normal',
+          },
+        ],
+      },
+    });
+    const sub = dialogRef.componentInstance.buttons.subscribe(res => {
+      if (res.options) {
+        console.log(res);
+        this.adviserSelect = [...res.arrSelect, ...this.adviserSelect];
+      }
+    });
   }
   getPopMessage(event) {
     const isDisabled = (<HTMLInputElement>document.getElementById('submitUser'))

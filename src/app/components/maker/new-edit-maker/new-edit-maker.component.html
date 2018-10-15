@@ -71,7 +71,7 @@
               <!-- prop -->
               <mat-form-field appearance="outline">
                 <mat-label>Obras del Constructor</mat-label>
-                <mat-select (selectionChange)="flag = true" [(ngModel)]="maker.build._id" #property="ngModel" id="property"
+                <mat-select (selectionChange)="flag = true" [(ngModel)]="maker.build" #property="ngModel" id="property"
                   name="property">
                   <mat-option *ngFor="let prop of buildings$ | async" [value]="prop._id">
                     {{prop.name}}
