@@ -91,7 +91,11 @@ export interface IProperty {
    */
   isBuy?: boolean;
   /**
-   * NO UTILIZAR
+   * utilizar en buyer ofert y credit
    */
   dateToApart?: Date;
+  /**
+   * numero de likes
+   */
+  numOfLikes?: number;
 }

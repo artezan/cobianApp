@@ -138,7 +138,7 @@ export class ListBuyerAdminComponent implements OnInit {
         this.realData = buyerFilter;
         this.buyers = buyerFilter;
         this.setRows(this.realData);
-        this.getTotalSales();
+        this.getTotalSalesByAdv();
       });
     } else if (this.user.type === 'seller') {
       // si es seller
@@ -218,7 +218,7 @@ export class ListBuyerAdminComponent implements OnInit {
     };
     this.router.navigate(['detail-buyer-admin'], data);
   }
-  getTotalSales() {
+  getTotalSalesByAdv() {
     this.saleService.getSaleByIdAdv(this.user.id).subscribe(sales => {
       this.sales = sales;
     });

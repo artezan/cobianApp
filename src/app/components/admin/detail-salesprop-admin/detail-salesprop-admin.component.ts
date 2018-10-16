@@ -21,6 +21,7 @@ import { ISale } from '../../../models/sale.model';
 import { OnesignalService } from '../../../services/onesignal.service';
 import { INotification } from '../../../models/notification.model';
 import { SellerService } from '../../../services/seller.service';
+import { IBuyer } from '../../../models/buyer.model';
 
 @Component({
   selector: 'app-detail-salesprop-admin',
@@ -189,14 +190,14 @@ export class DetailSalespropAdminComponent implements OnInit {
     advisers.forEach(adv => {
       advInput.push({
         name: 'adviser',
-        type: 'radio',
+        type: 'checkbox',
         label: adv.name,
         value: adv._id,
       });
     });
     const alert = await this.alertController.create({
       header: 'Asesor',
-      subHeader: 'Seleccione Asesor de renta/compra',
+      subHeader: 'Seleccione Asesores de renta/compra',
       inputs: advInput,
       buttons: [
         {
@@ -225,10 +226,10 @@ export class DetailSalespropAdminComponent implements OnInit {
     });
   }
   // cambiar status
-  async changeStatus(adv, note, price) {
+  async changeStatus(advs: any[], note, price) {
     const seller = await this.getSellerOfProperty(this.sBP.property._id);
     const Sale = {
-      adviser: adv,
+      adviser: advs,
       isRent: this.sBP.property.isRent,
       buyer: this.sBP.buyer._id,
       property: this.sBP.property._id,
@@ -249,8 +250,8 @@ export class DetailSalespropAdminComponent implements OnInit {
             'property',
             ['administrator', 'office'],
             seller === undefined
-              ? [Sale.buyer, Sale.adviser]
-              : [seller._id, Sale.buyer, Sale.adviser],
+              ? [...[Sale.buyer], ...Sale.adviser]
+              : [...[seller._id, Sale.buyer], ...Sale.adviser],
           );
           this.deleteNotification(this.idsNotification);
           const toast: NavigationExtras = {

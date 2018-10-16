@@ -46,7 +46,7 @@
               <mat-error *ngIf="b.dirty || b.touched">Anotar Comprador</mat-error>
             </mat-form-field>
             <div>
-              <button mat-stroked-button color="accent" (click)="searchBuyers()">
+              <button [disabled]="!isNew" mat-stroked-button color="accent" (click)="searchBuyers()">
                 <ion-spinner *ngIf="isSpinner" color="secondary" name="bubbles"></ion-spinner>
                 Buscar Clientes
               </button>

@@ -10,7 +10,7 @@
 </ion-header> -->
 <ion-header>
   <app-menu-general [isMenuButton]="'menu'" [colorMenuButton]="'white'" [titleMenu]="'Lista de Deseos'" [buttonUser]="'person'"
-    [buttonNotification]=true></app-menu-general>
+    [buttonNotification]="'notifications'"></app-menu-general>
 </ion-header>
 <ion-content padding>
   <ng-container *ngIf="isLoad; then thenTemplate; else elseTemplate"></ng-container>

@@ -93,6 +93,8 @@ export class OfertBuyerComponent implements OnInit {
           seller === undefined ? undefined : [seller._id],
         );
         if (isAccept) {
+          ofert.property.dateToApart = dateToSchedule;
+          this.propertyService.putProperty(ofert.property).subscribe();
           this.notificationBySchedule(
             'Tiempo de Apartado Superado',
             `El tiempo de espera ha superado los 15 dias para la oferta de la propiedad: ${

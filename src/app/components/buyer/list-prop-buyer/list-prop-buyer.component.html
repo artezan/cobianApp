@@ -9,8 +9,8 @@
   </ion-toolbar>
 </ion-header> -->
 <ion-header>
-  <app-menu-general [buttonNotification]=true [isMenuButton]="'menu'" [colorMenuButton]="'white'" [titleMenu]="'Propiedades'"
-    [buttonUser]="'person'"></app-menu-general>
+  <app-menu-general [buttonNotification]="'notifications'" [isMenuButton]="'menu'" [colorMenuButton]="'white'"
+    [titleMenu]="'Propiedades'" [buttonUser]="'person'"></app-menu-general>
 </ion-header>
 <ion-content padding>
   <!-- cargar o no -->
@@ -31,22 +31,21 @@
     <ng-template #matchTemplate>
       <h1>Propiedades Sugeridas</h1>
       <ion-label>Se muestran las coincidencias con tu perfil</ion-label>
-      <ion-list [@animateStagger]="{value:'50'}" lines="full">
-        <ion-item [@animate]="{value:'*',params:{y:'100%'}}" lines="inset" detail *ngFor="let property of properties"
-          (click)="itemDetail(property)">
+      <ion-list lines="full">
+        <ion-item lines="inset" detail *ngFor="let property of properties" (click)="itemDetail(property)">
           <ion-icon *ngIf="property.typeOfProperty === 'departamento'" style="color: #F5811E" name="business" slot="start"></ion-icon>
           <ion-icon *ngIf="property.typeOfProperty === 'casa'" style="color: #F5811E" name="home" slot="start"></ion-icon>
           <ion-label text-wrap>
             <h2>{{property.name}}</h2>
             <p>{{property.zone}}</p>
             <ion-chip *ngIf="property.percentage > 60" class="high">
-              <ion-label>Alta coincidencia</ion-label>
+              <ion-label>{{property.percentage.toFixed(0)}}% de coincidencia</ion-label>
             </ion-chip>
             <ion-chip *ngIf="property.percentage <= 60 && property.percentage > 30 " class="medium">
-              <ion-label>Media coincidencia</ion-label>
+              <ion-label>{{property.percentage.toFixed(0)}}% de coincidencia</ion-label>
             </ion-chip>
             <ion-chip *ngIf="property.percentage <= 30" class="low">
-              <ion-label>Baja coincidencia</ion-label>
+              <ion-label>{{property.percentage.toFixed(0)}}% de coincidencia</ion-label>
             </ion-chip>
           </ion-label>
         </ion-item>
@@ -72,9 +71,8 @@
         </ion-item>
         <ng-container *ngIf=" (allProperties | async)?.length ; then dataDisplay; else noDataDisplay "></ng-container>
         <ng-template #dataDisplay>
-          <ion-list [@animateStagger]="{value:'50'}" lines="full">
-            <ion-item [@animate]="{value:'*',params:{y:'100%'}}" lines="inset" detail *ngFor="let property of allProperties | async"
-              (click)="itemDetail(property)">
+          <ion-list lines="full">
+            <ion-item lines="inset" detail *ngFor="let property of allProperties | async" (click)="itemDetail(property)">
               <ion-icon *ngIf="property.typeOfProperty === 'departamento'" style="color: #F5811E" name="business" slot="start"></ion-icon>
               <ion-icon *ngIf="property.typeOfProperty === 'casa'" style="color: #F5811E" name="home" slot="start"></ion-icon>
               <ion-label text-wrap>

@@ -57,7 +57,8 @@
             <mat-chip class="background-secondary">Total de Propiedades Rentadas: {{totalSalesOfRent}}</mat-chip>
             <mat-chip class="background-secondary">Total de Propiedades Vendidas: {{totalSalesOfBuy}}</mat-chip>
             <mat-chip class="background-secondary">Costo Total: ${{totalCost}}</mat-chip>
-            <mat-chip *ngIf="user.type !== 'adviser'" class="background-secondary">Asesor Mayor Ventas: {{advTop.name}}</mat-chip>
+            <mat-chip *ngIf="user.type !== 'adviser' && advTop" class="background-secondary">Asesor Mayor Ventas:
+              {{advTop.name}}</mat-chip>
           </mat-chip-list>
         </mat-card-content>
 

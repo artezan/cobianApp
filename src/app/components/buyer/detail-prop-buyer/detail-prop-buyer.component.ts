@@ -13,6 +13,11 @@ import { OnesignalService } from '../../../services/onesignal.service';
 import { SellerService } from '../../../services/seller.service';
 import { map } from 'rxjs/operators';
 import { INotification } from '../../../models/notification.model';
+import {
+  FormatDatesFront,
+  DiffDays,
+  DiffDaysNoABS,
+} from '../../../_config/_helpers';
 
 @Component({
   selector: 'app-detail-prop-buyer',
@@ -25,6 +30,7 @@ export class DetailPropBuyerComponent implements OnInit {
   isLiked = false;
   arrPropLikes: string[] = [];
   arrSBP: string[] = [];
+  showApart: boolean;
   constructor(
     private route: ActivatedRoute,
     private propertyService: PropertyService,
@@ -36,7 +42,6 @@ export class DetailPropBuyerComponent implements OnInit {
     private sellerService: SellerService,
   ) {
     this.route.queryParams.subscribe(params => {
-      console.log(params.id);
       if (params.id) {
         this.getPropertyById(params.id);
         this.getlikeProperty(params.id);
@@ -48,7 +53,8 @@ export class DetailPropBuyerComponent implements OnInit {
   getPropertyById(id: string) {
     this.propertyService.getPropertyById(id).subscribe(property => {
       this.property = property;
-      console.log(this.property);
+      this.showApart = new Date() < new Date(property.dateToApart);
+      console.log(property.numOfLikes);
       this.isLoad = true;
     });
   }
@@ -67,7 +73,6 @@ export class DetailPropBuyerComponent implements OnInit {
   getlikeProperty(id: string) {
     const buyer = this.userSessionService.userSession.value;
     this.buyerService.getBuyerById(buyer.id).subscribe((b: any) => {
-      console.log(b);
       if (b.statusBuyerProperty && b.statusBuyerProperty.length > 0) {
         this.arrSBP = b.statusBuyerProperty.map(
           buyerProperty => buyerProperty._id,
@@ -79,6 +84,8 @@ export class DetailPropBuyerComponent implements OnInit {
           const findIndex = this.arrPropLikes.findIndex(prop => prop === id);
           if (findIndex !== -1) {
             this.isLiked = true;
+          } else {
+            this.isLiked = false;
           }
         }
       }
@@ -108,6 +115,8 @@ export class DetailPropBuyerComponent implements OnInit {
             );
             buyer.statusBuyerProperty.splice(findeIndexBuyer, 1);
             this.buyerService.putBuyer(buyer).subscribe(val => {
+              this.property.numOfLikes = this.property.numOfLikes - 1;
+              this.propertyService.putProperty(this.property).subscribe();
               this.presentToast('Te ha dejado de gustar esta propiedad');
             });
           }
@@ -116,6 +125,8 @@ export class DetailPropBuyerComponent implements OnInit {
       this.statusBPService.newStatusBuyerProperty(sBP).subscribe(res => {
         buyer.statusBuyerProperty.push(res._id);
         this.buyerService.putBuyer(buyer).subscribe(val => {
+          this.property.numOfLikes = this.property.numOfLikes + 1;
+          this.propertyService.putProperty(this.property).subscribe();
           // crar noti
           this.notification();
           if (val) {
@@ -143,7 +154,6 @@ export class DetailPropBuyerComponent implements OnInit {
       status: 'verde',
       type: 'like',
     };
-    console.log(seller);
     // onesignal
     this.oneSignalService
       .postOneSignalByTag(
@@ -157,12 +167,15 @@ export class DetailPropBuyerComponent implements OnInit {
         this.oneSignalService.newNotification(notification).subscribe();
       });
   }
-
+  // _helpers
   async presentToast(message: string) {
     const toast = await this.toastController.create({
       message: message,
       duration: 3000,
     });
     toast.present();
+  }
+  formatDates(date: Date): string {
+    return FormatDatesFront(date);
   }
 }

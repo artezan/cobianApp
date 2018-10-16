@@ -163,6 +163,8 @@ export class CreditEventBuyerComponent implements OnInit {
         arr,
       );
       if (isAcept) {
+        prop.dateToApart = dateToSchedule;
+        this.propertyService.putProperty(prop).subscribe();
         this.notificationByApart(
           'Tiempo de Apartado Superado',
           `El tiempo de espera ha superado los 15 dias para el crédito de la propiedad: ${

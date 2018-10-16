@@ -19,7 +19,7 @@ export interface ISale {
   /**
    *  Asesor
    */
-  adviser?: IAdviser;
+  adviser?: IAdviser[];
   /**
    *  vendedor
    */

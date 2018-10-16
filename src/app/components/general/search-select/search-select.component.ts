@@ -47,7 +47,6 @@ export interface SearchDialog {
   selector: 'app-search-select',
   templateUrl: './search-select.component.html',
   styleUrls: ['./search-select.component.scss'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class SearchSelectComponent implements OnInit {
   isLoad = true;

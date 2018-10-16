@@ -11,13 +11,13 @@ import {
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { StatusBuyerPropertyService } from '../../../services/status-buyer-property.service';
 import { IStatusBuyerPropertyGet } from '../../../models/statusBuyerProperty.model';
-import { PropertyFilter } from '../../../_config/_helpers';
 import { SaleService } from '../../../services/sale.service';
 import { ISale } from '../../../models/sale.model';
 import { IAdviser } from '../../../models/adviser.model';
 import { IUserSession } from '../../../models/userSession.model';
 import { UserSessionService } from '../../../services/user-session.service';
 import { SellerService } from '../../../services/seller.service';
+import { AdviserService } from '../../../services/adviser.service';
 
 @Component({
   selector: 'app-list-sales-admin',
@@ -50,6 +50,7 @@ export class ListSalesAdminComponent implements OnInit {
     private salesService: SaleService,
     private userSession: UserSessionService,
     private sellerService: SellerService,
+    private advService: AdviserService,
   ) {
     this.user = userSession.userSession.value;
     this.isDesktop = platform.is('desktop');
@@ -78,8 +79,8 @@ export class ListSalesAdminComponent implements OnInit {
         type: 'normal',
       },
       {
-        name: 'Asesor',
-        prop: 'adviser',
+        name: 'Asesores',
+        prop: 'advsNames',
         type: 'normal',
       },
       {
@@ -141,11 +142,13 @@ export class ListSalesAdminComponent implements OnInit {
   setRows(sales: ISale[]) {
     const rows = [];
     sales.forEach(sale => {
+      const advsNames = sale.adviser.map(a => a.name).toString();
       rows.push({
         _id: sale._id,
         buyer: sale.buyer.name,
         property: sale.property.name,
-        adviser: sale.adviser.name,
+        adviser: sale.adviser,
+        advsNames: advsNames,
         isRent: sale.isRent,
         price: sale.price,
         note: sale.note,
@@ -200,7 +203,7 @@ export class ListSalesAdminComponent implements OnInit {
     });
     toast.present();
   }
-  getSumary(sales: ISale[]) {
+  async getSumary(sales: ISale[]) {
     const add = (a, b) => a + b;
     this.totalSales = sales.length;
     this.totalSalesOfRent = sales.filter(s => s.isRent).length;
@@ -208,22 +211,24 @@ export class ListSalesAdminComponent implements OnInit {
     this.totalCost = sales.map(s => s.price).reduce(add);
     // adv number
     let numMax = 0;
-    sales.map(s => s.adviser).forEach(adv => {
-      const num = sales.filter(s => s.adviser._id === adv._id).length;
+    let arr = [];
+    sales
+      .map(s => s.adviser)
+      .map(adv => adv.map(a => a._id))
+      .forEach(advIds => {
+        arr = [...arr, ...advIds];
+      });
+    let idMayor;
+    arr.forEach(id => {
+      const num = arr.filter(str => str === id).length;
       if (num > numMax) {
         numMax = num;
-        this.advTop = adv;
+        idMayor = id;
       }
     });
+    this.advTop = await this.getAdvName(idMayor);
   }
-  /*   getFilters(filters: IProperty) {
-    console.log(filters);
-    const advFinded = this.properties.filter(prop => {
-      const temp = PropertyFilter(filters, prop);
-      this.numOfFilters = temp.numOfFilters;
-      return temp.isHope;
-    });
-    //  setea buyers
-    this.setRows(advFinded);
-  } */
+  getAdvName(id: string) {
+    return this.advService.getAdviserById(id).toPromise();
+  }
 }

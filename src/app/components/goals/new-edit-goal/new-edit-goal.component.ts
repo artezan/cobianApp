@@ -47,6 +47,10 @@ export class NewEditGoalComponent implements OnInit {
   hourNoti: number;
   minuteNoti: number;
   isSpinner: boolean;
+  typeOfGoal = 'goals';
+  typeOfGoalSale = 'salesTotal';
+  typeOfGoalRent = 'rentTotal';
+  typeOfGoalBoth = 'rentSalesTotal';
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -65,6 +69,17 @@ export class NewEditGoalComponent implements OnInit {
       if (params['id']) {
         goalService.getGoaltById(params.id).subscribe(goal => {
           this.goal = goal;
+          this.typeOfGoal = goal.typeOfGoal;
+          this.typeOfGoalSale = goal.typeOfGoal;
+          this.typeOfGoalRent = goal.typeOfGoal;
+          this.typeOfGoalBoth = goal.typeOfGoal;
+          if (goal.typeOfGoal === 'costOfRent') {
+            this.typeOfGoal = 'rentTotal';
+          } else if (goal.typeOfGoal === 'costOfSales') {
+            this.typeOfGoal = 'salesTotal';
+          } else if (goal.typeOfGoal === 'rentSalesCost') {
+            this.typeOfGoal = 'rentSalesTotal';
+          }
           if (goal.goals && goal.goals.length > 0) {
             this.arrList = goal.goals.map(g => g.nameGoal);
             this.numOfItems = this.arrList.length;
@@ -82,11 +97,10 @@ export class NewEditGoalComponent implements OnInit {
   ngOnInit() {}
   getAdviser() {
     if (this.user.type === 'adviser') {
-      this.advisers$ = this.adviserService
-        .getAdviserAll()
-        .pipe(map(advs => advs.filter(adv => adv._id === this.user.id)));
-    } else {
-      this.advisers$ = this.adviserService.getAdviserAll();
+      const adv: IAdviser = {
+        _id: this.user.id,
+      };
+      this.adviserSelect = [adv];
     }
   }
   editGoal() {
@@ -141,7 +155,7 @@ export class NewEditGoalComponent implements OnInit {
         undefined,
         this.goal.adviser.map(a => a._id),
       );
-      this.notificationBySchedule(this.goal);
+      this.notificationBySchedule(newGoal);
       this.adviserSelect.forEach(adv => {
         this.adviserService.getAdviserById(adv._id).subscribe(a => {
           const arr = a.goal.map(g => g._id);
@@ -204,28 +218,34 @@ export class NewEditGoalComponent implements OnInit {
     } else {
       this.goal.adviser = this.adviserSelect;
     }
-    // lista str
-    if (this.goal.goals && this.goal.goals.length > 0) {
-      const goals = [];
-      this.arrList.forEach((nameGoal, i) => {
-        goals.push({
-          isComplete: this.goal.goals[i]
-            ? this.goal.goals[i].isComplete
-            : false,
-          nameGoal: nameGoal,
+    // lista str goals
+    if (
+      this.goal.typeOfGoal === 'goals' ||
+      this.goal.typeOfGoal === undefined
+    ) {
+      this.goal.typeOfGoal = 'goals';
+      if (this.goal.goals && this.goal.goals.length > 0) {
+        const goals = [];
+        this.arrList.forEach((nameGoal, i) => {
+          goals.push({
+            isComplete: this.goal.goals[i]
+              ? this.goal.goals[i].isComplete
+              : false,
+            nameGoal: nameGoal,
+          });
         });
-      });
-      this.goal.goals = <any>goals;
-      // nuevo
-    } else if (this.arrList.length > 0) {
-      const goals = [];
-      this.arrList.forEach((nameGoal, i) => {
-        goals.push({
-          isComplete: false,
-          nameGoal: nameGoal,
+        this.goal.goals = <any>goals;
+        // nuevo
+      } else if (this.arrList.length > 0) {
+        const goals = [];
+        this.arrList.forEach((nameGoal, i) => {
+          goals.push({
+            isComplete: false,
+            nameGoal: nameGoal,
+          });
         });
-      });
-      this.goal.goals = <any>goals;
+        this.goal.goals = <any>goals;
+      }
     }
   }
 
@@ -366,7 +386,6 @@ export class NewEditGoalComponent implements OnInit {
     });
     const sub = dialogRef.componentInstance.buttons.subscribe(res => {
       if (res.options) {
-        console.log(res);
         this.adviserSelect = [...res.arrSelect, ...this.adviserSelect];
       }
     });

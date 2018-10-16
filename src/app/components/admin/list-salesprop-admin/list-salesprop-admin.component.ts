@@ -131,12 +131,6 @@ export class ListSalespropAdminComponent implements OnInit {
           new Date(isOfertRed.timestamp).getTime()
             ? new Date(isCredidRed.timestamp)
             : new Date(isOfertRed.timestamp);
-        console.log(isOfertRed);
-        console.log(isCredidRed);
-        console.log(
-          new Date(isCredidRed.timestamp).getTime() >
-            new Date(isOfertRed.timestamp).getTime(),
-        );
       } else if (isOfertRed) {
         date = new Date(isOfertRed.timestamp);
       } else if (isCredidRed) {

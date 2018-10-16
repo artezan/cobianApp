@@ -41,16 +41,16 @@
         <ion-col size-md="6" size-lg="6" size-xl="6">
           <ion-card [ngClass]="{'desktop-card': isDesktop }">
             <ion-card-header>
-              <ion-card-title>
-                Lista de Objetivos
+              <ion-card-title text-wrap>
+                {{titleCard}}
               </ion-card-title>
 
             </ion-card-header>
-            <div class="flex-container">
+            <div *ngIf="goal.typeOfGoal === 'goals'" class="flex-container">
               <mat-checkbox [disabled]="user.type === 'adviser' && goal.isByManagement" (change)="changeGoal($event)"
                 *ngFor="let item of goal.goals; let i=index" [(ngModel)]="goal.goals[i].isComplete">{{item.nameGoal}}</mat-checkbox>
             </div>
-            <ion-list style="padding: 5%;" lines="none">
+            <ion-list *ngIf="goal.typeOfGoal === 'goals'" style="padding: 5%;" lines="none">
               <ion-list-header>Otros Datos</ion-list-header>
               <ion-item lines="none">
                 <ion-label>
@@ -81,6 +81,33 @@
               </ion-item>
 
             </ion-list>
+
+            <div class="goals-number" *ngIf="goal.typeOfGoal !== 'goals' && isMoney">
+              <h4>Total a Cumplir </h4>
+              <ion-chip class="chips-detail" color="secondary">
+                <ion-chip-icon class="icon-chip-detail" name="cash"></ion-chip-icon>
+                <ion-label>${{goal.quantitative}}</ion-label>
+              </ion-chip>
+              <h4>Total Cumplido </h4>
+              <ion-chip class="chips-detail" color="dark">
+                <ion-chip-icon class="icon-chip-detail" name="cash"></ion-chip-icon>
+                <ion-label>${{totalCurrent}}</ion-label>
+              </ion-chip>
+            </div>
+
+            <div class="goals-number" *ngIf="goal.typeOfGoal !== 'goals' && !isMoney">
+
+              <h4>Total a Cumplir </h4>
+              <ion-chip class="chips-detail" color="secondary">
+                <ion-chip-icon class="icon-chip-detail" name="checkmark-circle"></ion-chip-icon>
+                <ion-label>{{goal.quantitative}} ventas</ion-label>
+              </ion-chip>
+              <h4>Total Cumplido </h4>
+              <ion-chip class="chips-detail" color="dark">
+                <ion-chip-icon class="icon-chip-detail" name="clipboard"></ion-chip-icon>
+                <ion-label>{{totalCurrent}} ventas</ion-label>
+              </ion-chip>
+            </div>
 
 
           </ion-card>

@@ -22,3 +22,13 @@
 .desktop-card {
     height: 100% !important;
 }
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 3%;
+    border: 2px solid darkgray;
+    border-radius: 8px;
+}

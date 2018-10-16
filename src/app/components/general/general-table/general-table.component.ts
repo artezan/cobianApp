@@ -105,9 +105,28 @@ export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   applyFilter(filterValue: string) {
+    console.log(filterValue);
     this.dataSource.filter = filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
+    }
+  }
+  serach(str: string) {
+    this.dataSource = new MatTableDataSource(this.realData);
+    if (str !== undefined) {
+      const searchString = row => {
+        return (
+          Object.values(row).filter(
+            v =>
+              v
+                .toString()
+                .toLocaleLowerCase()
+                .indexOf(str.toLocaleLowerCase()) >= 0,
+          ).length > 0
+        );
+      };
+      const filter = this.dataSource.data.filter(row => searchString(row));
+      this.dataSource = new MatTableDataSource(filter);
     }
   }
   filterByDay(day: number) {

@@ -224,4 +224,5 @@ export class ListPropBuyerComponent implements OnInit {
     });
     return { propRes: propRes, numFilters: num };
   }
+  // helpers
 }

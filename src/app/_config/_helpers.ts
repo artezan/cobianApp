@@ -494,3 +494,10 @@ export function DiffDays(dateToDiference: Date) {
   const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   return diffDays;
 }
+export function DiffDaysNoABS(dateToDiference: Date) {
+  const date1 = new Date(dateToDiference);
+  const date2 = new Date();
+  const timeDiff = date2.getTime() - date1.getTime();
+  const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+  return diffDays;
+}

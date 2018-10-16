@@ -131,24 +131,132 @@
               </mat-list>
             </div>
             <!-- adv -->
-            <h4>{{adviserSelect.length === 0 ? 'Asignar Nuevos Asesores' : 'Asesores Nuevos Seleccionados'}}
+            <h4 *ngIf="user.type !== 'adviser'">{{adviserSelect.length === 0 ? 'Asignar Nuevos Asesores' : 'Asesores
+              Nuevos Seleccionados'}}
             </h4>
-            <mat-list>
+            <mat-list *ngIf="user.type !== 'adviser'">
               <mat-list-item *ngFor="let adv of adviserSelect; let i=index">{{ adv.name }} {{ adv.lastName }}
                 <button mat-icon-button (click)="adviserSelect.splice(i, 1)">
                   <mat-icon color="warn">clear</mat-icon>
                 </button>
               </mat-list-item>
             </mat-list>
-            <div style="padding: 0 16px; margin-bottom: 2%;">
+            <div *ngIf="user.type !== 'adviser'" style="padding: 0 16px; margin-bottom: 2%;">
               <button mat-stroked-button color="accent" (click)="searchAdv()">
                 <ion-spinner *ngIf="isSpinner" color="secondary" name="bubbles"></ion-spinner>
                 Agregar Asesor
               </button>
             </div>
+            <!-- START TYPE -->
+            <!-- toogle -->
+            <h4>Tipo de Meta</h4>
+            <div style="margin-bottom: 2%">
+              <mat-button-toggle-group [value]="typeOfGoal" style="flex-wrap: wrap" (change)="typeOfGoal = $event.value; goal.typeOfGoal =  $event.value ">
+                <mat-button-toggle value="goals">Objetivos</mat-button-toggle>
+                <mat-button-toggle value="salesTotal">Ventas</mat-button-toggle>
+                <mat-button-toggle value="rentTotal">Rentas</mat-button-toggle>
+                <mat-button-toggle value="rentSalesTotal">Ventas y Rentas</mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
             <!-- GENERAL str list -->
-            <app-form-str-list nameTitle="Lista de Objetivos" nameItems="Objetivo" (arrList)="arrList = $event"
-              [arrStr]="arrList" [numOfItems]="numOfItems"></app-form-str-list>
+            <app-form-str-list *ngIf="typeOfGoal === 'goals'" nameTitle="Lista de Objetivos" nameItems="Objetivo"
+              (arrList)="arrList = $event" [arrStr]="arrList" [numOfItems]="numOfItems"></app-form-str-list>
+            <div class="flex-column" *ngIf="typeOfGoal === 'salesTotal'">
+              <!-- Sales -->
+              <h5>Elige un tipo</h5>
+              <mat-radio-group (change)="typeOfGoalSale = $event.value; goal.typeOfGoal = $event.value ">
+                <mat-radio-button [checked]="typeOfGoalSale === 'salesTotal' " style="margin-right: 1%" value="salesTotal">Número
+                  de Ventas Totales</mat-radio-button>
+                <mat-radio-button [checked]="typeOfGoalSale === 'costOfSales' " value="costOfSales">Suma de Costo Final</mat-radio-button>
+              </mat-radio-group>
+              <ng-container *ngIf="typeOfGoalSale === 'salesTotal' ; then NumOfSales; else SumOfCost"></ng-container>
+              <ng-template #NumOfSales>
+                <!-- NumOfSales -->
+                <mat-form-field>
+                  <mat-label>Número de Ventas</mat-label>
+                  <input matInput type="number" [(ngModel)]="goal.quantitative" #quantitative="ngModel" id="quantitative"
+                    name="quantitative" required>
+                  <mat-error *ngIf="quantitative.dirty || quantitative.touched">Anotar</mat-error>
+                </mat-form-field>
+              </ng-template>
+              <ng-template #SumOfCost>
+                <!-- costOfSales -->
+                <mat-form-field>
+                  <mat-label>Suma de Costo Final</mat-label>
+                  <span matPrefix>$ &nbsp;</span>
+                  <input matInput type="number" [(ngModel)]="goal.quantitative" #quantitative="ngModel" id="quantitative"
+                    name="quantitative" required>
+                  <mat-error *ngIf="quantitative.dirty || quantitative.touched">Anotar</mat-error>
+                </mat-form-field>
+              </ng-template>
+
+
+
+
+            </div>
+            <div class="flex-column" *ngIf="typeOfGoal === 'rentTotal'">
+              <!-- Rent -->
+              <h5>Elige un tipo</h5>
+              <mat-radio-group (change)="typeOfGoalRent = $event.value; goal.typeOfGoal = $event.value ">
+                <mat-radio-button [checked]="typeOfGoalRent === 'rentTotal' " style="margin-right: 1%" value="rentTotal">Número
+                  de Rentas Totales</mat-radio-button>
+                <mat-radio-button [checked]="typeOfGoalRent === 'costOfRent' " value="costOfRent">Suma de Costo Final</mat-radio-button>
+              </mat-radio-group>
+              <ng-container *ngIf="typeOfGoalRent === 'rentTotal' ; then NumOfRent; else SumOfRent"></ng-container>
+              <ng-template #NumOfRent>
+                <!-- NumOfSales -->
+                <mat-form-field>
+                  <mat-label>Número de Rentas</mat-label>
+                  <input matInput type="number" [(ngModel)]="goal.quantitative" #quantitative="ngModel" id="quantitative"
+                    name="quantitative" required>
+                  <mat-error *ngIf="quantitative.dirty || quantitative.touched">Anotar</mat-error>
+                </mat-form-field>
+              </ng-template>
+              <ng-template #SumOfRent>
+                <!-- costOfSales -->
+                <mat-form-field>
+                  <mat-label>Suma de Costo Final </mat-label>
+                  <span matPrefix>$ &nbsp;</span>
+                  <input matInput type="number" [(ngModel)]="goal.quantitative" #quantitative="ngModel" id="quantitative"
+                    name="quantitative" required>
+                  <mat-error *ngIf="quantitative.dirty || quantitative.touched">Anotar</mat-error>
+                </mat-form-field>
+              </ng-template>
+
+            </div>
+            <div class="flex-column" *ngIf="typeOfGoal === 'rentSalesTotal'">
+              <!-- 2 -->
+              <h5>Elige un tipo</h5>
+              <mat-radio-group (change)="typeOfGoalBoth = $event.value; goal.typeOfGoal = $event.value ">
+                <mat-radio-button [checked]="typeOfGoalBoth === 'rentSalesTotal'" style="margin-right: 1%" value="rentSalesTotal">Número
+                  de Rentas y Ventas
+                  Totales</mat-radio-button>
+                <mat-radio-button [checked]="typeOfGoalBoth === 'rentSalesCost'" value="rentSalesCost">Suma de Costo
+                  Final</mat-radio-button>
+              </mat-radio-group>
+              <ng-container *ngIf="typeOfGoalBoth === 'rentSalesTotal' ; then NumOfBoth; else SumOfBoth"></ng-container>
+              <ng-template #NumOfBoth>
+                <!-- NumOfSales -->
+                <mat-form-field>
+                  <mat-label>Número de Rentas y Ventas</mat-label>
+                  <input matInput type="number" [(ngModel)]="goal.quantitative" #quantitative="ngModel" id="quantitative"
+                    name="quantitative" required>
+                  <mat-error *ngIf="quantitative.dirty || quantitative.touched">Anotar</mat-error>
+                </mat-form-field>
+              </ng-template>
+              <ng-template #SumOfBoth>
+                <!-- costOfSales -->
+                <mat-form-field>
+                  <mat-label>Suma de Costo Final</mat-label>
+                  <span matPrefix>$ &nbsp;</span>
+                  <input matInput type="number" [(ngModel)]="goal.quantitative" #quantitative="ngModel" id="quantitative"
+                    name="quantitative" required>
+                  <mat-error *ngIf="quantitative.dirty || quantitative.touched">Anotar</mat-error>
+                </mat-form-field>
+              </ng-template>
+
+            </div>
+            <!-- /END TYPE -->
           </div>
           <mat-card-actions align="end">
             <div style="margin-right: 2%">

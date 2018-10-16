@@ -10,7 +10,7 @@
 </ion-header> -->
 <ion-header>
   <app-menu-general [isMenuButton]="'back'" [colorMenuButton]="'white'" [titleMenu]="'Detalles de Propiedad'"
-    [buttonUser]="'person'" [buttonNotification]=true></app-menu-general>
+    [buttonUser]="'person'" [buttonNotification]="'notifications'"></app-menu-general>
 </ion-header>
 <ion-content padding>
   <ng-container *ngIf="isLoad; then thenTemplate; else elseTemplate"></ng-container>
@@ -18,19 +18,22 @@
     <h1> Característica </h1>
 
     <ion-card>
-      <ion-item lines="none" *ngIf="!isLiked">
+      <ion-item lines="none">
+        <ion-badge *ngIf="property.numOfLikes > 0">
+          {{property.numOfLikes}} me gusta
+        </ion-badge>
+        <ion-button (click)="setLikeProperty(property._id)" color="secondary" [fill]="isLiked === true ? 'solid': 'outline'"
+          slot="end">
+          <ion-icon [name]="isLiked === true ? 'heart': 'heart-empty'" [color]="isLiked === true ? 'dark': 'secondary'"></ion-icon>{{isLiked
+          === true ? 'Te gusta' :'Me gusta'}}
+        </ion-button>
+      </ion-item>
 
-        <ion-button (click)="setLikeProperty(property._id)" color="secondary" fill="outline" slot="end">
-          <ion-icon name="heart-empty"></ion-icon>Me gusta
-        </ion-button>
-      </ion-item>
-      <ion-item lines="none" *ngIf="isLiked">
-        <ion-button (click)="setLikeProperty(property._id)" color="secondary" fill="solid" slot="end">
-          <ion-icon color="dark" name="heart"></ion-icon>Te gusta
-        </ion-button>
-      </ion-item>
 
       <ion-card-header>
+        <ion-card-subtitle *ngIf="property.dateToApart && showApart">Apartada hasta:
+          {{formatDates(property.dateToApart)}}
+        </ion-card-subtitle>
         <ion-card-title> {{property.name}} </ion-card-title>
       </ion-card-header>
       <!-- Principales -->

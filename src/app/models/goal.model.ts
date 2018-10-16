@@ -37,4 +37,13 @@ export interface IGoal {
   ];
   _id?: string;
   notificationOneSignal?: string[];
+  typeOfGoal?:
+    | 'goals'
+    | 'salesTotal'
+    | 'costOfSales'
+    | 'rentTotal'
+    | 'costOfRent'
+    | 'rentSalesTotal'
+    | 'rentSalesCost';
+  quantitative?: number;
 }

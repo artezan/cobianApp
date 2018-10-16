@@ -8,6 +8,8 @@ import { FormatHoursFront, FormatDatesFront } from '../../../_config/_helpers';
 import { IUserSession } from '../../../models/userSession.model';
 import { INotification } from '../../../models/notification.model';
 import { OnesignalService } from '../../../services/onesignal.service';
+import { SaleService } from '../../../services/sale.service';
+import { ISale } from '../../../models/sale.model';
 
 @Component({
   selector: 'app-detail-goal-admin',
@@ -22,6 +24,9 @@ export class DetailGoalAdminComponent implements OnInit {
   goal: IGoal;
   isDesktop = true;
   user: IUserSession;
+  titleCard: string;
+  totalCurrent: number;
+  isMoney: boolean;
   constructor(
     private route: ActivatedRoute,
     private goalService: GoalService,
@@ -30,6 +35,7 @@ export class DetailGoalAdminComponent implements OnInit {
     private platform: Platform,
     private userSession: UserSessionService,
     private oneSignalService: OnesignalService,
+    private salesService: SaleService,
   ) {
     this.user = userSession.userSession.value;
     this.route.queryParams.subscribe(params => {
@@ -42,12 +48,128 @@ export class DetailGoalAdminComponent implements OnInit {
   ngOnInit() {}
   getGoalById(id: string) {
     this.isLoad = false;
-    this.goalService.getGoaltById(id).subscribe(goal => {
-      console.log(goal);
+    this.goalService.getGoaltById(id).subscribe(async goal => {
       this.goal = goal;
-      this.getPercent(goal.goals);
+      if (goal.typeOfGoal === 'goals') {
+        this.getPercent(goal.goals);
+        this.titleCard = 'Lista de Objetivos';
+      } else if (goal.typeOfGoal === 'rentTotal') {
+        this.isMoney = false;
+        this.titleCard = 'Rentas Totales';
+        //  arr sales con filtros de asesores
+        const sales = await this.getTotalSalesRent(goal);
+        //  conteo de ventas
+        this.totalCurrent = sales.length;
+        //  % de la meta
+        this.getPercentNotGoals(goal.quantitative, sales.length);
+      } else if (goal.typeOfGoal === 'costOfRent') {
+        this.isMoney = true;
+        // obtiene las ventas de los asesores
+        this.titleCard = 'Total Recaudado en Rentas';
+        const sales = await this.getTotalSalesRent(goal);
+        // total numerico
+        const total = this.getSumOfNumber(sales.map(s => s.price));
+        this.totalCurrent = total;
+        // % de la meta
+        this.getPercentNotGoals(goal.quantitative, total);
+      } else if (goal.typeOfGoal === 'salesTotal') {
+        this.isMoney = false;
+        //  obtiene ventas asesores
+        this.titleCard = 'Total de Ventas';
+        //  arr sales con filtros de asesores
+        const sales = await this.getTotalSalesNoRent(goal);
+        //  conteo de ventas
+        this.totalCurrent = sales.length;
+        //  % de la meta
+        this.getPercentNotGoals(goal.quantitative, sales.length);
+      } else if (goal.typeOfGoal === 'costOfSales') {
+        this.isMoney = true;
+        this.titleCard = 'Total Recaudado en Ventas';
+        const sales = await this.getTotalSalesNoRent(goal);
+        // total numerico
+        const total = this.getSumOfNumber(sales.map(s => s.price));
+        this.totalCurrent = total;
+        // % de la meta
+        this.getPercentNotGoals(goal.quantitative, total);
+      } else if (goal.typeOfGoal === 'rentSalesCost') {
+        this.isMoney = false;
+        this.titleCard = 'Total de Ventas y Rentas';
+        //  arr sales con filtros de asesores
+        const sales = await this.getTotalSalesRentSale(goal);
+        //  conteo de ventas
+        this.totalCurrent = sales.length;
+        //  % de la meta
+        this.getPercentNotGoals(goal.quantitative, sales.length);
+      } else if (goal.typeOfGoal === 'rentSalesTotal') {
+        this.isMoney = true;
+        this.titleCard = 'Total Recaudado en Ventas y Rentas';
+        const sales = await this.getTotalSalesRentSale(goal);
+        // total numerico
+        const total = this.getSumOfNumber(sales.map(s => s.price));
+        this.totalCurrent = total;
+        // % de la meta
+        this.getPercentNotGoals(goal.quantitative, total);
+      }
       this.isLoad = true;
     });
+  }
+  async getTotalSalesRent(goal: IGoal) {
+    const sale = await this.salesService.getSale().toPromise();
+    const salesFilter: ISale[] = [];
+    for (const adv of goal.adviser) {
+      sale
+        .filter(s => s.adviser.some(a => a._id === adv._id) && s.isRent)
+        .forEach(s => {
+          const isFinded = salesFilter.some(
+            saleFilter => saleFilter._id === s._id,
+          );
+          if (!isFinded) {
+            salesFilter.push(s);
+          }
+        });
+    }
+    return salesFilter;
+  }
+  async getTotalSalesRentSale(goal: IGoal) {
+    const sale = await this.salesService.getSale().toPromise();
+    const salesFilter: ISale[] = [];
+    for (const adv of goal.adviser) {
+      sale.filter(s => s.adviser.some(a => a._id === adv._id)).forEach(s => {
+        const isFinded = salesFilter.some(
+          saleFilter => saleFilter._id === s._id,
+        );
+        if (!isFinded) {
+          salesFilter.push(s);
+        }
+      });
+    }
+    return salesFilter;
+  }
+  async getTotalSalesNoRent(goal: IGoal) {
+    const sale = await this.salesService.getSale().toPromise();
+    const salesFilter: ISale[] = [];
+    for (const adv of goal.adviser) {
+      sale
+        .filter(
+          s => s.adviser.some(a => a._id === adv._id) && s.isRent === false,
+        )
+        .forEach(s => {
+          const isFinded = salesFilter.some(
+            saleFilter => saleFilter._id === s._id,
+          );
+          if (!isFinded) {
+            salesFilter.push(s);
+          }
+        });
+    }
+    return salesFilter;
+  }
+  getSumOfNumber(arrNum: number[]): number {
+    let sum = 0;
+    for (const num of arrNum) {
+      sum = sum + num;
+    }
+    return sum;
   }
   getPercent(
     goals: [
@@ -64,6 +186,9 @@ export class DetailGoalAdminComponent implements OnInit {
       }
     });
     this.percent = (numOfComplete * 100) / goals.length;
+  }
+  getPercentNotGoals(finalNumber, currentNumber) {
+    this.percent = (currentNumber * 100) / finalNumber;
   }
   async presentToast(message: string) {
     const toast = await this.toastController.create({
