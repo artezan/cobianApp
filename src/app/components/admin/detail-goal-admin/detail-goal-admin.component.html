@@ -93,6 +93,17 @@
                 <ion-chip-icon class="icon-chip-detail" name="cash"></ion-chip-icon>
                 <ion-label>${{totalCurrent}}</ion-label>
               </ion-chip>
+              <h4>Fecha de Inicio </h4>
+              <ion-chip class="chips-detail" color="medium">
+                <ion-chip-icon class="icon-chip-detail" name="calendar"></ion-chip-icon>
+                <ion-label>{{formatDates(goal.timestamp)}}</ion-label>
+              </ion-chip>
+              <h4>Fecha de Fin </h4>
+              <ion-chip class="chips-detail" color="medium">
+                <ion-chip-icon class="icon-chip-detail" name="calendar"></ion-chip-icon>
+                <ion-label>{{fortmatDate2(goal.year, goal.month, goal.day)}}</ion-label>
+              </ion-chip>
+
             </div>
 
             <div class="goals-number" *ngIf="goal.typeOfGoal !== 'goals' && !isMoney">
@@ -106,6 +117,16 @@
               <ion-chip class="chips-detail" color="dark">
                 <ion-chip-icon class="icon-chip-detail" name="clipboard"></ion-chip-icon>
                 <ion-label>{{totalCurrent}} ventas</ion-label>
+              </ion-chip>
+              <h4>Fecha de Inicio </h4>
+              <ion-chip class="chips-detail" color="medium">
+                <ion-chip-icon class="icon-chip-detail" name="calendar"></ion-chip-icon>
+                <ion-label>{{formatDates(goal.timestamp)}}</ion-label>
+              </ion-chip>
+              <h4>Fecha de Fin </h4>
+              <ion-chip class="chips-detail" color="medium">
+                <ion-chip-icon class="icon-chip-detail" name="calendar"></ion-chip-icon>
+                <ion-label>{{fortmatDate2(goal.year, goal.month, goal.day)}}</ion-label>
               </ion-chip>
             </div>
 

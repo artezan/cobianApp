@@ -58,6 +58,9 @@ import {
   NativeDateModule,
   MAT_DATE_LOCALE,
   MatProgressBarModule,
+  MatStepperModule,
+  MatVerticalStepper,
+  MatStep,
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { GeneralTableComponent } from './components/general/general-table/general-table.component';
@@ -110,7 +113,7 @@ import { ListNotificationComponent } from './components/notification/list-notifi
 import { MenuGeneralComponent } from './components/general/menu-general/menu-general.component';
 import { PopoverComponent } from './components/general/popover/popover.component';
 import { SearchSelectComponent } from './components/general/search-select/search-select.component';
-
+import { Camera } from '@ionic-native/camera/ngx';
 @NgModule({
   declarations: [
     AppComponent,
@@ -224,6 +227,7 @@ import { SearchSelectComponent } from './components/general/search-select/search
     MatDatepickerModule,
     NativeDateModule,
     MatMomentDateModule,
+    MatStepperModule,
     NgCircleProgressModule.forRoot({
       showInnerStroke: false,
       responsive: true,
@@ -232,6 +236,7 @@ import { SearchSelectComponent } from './components/general/search-select/search
   providers: [
     StatusBar,
     SplashScreen,
+    Camera,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
       provide: APP_INITIALIZER,

@@ -61,7 +61,7 @@ export class ListGoalsComponent implements OnInit {
       {
         name: 'Número de Asesores',
         prop: 'numAdviser',
-        type: 'normal',
+        type: 'number',
       },
       {
         name: 'Grupal',

@@ -9,6 +9,8 @@ import { END_POINT } from '../../../_config/api.end-points';
 import { IUserSession } from '../../../models/userSession.model';
 import { INotification } from '../../../models/notification.model';
 import { OnesignalService } from '../../../services/onesignal.service';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-detail-build-admin',
@@ -36,6 +38,9 @@ export class DetailBuildAdminComponent implements OnInit {
   // notas por img
   notes: string[] = [];
   user: IUserSession;
+  Test;
+  Test2 = 'a';
+  numOfCurrentFase: number;
   constructor(
     private route: ActivatedRoute,
     private buildService: BuildService,
@@ -44,11 +49,29 @@ export class DetailBuildAdminComponent implements OnInit {
     private platform: Platform,
     private alertController: AlertController,
     private oneSignalService: OnesignalService,
+    private camera: Camera,
+    private storage: Storage,
   ) {
     this.user = userSessionService.userSession.value;
     this.route.queryParams.subscribe(params => {
       if (params.id) {
         this.getGoalById(params.id);
+      }
+    });
+    // si regresa de  crash
+    this.storage.keys().then(async keys => {
+      const keyBuildImg = keys.some(key => key === 'build-img');
+      if (keyBuildImg) {
+        const imgb64 = await this.storage.get('build-img');
+        this.Test2 = userSessionService.saveURI;
+        /* this.platform.resume.subscribe((event: any) => {
+          // this.Test2 = event.pendingResult.result;
+          this.Test2 = event;
+          this.Test = event.pendingResult.pluginServiceName;
+        }); */
+        this.getGoalById(imgb64.idBuild);
+        /*  this.render(imgb64.base64Image); */
+        storage.remove('build-img');
       }
     });
   }
@@ -64,8 +87,21 @@ export class DetailBuildAdminComponent implements OnInit {
   getGoalById(id: string) {
     this.isLoad = false;
     this.buildService.getBuildById(id).subscribe(build => {
+      let i = 0;
+      for (const tl of build.timeLine) {
+        if (tl.isComplete && tl.isComplete === true) {
+          if (i < build.timeLine.length - 1) {
+            i++;
+          }
+        } else {
+          break;
+        }
+      }
+      this.numOfCurrentFase = i;
       this.build = build;
       console.log(build);
+      console.log(i);
+      console.log(build.timeLine[this.numOfCurrentFase]);
       this.getPercent(build.timeLine);
       this.isLoad = true;
     });
@@ -86,7 +122,13 @@ export class DetailBuildAdminComponent implements OnInit {
     });
     toast.present();
   }
-  changeGoal() {
+  changeGoal(e) {
+    if (this.build.timeLine[this.numOfCurrentFase].imagesData.length > 0) {
+      this.build.timeLine[this.numOfCurrentFase].imagesData.forEach(img => {
+        this.completePhase(img.url);
+      });
+      this.build.timeLine[this.numOfCurrentFase].imagesData = <any>[];
+    }
     this.buildService.putBuild(this.build).subscribe(() => {
       let m;
       this.getPercent(this.build.timeLine);
@@ -106,6 +148,17 @@ export class DetailBuildAdminComponent implements OnInit {
         this.build.maker.map(maker => maker._id),
       );
     });
+    let i = 0;
+    for (const tl of this.build.timeLine) {
+      if (tl.isComplete && tl.isComplete === true) {
+        if (i < this.build.timeLine.length - 1) {
+          i++;
+        }
+      } else {
+        break;
+      }
+    }
+    this.numOfCurrentFase = i;
   }
   changeGrid(value) {
     this.isList = !this.isList;
@@ -151,6 +204,53 @@ export class DetailBuildAdminComponent implements OnInit {
     };
     reader.readAsDataURL(imgToUpload);
   }
+  private saveForRecovery(): Promise<{}> {
+    return new Promise(resolve => {
+      this.storage
+        .set('build-img', { idBuild: this.build._id })
+        .then((recover: any) => {
+          resolve();
+        });
+    });
+  }
+  // ionic camera
+  cameraIonic() {
+    const options: CameraOptions = {
+      quality: 75,
+      targetWidth: 100,
+      targetHeight: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      correctOrientation: true,
+    };
+    this.saveForRecovery().then(() => {
+      this.camera.getPicture(options).then(
+        imageData => {
+          const base64Image = 'data:image/jpeg;base64,' + imageData;
+          //  por si crash
+          /*  this.storage.set('build-img', {
+            idBuild: this.build._id,
+            base64Image: base64Image,
+          }); */
+          this.Test = base64Image;
+          this.Test2 = 'algo1';
+          this.render(base64Image);
+          this.imgName = String(
+            Math.random()
+              .toString(36)
+              .substring(2, 15) +
+              Math.random()
+                .toString(36)
+                .substring(2, 15),
+          );
+        },
+        err => {
+          this.Test2 = err.toString();
+        },
+      );
+    });
+  }
   render(src) {
     const MAX_HEIGHT = 400;
     const image = new Image();
@@ -165,22 +265,32 @@ export class DetailBuildAdminComponent implements OnInit {
       canvas.width = image.width;
       canvas.height = image.height;
       ctx.drawImage(image, 0, 0, image.width, image.height);
-      canvas.toBlob(c => {
-        console.log(c);
-        if (c.size > 200000) {
-          this.presentAlertImg(
-            'La imagen excede el límite de tamaño',
-            'Imagen no válida',
-          );
-        } else {
-          this.imgToUpload.push({
-            numPhase: this.numItem,
-            srcPrev: src,
-            name: this.imgName,
-            srcBlob: c,
-          });
-        }
-      });
+      this.Test2 = 'Render';
+      canvas.toBlob(
+        c => {
+          console.log(c);
+          if (c.size > 200000) {
+            this.presentAlertImg(
+              'La imagen excede el límite de tamaño',
+              'Imagen no válida',
+            );
+          } else {
+            /* const imagen = new Image();
+          const objurl = window.URL.createObjectURL(c);
+          imagen.src = objurl;
+          document.getElementById('composite-image').appendChild(imagen); */
+            this.imgToUpload.push({
+              numPhase: this.numItem,
+              srcPrev: src,
+              name: this.imgName,
+              srcBlob: c,
+            });
+          }
+          // tipo, calidad
+        },
+        'image/jpeg',
+        0.75,
+      );
     };
     image.src = src;
   }
@@ -190,7 +300,7 @@ export class DetailBuildAdminComponent implements OnInit {
    * @param index index del prev
    * @param notes notas
    */
-  uploadImg(
+  async uploadImg(
     imgToUp: {
       numPhase: number;
       srcPrev: string;
@@ -202,7 +312,7 @@ export class DetailBuildAdminComponent implements OnInit {
   ) {
     // subir
     // construir archivo
-    const file = new File([imgToUp.srcBlob], imgToUp.name + '.png', {
+    const file = new File([imgToUp.srcBlob], imgToUp.name + '.jpg', {
       type: imgToUp.srcBlob.type,
       lastModified: Date.now(),
     });
@@ -210,45 +320,47 @@ export class DetailBuildAdminComponent implements OnInit {
     const formData = new FormData();
     formData.append('imagen1', file);
     // subir al server
-    this.buildService.uploadImg(formData).subscribe(arrStr => {
-      // espera respuesta
-      if (arrStr) {
-        // elimina del  arr prev
-        this.imgToUpload.splice(index, 1);
-        this.build.timeLine[imgToUp.numPhase].imagesData.push({
-          date: new Date(),
-          notes: notes,
-          url: END_POINT.IP + imgToUp.name + '.png',
-        });
-        // put al build
-        this.buildService.putBuild(this.build).subscribe(() => {
-          // noti
-          if (this.user.type === 'maker') {
-            this.notification(
-              'Nueva Foto',
-              `El constructor ${
-                this.user.name
-              } ha subido una foto de la construcción ${this.build.name}`,
-              'amarillo',
-              'build',
-              ['office'],
-              this.build.maker.map(m => m._id),
-            );
-          } else {
-            this.notification(
-              'Nueva Foto',
-              `Se ha subido una foto de la construcción ${this.build.name}`,
-              'amarillo',
-              'build',
-              undefined,
-              this.build.maker.map(m => m._id),
-            );
-          }
+    const arrStr = await this.buildService.uploadImg(formData).toPromise();
+    this.Test2 = arrStr.toString();
+    // espera respuesta
+    if (arrStr.length > 0) {
+      this.build.timeLine[imgToUp.numPhase].imagesData.push({
+        date: new Date(),
+        notes: notes,
+        url: END_POINT.IP + imgToUp.name + '.jpg',
+      });
+      // put al build
+      this.buildService.putBuild(this.build).subscribe(res => {
+        if (res) {
+          // elimina del  arr prev
+          this.imgToUpload.splice(index, 1);
+        }
+        // noti
+        if (this.user.type === 'maker') {
+          this.notification(
+            'Nueva Foto',
+            `El constructor ${
+              this.user.name
+            } ha subido una foto de la construcción ${this.build.name}`,
+            'amarillo',
+            'build',
+            ['office'],
+            this.build.maker.map(m => m._id),
+          );
+        } else {
+          this.notification(
+            'Nueva Foto',
+            `Se ha subido una foto de la construcción ${this.build.name}`,
+            'amarillo',
+            'build',
+            undefined,
+            this.build.maker.map(m => m._id),
+          );
+        }
 
-          this.presentToast('Imagen Subida');
-        });
-      }
-    });
+        this.presentToast('Imagen Subida');
+      });
+    }
   }
   discartImg(index: number) {
     this.imgToUpload.splice(index, 1);
@@ -263,6 +375,10 @@ export class DetailBuildAdminComponent implements OnInit {
         this.presentToast('Imagen Borrada');
       });
     });
+  }
+  completePhase(imgURL: string) {
+    const imgName = imgURL.slice(imgURL.lastIndexOf('/') + 1, imgURL.length);
+    this.buildService.deletedImg(imgName).subscribe(() => {});
   }
   async presentAlertConfirm(url: string, phase, index) {
     const alert = await this.alertController.create({

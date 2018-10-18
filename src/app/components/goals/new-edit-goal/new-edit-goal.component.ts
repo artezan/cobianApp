@@ -17,6 +17,7 @@ import {
   SearchDialog,
   SearchSelectComponent,
 } from '../../general/search-select/search-select.component';
+import { FormatDatesFront } from '../../../_config/_helpers';
 @Component({
   selector: 'app-new-edit-goal',
   templateUrl: './new-edit-goal.component.html',
@@ -252,6 +253,9 @@ export class NewEditGoalComponent implements OnInit {
   getDate(day, month, year) {
     return new Date(year, month, day);
   }
+  getDateNoti(day, month, year) {
+    return FormatDatesFront(new Date(year, month, day));
+  }
   hourFormat(pmAm) {
     if (pmAm === 'pm' && this.hourNoti && this.hourNoti < 12) {
       this.hourNoti = this.hourNoti + 12;
@@ -285,7 +289,7 @@ export class NewEditGoalComponent implements OnInit {
       });
   }
   private notificationBySchedule(goal: IGoal) {
-    const date = this.getDate(goal.day, goal.month, goal.year);
+    const date = this.getDateNoti(goal.day, goal.month, goal.year);
     // onesignal
     this.oneSignalService
       .postOneSignalBySchedule(

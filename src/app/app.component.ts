@@ -192,12 +192,6 @@ export class AppComponent {
       userType: 'seller',
     },
     {
-      title: 'Calendario',
-      url: '/list-schedule-admin',
-      icon: 'calendar',
-      userType: 'seller',
-    },
-    {
       title: 'Perfil',
       url: '/new-edit-seller',
       icon: 'contact',
@@ -352,7 +346,7 @@ export class AppComponent {
     });
     // android one signal
     userSessionService.activateMenu.subscribe(str => {
-      if (str !== '') {
+      if (str === 'list-notification') {
         navController.navigateRoot(str);
       }
     });
@@ -363,6 +357,22 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+  }
+  private handleAndroidCameraRestart(event: any) {
+    if (event && event.pendingResult) {
+      const status: string =
+        event.pendingResult.pluginStatus !== null
+          ? ''
+          : event.pendingResult.pluginStatus.toUpperCase();
+
+      if (
+        'Camera' === event.pendingResult.pluginServiceName &&
+        'OK' !== status &&
+        event.pendingResult.result !== ''
+      ) {
+        // this.myService.saveAndroidPhotoRecoveryURI(event.pendingResult.result);
+      }
+    }
   }
   logout() {
     this.storage.remove('userSessionCurrent').then(() => {

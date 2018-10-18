@@ -16,6 +16,8 @@ import { INotification } from '../../../models/notification.model';
 import { OnesignalService } from '../../../services/onesignal.service';
 import { SellerService } from '../../../services/seller.service';
 import { map } from 'rxjs/operators';
+import { SaleService } from '../../../services/sale.service';
+import { ISale } from '../../../models/sale.model';
 
 @Component({
   selector: 'app-list-schedule-admin',
@@ -46,6 +48,8 @@ export class ListScheduleAdminComponent implements OnInit {
   isAll: boolean;
   dayItem;
   user: IUserSession;
+  sales: ISale[];
+
   constructor(
     private buyerService: BuyerService,
     private userSessionService: UserSessionService,
@@ -59,6 +63,7 @@ export class ListScheduleAdminComponent implements OnInit {
     public route: ActivatedRoute,
     private oneSignalService: OnesignalService,
     private sellerService: SellerService,
+    private saleService: SaleService,
   ) {
     this.user = userService.userSession.value;
     this.monthNumber = new Date().getMonth();
@@ -107,6 +112,8 @@ export class ListScheduleAdminComponent implements OnInit {
       if (user.type === 'administrator') {
         this.schedule = schedules.filter(s => !s.personal);
       } else if (user.type === 'adviser') {
+        this.getTotalSalesByAdv();
+        this.toastPresentAdv(`Bienvenido ${this.user.name}`);
         this.schedule = schedules.filter(
           s =>
             (s.adviser && s.adviser._id === user.id) ||
@@ -314,6 +321,22 @@ export class ListScheduleAdminComponent implements OnInit {
       });
     }
   }
+  async toastPresentAdv(m) {
+    const isPresent = await this.storage.get('alert-adv');
+    if (+isPresent !== new Date().getDate()) {
+      const toast = await this.toastController.create(<any>{
+        message: m,
+        position: 'bottom',
+        showCloseButton: false,
+        cssClass: 'toast-adv',
+        duration: 4000,
+      });
+      toast.present();
+      toast.onWillDismiss().then(() => {
+        this.storage.set('alert-adv', new Date().getDate());
+      });
+    }
+  }
   async presentToast(message) {
     const toast = await this.toastController.create({
       message: message,
@@ -389,5 +412,15 @@ export class ListScheduleAdminComponent implements OnInit {
         // guardar noti
         this.oneSignalService.newNotification(notification).subscribe();
       });
+  }
+  getTotalSalesByAdv() {
+    this.saleService.getSaleByIdAdv(this.user.id).subscribe(sales => {
+      this.sales = sales;
+    });
+  }
+  sendToTotalSales() {
+    if (this.sales.length > 0) {
+      this.router.navigate(['list-sales-admin']);
+    }
   }
 }

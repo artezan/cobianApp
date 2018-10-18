@@ -91,7 +91,7 @@ export class DetailGoalAdminComponent implements OnInit {
         this.totalCurrent = total;
         // % de la meta
         this.getPercentNotGoals(goal.quantitative, total);
-      } else if (goal.typeOfGoal === 'rentSalesCost') {
+      } else if (goal.typeOfGoal === 'rentSalesTotal') {
         this.isMoney = false;
         this.titleCard = 'Total de Ventas y Rentas';
         //  arr sales con filtros de asesores
@@ -100,7 +100,7 @@ export class DetailGoalAdminComponent implements OnInit {
         this.totalCurrent = sales.length;
         //  % de la meta
         this.getPercentNotGoals(goal.quantitative, sales.length);
-      } else if (goal.typeOfGoal === 'rentSalesTotal') {
+      } else if (goal.typeOfGoal === 'rentSalesCost') {
         this.isMoney = true;
         this.titleCard = 'Total Recaudado en Ventas y Rentas';
         const sales = await this.getTotalSalesRentSale(goal);
@@ -115,10 +115,18 @@ export class DetailGoalAdminComponent implements OnInit {
   }
   async getTotalSalesRent(goal: IGoal) {
     const sale = await this.salesService.getSale().toPromise();
+    const dateStart = new Date(goal.timestamp).getTime();
+    const dateEnd = new Date(goal.year, goal.month, goal.day).getTime();
     const salesFilter: ISale[] = [];
     for (const adv of goal.adviser) {
       sale
-        .filter(s => s.adviser.some(a => a._id === adv._id) && s.isRent)
+        .filter(
+          s =>
+            s.adviser.some(a => a._id === adv._id) &&
+            s.isRent &&
+            (dateStart <= new Date(s.timestamp).getTime() &&
+              dateEnd > new Date(s.timestamp).getTime()),
+        )
         .forEach(s => {
           const isFinded = salesFilter.some(
             saleFilter => saleFilter._id === s._id,
@@ -132,11 +140,16 @@ export class DetailGoalAdminComponent implements OnInit {
   }
   async getTotalSalesRentSale(goal: IGoal) {
     const sale = await this.salesService.getSale().toPromise();
+    const dateStart = new Date(goal.timestamp).getTime();
+    const dateEnd = new Date(goal.year, goal.month, goal.day).getTime();
     const salesFilter: ISale[] = [];
     for (const adv of goal.adviser) {
       sale.filter(s => s.adviser.some(a => a._id === adv._id)).forEach(s => {
         const isFinded = salesFilter.some(
-          saleFilter => saleFilter._id === s._id,
+          saleFilter =>
+            saleFilter._id === s._id &&
+            (dateStart <= new Date(s.timestamp).getTime() &&
+              dateEnd > new Date(s.timestamp).getTime()),
         );
         if (!isFinded) {
           salesFilter.push(s);
@@ -147,11 +160,19 @@ export class DetailGoalAdminComponent implements OnInit {
   }
   async getTotalSalesNoRent(goal: IGoal) {
     const sale = await this.salesService.getSale().toPromise();
+    console.log(sale);
+    console.log(new Date('2018-10-16T17:42:09.777Z'));
+    const dateStart = new Date(goal.timestamp).getTime();
+    const dateEnd = new Date(goal.year, goal.month, goal.day).getTime();
     const salesFilter: ISale[] = [];
     for (const adv of goal.adviser) {
       sale
         .filter(
-          s => s.adviser.some(a => a._id === adv._id) && s.isRent === false,
+          s =>
+            s.adviser.some(a => a._id === adv._id) &&
+            s.isRent === false &&
+            (dateStart <= new Date(s.timestamp).getTime() &&
+              dateEnd > new Date(s.timestamp).getTime()),
         )
         .forEach(s => {
           const isFinded = salesFilter.some(

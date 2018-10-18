@@ -48,7 +48,8 @@
 
             </ion-card-header>
             <div *ngIf="checkAdminRol(user.type)" class="flex-container">
-              <mat-checkbox (change)="changeGoal()" *ngFor="let item of build.timeLine; let i=index" [(ngModel)]="item.isComplete">
+              <mat-checkbox (change)="changeGoal($event.checked)" *ngFor="let item of build.timeLine; let i=index"
+                [(ngModel)]="item.isComplete">
                 <h3>
                   {{item.namePhase}}
                 </h3>
@@ -91,7 +92,7 @@
 
       <!-- Options grid -->
       <div class="conteiner-buttons">
-        <p style="text-align: left;">Fotos de Fases</p>
+        <p style="text-align: left;">Fotos de Fase</p>
         <mat-button-toggle-group (change)="changeGrid($event)">
           <mat-button-toggle [checked]="!isList" value="column">
             <mat-icon color="accent">view_column</mat-icon>
@@ -105,28 +106,29 @@
       <ng-template #List>
 
         <!-- Contenedor List -->
-        <ion-list style="margin-top: 1%" *ngFor="let item of  build.timeLine; let i=index">
+        <ion-list style="margin-top: 1%">
           <ion-list-header>
-            {{item.namePhase}}
+            {{build.timeLine[numOfCurrentFase].namePhase}}
           </ion-list-header>
           <!-- img -->
-          <ion-item *ngFor="let imgData of item.imagesData; let imgNumber=index">
+          <ion-item *ngFor="let imgData of build.timeLine[numOfCurrentFase].imagesData; let imgNumber=index">
             <ion-thumbnail slot="start">
               <ion-img [src]="imgData.url"></ion-img>
             </ion-thumbnail>
             <ion-label text-wrap>
-              <h3>{{item.namePhase}}</h3>
+              <h3>{{build.timeLine[numOfCurrentFase].namePhase}}</h3>
               <p><b>Notas: </b>{{imgData.notes}}</p>
               <p><b>Fecha de Subida: </b>{{formatDates2(imgData.date)}}</p>
             </ion-label>
-            <ion-button (click)="presentAlertConfirm(imgData.url,i,imgNumber)" shape="round" fill="outline" color="danger">
+            <ion-button (click)="presentAlertConfirm(imgData.url,numOfCurrentFase,imgNumber)" shape="round" fill="outline"
+              color="danger">
               <ion-icon slot="start" name="trash"></ion-icon>
               Borrar
             </ion-button>
           </ion-item>
           <!-- img antes de subir -->
           <span *ngFor="let prev of imgToUpload;  let ii=index">
-            <ion-item *ngIf="prev.numPhase === i">
+            <ion-item>
               <span>
                 <ion-thumbnail slot="start">
                   <ion-img [src]="prev.srcPrev"></ion-img>
@@ -150,22 +152,29 @@
           </span>
 
           <input id="imagen1" accept="image/*" name="imagen1" type="file" hidden (change)="fileChangeEvent($event)">
-          <ion-button (click)="link(i)" shape="round" fill="outline" color="secondary">
+          <ion-button (click)="link(numOfCurrentFase)" shape="round" fill="outline" color="secondary">
             <ion-icon slot="start" name="add"></ion-icon>
             Agregar
           </ion-button>
+          <ion-button (click)="cameraIonic()" shape="round" fill="outline" color="secondary">
+            <ion-icon slot="start" name="camera"></ion-icon>
+            Camara
+          </ion-button>
+
+
+
         </ion-list>
 
       </ng-template>
       <ng-template #Column>
         <!-- Contenedor de fases -->
-        <div class="conteiner-phases" *ngFor="let phase of build.timeLine">
+        <div class="conteiner-phases">
 
           <!-- fase titulo -->
-          <h2>{{phase.namePhase}}</h2>
+          <h2>{{build.timeLine[numOfCurrentFase].namePhase}}</h2>
           <!-- contenedor imagenes -->
           <div class="flex-img">
-            <img *ngFor="let img of phase.imagesData" [src]="img.url" alt="">
+            <img *ngFor="let img of build.timeLine[numOfCurrentFase].imagesData" [src]="img.url">
           </div>
           <!--  <button style="margin-left: 1%;" mat-stroked-button color="accent">
             <mat-icon color="accent">add</mat-icon>
@@ -180,5 +189,12 @@
     <ng-template #NoLoad>
       <app-general-skeleton></app-general-skeleton>
     </ng-template>
+
+    <img *ngIf="Test" [src]="Test" alt="">
+    <ion-label text-wrap>
+      {{Test}}
+    </ion-label>
+    <h3 *ngIf="Test2">{{Test2}}</h3>
+    <input type="file" accept="image/*" capture="camera">
   </ion-grid>
 </ion-content>

@@ -37,6 +37,7 @@ export class NewBuyerComponent implements OnInit {
   daySelect: number;
   words: string;
   isEdit = false;
+  numOfForm = 0;
   constructor(
     private buyerService: BuyerService,
     private userSession: UserSessionService,
@@ -95,11 +96,8 @@ export class NewBuyerComponent implements OnInit {
         this.isCorrect = false;
       }
     });
-    this.scroll();
   }
-  scroll() {
-    this.productSelect.nativeElement.scrollIntoView();
-  }
+
   async checkUser() {
     const user1 = this.userSession.userSession.value;
     const load = await this.presentLoadingWithOptions('Registrando...');

@@ -17,6 +17,38 @@
     padding: 1%;
 }
 
+.flex-title {
+    display: flex;
+    align-items: baseline;
+    width: 100% !important;
+}
+
+.chips-detail {
+    font-size: 1.3em;
+}
+
+.numberCircle {
+    background: #cccccc;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    color: #ffffff;
+    display: inline-block;
+    font-weight: bold;
+    line-height: 1.6em;
+    margin-right: 5px;
+    text-align: center;
+    width: 1.6em;
+}
+
+.flex-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100% !important;
+
+}
+
 @media (max-width: 900px) {
     .flex-container>* {
         width: 100%;

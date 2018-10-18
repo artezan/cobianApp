@@ -30,6 +30,7 @@
     "@angular/platform-browser": "~6.1.1",
     "@angular/platform-browser-dynamic": "~6.1.1",
     "@angular/router": "~6.1.1",
+    "@ionic-native/camera": "^5.0.0-beta.21",
     "@ionic-native/core": "5.0.0-beta.15",
     "@ionic-native/onesignal": "^4.15.0",
     "@ionic-native/splash-screen": "5.0.0-beta.15",
@@ -90,7 +91,8 @@
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
       "cordova-plugin-ionic-keyboard": {},
-      "onesignal-cordova-plugin": {}
+      "onesignal-cordova-plugin": {},
+      "cordova-plugin-camera": {}
     },
     "platforms": [
       "android"

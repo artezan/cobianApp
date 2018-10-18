@@ -20,9 +20,9 @@ export interface IBuild {
       imgUrls?: string[];
       imagesData?: [
         {
-          url: string;
-          notes: string;
-          date: string | Date;
+          url?: string;
+          notes?: string;
+          date?: string | Date;
         }
       ];
       _id?: any;

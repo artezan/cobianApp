@@ -21,7 +21,6 @@ export class LoginComponent implements OnInit {
   isFind = true;
   isDevice: boolean;
   isLogin: boolean;
-
   constructor(
     private userSession: UserSessionService,
     private router: Router,
@@ -94,7 +93,7 @@ export class LoginComponent implements OnInit {
             if (noty && noty !== '') {
               this.router.navigate([noty]);
             } else {
-              this.navController.navigateRoot('list-buyer-admin', false);
+              this.navController.navigateRoot('list-schedule-admin', false);
             }
           }
           // maker

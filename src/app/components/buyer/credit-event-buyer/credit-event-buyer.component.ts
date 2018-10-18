@@ -149,7 +149,7 @@ export class CreditEventBuyerComponent implements OnInit {
       const prop = await this.getPropById(this.propertyId);
       const arr = this.buyer.adviser
         .map(a => a._id)
-        .concat(seller === undefined ? '1' : seller._id);
+        .concat(seller === undefined ? undefined : seller._id);
       const dateToSchedule = new Date(new Date().getTime() + 15 * 86400000);
       // Crear notif
       this.notification(

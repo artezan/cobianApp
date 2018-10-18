@@ -1,6 +1,6 @@
 <!-- contenido -->
 <mat-progress-bar *ngIf="!isLoad" mode='indeterminate' color="accent"></mat-progress-bar>
-<mat-drawer-container class="side-container" autosize>
+<mat-drawer-container class="side-container">
   <h2 mat-dialog-title>{{dataInput.header}}</h2>
   <!-- Default Searchbar -->
   <ion-searchbar (ionClear)="search(undefined)" (keyup)="search(Search.value)" #Search animated placeholder="Buscar"
@@ -22,7 +22,8 @@
   </ion-item>
 
   <!-- /filtros boton -->
-
+  <mat-divider>
+  </mat-divider>
   <!-- button -->
   <mat-dialog-content>
     <span *ngIf="dataInput.body" [innerHTML]="dataInput.body"></span>
@@ -89,6 +90,8 @@
     </span>
 
   </mat-dialog-content>
+  <mat-divider>
+  </mat-divider>
   <mat-dialog-actions style="justify-content: flex-end;">
     <button color="accent" (click)="buttonsResponse(true)" mat-button mat-flat-button mat-dialog-close>{{dataInput.okButton
       ? dataInput.okButton : 'Ok'}}</button>

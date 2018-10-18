@@ -16,9 +16,14 @@ export class UserSessionService {
   public userSession = new BehaviorSubject<IUserSession>({});
   private isInitOne = false;
   /**
-   * solo para mandar a notificaciones en android
+   * solo para mandar a notificaciones en android y build
+   * list-notification | 'detail-build'
    */
   public activateMenu = new BehaviorSubject<string>('');
+  /**
+   * test
+   */
+  public saveURI;
   constructor(
     private http: HttpClient,
     private storage: Storage,
