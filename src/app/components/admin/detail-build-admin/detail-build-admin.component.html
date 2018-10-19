@@ -129,10 +129,11 @@
           <!-- img antes de subir -->
           <span *ngFor="let prev of imgToUpload;  let ii=index">
             <ion-item>
+              <ion-thumbnail slot="start">
+                <ion-img [src]="prev.srcPrev"></ion-img>
+              </ion-thumbnail>
               <span>
-                <ion-thumbnail slot="start">
-                  <ion-img [src]="prev.srcPrev"></ion-img>
-                </ion-thumbnail>
+
                 <ion-label>
                   <h3>Subir Foto</h3>
                   <p></p>
@@ -156,7 +157,7 @@
             <ion-icon slot="start" name="add"></ion-icon>
             Agregar
           </ion-button>
-          <ion-button (click)="cameraIonic()" shape="round" fill="outline" color="secondary">
+          <ion-button *ngIf="isCordova" (click)="cameraIonic()" shape="round" fill="outline" color="secondary">
             <ion-icon slot="start" name="camera"></ion-icon>
             Camara
           </ion-button>
@@ -189,12 +190,11 @@
     <ng-template #NoLoad>
       <app-general-skeleton></app-general-skeleton>
     </ng-template>
-
-    <img *ngIf="Test" [src]="Test" alt="">
+    <!-- <img *ngIf="Test" [src]="Test" alt="">
     <ion-label text-wrap>
       {{Test}}
     </ion-label>
-    <h3 *ngIf="Test2">{{Test2}}</h3>
-    <input type="file" accept="image/*" capture="camera">
+    
+    <input type="file" accept="image/*" capture="camera"> -->
   </ion-grid>
 </ion-content>

@@ -186,7 +186,7 @@ import { Camera } from '@ionic-native/camera/ngx';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    // IonicModule.forRoot({ mode: 'ios' }), { backButtonText: '' }
+    //  IonicModule.forRoot({ backButtonText: '', mode: 'ios' }),
     IonicModule.forRoot({ backButtonText: '' }),
     IonicStorageModule.forRoot(),
     AppRoutingModule,

@@ -3,7 +3,12 @@ import { IBuild } from '../../../models/build.model';
 import { BuildService } from '../../../services/build.service';
 import { ActivatedRoute } from '@angular/router';
 import { UserSessionService } from '../../../services/user-session.service';
-import { ToastController, Platform, AlertController } from '@ionic/angular';
+import {
+  ToastController,
+  Platform,
+  AlertController,
+  LoadingController,
+} from '@ionic/angular';
 import { FormatDatesFront, FormatHoursFront } from '../../../_config/_helpers';
 import { END_POINT } from '../../../_config/api.end-points';
 import { IUserSession } from '../../../models/userSession.model';
@@ -41,6 +46,7 @@ export class DetailBuildAdminComponent implements OnInit {
   Test;
   Test2 = 'a';
   numOfCurrentFase: number;
+  isCordova: boolean;
   constructor(
     private route: ActivatedRoute,
     private buildService: BuildService,
@@ -51,7 +57,9 @@ export class DetailBuildAdminComponent implements OnInit {
     private oneSignalService: OnesignalService,
     private camera: Camera,
     private storage: Storage,
+    private loadingController: LoadingController,
   ) {
+    this.isCordova = platform.is('cordova');
     this.user = userSessionService.userSession.value;
     this.route.queryParams.subscribe(params => {
       if (params.id) {
@@ -216,9 +224,9 @@ export class DetailBuildAdminComponent implements OnInit {
   // ionic camera
   cameraIonic() {
     const options: CameraOptions = {
-      quality: 75,
-      targetWidth: 100,
-      targetHeight: 100,
+      quality: 100,
+      targetWidth: 600,
+      targetHeight: 400,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
@@ -256,7 +264,7 @@ export class DetailBuildAdminComponent implements OnInit {
     const image = new Image();
     image.onload = r => {
       const canvas = document.createElement('canvas');
-      if (image.height > MAX_HEIGHT) {
+      if (image.height > MAX_HEIGHT && this.isCordova === false) {
         image.width *= MAX_HEIGHT / image.height;
         image.height = MAX_HEIGHT;
       }
@@ -275,10 +283,6 @@ export class DetailBuildAdminComponent implements OnInit {
               'Imagen no válida',
             );
           } else {
-            /* const imagen = new Image();
-          const objurl = window.URL.createObjectURL(c);
-          imagen.src = objurl;
-          document.getElementById('composite-image').appendChild(imagen); */
             this.imgToUpload.push({
               numPhase: this.numItem,
               srcPrev: src,
@@ -310,65 +314,132 @@ export class DetailBuildAdminComponent implements OnInit {
     index,
     notes: string,
   ) {
-    // subir
-    // construir archivo
-    const file = new File([imgToUp.srcBlob], imgToUp.name + '.jpg', {
-      type: imgToUp.srcBlob.type,
-      lastModified: Date.now(),
-    });
-    // construir form
-    const formData = new FormData();
-    formData.append('imagen1', file);
-    // subir al server
-    const arrStr = await this.buildService.uploadImg(formData).toPromise();
-    this.Test2 = arrStr.toString();
-    // espera respuesta
-    if (arrStr.length > 0) {
-      this.build.timeLine[imgToUp.numPhase].imagesData.push({
-        date: new Date(),
-        notes: notes,
-        url: END_POINT.IP + imgToUp.name + '.jpg',
-      });
-      // put al build
-      this.buildService.putBuild(this.build).subscribe(res => {
-        if (res) {
+    if (this.isCordova) {
+      // Cordova
+      const load = await this.presentLoadingWithOptions('Subiendo Foto...');
+      load.present();
+      this.buildService.getBuildById(this.build._id).subscribe(build => {
+        build.timeLine[this.numOfCurrentFase].imagesData.push({
+          date: new Date(),
+          notes: notes,
+          url: `http://31.220.52.51:3004/${this.imgName}.jpg`,
+        });
+        this.buildService.putBuild(build).subscribe(c => {
+          this.Test2 = 'put';
+          const file = new File([imgToUp.srcBlob], imgToUp.name + '.jpg', {
+            type: imgToUp.srcBlob.type,
+            lastModified: new Date().getTime(),
+          });
+          // construir form
+          const formData = new FormData();
+          formData.append('imagen1', file);
+          // subir al server
+          // espera respuesta
+          this.buildService.uploadImg(formData).subscribe();
+          this.build.timeLine[this.numOfCurrentFase].imagesData.push({
+            date: new Date(),
+            notes: notes,
+            url: `http://31.220.52.51:3004/${this.imgName}.jpg`,
+          });
+          this.Test2 = this.imgName;
+
+          // noti
+          if (this.user.type === 'maker') {
+            this.notification(
+              'Nueva Foto',
+              `El constructor ${
+                this.user.name
+              } ha subido una foto de la construcción ${this.build.name}`,
+              'amarillo',
+              'build',
+              ['office'],
+              this.build.maker.map(m => m._id),
+            );
+          } else {
+            this.notification(
+              'Nueva Foto',
+              `Se ha subido una foto de la construcción ${this.build.name}`,
+              'amarillo',
+              'build',
+              undefined,
+              this.build.maker.map(m => m._id),
+            );
+          }
           // elimina del  arr prev
           this.imgToUpload.splice(index, 1);
-        }
-        // noti
-        if (this.user.type === 'maker') {
-          this.notification(
-            'Nueva Foto',
-            `El constructor ${
-              this.user.name
-            } ha subido una foto de la construcción ${this.build.name}`,
-            'amarillo',
-            'build',
-            ['office'],
-            this.build.maker.map(m => m._id),
-          );
-        } else {
-          this.notification(
-            'Nueva Foto',
-            `Se ha subido una foto de la construcción ${this.build.name}`,
-            'amarillo',
-            'build',
-            undefined,
-            this.build.maker.map(m => m._id),
-          );
-        }
-
-        this.presentToast('Imagen Subida');
+          load.dismiss();
+        });
       });
+    } else {
+      // subir no cordova
+      const load = await this.presentLoadingWithOptions('Subiendo Foto...');
+      load.present();
+      // construir archivo
+      const file = new File([imgToUp.srcBlob], imgToUp.name + '.jpg', {
+        type: imgToUp.srcBlob.type,
+        lastModified: new Date().getTime(),
+      });
+      // construir form
+      const formData = new FormData();
+      formData.append('imagen1', file);
+      // subir al server
+      // espera respuesta
+      const arrStr = await this.buildService.uploadImg(formData).toPromise();
+      if (arrStr.length > 0) {
+        this.putBuild(imgToUp, notes, index);
+        load.dismiss();
+        this.presentToast('Imagen Subida');
+      }
     }
   }
+  private putBuild(
+    imgToUp: { numPhase: number; srcPrev: string; srcBlob: Blob; name: string },
+    notes: string,
+    index: any,
+  ) {
+    this.build.timeLine[imgToUp.numPhase].imagesData.push({
+      date: new Date(),
+      notes: notes,
+      url: END_POINT.IP + imgToUp.name + '.jpg',
+    });
+    console.log('Imagen to up', imgToUp);
+    this.Test2 = END_POINT.IP + imgToUp.name + '.jpg';
+    // put al build
+    this.buildService.putBuild(this.build).subscribe(res => {
+      if (res) {
+        // elimina del  arr prev
+        this.imgToUpload.splice(index, 1);
+      }
+      // noti
+      if (this.user.type === 'maker') {
+        this.notification(
+          'Nueva Foto',
+          `El constructor ${
+            this.user.name
+          } ha subido una foto de la construcción ${this.build.name}`,
+          'amarillo',
+          'build',
+          ['office'],
+          this.build.maker.map(m => m._id),
+        );
+      } else {
+        this.notification(
+          'Nueva Foto',
+          `Se ha subido una foto de la construcción ${this.build.name}`,
+          'amarillo',
+          'build',
+          undefined,
+          this.build.maker.map(m => m._id),
+        );
+      }
+    });
+  }
+
   discartImg(index: number) {
     this.imgToUpload.splice(index, 1);
   }
   deletedImg(imgURL: string, phase, index) {
-    console.log(imgURL);
     const imgName = imgURL.slice(imgURL.lastIndexOf('/') + 1, imgURL.length);
-    console.log(imgName);
     this.buildService.deletedImg(imgName).subscribe(() => {
       this.build.timeLine[phase].imagesData.splice(index, 1);
       this.buildService.putBuild(this.build).subscribe(() => {
@@ -429,6 +500,13 @@ export class DetailBuildAdminComponent implements OnInit {
     });
 
     await alert.present();
+  }
+  async presentLoadingWithOptions(message) {
+    const loading = await this.loadingController.create({
+      message: message,
+      translucent: true,
+    });
+    return await loading;
   }
   private notification(
     title,
