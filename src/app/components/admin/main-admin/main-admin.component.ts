@@ -56,6 +56,9 @@ export class MainAdminComponent implements OnInit {
   matButtonToggleGroup: 'ofert' | 'schedule' | 'credit' | 'sbp' | 'all' = 'all';
   filterTime: 7 | 14 | 30;
   isSpinner = false;
+  isCalendar: boolean;
+  startDate: Date;
+  endDate: Date;
 
   constructor(
     private userSessionService: UserSessionService,
@@ -97,6 +100,8 @@ export class MainAdminComponent implements OnInit {
   loadMore() {
     this.matButtonToggleGroup = 'all';
     this.filterTime = undefined;
+    this.startDate = undefined;
+    this.endDate = undefined;
     this.isSpinner = true;
     this.allData = this.allDataBackUp;
     this.pageNumber++;
@@ -116,8 +121,10 @@ export class MainAdminComponent implements OnInit {
       this.allData = filter;
     }
   }
-  getByTime(time: 7 | 14 | 30) {
-    if (time !== undefined) {
+  getByTime(time: 7 | 14 | 30 | 'dateSpecific') {
+    if (time !== undefined && time !== 'dateSpecific') {
+      console.log(time);
+      this.isCalendar = false;
       const filterDay = (timeData: Date) => {
         const diff = DiffDays(timeData);
         if (diff <= time) {
@@ -129,8 +136,26 @@ export class MainAdminComponent implements OnInit {
       const filter = this.allData.filter(data => filterDay(data.time));
       this.allData = filter;
       // console.log('time', filter);
+    } else if (time === 'dateSpecific') {
+      this.isCalendar = true;
+      if (this.startDate && this.endDate) {
+        this.allData = this.allData.filter(data =>
+          this.getRangeDate(data.time),
+        );
+      } else if (this.startDate && !this.endDate) {
+        this.allData = this.allData.filter(data =>
+          this.getRangeByStartDate(data.time),
+        );
+      } else if (!this.startDate && this.endDate) {
+        this.allData = this.allData.filter(data =>
+          this.getRangeByEndDate(data.time),
+        );
+      }
+    } else {
+      this.isCalendar = false;
     }
   }
+
   formatDates(dateInput: Date): string {
     const day: string = new Date(dateInput).getDate().toString();
     const month: string = (new Date(dateInput).getMonth() + 1).toString();
@@ -166,6 +191,51 @@ export class MainAdminComponent implements OnInit {
       s => s.day === day && s.month === month && s.year === year,
     );
     this.scheduleToShow = isFinded;
+  }
+  // _helpers
+  dateSelectStart(event) {
+    if (event) {
+      this.startDate = new Date(
+        event.value._i.year,
+        event.value._i.month,
+        event.value._i.date,
+      );
+      this.getFiltersGeneral();
+    }
+  }
+  dateSelectEnd(event) {
+    if (event) {
+      this.endDate = new Date(
+        event.value._i.year,
+        event.value._i.month,
+        event.value._i.date,
+      );
+      this.getFiltersGeneral();
+    }
+  }
+  getRangeDate(allData: Date): boolean {
+    const date = new Date(allData).getTime();
+    if (date >= this.startDate.getTime() && date <= this.endDate.getTime()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  getRangeByStartDate(allData: Date): boolean {
+    const date = new Date(allData).getTime();
+    if (date >= this.startDate.getTime()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  getRangeByEndDate(allData: Date): boolean {
+    const date = new Date(allData).getTime();
+    if (date <= this.endDate.getTime()) {
+      return true;
+    } else {
+      return false;
+    }
   }
   getAllSchedule() {
     if (this.isAll === true) {

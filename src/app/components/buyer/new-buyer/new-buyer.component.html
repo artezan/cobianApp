@@ -12,12 +12,108 @@
 <ion-content padding>
   <ion-grid fixed>
     <form #loginForm="ngForm">
-      <ion-card *ngIf="!isCorrect || isEdit">
-        <ion-card-header>
-          <ion-card-title> Ingrese sus datos</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
+      <ng-container *ngIf="user.id !== undefined; then OldUser; else NewUser"></ng-container>
+      <ng-template #OldUser>
+        <!-- Usuario ya registrado -->
+        <ion-card *ngIf="!isCorrect || isEdit">
+          <ion-card-header>
+            <ion-card-title text-wrap> Ingrese Datos del Cliente</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
 
+            <!-- email -->
+            <mdc-text-field label="Correo" [(ngModel)]="newBuyer.email" #email="ngModel" id="email" name="email"
+              required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+            <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+              <span *ngIf="email.dirty || email.touched">Anota Correo</span>
+            </mdc-text-field-helper-text>
+
+          </ion-card-content>
+          <ion-button *ngIf="isCorrect === false" color="warning">Usuario Repetido Verifique
+            los datos</ion-button>
+          <div style="text-align: right">
+            <ion-button [disabled]="!loginForm.form.valid" *ngIf="!isCorrect" color="primary" (click)="check()" slot="end">Verificar</ion-button>
+            <ion-button *ngIf="isCorrect === true" color="success" (click)="check()" slot="end">Correcto, puede
+              continuar</ion-button>
+
+
+          </div>
+        </ion-card>
+      </ng-template>
+      <ng-template #NewUser>
+        <!-- Nuevo usuario -->
+        <ion-card>
+          <div class="alert alert-danger" *ngIf="isCorrectEmail === false">
+            El correo ya esta en uso, intente uno distinto
+          </div>
+          <ion-card-header>
+            <ion-card-title> Ingrese su Correo</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+
+            <!-- email -->
+            <mdc-text-field label="Correo" [(ngModel)]="newBuyer.email" #email="ngModel" id="email" name="email"
+              required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+            <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+              <span *ngIf="email.dirty || email.touched">Anota Correo</span>
+            </mdc-text-field-helper-text>
+          </ion-card-content>
+          <div style="text-align: right">
+            <ion-button [disabled]="!loginForm.form.valid || isCorrectEmail" [color]="isCorrectEmail !== true ? 'secondary' : 'success' "
+              (click)="checkAndSend()" slot="end">
+              <ion-spinner *ngIf="loadButton" color="dark"></ion-spinner>
+              <ion-icon *ngIf="isCorrectEmail" name="checkmark-circle"></ion-icon>
+              {{isCorrectEmail !== true ? 'Registrar':'Registrado'}}
+            </ion-button>
+          </div>
+        </ion-card>
+        <ion-card *ngIf="isCorrectEmail">
+          <div class="alert alert-danger" *ngIf="isCorrectCode === false">
+            Código no válido, intente de nuevo
+          </div>
+          <div class="alert alert-success" *ngIf="isCorrectCode === true">
+            Correcto puede continuar
+          </div>
+          <ion-card-header>
+            <ion-card-title> Ingrese su Código</ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <!-- code -->
+            <mdc-text-field label="Código" [(ngModel)]="code" #codeInput="ngModel" id="codeInput" name="codeInput" type="number"
+              required [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
+            <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
+              <span *ngIf="email.dirty || email.touched">Anota Código</span>
+            </mdc-text-field-helper-text>
+          </ion-card-content>
+          <div style="text-align: right">
+            <ion-button [disabled]="!codeInput.value || isCorrectCode " [color]="isCorrectCode !== true ? 'secondary' : 'success' "
+              (click)="checkCode()" slot="end">
+              <ion-spinner *ngIf="loadButtonV" color="dark"></ion-spinner>
+              <ion-icon *ngIf="isCorrectCode" name="checkmark-circle"></ion-icon>
+              {{isCorrectCode !== true ? 'Verificar': 'Verificado'}}
+            </ion-button>
+            <ion-button color="primary" [disabled]="!email.value|| isCorrectCode" (click)="checkAndSend(); code= undefined"
+              slot="end">
+              <ion-spinner *ngIf="loadButton" color="dark"></ion-spinner>
+              Generar Nuevo
+            </ion-button>
+          </div>
+        </ion-card>
+
+      </ng-template>
+
+
+    </form>
+    <!--  -->
+    <form #loginForm2="ngForm">
+      <div *ngIf="isCorrect">
+        <!-- Info personal -->
+        <div class="flex-container" *ngIf="numOfForm === 0">
+          <div class="flex-title">
+            <h3><span class="numberCircle">1</span></h3>
+            <h3>Información Personal</h3>
+          </div>
           <!-- nombre -->
           <mdc-text-field label="Nombre" [(ngModel)]="newBuyer.name" #name="ngModel" id="name" name="name" required
             [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
@@ -37,41 +133,6 @@
           <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
             <span *ngIf="motherLastName.dirty || motherLastName.touched">Anota Apellido</span>
           </mdc-text-field-helper-text>
-          <!-- email -->
-          <!--  <mdc-text-field label="Correo" [(ngModel)]="newBuyer.email" #email="ngModel" id="email" name="email" required
-                [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
-              <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
-                <span *ngIf="email.dirty || email.touched">Anota email</span>
-              </mdc-text-field-helper-text> -->
-
-          <!-- email -->
-          <mdc-text-field label="Correo" [(ngModel)]="newBuyer.email" #email="ngModel" id="email" name="email" required
-            [box]="true" [required]="true" [helperText]="weightHelper"></mdc-text-field>
-          <mdc-text-field-helper-text #weightHelper="mdcHelperText" [validation]="true">
-            <span *ngIf="email.dirty || email.touched">Anota Correo</span>
-          </mdc-text-field-helper-text>
-
-        </ion-card-content>
-        <ion-button *ngIf="isCorrect === false" color="warning">Usuario Repetido Verifique
-          los datos</ion-button>
-        <div style="text-align: right">
-          <ion-button [disabled]="!loginForm.form.valid" *ngIf="!isCorrect" color="primary" (click)="check()" slot="end">Verificar</ion-button>
-          <ion-button *ngIf="isCorrect === true" color="success" (click)="check()" slot="end">Correcto, puede
-            continuar</ion-button>
-
-
-        </div>
-      </ion-card>
-    </form>
-    <!--  -->
-    <form #loginForm2="ngForm">
-      <div *ngIf="isCorrect">
-        <!-- Info personal -->
-        <div class="flex-container" *ngIf="numOfForm === 0">
-          <div class="flex-title">
-            <h3><span class="numberCircle">1</span></h3>
-            <h3>Información Personal</h3>
-          </div>
           <div>
             <!-- telefono -->
             <mdc-text-field label="Telefono" type="number" [(ngModel)]="newBuyer.phone" #phone="ngModel" id="phone"

@@ -17,12 +17,11 @@
     display: flex;
     align-items: center;
     width: 50%;
-    justify-content: flex-start;
 }
 
-/* .toogle-padding {
-    padding: 0 1px !important;
-} */
+.filters-day>* {
+    margin: 1%
+}
 
 .mat-button-toggle-label-content {
     padding: 0 4px !important;
@@ -41,6 +40,8 @@
         align-items: center;
         width: 100%;
         justify-content: center;
+        flex-wrap: wrap;
+
     }
 }
 

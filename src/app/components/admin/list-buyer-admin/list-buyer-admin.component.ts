@@ -31,6 +31,7 @@ import { SaleService } from '../../../services/sale.service';
 import { ISale } from '../../../models/sale.model';
 import { SellerService } from '../../../services/seller.service';
 import { ISeller } from '../../../models/seller.model';
+import { PropertyService } from '../../../services/property.service';
 
 @Component({
   selector: 'app-list-buyer-admin',
@@ -53,6 +54,9 @@ export class ListBuyerAdminComponent implements OnInit {
   numOfFilters = 0;
   user: IUserSession;
   sales: ISale[];
+  // filtros
+  propertiesName: any[];
+  showLoaderTable: boolean;
   constructor(
     private buyerService: BuyerService,
     private sBPService: StatusBuyerPropertyService,
@@ -66,6 +70,7 @@ export class ListBuyerAdminComponent implements OnInit {
     private storage: Storage,
     private saleService: SaleService,
     private sellerService: SellerService,
+    private propertyService: PropertyService,
   ) {
     this.user = userSession.userSession.value;
     this.isDesktop = platform.is('desktop');
@@ -117,9 +122,15 @@ export class ListBuyerAdminComponent implements OnInit {
       },
     ];
     this.getBuyerAll();
+    this.getProperty();
+  }
+  async getProperty() {
+    const p = await this.propertyService.getAllSpecial().toPromise();
+    this.propertiesName = p.map(property => property.name);
   }
   getBuyerAll() {
     this.numOfFilters = 0;
+    this.showLoaderTable = true;
     if (this.user.type === 'administrator' || this.user.type === 'office') {
       // si es admin
       this.buyerService.getBuyerAll().subscribe(buyers => {
@@ -191,6 +202,7 @@ export class ListBuyerAdminComponent implements OnInit {
     });
     this.rows = rows;
     this.isLoading = true;
+    this.showLoaderTable = false;
   }
   newBuyer() {
     /* this.router.navigate(['new-buyer']);
@@ -277,6 +289,7 @@ export class ListBuyerAdminComponent implements OnInit {
     month: number;
     year: number;
     status: string;
+    property: string;
   }) {
     const buyersFinded = this.buyers.filter(buyer =>
       BuyersFilters(buyer, filters),

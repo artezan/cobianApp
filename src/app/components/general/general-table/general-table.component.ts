@@ -48,6 +48,8 @@ export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
   columns: TableColumsModel[];
   @Input()
   rows: any[];
+  @Input()
+  showLoader: boolean;
   @Output()
   editButton = new EventEmitter<Array<any>>();
   @Output()
@@ -102,10 +104,15 @@ export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
         this.dataSource.sort = this.sort;
       }
     }
+    // loader
+    if (changes.showLoader) {
+      if (changes.showLoader.currentValue) {
+        this.showLoader = changes.showLoader.currentValue;
+      }
+    }
   }
 
   applyFilter(filterValue: string) {
-    console.log(filterValue);
     this.dataSource.filter = filterValue.trim().toLowerCase();
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();

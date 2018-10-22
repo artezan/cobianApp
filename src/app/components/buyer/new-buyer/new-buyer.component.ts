@@ -3,9 +3,15 @@ import { IBuyer } from '../../../models/buyer.model';
 import { BuyerService } from '../../../services/buyer.service';
 import { fromEvent } from 'rxjs';
 import { UserSessionService } from '../../../services/user-session.service';
-import { NavController, LoadingController } from '@ionic/angular';
+import {
+  NavController,
+  LoadingController,
+  AlertController,
+} from '@ionic/angular';
 import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { AdviserService } from '../../../services/adviser.service';
+import { IUserSession } from '../../../models/userSession.model';
+import { MailService } from '../../../services/mail.service';
 
 @Component({
   selector: 'app-new-buyer',
@@ -15,6 +21,8 @@ import { AdviserService } from '../../../services/adviser.service';
 export class NewBuyerComponent implements OnInit {
   newBuyer: IBuyer = {};
   isCorrect: boolean;
+  isCorrectEmail: boolean;
+  isCorrectCode: boolean;
   // ver elemento en scroll
   @ViewChild('product')
   productSelect: ElementRef;
@@ -38,6 +46,10 @@ export class NewBuyerComponent implements OnInit {
   words: string;
   isEdit = false;
   numOfForm = 0;
+  user: IUserSession;
+  loadButton = false;
+  loadButtonV = false;
+  code: any;
   constructor(
     private buyerService: BuyerService,
     private userSession: UserSessionService,
@@ -46,9 +58,12 @@ export class NewBuyerComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private adviseService: AdviserService,
+    private mailService: MailService,
+    private alertController: AlertController,
   ) {
     const buyerId = userSession.userSession.value.id;
     const user = userSession.userSession.value;
+    this.user = user;
     console.log(user);
     if (buyerId && user.type === 'buyer') {
       this.edit(buyerId);
@@ -96,6 +111,34 @@ export class NewBuyerComponent implements OnInit {
         this.isCorrect = false;
       }
     });
+  }
+  checkAndSend() {
+    this.loadButton = true;
+    this.buyerService.checkBuyer(this.newBuyer).subscribe(async buyer => {
+      if (buyer === null) {
+        await this.mailService.addEmail(this.newBuyer.email).toPromise();
+        this.presentAlert(
+          'Verificar Correo',
+          this.newBuyer.email,
+          'Se le ha enviado un correo con su código de verificación, favor de revisar en 📧 Spam ',
+          ['OK'],
+        );
+        this.isCorrectEmail = true;
+      } else {
+        this.isCorrectEmail = false;
+      }
+      this.loadButton = false;
+    });
+  }
+  async checkCode() {
+    this.loadButtonV = true;
+    this.isCorrectCode = await this.mailService
+      .findEmail(this.newBuyer.email, this.code)
+      .toPromise();
+    this.loadButtonV = false;
+    if (this.isCorrectCode) {
+      this.isCorrect = this.isCorrectCode;
+    }
   }
 
   async checkUser() {
@@ -201,5 +244,15 @@ export class NewBuyerComponent implements OnInit {
       translucent: true,
     });
     return await loading;
+  }
+  async presentAlert(header, subHeader, message, buttons: string[]) {
+    const alert = await this.alertController.create({
+      header: header,
+      subHeader: subHeader,
+      message: message,
+      buttons: buttons,
+    });
+
+    await alert.present();
   }
 }

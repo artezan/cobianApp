@@ -48,6 +48,9 @@ const notification = 'notification/';
 const notificatiosNoRead = 'noread/';
 const notificatiosSearch = 'search/';
 const onesignal = 'https://onesignal.com/api/v1/notifications';
+const mail = 'mail/';
+const mailAdd = 'add/';
+const mailFind = 'find/';
 
 export const END_POINT = {
   IP: ip,
@@ -113,4 +116,7 @@ export const END_POINT = {
   NOTIFICATION_NOT_READ: apiUrl + notification + notificatiosNoRead,
   // OneSignal
   ONESIGNAL: onesignal,
+  // Email
+  EMAIL_ADD: apiUrl + mail + mailAdd,
+  EMAIL_FIND: apiUrl + mail + mailFind,
 };

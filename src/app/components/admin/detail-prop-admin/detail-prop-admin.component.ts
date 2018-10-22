@@ -6,11 +6,12 @@ import { BuyerService } from '../../../services/buyer.service';
 import { UserSessionService } from '../../../services/user-session.service';
 import { ToastController, AlertController } from '@ionic/angular';
 import { StatusBuyerPropertyService } from '../../../services/status-buyer-property.service';
-import { IStatusBuyerProperty } from '../../../models/statusBuyerProperty.model';
+import { IStatusBuyerPropertyGet } from '../../../models/statusBuyerProperty.model';
 import { IBuyer } from '../../../models/buyer.model';
 import { AlertInput } from '@ionic/core';
 import { INotification } from '../../../models/notification.model';
 import { OnesignalService } from '../../../services/onesignal.service';
+import { FormatDatesFront } from '../../../_config/_helpers';
 
 @Component({
   selector: 'app-detail-prop-admin',
@@ -23,6 +24,7 @@ export class DetailPropAdminComponent implements OnInit {
   isLiked = false;
   arrPropLikes: string[] = [];
   arrSBP: string[] = [];
+  sbp: IStatusBuyerPropertyGet[] = [];
   constructor(
     private route: ActivatedRoute,
     private propertyService: PropertyService,
@@ -32,6 +34,7 @@ export class DetailPropAdminComponent implements OnInit {
     private statusBPService: StatusBuyerPropertyService,
     public alertController: AlertController,
     private oneSignalService: OnesignalService,
+    private sBPService: StatusBuyerPropertyService,
   ) {
     this.route.queryParams.subscribe(params => {
       console.log(params.id);
@@ -43,11 +46,18 @@ export class DetailPropAdminComponent implements OnInit {
 
   ngOnInit() {}
   getPropertyById(id: string) {
-    this.propertyService.getPropertyById(id).subscribe(property => {
+    this.propertyService.getPropertyById(id).subscribe(async property => {
       this.property = property;
-      console.log(this.property);
+      this.sbp = await this.getBuyersProp(id);
+      console.log('sbp', this.sbp);
       this.isLoad = true;
     });
+  }
+  async getBuyersProp(id) {
+    const sBP = await this.statusBPService.getStatusBuyerProperty().toPromise();
+    return <IStatusBuyerPropertyGet[]>(
+      sBP.filter((s: any) => s.property._id === id)
+    );
   }
   setPropToBuyer(data: string[]) {
     data.forEach(buyerId => {
@@ -148,5 +158,8 @@ export class DetailPropAdminComponent implements OnInit {
         // guardar noti
         this.oneSignalService.newNotification(notification).subscribe();
       });
+  }
+  dateFormat(date: string) {
+    return FormatDatesFront(new Date(date));
   }
 }

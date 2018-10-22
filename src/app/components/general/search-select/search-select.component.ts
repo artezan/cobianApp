@@ -130,6 +130,7 @@ export class SearchSelectComponent implements OnInit {
     month: number;
     year: number;
     status: string;
+    property;
   }) {
     if (await this.getBuyerAll()) {
       const buyersFinded = this.dataInput.rows.filter(buyer =>

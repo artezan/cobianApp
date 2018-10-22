@@ -70,13 +70,13 @@ export class AppComponent {
       userType: 'administrator',
     },
     {
-      title: 'Vendedores',
+      title: 'Dueño',
       url: '/list-seller-admin',
       icon: 'cash',
       userType: 'administrator',
     },
     {
-      title: 'Oficinistas',
+      title: 'Oficina',
       url: '/list-office-admin',
       icon: 'desktop',
       userType: 'administrator',
@@ -217,7 +217,7 @@ export class AppComponent {
       userType: 'office',
     },
     {
-      title: 'Vendedores',
+      title: 'Dueño',
       url: '/list-seller-admin',
       icon: 'cash',
       userType: 'office',

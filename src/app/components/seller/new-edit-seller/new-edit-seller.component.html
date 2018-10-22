@@ -84,6 +84,11 @@
               </mat-select>
               <mat-error *ngIf="property.dirty || property.touched">Anotar Tipo</mat-error>
             </mat-form-field>
+            <!-- notas -->
+            <mat-form-field appearance="outline">
+              <mat-label>Notas</mat-label>
+              <input matInput [(ngModel)]="seller.notes" #notes="ngModel" id="notes" name="notes">
+            </mat-form-field>
 
             <div>
               <button [disabled]="user.type === 'seller'" mat-raised-button color="primary" (click)="searchProp()">

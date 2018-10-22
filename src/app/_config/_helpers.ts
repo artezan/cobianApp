@@ -110,10 +110,20 @@ export function BuyersFilters(
     month: number;
     year: number;
     status: string;
+    property: string;
   },
 ) {
   let isOK = true;
   const buyerDate = new Date(buyer.timestamp);
+  // si existe prop
+  if (filtersApply.property !== undefined && filtersApply.property !== null) {
+    const isFind = buyer.statusBuyerProperty.some(
+      sbp => sbp.property.name === filtersApply.property,
+    );
+    if (!isFind) {
+      isOK = false;
+    }
+  }
   // si existe
   if (filtersApply.day !== undefined && filtersApply.day !== null) {
     if (buyerDate.getDate() !== filtersApply.day) {

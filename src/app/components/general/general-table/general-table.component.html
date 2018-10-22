@@ -50,6 +50,7 @@
 
   </mat-card>
   <div style="margin: 1%" class="mat-elevation-z8">
+    <mat-progress-bar *ngIf="showLoader" mode='indeterminate' color="accent"></mat-progress-bar>
     <div class="table-container" style="overflow-x:auto; " *ngIf="rows && dataSource">
       <table mat-table [dataSource]="dataSource" matSort>
         <ng-container *ngFor="let column of columns" [cdkColumnDef]="column.prop">

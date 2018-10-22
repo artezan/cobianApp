@@ -3,3 +3,68 @@
     flex-wrap: wrap;
     margin: 0% 10% 3% 10%;
 }
+
+.flex-title {
+    display: flex;
+    align-items: baseline;
+    width: 100% !important;
+}
+
+// 
+.mb-3,
+.my-3 {
+    margin-bottom: 1rem !important;
+}
+
+.badge-secondary {
+    color: #fff;
+    background-color: #F5811E;
+}
+
+.list-group-item {
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+}
+
+.lh-condensed {
+    line-height: 1.25;
+}
+
+.justify-content-between {
+    -ms-flex-pack: justify !important;
+    justify-content: space-between !important;
+}
+
+.d-flex {
+    display: -ms-flexbox !important;
+    display: flex !important;
+}
+
+.list-group-item {
+    position: relative;
+    display: block;
+    padding: .75rem 1.25rem;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, .125);
+}
+
+.badge-pill {
+    padding-right: .6em;
+    padding-left: .6em;
+    border-radius: 10rem;
+}
+
+.row {
+    width: 30%;
+}
+
+ul {
+    padding: 0%
+}
+
+@media (max-width: 900px) {
+    .row {
+        width: 100%;
+    }
+}

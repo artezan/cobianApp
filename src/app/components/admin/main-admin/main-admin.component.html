@@ -16,7 +16,7 @@
         Movimientos
       </ion-segment-button>
       <ion-segment-button value="eventsSegment">
-        Eventos
+        Citas
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
@@ -51,15 +51,36 @@
                   <mat-option value=30>
                     Último mes
                   </mat-option>
+                  <mat-option value='dateSpecific'>
+                    Rango de Fecha
+                  </mat-option>
                 </mat-select>
-                <button mat-button *ngIf="filterTime" matSuffix mat-icon-button aria-label="Clear" (click)="filterTime = undefined; getFiltersGeneral()">
+                <button mat-button *ngIf="filterTime" matSuffix mat-icon-button aria-label="Clear" (click)="filterTime = undefined; startDate= undefined; endDate= undefined; getFiltersGeneral()">
                   <mat-icon>close</mat-icon>
                 </button>
               </mat-form-field>
+              <!-- inicio -->
+              <mat-form-field *ngIf="isCalendar" appearance="fill">
+                <mat-label>Fecha Inicio</mat-label>
+                <input (dateChange)="dateSelectStart($event)" (focus)="picker.open()" matInput [matDatepicker]="picker"
+                  placeholder="Selecciona Fecha" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <!-- fecha fin -->
+
+              <mat-form-field *ngIf="isCalendar" appearance="fill">
+                <mat-label>Fecha Fin</mat-label>
+                <input (dateChange)="dateSelectEnd($event)" (focus)="pickerEnd.open()" matInput [matDatepicker]="pickerEnd"
+                  placeholder="Selecciona Fecha" required>
+                <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                <mat-datepicker #pickerEnd></mat-datepicker>
+              </mat-form-field>
             </div>
+
             <div class="filters-toogle">
               <mat-button-toggle-group [value]="matButtonToggleGroup" style="flex-wrap: wrap" (change)="matButtonToggleGroup = $event.value; getFiltersGeneral(); ">
-                <mat-button-toggle value="schedule">Eventos</mat-button-toggle>
+                <mat-button-toggle value="schedule">Citas</mat-button-toggle>
                 <mat-button-toggle value="ofert">Ofertas</mat-button-toggle>
                 <mat-button-toggle value="sbp">Estados</mat-button-toggle>
                 <mat-button-toggle value="credit">Créditos</mat-button-toggle>
@@ -140,7 +161,7 @@
                 </span>
                 <span *ngSwitchCase="'schedule'">
 
-                  <!-- Eventos -->
+                  <!-- Citas -->
                   <mat-accordion>
                     <mat-expansion-panel [ngClass]="{'state-verde': item.data.schedules.status === 'verde', 
                     'state-amarillo':  item.data.schedules.status === 'amarillo',
@@ -149,7 +170,7 @@
                     'state-azul':  item.data.schedules.status === 'azul'}">
                       <mat-expansion-panel-header>
                         <mat-panel-title>
-                          <b>Evento</b>
+                          <b>Cita</b>
                         </mat-panel-title>
                         <mat-panel-description>
                           {{item.data.schedules.buyer.name}}
@@ -233,7 +254,7 @@
 
                     </mat-expansion-panel>
                   </mat-accordion>
-                  <!-- /eventos -->
+                  <!-- /Citas -->
 
 
 
@@ -370,16 +391,16 @@
           <!-- Toggles in a List -->
           <ng-container *ngIf="scheduleToShow.length !== 0; then showSchedule; else noShow"></ng-container>
           <ng-template #showSchedule>
-            <h2>Eventos Personales </h2>
+            <h2>Citas Personales </h2>
 
             <ion-list lines="none" *ngIf="!isOne">
               <ion-item lines="none">
-                <ion-button (click)="isAll = !isAll;getAllSchedule(); ">{{isAll ? 'Mostrar eventos de hoy':'Mostrar
+                <ion-button (click)="isAll = !isAll;getAllSchedule(); ">{{isAll ? 'Mostrar Citas de hoy':'Mostrar
                   todos'}}</ion-button>
               </ion-item>
               <ion-item lines="none" *ngIf="!isAll">
                 <ion-chip color="secondary">
-                  <ion-label>Mostrando eventos de hoy
+                  <ion-label>Mostrando Citas de hoy
                   </ion-label>
                 </ion-chip>
               </ion-item>
@@ -391,7 +412,7 @@
                   <ion-card [ngClass]="{
                 'desktop-card': isDesktop  }">
                     <ion-card-header>
-                      <ion-card-subtitle text-wrap>Fecha del Evento:
+                      <ion-card-subtitle text-wrap>Fecha del Cita:
                         {{schedule.day}}/{{schedule.month + 1}}/{{schedule.year}}</ion-card-subtitle>
                       <ion-card-subtitle>Hora: {{formatHours(schedule.hour,schedule.minute)}} </ion-card-subtitle>
 
@@ -431,7 +452,7 @@
             </ion-list>
             <ion-card>
               <ion-card-header>
-                <ion-card-title> No hay eventos hoy</ion-card-title>
+                <ion-card-title> No hay Citas hoy</ion-card-title>
               </ion-card-header>
             </ion-card>
           </ng-template>

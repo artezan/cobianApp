@@ -91,7 +91,7 @@
       </ion-row>
 
       <!-- Options grid -->
-      <div class="conteiner-buttons">
+      <div *ngIf="checkAdminRol(user.type)" class="conteiner-buttons">
         <p style="text-align: left;">Fotos de Fase</p>
         <mat-button-toggle-group (change)="changeGrid($event)">
           <mat-button-toggle [checked]="!isList" value="column">

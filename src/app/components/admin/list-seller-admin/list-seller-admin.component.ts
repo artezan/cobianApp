@@ -72,7 +72,16 @@ export class ListSellerAdminComponent implements OnInit {
         prop: 'typeSeller',
         type: 'normal',
       },
-
+      {
+        name: 'Propiedades',
+        prop: 'property',
+        type: 'normal',
+      },
+      {
+        name: 'Notas',
+        prop: 'notes',
+        type: 'normal',
+      },
       {
         name: 'Acciones',
         prop: 'acction',
@@ -97,6 +106,10 @@ export class ListSellerAdminComponent implements OnInit {
     const rows = [];
 
     sellers.forEach(seller => {
+      const prop = seller.property
+        .map(p => p.name)
+        .slice(0, 4)
+        .toString();
       let typeSeller = 'Vende';
       if (seller.isRenter) {
         typeSeller = 'Renta';
@@ -107,6 +120,8 @@ export class ListSellerAdminComponent implements OnInit {
         lastName: seller.lastName,
         timestamp: seller.timestamp,
         typeSeller: typeSeller,
+        property: prop,
+        notes: seller.notes,
       });
     });
     this.rows = rows;

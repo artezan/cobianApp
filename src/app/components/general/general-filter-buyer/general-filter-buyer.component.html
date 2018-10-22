@@ -81,6 +81,21 @@
     </ion-label>
     <ion-input (ionChange)="applyFilters()" type="number" [(ngModel)]="yearInput" #day="ngModel" id="day" name="day"></ion-input>
   </ion-item>
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Propiedades</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <mat-form-field>
+        <mat-select (selectionChange)="applyFilters()" [(ngModel)]="propInput" #prop="ngModel" id="prop" name="prop"
+          placeholder="Propiedad">
+          <mat-option *ngFor="let prop of propertiesName" [value]="prop">
+            {{prop}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ion-item>
+  </ion-list>
   <!-- </ion-content> -->
 
 

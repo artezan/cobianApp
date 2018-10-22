@@ -25,6 +25,7 @@ export class GeneralFilterBuyerComponent implements OnInit {
   dayInput: number;
   monthInput: number;
   yearInput: number;
+  propInput: string;
   @Output()
   filters = new EventEmitter();
   @Output()
@@ -33,6 +34,8 @@ export class GeneralFilterBuyerComponent implements OnInit {
   closeMenu = new EventEmitter();
   @Input()
   isDesktop: boolean;
+  @Input()
+  propertiesName: string[];
 
   constructor() {}
 
@@ -43,6 +46,7 @@ export class GeneralFilterBuyerComponent implements OnInit {
       month: this.monthInput,
       year: this.yearInput,
       status: this.status,
+      property: this.propInput,
     });
   }
   reset() {
@@ -51,6 +55,7 @@ export class GeneralFilterBuyerComponent implements OnInit {
     this.monthInput = null;
     this.yearInput = null;
     this.status = undefined;
+    this.propInput = undefined;
   }
   goBack() {
     if (!this.isDesktop) {

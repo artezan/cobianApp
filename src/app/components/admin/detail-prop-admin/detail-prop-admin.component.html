@@ -168,6 +168,33 @@
         </div>
 
       </ion-card>
+      <div class="row">
+        <div class="col-md-4 order-md-2 mb-4">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Personas Interesadas</span>
+            <span class="badge badge-secondary badge-pill">{{sbp.length}}</span>
+          </h4>
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between lh-condensed" *ngFor="let item of sbp">
+              <div>
+                <h6 class="my-0">{{item.buyer.name}}</h6>
+                <small class="text-muted">{{dateFormat(item.timestamp)}}</small>
+              </div>
+              <span class="badge badge-pill" style="height: 15%; color: white " [ngClass]="
+              {'background-verde': item.status === 'verde', 
+             'background-amarillo':  item.status === 'amarillo',
+             'background-rojo':  item.status === 'rojo',
+             'background-gris': item.status === 'gris',
+             'background-azul':  item.status === 'azul' }">
+                {{item.status
+                === 'rojo' ? 'Cierre' : item.status
+                === 'verde' ? 'Intreres': item.status
+                === 'amarillo' ? 'Seguimiento': item.status
+                === 'azul' ? 'Post Venta' : ''}}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
 
     </ng-template>
     <ng-template #elseTemplate style="text-align: center">

@@ -22,7 +22,7 @@
       <mat-drawer [class.mat-elevation-z1]=true position="end" #drawer class="sidenav" [mode]="isDesktop ? 'side' : 'over'"
         [opened]="openMenu">
         <app-general-filter-buyer (filters)="getFilters($event)" (resetAll)="getBuyerAll()" (closeMenu)="drawer.close()"
-          [isDesktop]="isDesktop"></app-general-filter-buyer>
+          [isDesktop]="isDesktop" [propertiesName]="propertiesName"></app-general-filter-buyer>
       </mat-drawer>
       <!-- /contenido de filtros -->
       <!-- filtros boton -->
@@ -42,7 +42,7 @@
       <!-- Table  -->
       <h2>Lista de Clientes </h2>
       <app-general-table [columns]="columns" [rows]="rows" [isDesktop]="isDesktop" (editButton)="edit($event)"
-        (deletedButton)="presentAlertConfirm($event)" (detailsButton)="detailBuyer($event)"></app-general-table>
+        (deletedButton)="presentAlertConfirm($event)" (detailsButton)="detailBuyer($event)" [showLoader]="showLoaderTable"></app-general-table>
       <!-- /Table -->
     </mat-drawer-container>
 
