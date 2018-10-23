@@ -12,6 +12,7 @@
     "e2e": "ng e2e",
     "build:ubuntu": "ng build  --prod --base-href http://31.220.52.51:3002",
     "build-onesignal": "ng build  --prod --base-href http://31.220.52.51:3002 && npm run copy-onesignal",
+    "build-app": "ng build  --prod --base-href http://31.220.52.51:3005 && npm run copy-onesignal",
     "copy-onesignal": "copyfiles copyfiles -u 1 onesignal/*.js onesignal/*.json  www",
     "android-prod": "ionic cordova build android --prod",
     "android-release": "ionic cordova build android --prod --release"

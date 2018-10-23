@@ -1,0 +1,130 @@
+<ng-container *ngIf="isWeek; then thenTemplate; else elseTemplate"></ng-container>
+<ng-template #thenTemplate>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 41px;">
+        </th>
+        <th [ngClass]="{'current-day': currenDate === getDays2(0)}" class="day-past">
+          <span>
+            Dom {{getDays(0)}}
+          </span>
+        </th>
+        <th [ngClass]="{'current-day': currenDate === getDays2(1)}" class="day-past">
+          <span>
+            Lun {{getDays(1)}}
+          </span>
+        </th>
+        <th [ngClass]="{'current-day': currenDate === getDays2(2)}" class="day-past">
+          <span>
+            Mart {{getDays(2)}}
+          </span>
+        </th>
+        <th [ngClass]="{'current-day': currenDate === getDays2(3)}" class="day-past">
+          <span>
+            Mier {{getDays(3)}}
+          </span>
+        </th>
+        <th [ngClass]="{'current-day': currenDate === getDays2(4)}" class="day-past">
+          <span>
+            Jue {{getDays(4)}}
+          </span>
+        </th>
+        <th [ngClass]="{'current-day': currenDate === getDays2(5)}" class="day-past">
+          <span>
+            Vie {{getDays(5)}}
+          </span>
+        </th>
+        <th [ngClass]="{'current-day': currenDate === getDays2(6)}" class="day-past">
+          <span>
+            Sab {{getDays(6)}}
+          </span>
+        </th>
+      </tr>
+    </thead>
+  </table>
+
+  <table>
+
+    <tbody>
+      <tr *ngFor="let rowHour of hoursOfDay ">
+
+        <td style="width: 41px;">
+          {{rowHour.str}}
+        </td>
+        <!-- Domigo 0, todos los dias -->
+        <td [hidden]="showRow === rowHour.hr" class="hour-table" *ngFor="let numOfDay of numOfdays" [ngClass]="{'event': getScheduleEvents(rowHour.hr, numOfDay).length > 0}"
+          (click)="showTd(getScheduleEvents(rowHour.hr, numOfDay), rowHour.hr, numOfDay)">
+          <span *ngIf="getScheduleEvents(rowHour.hr, numOfDay).length > 0">
+            {{getScheduleEvents(rowHour.hr, numOfDay).length}} {{getScheduleEvents(rowHour.hr, numOfDay).length === 1
+            ?
+            'Cita' :
+            'Citas'}}
+          </span>
+        </td>
+        <td colspan="7" *ngIf="showRow === rowHour.hr" class="open-day-event">
+          <div class="close-events">
+            <button mat-raised-button color="warn" (click)="showRow = undefined">Cerrar</button>
+          </div>
+          <div class="card-open" *ngFor="let s of schedulesShow">
+            <span class="status-point" [ngClass]="
+            {'background-verde': s.status === 'verde', 
+           'background-amarillo':  s.status === 'amarillo',
+           'background-rojo':  s.status === 'rojo',
+           'background-gris': s.status === 'gris',
+           'background-azul':  s.status === 'azul' }"></span>
+            <p *ngIf="!s.administrator && !s.personal"> {{s.buyer.name}} en {{s.property.name}}</p>
+            <p *ngIf="s.administrator || s.personal"> Evento Personal</p>
+            <p style="margin-left: 1%"> <small>{{formatDate(s.year,s.month,s.day,s.hour,s.minute)}}</small></p>
+            <div style="margin-left: 58%;">
+              <ion-item lines="none">
+                <ion-button *ngIf="!s.administrator && !s.personal" (click)="editEvent.emit(s._id)" color="success"
+                  fill="outline" slot="end">
+                  <ion-icon name="create"></ion-icon>
+                </ion-button>
+                <ion-button *ngIf="s.administrator || s.personal " (click)="editPersonalEvent.emit(s._id)" color="success"
+                  fill="outline" slot="end">
+                  Editar Evento Personal <ion-icon name="create"></ion-icon>
+                </ion-button>
+                <ion-button (click)="deletedEvent.emit(s._id)" color="danger" fill="outline" slot="end">
+                  <ion-icon name="trash"></ion-icon>
+                </ion-button>
+              </ion-item>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+
+</ng-template>
+<ng-template #elseTemplate>
+  <!-- day -->
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 41px;">
+        </th>
+        <th class="day-past">
+          <span>
+            Dom 10/21
+          </span>
+        </th>
+
+      </tr>
+    </thead>
+  </table>
+  <table>
+    <tbody>
+      <tr *ngFor="let rowHour of hoursOfDay ">
+        <td style="width: 41px;">
+          {{rowHour.str}}
+        </td>
+        <td class="hour-table">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
+<br>

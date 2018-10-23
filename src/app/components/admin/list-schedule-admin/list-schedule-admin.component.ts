@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ISchedule } from '../../../models/schedule.model';
 import { BuyerService } from '../../../services/buyer.service';
 import { UserSessionService } from '../../../services/user-session.service';
@@ -6,6 +6,7 @@ import {
   NavController,
   AlertController,
   ToastController,
+  Platform,
 } from '@ionic/angular';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { ScheduleService } from '../../../services/schedule.service';
@@ -49,6 +50,11 @@ export class ListScheduleAdminComponent implements OnInit {
   dayItem;
   user: IUserSession;
   sales: ISale[];
+  showSpecific = false;
+  showWeek = true;
+  fowarkWeek = 0;
+  backWeek = 0;
+  isDesktop: boolean;
 
   constructor(
     private buyerService: BuyerService,
@@ -64,7 +70,10 @@ export class ListScheduleAdminComponent implements OnInit {
     private oneSignalService: OnesignalService,
     private sellerService: SellerService,
     private saleService: SaleService,
+    private platform: Platform,
   ) {
+    this.isDesktop = platform.is('desktop');
+    console.log(this.isDesktop);
     this.user = userService.userSession.value;
     this.monthNumber = new Date().getMonth();
     this.year = new Date().getFullYear();
@@ -139,10 +148,20 @@ export class ListScheduleAdminComponent implements OnInit {
       this.isLoad = true;
     });
   }
-  newEventByDate(date?: { year: number; month: number; day: number }) {
+  newEventByDate(date?: {
+    year: number;
+    month: number;
+    day: number;
+    hour?: number;
+  }) {
     if (date) {
       const data: NavigationExtras = {
-        queryParams: { day: date.day, month: date.month, year: date.year },
+        queryParams: {
+          day: date.day,
+          month: date.month,
+          year: date.year,
+          hour: date.hour,
+        },
       };
       this.router.navigate(['new-edit-schedule'], data);
     } else {
@@ -347,19 +366,27 @@ export class ListScheduleAdminComponent implements OnInit {
 
   // _helpers
   backOne() {
-    if (this.monthNumber === 0) {
-      this.year--;
-      this.monthNumber = 11;
+    if (this.showSpecific) {
+      this.backWeek++;
     } else {
-      this.monthNumber--;
+      if (this.monthNumber === 0) {
+        this.year--;
+        this.monthNumber = 11;
+      } else {
+        this.monthNumber--;
+      }
     }
   }
   fowardOne() {
-    if (this.monthNumber === 11) {
-      this.year++;
-      this.monthNumber = 0;
+    if (this.showSpecific) {
+      this.fowarkWeek++;
     } else {
-      this.monthNumber++;
+      if (this.monthNumber === 11) {
+        this.year++;
+        this.monthNumber = 0;
+      } else {
+        this.monthNumber++;
+      }
     }
   }
   formatDate(item) {

@@ -100,6 +100,7 @@ export class NewEditScheduleComponent implements OnInit {
           this.schedule.day = +params.day;
           this.schedule.month = +params.month;
           this.schedule.year = +params.year;
+          this.schedule.hour = +params.hour;
         }
         if (this.user.type === 'adviser') {
           this.schedule.adviser = this.user.id;

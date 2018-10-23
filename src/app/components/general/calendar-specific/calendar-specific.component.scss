@@ -1,0 +1,86 @@
+.day-past {
+    border: 1px solid #DDD;
+    text-align: left;
+    font-weight: 500;
+    padding: .8rem;
+    vertical-align: top;
+}
+
+.hour-table {
+    height: 5rem;
+    border: 1px solid #DDD;
+    background-color: #fafafa;
+}
+
+thead {
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+table {
+    width: 100%;
+    box-sizing: border-box;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 1em;
+}
+
+td:hover {
+    background-color: #f5f5f5;
+}
+
+.event {
+    background-color: rgb(58, 135, 173);
+    color: white;
+    text-align: center;
+}
+
+.event:hover {
+    background-color: rgb(1, 99, 148) !important;
+}
+
+.current-day {
+    background-color: #cdcdce !important;
+}
+
+.open-day-event {
+    background-color: rgb(3, 155, 229);
+    height: 120px;
+}
+
+.open-day-event:hover {
+    background-color: rgb(3, 155, 229);
+}
+
+.card-open {
+    padding-left: 16px;
+    margin: 8px 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 1px 3px 0 rgba(0, 0, 0, .12);
+    transition: box-shadow .3s ease;
+    background-color: #fff;
+    height: 40px;
+}
+
+.status-point {
+    touch-action: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    // background-color: rgb(103, 58, 183);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 2px;
+}
+
+.close-events {
+    text-align: right;
+    margin-right: 2%;
+}

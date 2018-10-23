@@ -114,6 +114,7 @@ import { MenuGeneralComponent } from './components/general/menu-general/menu-gen
 import { PopoverComponent } from './components/general/popover/popover.component';
 import { SearchSelectComponent } from './components/general/search-select/search-select.component';
 import { Camera } from '@ionic-native/camera/ngx';
+import { CalendarSpecificComponent } from './components/general/calendar-specific/calendar-specific.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -177,6 +178,7 @@ import { Camera } from '@ionic-native/camera/ngx';
     MenuGeneralComponent,
     PopoverComponent,
     SearchSelectComponent,
+    CalendarSpecificComponent,
   ],
   entryComponents: [
     DialogGeneralComponent,
