@@ -44,17 +44,18 @@
     </thead>
   </table>
 
-  <table>
+  <table id="myTable">
 
     <tbody>
-      <tr *ngFor="let rowHour of hoursOfDay ">
+      <tr *ngFor="let rowHour of hoursOfDay " [hidden]="showRow !== rowHour.hr &&  rowHour.str === ' ' ">
 
         <td style="width: 41px;">
           {{rowHour.str}}
         </td>
         <!-- Domigo 0, todos los dias -->
-        <td [hidden]="showRow === rowHour.hr" class="hour-table" *ngFor="let numOfDay of numOfdays" [ngClass]="{'event': getScheduleEvents(rowHour.hr, numOfDay).length > 0}"
-          (click)="showTd(getScheduleEvents(rowHour.hr, numOfDay), rowHour.hr, numOfDay)">
+        <td [hidden]="rowHour.str === ' '" class="hour-table" *ngFor="let numOfDay of numOfdays" [ngClass]="{'event': getScheduleEvents(rowHour.hr, numOfDay).length > 0,
+           'event-select': showRow === rowHour.hr && elevationCol === numOfDay && getScheduleEvents(rowHour.hr, numOfDay).length > 0}"
+          (click)="showTd(getScheduleEvents(rowHour.hr, numOfDay), rowHour.hr, numOfDay); elevationCol = numOfDay">
           <span *ngIf="getScheduleEvents(rowHour.hr, numOfDay).length > 0">
             {{getScheduleEvents(rowHour.hr, numOfDay).length}} {{getScheduleEvents(rowHour.hr, numOfDay).length === 1
             ?
@@ -62,7 +63,7 @@
             'Citas'}}
           </span>
         </td>
-        <td colspan="7" *ngIf="showRow === rowHour.hr" class="open-day-event">
+        <td colspan="7" *ngIf="showRow === rowHour.hr &&  rowHour.str === ' ' " class="open-day-event">
           <div class="close-events">
             <button mat-raised-button color="warn" (click)="showRow = undefined">Cerrar</button>
           </div>
@@ -84,7 +85,7 @@
                 </ion-button>
                 <ion-button *ngIf="s.administrator || s.personal " (click)="editPersonalEvent.emit(s._id)" color="success"
                   fill="outline" slot="end">
-                  Editar Evento Personal <ion-icon name="create"></ion-icon>
+                  <ion-icon name="create"></ion-icon>
                 </ion-button>
                 <ion-button (click)="deletedEvent.emit(s._id)" color="danger" fill="outline" slot="end">
                   <ion-icon name="trash"></ion-icon>
@@ -108,7 +109,7 @@
         </th>
         <th class="day-past">
           <span>
-            Dom 10/21
+            {{formatDate2(currentWeek)}} <small>Citas: {{getScheduleEventsByDay(currentWeek.getDay()).length}}</small>
           </span>
         </th>
 
@@ -117,14 +118,158 @@
   </table>
   <table>
     <tbody>
-      <tr *ngFor="let rowHour of hoursOfDay ">
+      <tr *ngFor="let rowHour of hoursOfDay " [hidden]="rowHour.str === ' '">
         <td style="width: 41px;">
           {{rowHour.str}}
         </td>
         <td class="hour-table">
+          <span *ngIf="getScheduleEvents(rowHour.hr, currentWeek.getDay()).length > 0">
+            <!--  {{getScheduleEvents(rowHour.hr, currentWeek.getDay()).length}} {{getScheduleEvents(rowHour.hr,
+            currentWeek.getDay()).length === 1
+            ?
+            'Cita' :
+            'Citas'}} -->
+            <!-- Eventos -->
+            <mat-accordion *ngFor="let item of getScheduleEvents(rowHour.hr, currentWeek.getDay())" style="margin-bottom: 1%">
+              <mat-expansion-panel [ngClass]="{'state-verde': item.status === 'verde', 
+                  'state-amarillo':  item.status === 'amarillo',
+                  'state-rojo':  item.status === 'rojo',
+                  'state-gris': item.status === 'gris',
+                  'state-azul':  item.status === 'azul' }"
+                style="margin-bottom: 1%">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <b>{{formatState(item.status)}}</b>
+                  </mat-panel-title>
+                  <mat-panel-description *ngIf=" !item.administrator && !item.personal ">
+                    {{item.buyer.name}} {{item.adviser ? 'con ' + item.adviser.name : ''}}
+                  </mat-panel-description>
+                  <mat-panel-description *ngIf="item.administrator || item.personal ">
+                    {{item.title}}
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <!-- listado -->
+                <ion-list lines="none">
+                  <ion-item lines="none" *ngIf="item.buyer">
+                    <ion-icon slot="start" class="color-item-secondary" name="contact"></ion-icon>
+                    <ion-label slot="start" text-wrap>
+                      <p><b>Cliente:</b> </p>
+                      <p>{{item.buyer.name}}</p>
+                    </ion-label>
+                  </ion-item>
+                  <ion-item lines="none" *ngIf="item.adviser">
+                    <ion-icon slot="start" class="color-item-secondary" name="contact"></ion-icon>
+                    <ion-label slot="start" text-wrap>
+                      <p><b>Asesor:</b> </p>
+                      <p>{{item.adviser.name}}</p>
+                    </ion-label>
+                  </ion-item>
+                  <ion-item lines="none" *ngIf="item.seller">
+                    <ion-icon slot="start" class="color-item-secondary" name="contact"></ion-icon>
+                    <ion-label slot="start" text-wrap>
+                      <p><b>Propietario:</b> </p>
+                      <p>{{item.seller.name}}</p>
+                    </ion-label>
+                  </ion-item>
+                  <ion-item lines="none" *ngIf="item.property">
+                    <ion-icon slot="start" class="color-item-secondary" name="home"></ion-icon>
+                    <ion-label slot="start" text-wrap>
+                      <p><b>Propiedad:</b> </p>
+                      <p>{{item.property.name}}</p>
+                    </ion-label>
+                  </ion-item>
+                  <ion-item lines="none" *ngIf="item.address">
+                    <ion-icon slot="start" class="color-item-secondary" name="pin"></ion-icon>
+                    <ion-label slot="start" text-wrap>
+                      <p><b>Lugar:</b> </p>
+                      <p>{{item.address}}</p>
+                      <a [href]="'http://maps.google.com/?q='+item.address+', Puebla'">Ver mapa</a>
+                    </ion-label>
+                  </ion-item>
+                  <ion-item lines="none" *ngIf="item.day">
+                    <ion-icon slot="start" class="color-item-secondary" name="calendar"></ion-icon>
+                    <ion-label slot="start" text-wrap>
+                      <p><b>Fecha del Evento:</b> </p>
+                      <p>{{item.day}}/{{item.month + 1}}/{{item.year}}</p>
+                    </ion-label>
+                  </ion-item>
+                  <ion-item lines="none" *ngIf="item.day">
+                    <ion-icon slot="start" class="color-item-secondary" name="time"></ion-icon>
+                    <ion-label slot="start" text-wrap>
+                      <p><b>Hora del Evento:</b> </p>
+                      <p>{{formatHours(item.hour,item.minute)}}</p>
+                    </ion-label>
+                  </ion-item>
+                  <!-- <ion-item lines="none" *ngIf="item.status">
+                            <ion-icon slot="start" class="color-item-secondary" name="cash"></ion-icon>
+                            <ion-label slot="start" text-wrap>
+                              <p><b>Estado:</b> </p>
+                              <p *ngIf="item.status === 'gris'">Cita Generada</p>
+                              <p *ngIf="item.status === 'verde'">Propuesta Cita</p>
+                              <p *ngIf="item.status === 'amarillo'">Esperando Visita</p>
+                              <p *ngIf="item.status === 'rojo'">Visitada</p>
+                            </ion-label>
+                          </ion-item> -->
+                  <ion-item *ngIf="item.note" lines="none">
+                    <ion-icon slot="start" class="color-item-secondary" name="clipboard"></ion-icon>
+                    <ion-label slot="start" text-wrap>
+                      <p><b>Notas:</b> </p>
+                      <p>{{item.note}}</p>
+                    </ion-label>
+                  </ion-item>
+                  <ion-item *ngIf="item.scoreByAdviser" lines="none">
+                    <ion-chip [ngClass]="
+                              {
+                              'background-verde': item.scoreByAdviser === 'verde', 
+                              'background-amarillo':  item.scoreByAdviser === 'amarillo',
+                              'background-rojo':  item.scoreByAdviser === 'rojo',
+                              'background-gris': item.scoreByAdviser === 'gris',
+                              'background-azul':  item.scoreByAdviser === 'azul'
+                            }">
+                      <ion-chip-icon class="icon-chip-detail" name="eye"></ion-chip-icon>
+                      <ion-label *ngIf="item.scoreByAdviser ===  'verde'">Poco interés</ion-label>
+                      <ion-label *ngIf="item.scoreByAdviser ===  'amarillo'">Oportunidad de venta</ion-label>
+                      <ion-label *ngIf="item.scoreByAdviser ===  'rojo'">Venta muy probable</ion-label>
+                      <ion-label *ngIf="item.scoreByAdviser ===  'gris'">No hay interés</ion-label>
+                      <ion-label *ngIf="item.scoreByAdviser ===  'azul'">Muy bien</ion-label>
+                    </ion-chip>
+                  </ion-item>
+                  <ion-item lines="none">
+                    <!-- <ion-button *ngIf="!item.administrator && !item.personal && user.type === 'adviser' && item.status === 'amarillo' && comparateDate(item.year, item.month, item.day) "
+                      (click)="presentAlertVisit(item)" color="warning" fill="outline" slot="end">
+                      Calificar <ion-icon name="clipboard"></ion-icon>
+                    </ion-button> -->
+                    <ion-button *ngIf="!item.administrator && !item.personal" (click)="editEvent.emit(item._id)" color="success"
+                      fill="outline" slot="end">
+                      Editar <ion-icon name="create"></ion-icon>
+                    </ion-button>
+                    <ion-button *ngIf="item.administrator || item.personal " (click)="editPersonalEvent.emit(item._id)"
+                      color="success" fill="outline" slot="end">
+                      Editar <ion-icon name="create"></ion-icon>
+                    </ion-button>
+                    <ion-button (click)="deletedEvent.emit(item._id)" color="danger" fill="outline" slot="end">
+                      Borrar <ion-icon name="trash"></ion-icon>
+                    </ion-button>
+
+                  </ion-item>
+                </ion-list>
+                <!-- /listado -->
+
+
+              </mat-expansion-panel>
+            </mat-accordion>
+            <!-- /eventos -->
+          </span>
+
         </td>
       </tr>
     </tbody>
   </table>
 </ng-template>
 <br>
+<!-- fab placed to the bottom end -->
+<ion-fab class="fix-add" vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="newEvent.emit()" color="secondary">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

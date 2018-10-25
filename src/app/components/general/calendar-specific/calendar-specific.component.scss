@@ -54,6 +54,11 @@ td:hover {
     background-color: rgb(3, 155, 229);
 }
 
+.event-select {
+    background-color: rgb(1, 99, 148) !important;
+    box-shadow: 0 5px 6px -3px rgba(0, 0, 0, .2), 0 9px 12px 1px rgba(0, 0, 0, .14), 0 3px 16px 2px rgba(0, 0, 0, .12);
+}
+
 .card-open {
     padding-left: 16px;
     margin: 8px 16px;
@@ -83,4 +88,35 @@ td:hover {
 .close-events {
     text-align: right;
     margin-right: 2%;
+}
+
+.fix-add {
+    position: fixed;
+    text-align: right;
+    bottom: 6px;
+    right: 6px;
+}
+
+@media (max-width: 900px) {
+    .day-past {
+        text-align: center;
+        font-weight: 500;
+        padding: 0rem;
+        vertical-align: top;
+        font-size: small;
+    }
+
+    .card-open {
+        padding: 1% 7% 1% 6%;
+        margin: 8px 16px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: start;
+        box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+        transition: box-shadow .3s ease;
+        background-color: #fff;
+        height: unset;
+    }
 }

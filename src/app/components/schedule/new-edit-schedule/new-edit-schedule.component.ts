@@ -177,9 +177,11 @@ export class NewEditScheduleComponent implements OnInit {
     }
   }
   hourFormat(pmAm) {
-    console.log(pmAm);
     if (pmAm === 'pm' && this.schedule.hour && this.schedule.hour < 12) {
       this.schedule.hour = this.schedule.hour + 12;
+    }
+    if (pmAm === 'am' && this.schedule.hour && this.schedule.hour > 12) {
+      this.schedule.hour = this.schedule.hour - 12;
     }
   }
   getAdvAll(item) {

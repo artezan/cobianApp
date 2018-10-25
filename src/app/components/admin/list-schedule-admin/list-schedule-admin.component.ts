@@ -51,9 +51,11 @@ export class ListScheduleAdminComponent implements OnInit {
   user: IUserSession;
   sales: ISale[];
   showSpecific = false;
+  // week
   showWeek = true;
   fowarkWeek = 0;
   backWeek = 0;
+  currentWeek = new Date();
   isDesktop: boolean;
 
   constructor(
@@ -70,7 +72,7 @@ export class ListScheduleAdminComponent implements OnInit {
     private oneSignalService: OnesignalService,
     private sellerService: SellerService,
     private saleService: SaleService,
-    private platform: Platform,
+    public platform: Platform,
   ) {
     this.isDesktop = platform.is('desktop');
     console.log(this.isDesktop);
@@ -92,7 +94,10 @@ export class ListScheduleAdminComponent implements OnInit {
       this.isLoad = true;
     }); */
   }
-  calendarSelect(item: { year: number; month: number; day: number }) {
+  calendarSelect(
+    item: { year: number; month: number; day: number },
+    islist?: boolean,
+  ) {
     if (item.day !== 0) {
       const isFinded = this.schedule.filter(
         s =>
@@ -102,10 +107,17 @@ export class ListScheduleAdminComponent implements OnInit {
         this.dateDaySelect = FormatDatesFront(
           new Date(item.year, item.month, item.day),
         );
-        this.schedule = isFinded;
+        if (islist) {
+          this.schedule = isFinded;
+        }
         this.showFullCalendar = false;
         this.isAll = false;
         this.dayItem = item;
+        if (!islist) {
+          this.currentWeek = new Date(item.year, item.month, item.day);
+          this.showWeek = false;
+          this.showSpecific = true;
+        }
       } else {
         this.newEventByDate(item);
       }
@@ -113,7 +125,7 @@ export class ListScheduleAdminComponent implements OnInit {
   }
   getEvents() {
     this.isLoad = false;
-
+    this.dayItem = undefined;
     this.isAll = true;
     this.scheduleService.getSchedule().subscribe(schedules => {
       // console.log('schedules', schedules);

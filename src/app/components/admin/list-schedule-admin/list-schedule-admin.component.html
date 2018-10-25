@@ -20,25 +20,124 @@
       </ion-button>
     </ion-buttons>
     <ion-title *ngIf="showFullCalendar" style="text-align: center">{{month[monthNumber]}} {{year}}</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="showFullCalendar = !showFullCalendar; getEvents(); " slot="end">{{showFullCalendar ? '' :
-        'Ver calendario'}}
-        <ion-icon slot="icon-only" [name]="showFullCalendar ? 'clipboard' : 'calendar'"></ion-icon>
+    <ion-buttons *ngIf="isDesktop" slot="end">
+      <!-- opciones de vista -->
+      <!--  <button mat-icon-button>
+        <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon> Primary
+      </button> -->
+
+      <ion-button *ngIf="(showFullCalendar || showSpecific === false) && !dayItem " (click)="showFullCalendar = false; showSpecific = true"
+        slot="end">
+        Agenda
+        <i slot="icon-only" class="material-icons">assignment</i>
+
       </ion-button>
-      <ion-button *ngIf="!showFullCalendar && isDesktop" (click)="showSpecific = !showSpecific;" slot="end">{{showSpecific
+      <!-- especial -->
+      <ion-button *ngIf="(showFullCalendar || showSpecific === false) && dayItem " (click)="showFullCalendar = false; showSpecific = true; getEvents()"
+        slot="end">
+        Agenda
+        <!-- <ion-icon slot="icon-only" name="clipboard"></ion-icon> -->
+        <i slot="icon-only" class="material-icons">assignment</i>
+
+      </ion-button>
+      <!-- /especial -->
+
+      <ion-button *ngIf="(showFullCalendar || showSpecific === true) && !dayItem " (click)="showFullCalendar = false; showSpecific = false;"
+        slot="end">
+        Lista
+        <!-- <ion-icon slot="icon-only" name="reorder"></ion-icon> -->
+        <i slot="icon-only" class="material-icons">view_list</i>
+
+      </ion-button>
+      <!-- especial -->
+      <ion-button *ngIf="!showFullCalendar && showSpecific === true && !showWeek && dayItem" (click)="showFullCalendar = false; showSpecific = false; calendarSelect(dayItem, true)"
+        slot="end">
+        Lista Dia
+        <!-- <ion-icon slot="icon-only" name="reorder"></ion-icon> -->
+        <i slot="icon-only" class="material-icons ">view_list</i>
+      </ion-button>
+      <!-- /especial -->
+
+      <ion-button *ngIf="!showFullCalendar" (click)="showFullCalendar = true; showSpecific = true; getEvents() " slot="end">
+        Calendario
+        <!-- <ion-icon slot="icon-only" name="calendar"></ion-icon> -->
+        <i slot="icon-only" class="material-icons ">date_range</i>
+
+      </ion-button>
+
+      <ion-button *ngIf="!showFullCalendar && showSpecific " (click)="showWeek = !showWeek;" slot="end">{{showWeek
         ?
-        'Lista' :
-        'Agenda'}}
-        <ion-icon slot="icon-only" [name]="showFullCalendar ? 'clipboard' : 'calendar'"></ion-icon>
+        'Día' :
+        'Semana'}}
+        <!-- <ion-icon slot="icon-only" [name]="showWeek ? 'today' : 'clipboard'"></ion-icon> -->
+        <i slot="icon-only" class="material-icons ">{{showWeek ? 'view_agenda' : 'view_week'}}</i>
+
+
+
+      </ion-button>
+      <ion-button *ngIf="showFullCalendar || showSpecific" (click)="fowardOne()" slot="end">
+        <ion-icon mode="ios" slot="icon-only" name="arrow-forward"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <!-- movil -->
+    <ion-buttons *ngIf="!isDesktop" slot="end">
+      <ion-button *ngIf="showFullCalendar || showSpecific" (click)="fowardOne()" slot="end">
+        <ion-icon mode="ios" slot="icon-only" name="arrow-forward"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <!-- movil -->
+  <ion-toolbar *ngIf="!isDesktop" color="secondary">
+    <ion-buttons justify-content-center>
+      <!-- opciones de vista -->
+
+      <ion-button *ngIf="(showFullCalendar || showSpecific === false) && !dayItem " (click)="showFullCalendar = false; showSpecific = true"
+        slot="end">
+        Agenda
+        <!-- <ion-icon slot="icon-only" name="clipboard"></ion-icon> -->
+        <i slot="icon-only" class="material-icons">assignment</i>
+
+      </ion-button>
+      <!-- especial -->
+      <ion-button *ngIf="(showFullCalendar || showSpecific === false) && dayItem " (click)="showFullCalendar = false; showSpecific = true; getEvents()"
+        slot="end">
+        Agenda
+        <!-- <ion-icon slot="icon-only" name="clipboard"></ion-icon> -->
+        <i slot="icon-only" class="material-icons">assignment</i>
+
+      </ion-button>
+      <!-- /especial -->
+
+      <ion-button *ngIf="(showFullCalendar || showSpecific === true) && !dayItem " (click)="showFullCalendar = false; showSpecific = false;"
+        slot="end">
+        Lista
+        <!-- <ion-icon slot="icon-only" name="reorder"></ion-icon> -->
+        <i slot="icon-only" class="material-icons ">view_list</i>
+
+      </ion-button>
+      <!-- especial -->
+      <ion-button *ngIf="!showFullCalendar && showSpecific === true && !showWeek && dayItem" (click)="showFullCalendar = false; showSpecific = false; calendarSelect(dayItem, true)"
+        slot="end">
+        Lista Dia
+        <!-- <ion-icon slot="icon-only" name="reorder"></ion-icon> -->
+        <i slot="icon-only" class="material-icons ">view_list</i>
+
+      </ion-button>
+      <!-- /especial -->
+
+      <ion-button *ngIf="!showFullCalendar" (click)="showFullCalendar = true; showSpecific = true; getEvents() " slot="end">
+        Calendario
+        <!-- <ion-icon slot="icon-only" name="calendar"></ion-icon> -->
+        <i slot="icon-only" class="material-icons ">date_range</i>
+
       </ion-button>
       <ion-button *ngIf="!showFullCalendar && showSpecific " (click)="showWeek = !showWeek;" slot="end">{{showWeek
         ?
         'Día' :
         'Semana'}}
-        <ion-icon slot="icon-only" [name]="showFullCalendar ? 'clipboard' : 'calendar'"></ion-icon>
-      </ion-button>
-      <ion-button *ngIf="showFullCalendar || showSpecific" (click)="fowardOne()" slot="end">
-        <ion-icon mode="ios" slot="icon-only" name="arrow-forward"></ion-icon>
+        <!-- <ion-icon slot="icon-only" [name]="showWeek ? 'today' : 'clipboard'"></ion-icon> -->
+        <i slot="icon-only" class="material-icons ">{{showWeek ? 'view_agenda' : 'view_week'}}</i>
+
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -58,7 +157,7 @@
         <ng-template #Specific>
 
           <!-- Calendario especifico -->
-          <app-calendar-specific (newEvent)="newEventByDate($event)" (editPersonalEvent)="editEventPersonalById($event)"
+          <app-calendar-specific [currentWeek]="currentWeek" (newEvent)="newEventByDate($event)" (editPersonalEvent)="editEventPersonalById($event)"
             (editEvent)="newEventById($event)" (deletedEvent)="presentAlertConfirm($event)" [isWeek]="showWeek"
             [schedules]="schedule" [add]="fowarkWeek" [remove]="backWeek"></app-calendar-specific>
           <!-- /Calendario especifico -->
@@ -81,8 +180,7 @@
                 'state-amarillo':  item.status === 'amarillo',
                 'state-rojo':  item.status === 'rojo',
                 'state-gris': item.status === 'gris',
-                'state-azul':  item.status === 'azul',
-                'desktop-card': isDesktop    }">
+                'state-azul':  item.status === 'azul' }">
               <mat-expansion-panel-header>
                 <mat-panel-title>
                   <b>{{formatState(item.status)}}</b>
