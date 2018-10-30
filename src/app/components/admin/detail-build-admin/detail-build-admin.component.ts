@@ -16,6 +16,7 @@ import { INotification } from '../../../models/notification.model';
 import { OnesignalService } from '../../../services/onesignal.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { Storage } from '@ionic/storage';
+import { MakerService } from '../../../services/maker.service';
 
 @Component({
   selector: 'app-detail-build-admin',
@@ -58,12 +59,15 @@ export class DetailBuildAdminComponent implements OnInit {
     private camera: Camera,
     private storage: Storage,
     private loadingController: LoadingController,
+    private makerService: MakerService,
   ) {
     this.isCordova = platform.is('cordova');
     this.user = userSessionService.userSession.value;
     this.route.queryParams.subscribe(params => {
       if (params.id) {
         this.getGoalById(params.id);
+      } else if (this.user.type === 'maker') {
+        this.getBuildOfMaker(this.user.id);
       }
     });
     // si regresa de  crash
@@ -82,6 +86,10 @@ export class DetailBuildAdminComponent implements OnInit {
         storage.remove('build-img');
       }
     });
+  }
+  async getBuildOfMaker(id) {
+    const maker = await this.makerService.getMakerById(id).toPromise();
+    this.getGoalById(maker.build._id);
   }
 
   ngOnInit() {}
@@ -107,9 +115,7 @@ export class DetailBuildAdminComponent implements OnInit {
       }
       this.numOfCurrentFase = i;
       this.build = build;
-      console.log(build);
-      console.log(i);
-      console.log(build.timeLine[this.numOfCurrentFase]);
+
       this.getPercent(build.timeLine);
       this.isLoad = true;
     });
@@ -276,7 +282,6 @@ export class DetailBuildAdminComponent implements OnInit {
       this.Test2 = 'Render';
       canvas.toBlob(
         c => {
-          console.log(c);
           if (c.size > 200000) {
             this.presentAlertImg(
               'La imagen excede el límite de tamaño',
@@ -402,7 +407,6 @@ export class DetailBuildAdminComponent implements OnInit {
       notes: notes,
       url: END_POINT.IP + imgToUp.name + '.jpg',
     });
-    console.log('Imagen to up', imgToUp);
     this.Test2 = END_POINT.IP + imgToUp.name + '.jpg';
     // put al build
     this.buildService.putBuild(this.build).subscribe(res => {

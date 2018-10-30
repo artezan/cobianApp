@@ -24,6 +24,10 @@ export class UserSessionService {
    * test
    */
   public saveURI;
+  /**
+   * solo para maker
+   */
+  public buildId: string;
   constructor(
     private http: HttpClient,
     private storage: Storage,
@@ -33,16 +37,17 @@ export class UserSessionService {
   public logginUserSession(email, password): Observable<any> {
     const concatSession = btoa(email + ':' + password);
     return this.http
-      .get(END_POINT.USER_SESSION + concatSession)
+      .post(END_POINT.USER_SESSION, { base64: concatSession })
       .pipe(map((data: any) => data.data));
   }
-  public setUserSession(name, type, id, password, email: string): void {
+  public setUserSession(name, type, id, password, email: string, token): void {
     const currentData: IUserSession = {
       type: type,
       name: name,
       id: id,
       password: password,
       email: email,
+      token,
     };
     this.userSession.next({
       name: name,
@@ -50,6 +55,7 @@ export class UserSessionService {
       id: id,
       password: password,
       email: email,
+      token,
     });
     // localStorage.setItem('userSession', JSON.stringify(currentData));
     this.storage.set('userSessionCurrent', currentData);
@@ -152,6 +158,7 @@ export class UserSessionService {
                   data.data[0]._id,
                   data.data[0].password,
                   data.data[0].email,
+                  data.token,
                 );
                 return resolve(true);
                 // usuario o contrasena caducada
@@ -223,7 +230,7 @@ export class UserSessionService {
     });
     this.isInitOne = true;
   }
-private  oneSignalCordova(id, type) {
+  private oneSignalCordova(id, type) {
     const oneSignal = window['plugins'].OneSignal;
     oneSignal.startInit(
       CONST_GENERAL.ONESIGNAL_APP_ID,

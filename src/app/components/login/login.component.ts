@@ -53,6 +53,7 @@ export class LoginComponent implements OnInit {
     this.userSession
       .logginUserSession(this.emailInput, this.passInput)
       .subscribe(data => {
+        console.log('data', data);
         // data  administrator buyer seller adviser management
         if (data !== 'error') {
           this.userSession.setUserSession(
@@ -61,6 +62,7 @@ export class LoginComponent implements OnInit {
             data.data[0]._id,
             data.data[0].password,
             data.data[0].email,
+            data.token,
           );
           this.isFind = true;
           // seller
@@ -101,6 +103,7 @@ export class LoginComponent implements OnInit {
             const maker: IMaker[] = data.data;
             this.isLogin = true;
             load.dismiss();
+            this.userSession.buildId = <string>maker[0].build;
             const query: NavigationExtras = {
               queryParams: { id: maker[0].build },
             };

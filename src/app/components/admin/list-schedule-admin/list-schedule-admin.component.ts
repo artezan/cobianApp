@@ -57,7 +57,7 @@ export class ListScheduleAdminComponent implements OnInit {
   backWeek = 0;
   currentWeek = new Date();
   isDesktop: boolean;
-
+  titleNavBar = new Date();
   constructor(
     private buyerService: BuyerService,
     private userSessionService: UserSessionService,
@@ -378,7 +378,7 @@ export class ListScheduleAdminComponent implements OnInit {
 
   // _helpers
   backOne() {
-    if (this.showSpecific) {
+    if (this.showFullCalendar === false) {
       this.backWeek++;
     } else {
       if (this.monthNumber === 0) {
@@ -390,7 +390,7 @@ export class ListScheduleAdminComponent implements OnInit {
     }
   }
   fowardOne() {
-    if (this.showSpecific) {
+    if (this.showFullCalendar === false) {
       this.fowarkWeek++;
     } else {
       if (this.monthNumber === 11) {

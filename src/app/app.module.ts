@@ -115,6 +115,8 @@ import { PopoverComponent } from './components/general/popover/popover.component
 import { SearchSelectComponent } from './components/general/search-select/search-select.component';
 import { Camera } from '@ionic-native/camera/ngx';
 import { CalendarSpecificComponent } from './components/general/calendar-specific/calendar-specific.component';
+import { JwtInterceptor } from './_config/jwt.interceptor';
+import { ErrorInterceptor } from './_config/error.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -248,6 +250,8 @@ import { CalendarSpecificComponent } from './components/general/calendar-specifi
       multi: true,
     },
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

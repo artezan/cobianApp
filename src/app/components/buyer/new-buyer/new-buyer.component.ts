@@ -192,15 +192,33 @@ export class NewBuyerComponent implements OnInit {
         // NEW
       } else {
         if (buyer) {
-          console.log(buyer);
+          this.userSession
+            .logginUserSession(buyer.email, buyer.password)
+            .subscribe(data => {
+              // data  administrator buyer seller adviser management
+              if (data !== 'error') {
+                this.userSession.setUserSession(
+                  data.data[0].name,
+                  data.type,
+                  data.data[0]._id,
+                  data.data[0].password,
+                  data.data[0].email,
+                  data.token,
+                );
+                this.navController.navigateRoot('list-prop-buyer', false);
+              }
+            });
+          /*   console.log(buyer);
           this.userSession.setUserSession(
             buyer.name,
             'buyer',
             buyer._id,
             buyer.password,
             buyer.email,
+            data.token
+
           );
-          this.navController.navigateRoot('list-prop-buyer', false);
+          this.navController.navigateRoot('list-prop-buyer', false); */
         }
       }
 

@@ -45,56 +45,323 @@ import { ListSalesAdminComponent } from './components/admin/list-sales-admin/lis
 import { ListOfficeAdminComponent } from './components/admin/list-office-admin/list-office-admin.component';
 import { NewEditOfficeComponent } from './components/office/new-edit-office/new-edit-office.component';
 import { ListNotificationComponent } from './components/notification/list-notification/list-notification.component';
+import { AuthGuardService } from './services/auth-guard.service';
 
 const routes: Routes = [
   // Rutas
+  // roles : | 'administrator' | 'buyer' | 'seller' | 'adviser' | 'management' | 'maker' | 'office';
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'list-prop-buyer', component: ListPropBuyerComponent },
-  { path: 'calendar-buyer', component: CalendarBuyerComponent },
-  { path: 'event-detail-buyer', component: EventDetailBuyerComponent },
-  { path: 'buyer-property-detail', component: DetailPropBuyerComponent },
+  {
+    path: 'list-prop-buyer',
+    component: ListPropBuyerComponent,
+    canActivate: [AuthGuardService],
+    data: { rol: ['buyer'] },
+  },
+  {
+    path: 'calendar-buyer',
+    component: CalendarBuyerComponent,
+    canActivate: [AuthGuardService],
+    data: { rol: ['buyer'] },
+  },
+  {
+    path: 'event-detail-buyer',
+    component: EventDetailBuyerComponent,
+    canActivate: [AuthGuardService],
+    data: { rol: ['buyer'] },
+  },
+  {
+    path: 'buyer-property-detail',
+    component: DetailPropBuyerComponent,
+    canActivate: [AuthGuardService],
+    data: { rol: ['buyer'] },
+  },
   { path: 'login-select-user', component: UserSelectComponent },
   { path: 'new-buyer', component: NewBuyerComponent },
-  { path: 'inter-prop-buyer', component: InterPropBuyerComponent },
-  { path: 'credit-event-buyer', component: CreditEventBuyerComponent },
-  { path: 'ofert-buyer', component: OfertBuyerComponent },
-  { path: 'main-admin', component: MainAdminComponent },
-  { path: 'list-buyer-admin', component: ListBuyerAdminComponent },
-  { path: 'detail-buyer-admin', component: DetailBuyerAdminComponent },
-  { path: 'list-adviser-admin', component: ListAdviserAdminComponent },
-  { path: 'new-edit-adviser', component: NewEditAdviserComponent },
-  { path: 'detail-adviser-admin', component: DetailAdviserAdminComponent },
-  { path: 'list-seller-admin', component: ListSellerAdminComponent },
-  { path: 'detail-seller-admin', component: DetailSellerAdminComponent },
-  { path: 'new-edit-seller', component: NewEditSellerComponent },
-  { path: 'list-prop-admin', component: ListPropAdminComponent },
-  { path: 'new-edit-prop', component: NewEditPropComponent },
-  { path: 'detail-prop-admin', component: DetailPropAdminComponent },
-  { path: 'list-credit-admin', component: ListCreditAdminComponent },
-  { path: 'new-edit-credit', component: NewEditCreditComponent },
-  { path: 'list-ofert-admin', component: ListOfertsAdminComponent },
-  { path: 'new-edit-ofert', component: NewEditOfertComponent },
-  { path: 'new-edit-schedule', component: NewEditScheduleComponent },
-  { path: 'list-schedule-admin', component: ListScheduleAdminComponent },
+  {
+    path: 'inter-prop-buyer',
+    component: InterPropBuyerComponent,
+    canActivate: [AuthGuardService],
+    data: { rol: ['buyer'] },
+  },
+  {
+    path: 'credit-event-buyer',
+    component: CreditEventBuyerComponent,
+    canActivate: [AuthGuardService],
+    data: { rol: ['buyer'] },
+  },
+  {
+    path: 'ofert-buyer',
+    component: OfertBuyerComponent,
+    canActivate: [AuthGuardService],
+    data: { rol: ['buyer'] },
+  },
+  {
+    path: 'main-admin',
+    component: MainAdminComponent,
+    canActivate: [AuthGuardService],
+    data: { rol: ['administrator'] },
+  },
+  {
+    path: 'list-buyer-admin',
+    component: ListBuyerAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'seller', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'detail-buyer-admin',
+    component: DetailBuyerAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'seller', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'list-adviser-admin',
+    component: ListAdviserAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'seller', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'new-edit-adviser',
+    component: NewEditAdviserComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'seller', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'detail-adviser-admin',
+    component: DetailAdviserAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'seller', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'list-seller-admin',
+    component: ListSellerAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'seller', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'detail-seller-admin',
+    component: DetailSellerAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'seller', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'new-edit-seller',
+    component: NewEditSellerComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'seller', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'list-prop-admin',
+    component: ListPropAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'seller', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'new-edit-prop',
+    component: NewEditPropComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'management', 'office'],
+    },
+  },
+  {
+    path: 'detail-prop-admin',
+    component: DetailPropAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'seller', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'list-credit-admin',
+    component: ListCreditAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'new-edit-credit',
+    component: NewEditCreditComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'list-ofert-admin',
+    component: ListOfertsAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'new-edit-ofert',
+    component: NewEditOfertComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'new-edit-schedule',
+    component: NewEditScheduleComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'list-schedule-admin',
+    component: ListScheduleAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    },
+  },
   { path: 'personal-schedule', component: PersonalScheduleComponent },
   { path: 'RefrshComponent', component: RefreComponent },
-  { path: 'list-goals-admin', component: ListGoalsComponent },
-  { path: 'new-edit-goal', component: NewEditGoalComponent },
-  { path: 'detail-goal-admin', component: DetailGoalAdminComponent },
-  { path: 'simulate-search-admin', component: SimulateSearchAdminComponent },
-  { path: 'list-build-admin', component: ListBuildAdminComponent },
-  { path: 'new-edit-build', component: NewEditBuildComponent },
-  { path: 'list-maker-admin', component: ListMakerAdminComponent },
-  { path: 'new-edit-maker', component: NewEditMakerComponent },
-  { path: 'detail-build-admin', component: DetailBuildAdminComponent },
-  { path: 'list-salesprop-admin', component: ListSalespropAdminComponent },
-  { path: 'detail-salesprop-admin', component: DetailSalespropAdminComponent },
-  { path: 'list-sales-admin', component: ListSalesAdminComponent },
-  { path: 'list-office-admin', component: ListOfficeAdminComponent },
-  { path: 'new-edit-office', component: NewEditOfficeComponent },
-  { path: 'list-notification', component: ListNotificationComponent },  { path: 'user-session', loadChildren: './components/user-session/user-session/user-session.module#UserSessionPageModule' },
-
+  {
+    path: 'list-goals-admin',
+    component: ListGoalsComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'new-edit-goal',
+    component: NewEditGoalComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'detail-goal-admin',
+    component: DetailGoalAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'simulate-search-admin',
+    component: SimulateSearchAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'list-build-admin',
+    component: ListBuildAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'new-edit-build',
+    component: NewEditBuildComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'list-maker-admin',
+    component: ListMakerAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'new-edit-maker',
+    component: NewEditMakerComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'detail-build-admin',
+    component: DetailBuildAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office', 'maker'],
+    },
+  },
+  {
+    path: 'list-salesprop-admin',
+    component: ListSalespropAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'detail-salesprop-admin',
+    component: DetailSalespropAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'list-sales-admin',
+    component: ListSalesAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    },
+  },
+  {
+    path: 'list-office-admin',
+    component: ListOfficeAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'management'],
+    },
+  },
+  {
+    path: 'new-edit-office',
+    component: NewEditOfficeComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    },
+  },
+  { path: 'list-notification', component: ListNotificationComponent },
+  {
+    path: 'user-session',
+    loadChildren:
+      './components/user-session/user-session/user-session.module#UserSessionPageModule',
+    /*  canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'adviser', 'management', 'office'],
+    }, */
+  },
 ];
 
 @NgModule({

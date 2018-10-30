@@ -19,7 +19,10 @@
         <ion-icon mode="ios" slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title *ngIf="showFullCalendar" style="text-align: center">{{month[monthNumber]}} {{year}}</ion-title>
+    <ion-title style="text-align: center">
+      {{showFullCalendar
+      ? month[monthNumber] + ' ' + year
+      : month[titleNavBar.getMonth()] + ' ' + titleNavBar.getFullYear()}}</ion-title>
     <ion-buttons *ngIf="isDesktop" slot="end">
       <!-- opciones de vista -->
       <!--  <button mat-icon-button>
@@ -159,7 +162,7 @@
           <!-- Calendario especifico -->
           <app-calendar-specific [currentWeek]="currentWeek" (newEvent)="newEventByDate($event)" (editPersonalEvent)="editEventPersonalById($event)"
             (editEvent)="newEventById($event)" (deletedEvent)="presentAlertConfirm($event)" [isWeek]="showWeek"
-            [schedules]="schedule" [add]="fowarkWeek" [remove]="backWeek"></app-calendar-specific>
+            [schedules]="schedule" [add]="fowarkWeek" [remove]="backWeek" (titleNavBar)="titleNavBar = $event"></app-calendar-specific>
           <!-- /Calendario especifico -->
 
         </ng-template>

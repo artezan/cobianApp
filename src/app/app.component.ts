@@ -288,6 +288,13 @@ export class AppComponent {
       icon: 'contact',
       userType: 'office',
     },
+    // makers
+    {
+      title: 'Obra',
+      url: '/detail-build-admin',
+      icon: 'construct',
+      userType: 'maker',
+    },
     // list-notification
     {
       title: 'Notificaciones',

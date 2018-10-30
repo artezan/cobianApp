@@ -122,7 +122,7 @@
         <td style="width: 41px;">
           {{rowHour.str}}
         </td>
-        <td class="hour-table">
+        <td class="hour-table" (click)="goToNew(rowHour,currentWeek)">
           <span *ngIf="getScheduleEvents(rowHour.hr, currentWeek.getDay()).length > 0">
             <!--  {{getScheduleEvents(rowHour.hr, currentWeek.getDay()).length}} {{getScheduleEvents(rowHour.hr,
             currentWeek.getDay()).length === 1

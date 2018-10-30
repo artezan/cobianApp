@@ -106,6 +106,8 @@ export class CalendarSpecificComponent implements OnInit, OnChanges {
   editPersonalEvent: EventEmitter<string> = new EventEmitter();
   @Output()
   deletedEvent: EventEmitter<string> = new EventEmitter();
+  @Output()
+  titleNavBar: EventEmitter<Date> = new EventEmitter();
   constructor() {}
   addWeek() {
     if (this.isWeek) {
@@ -113,6 +115,7 @@ export class CalendarSpecificComponent implements OnInit, OnChanges {
     } else {
       this.currentWeek = new Date(this.currentWeek.getTime() + 1 * 86400000);
     }
+    this.titleNavBar.emit(this.currentWeek);
     this.showRow = undefined;
   }
   removeWeek() {
@@ -121,6 +124,7 @@ export class CalendarSpecificComponent implements OnInit, OnChanges {
     } else {
       this.currentWeek = new Date(this.currentWeek.getTime() - 1 * 86400000);
     }
+    this.titleNavBar.emit(this.currentWeek);
     this.showRow = undefined;
   }
 
@@ -216,5 +220,18 @@ export class CalendarSpecificComponent implements OnInit, OnChanges {
   }
   formatHours(hours, minutes) {
     return FormatHoursFront(hours, minutes);
+  }
+  goToNew(rowHour, currentWeek) {
+    console.log('gottoo');
+    const isGo =
+      this.getScheduleEvents(rowHour.hr, currentWeek.getDay()).length === 0;
+    if (isGo) {
+      this.newEvent.emit({
+        day: currentWeek.getDate(),
+        month: this.currentWeek.getMonth(),
+        year: this.currentWeek.getFullYear(),
+        hour: rowHour.hr,
+      });
+    }
   }
 }

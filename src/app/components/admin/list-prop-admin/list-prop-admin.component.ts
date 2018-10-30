@@ -30,6 +30,7 @@ export class ListPropAdminComponent implements OnInit {
   // numofFilters
   numOfFilters = 0;
   user: IUserSession;
+  isSuperRol: boolean;
 
   constructor(
     private propertyService: PropertyService,
@@ -57,6 +58,10 @@ export class ListPropAdminComponent implements OnInit {
         this.presentToast(params['res']);
       }
     });
+    this.isSuperRol =
+      this.user.type === 'administrator' ||
+      this.user.type === 'management' ||
+      this.user.type === 'office';
     this.columns = [
       {
         name: 'Nombre',
@@ -97,8 +102,8 @@ export class ListPropAdminComponent implements OnInit {
         name: 'Acciones',
         prop: 'acction',
         type: 'buttons',
-        buttonEdit: true,
-        buttonDeleted: true,
+        buttonEdit: this.isSuperRol,
+        buttonDeleted: this.isSuperRol,
         buttonDetails: true,
       },
     ];
