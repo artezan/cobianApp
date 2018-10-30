@@ -223,11 +223,11 @@ export class UserSessionService {
     });
     this.isInitOne = true;
   }
-  oneSignalCordova(id, type) {
+private  oneSignalCordova(id, type) {
     const oneSignal = window['plugins'].OneSignal;
     oneSignal.startInit(
       CONST_GENERAL.ONESIGNAL_APP_ID,
-      CONST_GENERAL.googleProjectNumber,
+      // CONST_GENERAL.googleProjectNumber,
     );
     oneSignal.handleNotificationOpened(() => {
       this.activateMenu.next('list-notification');
