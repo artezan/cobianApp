@@ -63,7 +63,7 @@ export class MainAdminComponent implements OnInit {
   isCalendar: boolean;
   startDate: Date;
   endDate: Date;
-
+  isiOS: boolean;
   constructor(
     private userSessionService: UserSessionService,
     private adminService: AdministratorService,
@@ -74,6 +74,7 @@ export class MainAdminComponent implements OnInit {
     private platform: Platform
   ) {
     this.isDesktop = platform.is('desktop');
+    this.isiOS = platform.is('ios');
     console.log(this.isDesktop);
     //  schedule de hoy y vincularlo a calendario general
     this.getScheduleToday();

@@ -345,27 +345,45 @@
                         </ion-item>
                         <!-- Progreso -->
                         <p><b>Progreso:</b> </p>
-                        <div class="container">
-                          <ul class="progressbar">
-                            <li class="item " [ngClass]="
+                        <ng-container *ngIf="isiOS; then thenTemplate; else elseTemplate"></ng-container>
+                        <ng-template #thenTemplate>
+                          <p> <span class="status-point" [ngClass]="
+                            {'background-verde': item.data.sbps.status === 'verde', 
+                           'background-amarillo': item.data.sbps.status === 'amarillo',
+                           'background-rojo':  item.data.sbps.status === 'rojo',
+                           'background-gris': item.data.sbps.status === 'gris',
+                           'background-azul':  item.data.sbps.status === 'azul' }"></span>
+                            {{item.data.sbps.status
+                            === 'rojo' ? 'Cierre' : item.data.sbps.status
+                            === 'verde' ? 'Interés': item.data.sbps.status
+                            === 'amarillo' ? 'Seguimiento': item.data.sbps.status
+                            === 'azul' ? 'Post Venta' : ''}}</p>
+                        </ng-template>
+                        <ng-template #elseTemplate>
+                          <div class="container">
+                            <ul class="progressbar">
+                              <li class="item " [ngClass]="
                                   {'active-verde': item.data.sbps.status === 'verde', 
                             'active-amarillo':  item.data.sbps.status === 'amarillo',
                             'active-rojo':  item.data.sbps.status === 'rojo',
                             'active-azul':  item.data.sbps.status === 'azul' }">Información</li>
-                            <li class="item" [ngClass]="
+                              <li class="item" [ngClass]="
                                   { 
                             'active-amarillo':  item.data.sbps.status === 'amarillo',
                             'active-rojo':  item.data.sbps.status === 'rojo',
                             'active-azul':  item.data.sbps.status === 'azul' }">Seguimiento</li>
-                            <li class="item" [ngClass]="
+                              <li class="item" [ngClass]="
                                   {
                             'active-rojo':  item.data.sbps.status === 'rojo',
                             'active-azul':  item.data.sbps.status === 'azul' }">Cierre</li>
-                            <li class="item" [ngClass]="
+                              <li class="item" [ngClass]="
                                   {
                             'active-azul':  item.data.sbps.status === 'azul' }">PostVenta</li>
-                          </ul>
-                        </div>
+                            </ul>
+                          </div>
+                        </ng-template>
+
+
                       </ion-list>
                       <!-- /listado -->
                     </mat-expansion-panel>

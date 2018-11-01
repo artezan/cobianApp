@@ -182,3 +182,12 @@ html {
 .overscroll {
   --keyboard-offset: 0px !important;
 }
+/* ion-list {
+  margin: 0;
+  padding: 0;
+  display: block;
+  background: var(--ion-item-background-color,var(--ion-background-color,#fff));
+  contain: content;
+  list-style-type: none;
+}
+ */
