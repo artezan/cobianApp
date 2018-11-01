@@ -12,7 +12,7 @@ import { IBuild } from '../models/build.model';
 export function CalcPercentage(
   buyer: IBuyer,
   properties: IProperty[],
-  percentage: number,
+  percentage: number
 ) {
   const propertiesMatch: IProperty[] = [];
   properties.forEach(property => {
@@ -82,7 +82,7 @@ export function CalcPercentage(
       buyer.tag.forEach(tag => {
         items++;
         const isFind = property.tag.find(
-          t => t.toLocaleLowerCase().trim() === tag.toLocaleLowerCase().trim(),
+          t => t.toLocaleLowerCase().trim() === tag.toLocaleLowerCase().trim()
         );
         if (isFind) {
           sumTotal++;
@@ -111,14 +111,14 @@ export function BuyersFilters(
     year: number;
     status: string;
     property: string;
-  },
+  }
 ) {
   let isOK = true;
   const buyerDate = new Date(buyer.timestamp);
   // si existe prop
   if (filtersApply.property !== undefined && filtersApply.property !== null) {
     const isFind = buyer.statusBuyerProperty.some(
-      sbp => sbp.property.name === filtersApply.property,
+      sbp => sbp.property.name === filtersApply.property
     );
     if (!isFind) {
       isOK = false;
@@ -146,7 +146,7 @@ export function BuyersFilters(
   if (filtersApply.status !== undefined && filtersApply.status !== null) {
     if (buyer.statusBuyerProperty && buyer.statusBuyerProperty.length > 0) {
       const isFinded = buyer.statusBuyerProperty.findIndex(
-        sbp => sbp.status === filtersApply.status,
+        sbp => sbp.status === filtersApply.status
       );
       if (isFinded === -1) {
         isOK = false;
@@ -170,7 +170,7 @@ export function OnlyDates(
     year: number;
     hourStart?: number;
     hourEnd?: number;
-  },
+  }
 ) {
   console.log('fil', filtersApply);
   console.log('some', some);
@@ -219,7 +219,7 @@ export function SellerFilter(
     month: number;
     year: number;
     isRenter: boolean;
-  },
+  }
 ) {
   let isOK = true;
   const buyerDate = new Date(some.timestamp);
@@ -406,7 +406,7 @@ export function GetPercentGoal(
       nameGoal: string;
       isComplete: boolean;
     }
-  ],
+  ]
 ): number {
   let numOfComplete = 0;
   goals.forEach(goal => {
@@ -426,7 +426,7 @@ export function FilerBuild(
     month2: number;
     year2: number;
     isComplete: boolean;
-  },
+  }
 ) {
   let isOK = true;
   let buildDateEnd;
@@ -438,7 +438,7 @@ export function FilerBuild(
       buildDateEnd = new Date(
         lastPhase.yearToEnd,
         lastPhase.monthToEnd,
-        lastPhase.dayToEnd,
+        lastPhase.dayToEnd
       );
     }
   }
@@ -510,4 +510,11 @@ export function DiffDaysNoABS(dateToDiference: Date) {
   const timeDiff = date2.getTime() - date1.getTime();
   const diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
   return diffDays;
+}
+export function OpenGoogleMaps(schedule, city = 'Puebla') {
+  window.open(
+    'https://www.google.com/maps/search/?api=1&&q=' + schedule + ',' + city,
+    '_system',
+    'location=yes'
+  );
 }

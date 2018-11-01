@@ -11,10 +11,14 @@ import { IOfert } from '../../../models/ofert.model';
 import { ICredit, ICreditGet } from '../../../models/credit.model';
 import {
   IStatusBuyerProperty,
-  IStatusBuyerPropertyGet,
+  IStatusBuyerPropertyGet
 } from '../../../models/statusBuyerProperty.model';
 import { Platform } from '@ionic/angular';
-import { FormatHoursFront, DiffDays } from '../../../_config/_helpers';
+import {
+  FormatHoursFront,
+  DiffDays,
+  OpenGoogleMaps
+} from '../../../_config/_helpers';
 import { map, timeInterval } from 'rxjs/operators';
 
 @Component({
@@ -22,7 +26,7 @@ import { map, timeInterval } from 'rxjs/operators';
   templateUrl: './main-admin.component.html',
   styleUrls: ['./main-admin.component.scss'],
   animations: fuseAnimations,
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class MainAdminComponent implements OnInit {
   segment = 'movementsSegment';
@@ -67,7 +71,7 @@ export class MainAdminComponent implements OnInit {
     private creditService: CreditService,
     private scheduleService: ScheduleService,
     private sbpService: StatusBuyerPropertyService,
-    private platform: Platform,
+    private platform: Platform
   ) {
     this.isDesktop = platform.is('desktop');
     console.log(this.isDesktop);
@@ -140,15 +144,15 @@ export class MainAdminComponent implements OnInit {
       this.isCalendar = true;
       if (this.startDate && this.endDate) {
         this.allData = this.allData.filter(data =>
-          this.getRangeDate(data.time),
+          this.getRangeDate(data.time)
         );
       } else if (this.startDate && !this.endDate) {
         this.allData = this.allData.filter(data =>
-          this.getRangeByStartDate(data.time),
+          this.getRangeByStartDate(data.time)
         );
       } else if (!this.startDate && this.endDate) {
         this.allData = this.allData.filter(data =>
-          this.getRangeByEndDate(data.time),
+          this.getRangeByEndDate(data.time)
         );
       }
     } else {
@@ -174,7 +178,7 @@ export class MainAdminComponent implements OnInit {
     this.scheduleService
       .getSchedule()
       .pipe(
-        map(s => s.filter(f => f.administrator && f.administrator === adminId)),
+        map(s => s.filter(f => f.administrator && f.administrator === adminId))
       )
       .subscribe(schedule => {
         this.schedule = schedule;
@@ -182,13 +186,13 @@ export class MainAdminComponent implements OnInit {
         this.getByDay(
           dateToday.getFullYear(),
           dateToday.getMonth(),
-          dateToday.getDate(),
+          dateToday.getDate()
         );
       });
   }
   getByDay(year: number, month: number, day: number) {
     const isFinded = this.schedule.filter(
-      s => s.day === day && s.month === month && s.year === year,
+      s => s.day === day && s.month === month && s.year === year
     );
     this.scheduleToShow = isFinded;
   }
@@ -198,7 +202,7 @@ export class MainAdminComponent implements OnInit {
       this.startDate = new Date(
         event.value._i.year,
         event.value._i.month,
-        event.value._i.date,
+        event.value._i.date
       );
       this.getFiltersGeneral();
     }
@@ -208,7 +212,7 @@ export class MainAdminComponent implements OnInit {
       this.endDate = new Date(
         event.value._i.year,
         event.value._i.month,
-        event.value._i.date,
+        event.value._i.date
       );
       this.getFiltersGeneral();
     }
@@ -245,9 +249,12 @@ export class MainAdminComponent implements OnInit {
       this.getByDay(
         dateToday.getFullYear(),
         dateToday.getMonth(),
-        dateToday.getDate(),
+        dateToday.getDate()
       );
     }
+  }
+  openMaps(schedule) {
+    OpenGoogleMaps(schedule);
   }
 }
 

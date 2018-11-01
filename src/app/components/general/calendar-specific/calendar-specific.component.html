@@ -183,7 +183,9 @@
                     <ion-label slot="start" text-wrap>
                       <p><b>Lugar:</b> </p>
                       <p>{{item.address}}</p>
-                      <a [href]="'http://maps.google.com/?q='+item.address+', Puebla'">Ver mapa</a>
+                      <!-- <a [href]="'http://maps.google.com/?q='+item.address+', Puebla'">Ver mapa</a> -->
+                      <a (click)="openMaps(item.address)">Ver mapa</a>
+
                     </ion-label>
                   </ion-item>
                   <ion-item lines="none" *ngIf="item.day">

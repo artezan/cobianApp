@@ -1,181 +1,175 @@
-//   
+//
 .filters-conteiner {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 1% 3% 0% 3%;
-
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1% 3% 0% 3%;
 }
 
 .filters-toogle {
-    display: flex;
-    align-items: center;
-    width: 50%;
-    justify-content: flex-end;
+  display: flex;
+  align-items: center;
+  width: 50%;
+  justify-content: flex-end;
 }
 
 .filters-day {
-    display: flex;
-    align-items: center;
-    width: 50%;
+  display: flex;
+  align-items: center;
+  width: 50%;
 }
 
-.filters-day>* {
-    margin: 1%
+.filters-day > * {
+  margin: 1%;
 }
 
 .mat-button-toggle-label-content {
-    padding: 0 4px !important;
+  padding: 0 4px !important;
 }
 
 @media (max-width: 900px) {
-    .filters-toogle {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        justify-content: center;
-    }
+  .filters-toogle {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+  }
 
-    .filters-day {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
-
-    }
+  .filters-day {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 }
 
-
-
-
-
 .desktop-card {
-    height: 100% !important;
+  height: 100% !important;
 }
 
 .description-panel {
-    margin-right: 2%
+  margin-right: 2%;
 }
 
 .desktop-tabs {
-    padding: 0% 30% 0% 30%;
+  padding: 0% 30% 0% 30%;
 }
 
 .desktop-grid {
-    padding: 0% 20% 0% 20%;
+  padding: 0% 20% 0% 20%;
 }
 
 .container {
-    width: 100%;
-    position: sticky;
+  width: 100%;
+  // position: sticky;
 }
 
 .progressbar {
-    counter-reset: step;
+  counter-reset: step;
 }
 
 .progressbar .item {
-    position: relative;
-    float: left;
-    width: 20.33%;
-    list-style: none;
-    text-align: center;
-    font-size: smaller;
+  position: relative;
+  float: left;
+  width: 20.33%;
+  list-style: none;
+  text-align: center;
+  font-size: smaller;
 }
 
 .progressbar .item:before {
-    content: counter(step);
-    counter-increment: step;
-    display: block;
-    width: 30px;
-    height: 30px;
-    margin: 0 auto 10px auto;
-    border: 1px solid #ddd;
-    border-radius: 50%;
-    background-color: #fff;
-    text-align: center;
-    line-height: 30px;
+  content: counter(step);
+  counter-increment: step;
+  display: block;
+  width: 30px;
+  height: 30px;
+  margin: 0 auto 10px auto;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  background-color: #fff;
+  text-align: center;
+  line-height: 30px;
 }
 
 .progressbar .item:after {
-    content: '';
-    position: absolute;
-    /*width: 80%;*/
-    width: 100%;
-    height: 1px;
-    top: 15px;
-    /*left: -40%;*/
-    left: -50%;
-    z-index: -1;
-    background-color: #ddd;
+  content: '';
+  position: absolute;
+  /*width: 80%;*/
+  width: 100%;
+  height: 1px;
+  top: 15px;
+  /*left: -40%;*/
+  left: -50%;
+  z-index: -1;
+  background-color: #ddd;
 }
 
 .progressbar .item:first-child:after {
-    content: none;
+  content: none;
 }
 
 .progressbar .item.active {
-    color: green;
+  color: green;
 }
 
 .progressbar .item.active:before {
-    border-color: green;
+  border-color: green;
 }
 
-.progressbar .item.active+.item:after {
-    background-color: green;
+.progressbar .item.active + .item:after {
+  background-color: green;
 }
 
 //---active
 .progressbar .item.active-verde {
-    color: var(--ion-color-success);
+  color: var(--ion-color-success);
 }
 
 .progressbar .item.active-verde:before {
-    border-color: var(--ion-color-success);
+  border-color: var(--ion-color-success);
 }
 
-.progressbar .item.active-verde+.item:after {
-    background-color: var(--ion-color-success);
+.progressbar .item.active-verde + .item:after {
+  background-color: var(--ion-color-success);
 }
 
 // amarillo
 .progressbar .item.active-amarillo {
-    color: var(--ion-color-warning);
+  color: var(--ion-color-warning);
 }
 
 .progressbar .item.active-amarillo:before {
-    border-color: var(--ion-color-warning);
+  border-color: var(--ion-color-warning);
 }
 
-.progressbar .item.active-amarillo+.item:after {
-    background-color: var(--ion-color-warning);
+.progressbar .item.active-amarillo + .item:after {
+  background-color: var(--ion-color-warning);
 }
 
 // rojo
 .progressbar .item.active-rojo {
-    color: var(--ion-color-danger);
+  color: var(--ion-color-danger);
 }
 
 .progressbar .item.active-rojo:before {
-    border-color: var(--ion-color-danger);
+  border-color: var(--ion-color-danger);
 }
 
-.progressbar .item.active-rojo+.item:after {
-    background-color: var(--ion-color-danger);
+.progressbar .item.active-rojo + .item:after {
+  background-color: var(--ion-color-danger);
 }
 
 // blue
 .progressbar .item.active-azul {
-    color: var(--ion-color-blue);
+  color: var(--ion-color-blue);
 }
 
 .progressbar .item.active-azul:before {
-    border-color: var(--ion-color-blue);
+  border-color: var(--ion-color-blue);
 }
 
-.progressbar .item.active-azul+.item:after {
-    background-color: var(--ion-color-blue);
+.progressbar .item.active-azul + .item:after {
+  background-color: var(--ion-color-blue);
 }
 
 //----/active

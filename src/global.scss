@@ -23,12 +23,10 @@ $mdc-theme-secondary: #f5811e; // secondary color F58634
   @include mdc-states-base-color($mdc-theme-secondary);
 }
 
-.mdc-tab-indicator>.mdc-tab-indicator__content--underline {
+.mdc-tab-indicator > .mdc-tab-indicator__content--underline {
   background-color: $mdc-theme-secondary;
   background-color: $mdc-theme-secondary;
 }
-
-
 
 app-refre {
   z-index: 0 !important;
@@ -38,11 +36,11 @@ app-refre {
   opacity: 1 !important;
 }
 
-.split-pane-md.split-pane-visible>.split-pane-side {
+.split-pane-md.split-pane-visible > .split-pane-side {
   max-width: 10% !important;
 }
 
-.split-pane-ios.split-pane-visible>.split-pane-side {
+.split-pane-ios.split-pane-visible > .split-pane-side {
   max-width: 10% !important;
 }
 
@@ -180,4 +178,7 @@ html {
   top: 1px;
   right: 1px;
   overflow: visible !important;
+}
+.overscroll {
+  --keyboard-offset: 0px !important;
 }

@@ -9,8 +9,8 @@
   </ion-toolbar>
 </ion-header> -->
 <ion-header>
-  <app-menu-general [buttonNotification]="'notifications'" [isMenuButton]="'back'" [colorMenuButton]="'white'" [titleMenu]="'Eventos'"
-    [buttonUser]="'person'"></app-menu-general>
+  <app-menu-general [buttonNotification]="'notifications'" [isMenuButton]="'back'" [colorMenuButton]="'white'"
+    [titleMenu]="'Eventos'" [buttonUser]="'person'"></app-menu-general>
 </ion-header>
 <ion-content padding>
   <!-- Toggles in a List -->
@@ -89,8 +89,12 @@
           Direccion {{schedule.address}}
           <!-- maps LINK -->
           <ion-item lines="none">
-            <ion-button [href]="'http://maps.google.com/?q='+schedule.address+', Puebla'" fill="outline" slot="end">
+            <!-- <ion-button [href]="'https://www.google.com/maps/search/?api=1&&q='+schedule.address+', Puebla'" fill="outline"
+              target="_blank" slot="end">
               Ver Mapa <ion-icon name="navigate"></ion-icon>
+            </ion-button> -->
+            <ion-button (click)="openMaps(schedule.address)" fill="outline" target="_blank" slot="end">
+              Ver Mapa<ion-icon name="navigate"></ion-icon>
             </ion-button>
           </ion-item>
         </ion-card-content>

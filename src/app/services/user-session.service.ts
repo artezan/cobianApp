@@ -10,14 +10,14 @@ import { Platform } from '@ionic/angular';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class UserSessionService {
   public userSession = new BehaviorSubject<IUserSession>({});
   private isInitOne = false;
   /**
    * solo para mandar a notificaciones en android y build
-   * list-notification | 'detail-build'
+   * list-notification
    */
   public activateMenu = new BehaviorSubject<string>('');
   /**
@@ -31,7 +31,7 @@ export class UserSessionService {
   constructor(
     private http: HttpClient,
     private storage: Storage,
-    private platform: Platform,
+    private platform: Platform
   ) {}
 
   public logginUserSession(email, password): Observable<any> {
@@ -47,7 +47,7 @@ export class UserSessionService {
       id: id,
       password: password,
       email: email,
-      token,
+      token
     };
     this.userSession.next({
       name: name,
@@ -55,7 +55,7 @@ export class UserSessionService {
       id: id,
       password: password,
       email: email,
-      token,
+      token
     });
     // localStorage.setItem('userSession', JSON.stringify(currentData));
     this.storage.set('userSessionCurrent', currentData);
@@ -80,7 +80,7 @@ export class UserSessionService {
       type: undefined,
       id: undefined,
       password: undefined,
-      email: undefined,
+      email: undefined
     });
     this.platform.ready().then(c => {
       console.log(c);
@@ -99,8 +99,10 @@ export class UserSessionService {
       type: undefined,
       id: undefined,
       password: undefined,
-      email: undefined,
+      email: undefined
     });
+    // reset al cambiar user
+    this.activateMenu.next('');
     this.platform.ready().then(c => {
       console.log(c);
       if (this.platform.is('cordova')) {
@@ -115,7 +117,7 @@ export class UserSessionService {
     const isFind = keys.find(k => k === 'userSessionSaved');
     if (isFind) {
       const sessions: IUserSession[] = await this.storage.get(
-        'userSessionSaved',
+        'userSessionSaved'
       );
       const indexFinded = sessions.findIndex(s => s.id === newUser.id);
       if (indexFinded !== -1) {
@@ -158,7 +160,7 @@ export class UserSessionService {
                   data.data[0]._id,
                   data.data[0].password,
                   data.data[0].email,
-                  data.token,
+                  data.token
                 );
                 return resolve(true);
                 // usuario o contrasena caducada
@@ -185,27 +187,27 @@ export class UserSessionService {
         appId: CONST_GENERAL.ONESIGNAL_APP_ID,
         autoRegister: true,
         notifyButton: {
-          enable: false,
+          enable: false
         },
         promptOptions: {
           actionMessage:
             'Nos gustaría notificarle cuando se mande un nuevo programa',
           acceptButtonText: 'Permitir',
-          cancelButtonText: 'No gracias',
-        },
+          cancelButtonText: 'No gracias'
+        }
       });
       OneSignalDektop.getUserId(function(userId) {
         console.log('OneSignal User ID:', userId);
       });
       OneSignalDektop.sendTags({
         _id: id.toString(),
-        type: type,
+        type: type
       });
       OneSignalDektop.on('subscriptionChange', function(isSubscribed) {
         console.log('The user subscription state is now:', isSubscribed);
         OneSignalDektop.sendTags({
           _id: id.toString(),
-          type: type,
+          type: type
         });
       });
       OneSignalDektop.addListenerForNotificationOpened(function(data) {
@@ -225,7 +227,7 @@ export class UserSessionService {
         */
       });
       OneSignalDektop.setDefaultNotificationUrl(
-        'http://31.220.52.51:3002/list-notification',
+        'http://31.220.52.51:3002/list-notification'
       );
     });
     this.isInitOne = true;
@@ -233,7 +235,7 @@ export class UserSessionService {
   private oneSignalCordova(id, type) {
     const oneSignal = window['plugins'].OneSignal;
     oneSignal.startInit(
-      CONST_GENERAL.ONESIGNAL_APP_ID,
+      CONST_GENERAL.ONESIGNAL_APP_ID
       // CONST_GENERAL.googleProjectNumber,
     );
     oneSignal.handleNotificationOpened(() => {
@@ -241,7 +243,7 @@ export class UserSessionService {
     });
     oneSignal.sendTags({
       _id: id.toString(),
-      type: type,
+      type: type
     });
     oneSignal.endInit();
   }

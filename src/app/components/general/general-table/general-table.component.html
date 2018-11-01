@@ -169,7 +169,8 @@
 <!-- Celular lista -->
 <ng-template #Device>
   <!-- Default Searchbar -->
-  <ion-searchbar (ionClear)="serach(undefined)" (keyup)="serach(Search.value)" placeholder="Buscar..." #Search animated></ion-searchbar>
+  <ion-searchbar (ionClear)="serach(undefined)" (keyup)="serach(Search.value)" placeholder="Buscar..." #Search animated
+    showCancelButton cancelButtonText="Cancelar"></ion-searchbar>
   <ion-list>
     <ion-item lines="inset" *ngFor="let row of dataSource.data">
       <ion-icon *ngIf="isIcon" style="color: #F5811E" [name]="row.iconName" slot="start"></ion-icon>

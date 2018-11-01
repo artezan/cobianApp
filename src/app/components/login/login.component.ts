@@ -5,6 +5,7 @@ import {
   NavController,
   MenuController,
   LoadingController,
+  Platform
 } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { IUserSession } from '../../models/userSession.model';
@@ -13,7 +14,7 @@ import { IMaker } from '../../models/maker.model';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
   emailInput: string;
@@ -21,6 +22,7 @@ export class LoginComponent implements OnInit {
   isFind = true;
   isDevice: boolean;
   isLogin: boolean;
+  isiOS: boolean;
   constructor(
     private userSession: UserSessionService,
     private router: Router,
@@ -28,7 +30,11 @@ export class LoginComponent implements OnInit {
     private menuController: MenuController,
     private storage: Storage,
     public loadingController: LoadingController,
+    private platform: Platform
   ) {
+    platform.ready().then(() => {
+      this.isiOS = platform.is('ios');
+    });
     this.storage.keys().then(keys => {
       const keyUserSession = keys.find(key => key === 'userSessionCurrent');
       if (!keyUserSession) {
@@ -62,7 +68,7 @@ export class LoginComponent implements OnInit {
             data.data[0]._id,
             data.data[0].password,
             data.data[0].email,
-            data.token,
+            data.token
           );
           this.isFind = true;
           // seller
@@ -105,7 +111,7 @@ export class LoginComponent implements OnInit {
             load.dismiss();
             this.userSession.buildId = <string>maker[0].build;
             const query: NavigationExtras = {
-              queryParams: { id: maker[0].build },
+              queryParams: { id: maker[0].build }
             };
             const noty = this.userSession.activateMenu.value;
             if (noty && noty !== '') {
@@ -145,12 +151,12 @@ export class LoginComponent implements OnInit {
   async presentLoadingWithOptions() {
     const loading = await this.loadingController.create({
       message: 'Iniciando...',
-      translucent: true,
+      translucent: true
     });
     return await loading;
   }
   newUser() {
-    this.navController.navigateForward('login-select-user', false);
+    this.navController.navigateForward('new-buyer', false);
   }
   pressEnter(event) {
     if (event.keyCode === 13) {

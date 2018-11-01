@@ -4,16 +4,26 @@ import { UserSessionService } from '../../../services/user-session.service';
 import { BuyerService } from '../../../services/buyer.service';
 import { ISchedule } from '../../../models/schedule.model';
 import { ScheduleService } from '../../../services/schedule.service';
-import { FormatHoursFront, FormatDatesFront } from '../../../_config/_helpers';
+import {
+  FormatHoursFront,
+  FormatDatesFront,
+  OpenGoogleMaps
+} from '../../../_config/_helpers';
 import { IUserSession } from '../../../models/userSession.model';
 import { AdviserService } from '../../../services/adviser.service';
 import { OnesignalService } from '../../../services/onesignal.service';
 import { INotification } from '../../../models/notification.model';
+import {
+  LaunchNavigator,
+  LaunchNavigatorOptions
+} from '@ionic-native/launch-navigator/ngx';
+import { Platform } from '@ionic/angular';
+declare var launchnavigator: any;
 
 @Component({
   selector: 'app-event-detail-buyer',
   templateUrl: './event-detail-buyer.component.html',
-  styleUrls: ['./event-detail-buyer.component.scss'],
+  styleUrls: ['./event-detail-buyer.component.scss']
 })
 export class EventDetailBuyerComponent implements OnInit {
   schedule: ISchedule[];
@@ -21,7 +31,6 @@ export class EventDetailBuyerComponent implements OnInit {
   isAll: boolean;
   isOne: boolean;
   user: IUserSession;
-
   constructor(
     private route: ActivatedRoute,
     private userSessionService: UserSessionService,
@@ -29,6 +38,8 @@ export class EventDetailBuyerComponent implements OnInit {
     private scheduleService: ScheduleService,
     private adviserService: AdviserService,
     private oneSignalService: OnesignalService,
+    private launchNavigator: LaunchNavigator,
+    private platform: Platform
   ) {
     this.user = this.userSessionService.userSession.value;
     if (this.user.type === 'buyer') {
@@ -71,7 +82,7 @@ export class EventDetailBuyerComponent implements OnInit {
   ngOnInit() {}
   getByDay(year: number, month: number, day: number) {
     const isFinded = this.schedule.filter(
-      s => s.day === day && s.month === month && s.year === year,
+      s => s.day === day && s.month === month && s.year === year
     );
     if (isFinded.length > 0) {
       this.scheduleToShow = isFinded;
@@ -88,7 +99,7 @@ export class EventDetailBuyerComponent implements OnInit {
     if (this.isAll === false) {
       const date = new Date();
       const isFinded = this.schedule.filter(
-        s => new Date(s.year, s.month, s.day) >= date,
+        s => new Date(s.year, s.month, s.day) >= date
       );
       this.scheduleToShow = isFinded;
     }
@@ -108,7 +119,7 @@ export class EventDetailBuyerComponent implements OnInit {
         schedule.status,
         'schedule',
         ['office', 'administrator'],
-        [schedule.adviser ? schedule.adviser._id : schedule.seller._id],
+        [schedule.adviser ? schedule.adviser._id : schedule.seller._id]
       );
     } else {
       schedule.status = 'gris';
@@ -134,7 +145,7 @@ export class EventDetailBuyerComponent implements OnInit {
     status,
     type,
     tags,
-    receiversId: string[],
+    receiversId: string[]
   ) {
     // notificacion
     const notification: INotification = {
@@ -144,7 +155,7 @@ export class EventDetailBuyerComponent implements OnInit {
       receiversId: receiversId,
       senderId: this.userSessionService.userSession.value.id,
       status: status,
-      type: type,
+      type: type
     };
     // onesignal
     this.oneSignalService
@@ -168,14 +179,32 @@ export class EventDetailBuyerComponent implements OnInit {
           schedule.month,
           schedule.day,
           schedule.hour,
-          schedule.minute,
+          schedule.minute
         ),
         undefined,
         [
           this.userSessionService.userSession.value.id,
-          schedule.adviser ? schedule.adviser._id : schedule.seller._id,
-        ],
+          schedule.adviser ? schedule.adviser._id : schedule.seller._id
+        ]
       )
       .subscribe(() => {});
+  }
+  // implementar en todos !!
+  openMaps(schedule) {
+    const isCordova = this.platform.is('cordova');
+    if (isCordova) {
+      const options: LaunchNavigatorOptions = {
+        app: launchnavigator.APP.GOOGLE_MAPS
+      };
+
+      this.launchNavigator
+        .navigate(schedule, options)
+        .then(
+          success => console.log('Launched navigator'),
+          error => console.log('Error launching navigator', error)
+        );
+    } else {
+      OpenGoogleMaps(schedule);
+    }
   }
 }

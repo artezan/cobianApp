@@ -5,15 +5,19 @@ import {
   OnChanges,
   SimpleChanges,
   Output,
-  EventEmitter,
+  EventEmitter
 } from '@angular/core';
 import { ISchedule } from '../../../models/schedule.model';
-import { FormatDatesFront, FormatHoursFront } from '../../../_config/_helpers';
+import {
+  FormatDatesFront,
+  FormatHoursFront,
+  OpenGoogleMaps
+} from '../../../_config/_helpers';
 
 @Component({
   selector: 'app-calendar-specific',
   templateUrl: './calendar-specific.component.html',
-  styleUrls: ['./calendar-specific.component.scss'],
+  styleUrls: ['./calendar-specific.component.scss']
 })
 export class CalendarSpecificComponent implements OnInit, OnChanges {
   numOfdays = [0, 1, 2, 3, 4, 5, 6];
@@ -65,7 +69,7 @@ export class CalendarSpecificComponent implements OnInit, OnChanges {
     { str: '4am', hr: 4 },
     { str: ' ', hr: 4 },
     { str: '5am', hr: 5 },
-    { str: ' ', hr: 5 },
+    { str: ' ', hr: 5 }
   ];
   nameDays = [
     'Domingo',
@@ -74,7 +78,7 @@ export class CalendarSpecificComponent implements OnInit, OnChanges {
     'Miércoles',
     'Jueves',
     'Viernes',
-    'Sábado',
+    'Sábado'
   ];
   /**
    * open event
@@ -165,7 +169,7 @@ export class CalendarSpecificComponent implements OnInit, OnChanges {
         s.day === date &&
         s.month === this.currentWeek.getMonth() &&
         s.year === this.currentWeek.getFullYear() &&
-        s.hour === hour,
+        s.hour === hour
     );
     return events;
   }
@@ -175,7 +179,7 @@ export class CalendarSpecificComponent implements OnInit, OnChanges {
       s =>
         s.day === date &&
         s.month === this.currentWeek.getMonth() &&
-        s.year === this.currentWeek.getFullYear(),
+        s.year === this.currentWeek.getFullYear()
     );
     return events;
   }
@@ -189,7 +193,7 @@ export class CalendarSpecificComponent implements OnInit, OnChanges {
         day: this.getDays2(numOfdays),
         month: this.currentWeek.getMonth(),
         year: this.currentWeek.getFullYear(),
-        hour: hrRow,
+        hour: hrRow
       });
     }
   }
@@ -198,7 +202,7 @@ export class CalendarSpecificComponent implements OnInit, OnChanges {
   formatDate(y, m, d, hr, min) {
     return ` ${FormatDatesFront(new Date(y, m, d))} a las ${FormatHoursFront(
       hr,
-      min,
+      min
     )} `;
   }
   formatDate2(date: Date) {
@@ -230,8 +234,11 @@ export class CalendarSpecificComponent implements OnInit, OnChanges {
         day: currentWeek.getDate(),
         month: this.currentWeek.getMonth(),
         year: this.currentWeek.getFullYear(),
-        hour: rowHour.hr,
+        hour: rowHour.hr
       });
     }
+  }
+  openMaps(schedule) {
+    OpenGoogleMaps(schedule);
   }
 }

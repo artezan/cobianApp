@@ -431,7 +431,8 @@
                         <ion-icon slot="start" class="color-item-secondary" name="pin"></ion-icon>
                         <ion-label text-wrap><b>Dirección: </b>
                           <p>{{schedule.address}}</p>
-                          <a [href]="'http://maps.google.com/?q='+schedule.address+', Puebla'">Ver mapa</a>
+                          <!-- <a [href]="'http://maps.google.com/?q='+schedule.address+', Puebla'">Ver mapa</a> -->
+                          <a (click)="openMaps(schedule.address)">Ver mapa</a>
                           <!-- https://www.google.com/maps/search/?api=1&parameters -->
                         </ion-label>
                       </ion-item>

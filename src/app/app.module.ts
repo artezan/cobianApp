@@ -60,7 +60,7 @@ import {
   MatProgressBarModule,
   MatStepperModule,
   MatVerticalStepper,
-  MatStep,
+  MatStep
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { GeneralTableComponent } from './components/general/general-table/general-table.component';
@@ -117,6 +117,8 @@ import { Camera } from '@ionic-native/camera/ngx';
 import { CalendarSpecificComponent } from './components/general/calendar-specific/calendar-specific.component';
 import { JwtInterceptor } from './_config/jwt.interceptor';
 import { ErrorInterceptor } from './_config/error.interceptor';
+import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -180,12 +182,12 @@ import { ErrorInterceptor } from './_config/error.interceptor';
     MenuGeneralComponent,
     PopoverComponent,
     SearchSelectComponent,
-    CalendarSpecificComponent,
+    CalendarSpecificComponent
   ],
   entryComponents: [
     DialogGeneralComponent,
     PopoverComponent,
-    SearchSelectComponent,
+    SearchSelectComponent
   ],
   imports: [
     BrowserModule,
@@ -234,25 +236,26 @@ import { ErrorInterceptor } from './_config/error.interceptor';
     MatStepperModule,
     NgCircleProgressModule.forRoot({
       showInnerStroke: false,
-      responsive: true,
-    }),
+      responsive: true
+    })
   ],
   providers: [
     StatusBar,
     SplashScreen,
     Camera,
+    LaunchNavigator,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
       provide: APP_INITIALIZER,
       useFactory: (check: UserSessionService) => () =>
         check.checkValidSession(),
       deps: [UserSessionService],
-      multi: true,
+      multi: true
     },
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
