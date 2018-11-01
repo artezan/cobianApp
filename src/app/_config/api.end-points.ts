@@ -1,6 +1,7 @@
 // const ip = 'https://cobianback.herokuapp.com/';
 // const ip = 'http://localhost:3004/';
-const ip = 'http://31.220.52.51:3004/';
+// const ip = 'http://31.220.52.51:3004/';
+const ip = 'http://api.inmobiliariacobian.com:3004/';
 
 const apiUrl = ip + 'api/v1/';
 const userSession = 'usersession/';
@@ -118,5 +119,5 @@ export const END_POINT = {
   ONESIGNAL: onesignal,
   // Email
   EMAIL_ADD: apiUrl + mail + mailAdd,
-  EMAIL_FIND: apiUrl + mail + mailFind,
+  EMAIL_FIND: apiUrl + mail + mailFind
 };
