@@ -1,0 +1,2 @@
+# cobianApp
+`npm i`
