@@ -450,8 +450,9 @@
                         <ion-label text-wrap><b>Dirección: </b>
                           <p>{{schedule.address}}</p>
                           <!-- <a [href]="'http://maps.google.com/?q='+schedule.address+', Puebla'">Ver mapa</a> -->
-                          <a (click)="openMaps(schedule.address)">Ver mapa</a>
+                          <!-- <a (click)="openMaps(schedule.address)">Ver mapa</a> -->
                           <!-- https://www.google.com/maps/search/?api=1&parameters -->
+                          <app-maps-button slot="end" [address]="schedule.address"></app-maps-button>
                         </ion-label>
                       </ion-item>
 

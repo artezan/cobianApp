@@ -17,13 +17,13 @@ import { UserSessionService } from '../../../services/user-session.service';
 import { MatDialog } from '@angular/material/dialog';
 import {
   SearchSelectComponent,
-  SearchDialog,
+  SearchDialog
 } from '../../general/search-select/search-select.component';
 
 @Component({
   selector: 'app-new-edit-ofert',
   templateUrl: './new-edit-ofert.component.html',
-  styleUrls: ['./new-edit-ofert.component.scss'],
+  styleUrls: ['./new-edit-ofert.component.scss']
 })
 export class NewEditOfertComponent implements OnInit {
   hide = true;
@@ -52,7 +52,7 @@ export class NewEditOfertComponent implements OnInit {
     private statusBuyerPropertyService: StatusBuyerPropertyService,
     private oneSignalService: OnesignalService,
     private userSession: UserSessionService,
-    public dialog: MatDialog,
+    public dialog: MatDialog
   ) {
     this.isLoad = false;
     buyerService.getBuyerAll().subscribe(buyers => {
@@ -61,9 +61,10 @@ export class NewEditOfertComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       if (params['id']) {
         this.ofertService.getOfertById(params['id']).subscribe(ofert => {
+          console.log(ofert);
           this.ofert = <any>ofert;
-          this.buyer = this.ofert.buyer._id;
-          this.property = this.ofert.property._id;
+          this.buyer = ofert.buyer._id;
+          this.property = ofert.property._id;
           this.files = '';
           this.ofert.files.forEach((f, i) => {
             if (this.ofert.files.length === i + 1) {
@@ -71,10 +72,10 @@ export class NewEditOfertComponent implements OnInit {
             } else {
               this.files += f + ',';
             }
-            this.ofert.buyer = <any>this.buyer;
-            this.ofert.property = <any>this.property;
-            this.getProp(this.buyer);
           });
+          this.ofert.buyer = <any>this.buyer;
+          this.ofert.property = <any>this.property;
+          this.getProp(this.buyer);
           this.isLoad = true;
         });
         this.isNew = false;
@@ -99,11 +100,11 @@ export class NewEditOfertComponent implements OnInit {
       `Se ha actualizado la oferta para ${prop.name}`,
       'amarillo',
       'ofert',
-      <any>this.ofert.buyer,
+      <any>this.ofert.buyer
     );
     this.ofertService.putOfert(this.ofert).subscribe(s => {
       const toast: NavigationExtras = {
-        queryParams: { res: 'Oferta Editada' },
+        queryParams: { res: 'Oferta Editada' }
       };
       // this.router.navigate(['list-credit-admin'], toast);
       // this.navCtr.navigateRoot('list-ofert-admin', true, toast);
@@ -121,19 +122,19 @@ export class NewEditOfertComponent implements OnInit {
       `Se ha creado oferta para ${prop.name}`,
       'amarillo',
       'ofert',
-      <any>this.ofert.buyer,
+      <any>this.ofert.buyer
     );
     this.ofertService.newOfert(this.ofert).subscribe(o => {
       this.update('amarillo', this.ofert.buyer, this.ofert.property);
       this.OfertsBuyer.push(o._id);
       const buyer: any = {
         _id: this.ofert.buyer,
-        ofert: this.OfertsBuyer,
+        ofert: this.OfertsBuyer
       };
       this.buyerService.putBuyer(buyer).subscribe(() => {
         // this.navCtr.navigateRoot('list-ofert-admin', true);
         const toast: NavigationExtras = {
-          queryParams: { res: 'Oferta Creada' },
+          queryParams: { res: 'Oferta Creada' }
         };
         this.router
           .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
@@ -171,7 +172,7 @@ export class NewEditOfertComponent implements OnInit {
       receiversId: [receiversId],
       senderId: this.userSession.userSession.value.id,
       status: status,
-      type: type,
+      type: type
     };
     // onesignal
     this.oneSignalService
@@ -204,25 +205,25 @@ export class NewEditOfertComponent implements OnInit {
           {
             name: 'Nombre',
             prop: 'name',
-            type: 'normal',
+            type: 'normal'
           },
           {
             name: 'Apellido',
             prop: 'fatherLastName',
-            type: 'normal',
+            type: 'normal'
           },
           {
             name: 'Fecha Alta',
             prop: 'timestamp',
-            type: 'date',
+            type: 'date'
           },
           {
             name: 'Estado',
             prop: 'statusBuyerProperty',
-            type: 'statusBuyerProperty',
-          },
-        ],
-      },
+            type: 'statusBuyerProperty'
+          }
+        ]
+      }
     });
     const sub = dialogRef.componentInstance.buttons.subscribe(res => {
       console.log(res);

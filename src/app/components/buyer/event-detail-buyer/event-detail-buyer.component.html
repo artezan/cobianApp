@@ -92,10 +92,11 @@
             <!-- <ion-button [href]="'https://www.google.com/maps/search/?api=1&&q='+schedule.address+', Puebla'" fill="outline"
               target="_blank" slot="end">
               Ver Mapa <ion-icon name="navigate"></ion-icon>
-            </ion-button> -->
+            </ion-button> 
             <ion-button (click)="openMaps(schedule.address)" fill="outline" target="_blank" slot="end">
               Ver Mapa<ion-icon name="navigate"></ion-icon>
-            </ion-button>
+            </ion-button>-->
+            <app-maps-button slot="end" [address]="schedule.address"></app-maps-button>
           </ion-item>
         </ion-card-content>
       </span>

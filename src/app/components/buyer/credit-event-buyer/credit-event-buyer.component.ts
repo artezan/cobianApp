@@ -20,7 +20,7 @@ import { SellerService } from '../../../services/seller.service';
 @Component({
   selector: 'app-credit-event-buyer',
   templateUrl: './credit-event-buyer.component.html',
-  styleUrls: ['./credit-event-buyer.component.scss'],
+  styleUrls: ['./credit-event-buyer.component.scss']
 })
 export class CreditEventBuyerComponent implements OnInit {
   propertyId: string;
@@ -45,7 +45,7 @@ export class CreditEventBuyerComponent implements OnInit {
     'Septiembre',
     'Octubre',
     'Noviembre',
-    'Diciembre',
+    'Diciembre'
   ];
   buyer: IBuyer;
   schedules = [];
@@ -59,8 +59,9 @@ export class CreditEventBuyerComponent implements OnInit {
     private statusBuyerPropertyService: StatusBuyerPropertyService,
     private scheduleService: ScheduleService,
     private oneSignalService: OnesignalService,
-    private sellerService: SellerService,
+    private sellerService: SellerService
   ) {
+    console.log(userSessionService.userSession.value);
     this.route.queryParams.subscribe(params => {
       if (params.id) {
         this.propertyId = params.id;
@@ -81,11 +82,11 @@ export class CreditEventBuyerComponent implements OnInit {
       this.buyer = buyer;
       const buyerGet = <any>buyer;
       const isCreditFinded = buyerGet.credit.find(
-        credit => credit.property._id === propertyId,
+        credit => credit.property._id === propertyId
       );
       // cambiar a filters si tine varias
       const isScheduleFinded = buyer.schedule.filter(
-        s => s.property._id === propertyId,
+        s => s.property._id === propertyId
       );
       if (isCreditFinded) {
         this.credit = isCreditFinded;
@@ -107,7 +108,7 @@ export class CreditEventBuyerComponent implements OnInit {
           status: 'verde',
           notes: `El cliente "${buyerName}" requiere info. para adquirir un crédito para la propiedad: "${
             property.name
-          }"`,
+          }"`
         };
         // Crear notif
         this.notification(
@@ -116,7 +117,7 @@ export class CreditEventBuyerComponent implements OnInit {
           credit.status,
           'credit',
           ['office', 'administrator'],
-          undefined,
+          undefined
         );
         this.creditService.newCredit(credit).subscribe(c => {
           if (c) {
@@ -125,7 +126,7 @@ export class CreditEventBuyerComponent implements OnInit {
               arr.push(c._id);
               const buyer: any = {
                 _id: buyerId,
-                credit: arr,
+                credit: arr
               };
               this.buyerService.putBuyer(buyer).subscribe(() => {
                 this.getBuyerById(this.propertyId);
@@ -160,7 +161,7 @@ export class CreditEventBuyerComponent implements OnInit {
         this.credit.status,
         'credit',
         ['office', 'administrator'],
-        arr,
+        arr
       );
       if (isAcept) {
         prop.dateToApart = dateToSchedule;
@@ -173,7 +174,7 @@ export class CreditEventBuyerComponent implements OnInit {
           ['office', 'administrator'],
           arr,
           dateToSchedule,
-          this.credit,
+          this.credit
         );
       }
       if (res) {
@@ -206,7 +207,7 @@ export class CreditEventBuyerComponent implements OnInit {
           year: this.yearSelect,
           month: this.monthSelect,
           day: this.daySelect,
-          hour: this.hourSelect,
+          hour: this.hourSelect
         };
         // Crear notif
         this.notification(
@@ -215,7 +216,7 @@ export class CreditEventBuyerComponent implements OnInit {
           newSchedule.status,
           'schedule',
           ['office', 'administrator'],
-          undefined,
+          undefined
         );
         this.scheduleService.newSchedule(newSchedule).subscribe(s => {
           if (s) {
@@ -224,7 +225,7 @@ export class CreditEventBuyerComponent implements OnInit {
               arr.push(s._id);
               const buyerEdit: any = {
                 _id: buyer.id,
-                schedule: arr,
+                schedule: arr
               };
               this.buyerService.putBuyer(buyerEdit).subscribe(() => {
                 this.getBuyerById(this.propertyId);
@@ -241,6 +242,10 @@ export class CreditEventBuyerComponent implements OnInit {
       schedule.status = 'amarillo';
       // noti schedule
       this.notificationBySchedule(schedule);
+      // subir de nivel
+      this.statusBuyerPropertyService
+        .upgradeStatus(this.statusBuyerPropertyId, 'amarillo')
+        .subscribe();
     } else {
       schedule.status = 'gris';
     }
@@ -252,7 +257,7 @@ export class CreditEventBuyerComponent implements OnInit {
       schedule.status,
       'schedule',
       ['office', 'administrator'],
-      [schedule.adviser._id],
+      [schedule.adviser._id]
     );
     this.scheduleService.putSchedule(schedule).subscribe(res => {
       if (res) {
@@ -265,7 +270,7 @@ export class CreditEventBuyerComponent implements OnInit {
   async presentToast(message: string) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 3000,
+      duration: 3000
     });
     toast.present();
   }
@@ -278,7 +283,7 @@ export class CreditEventBuyerComponent implements OnInit {
     status,
     type,
     tags,
-    receiversId: string[],
+    receiversId: string[]
   ) {
     // notificacion
     const notification: INotification = {
@@ -288,7 +293,7 @@ export class CreditEventBuyerComponent implements OnInit {
       receiversId: receiversId,
       senderId: this.userSessionService.userSession.value.id,
       status: status,
-      type: type,
+      type: type
     };
     // onesignal
     this.oneSignalService
@@ -296,7 +301,7 @@ export class CreditEventBuyerComponent implements OnInit {
         notification.title,
         message,
         status === 'rojo' ? ['office', 'administrator'] : ['office'],
-        receiversId,
+        receiversId
       )
       .subscribe(() => {
         // guardar noti
@@ -316,10 +321,10 @@ export class CreditEventBuyerComponent implements OnInit {
           schedule.month,
           schedule.day,
           schedule.hour,
-          schedule.minute,
+          schedule.minute
         ),
         undefined,
-        [this.userSessionService.userSession.value.id, schedule.adviser._id],
+        [this.userSessionService.userSession.value.id, schedule.adviser._id]
       )
       .subscribe(data => {
         if (!schedule.notificationOneSignal) {
@@ -346,7 +351,7 @@ export class CreditEventBuyerComponent implements OnInit {
     tags: string[],
     reciversId: string[],
     date: Date,
-    credit: ICredit,
+    credit: ICredit
   ) {
     // onesignal
     this.oneSignalService
@@ -364,7 +369,7 @@ export class CreditEventBuyerComponent implements OnInit {
     return await this.sellerService
       .getSellerAll()
       .pipe(
-        map(sellers => sellers.find(s => !!s.property.find(p => p._id === id))),
+        map(sellers => sellers.find(s => !!s.property.find(p => p._id === id)))
       )
       .toPromise();
   }

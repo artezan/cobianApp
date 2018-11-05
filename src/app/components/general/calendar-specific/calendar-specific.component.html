@@ -184,7 +184,8 @@
                       <p><b>Lugar:</b> </p>
                       <p>{{item.address}}</p>
                       <!-- <a [href]="'http://maps.google.com/?q='+item.address+', Puebla'">Ver mapa</a> -->
-                      <a (click)="openMaps(item.address)">Ver mapa</a>
+                      <!-- <a (click)="openMaps(item.address)">Ver mapa</a> -->
+                      <app-maps-button slot="end" [address]="item.address"></app-maps-button>
 
                     </ion-label>
                   </ion-item>

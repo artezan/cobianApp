@@ -10,7 +10,7 @@ import { NavigationExtras, Router } from '@angular/router';
 @Component({
   selector: 'app-inter-prop-buyer',
   templateUrl: './inter-prop-buyer.component.html',
-  styleUrls: ['./inter-prop-buyer.component.scss'],
+  styleUrls: ['./inter-prop-buyer.component.scss']
 })
 export class InterPropBuyerComponent implements OnInit {
   sBP: Observable<IStatusBuyerPropertyGet[]>;
@@ -19,7 +19,7 @@ export class InterPropBuyerComponent implements OnInit {
   constructor(
     private buyerService: BuyerService,
     private userSessionService: UserSessionService,
-    private router: Router,
+    private router: Router
   ) {
     this.getLikes();
   }
@@ -34,7 +34,7 @@ export class InterPropBuyerComponent implements OnInit {
   }
   itemDetail(item: IProperty, statusId: string) {
     const data: NavigationExtras = {
-      queryParams: { id: item._id, statusId: statusId },
+      queryParams: { id: item._id, statusId: statusId }
     };
     this.router.navigate(['credit-event-buyer'], data);
   }

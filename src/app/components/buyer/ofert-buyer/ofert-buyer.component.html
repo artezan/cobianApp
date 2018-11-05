@@ -23,7 +23,7 @@
       <ion-card>
         <ion-card-header>
           <ion-card-subtitle>Sin Ofertas</ion-card-subtitle>
-          <ion-card-title text-wrap>Cuando se genere una oferta la podrá revisar aquí</ion-card-title>
+          <ion-card-title text-wrap>Puede generar una oferta cuando haga una visita a la propiedad de interés</ion-card-title>
 
         </ion-card-header>
       </ion-card>
@@ -33,7 +33,8 @@
       <ion-card *ngFor="let ofert of oferts" [ngClass]="
         {
         'state-amarillo': ofert.status === 'amarillo',
-        'state-rojo': ofert.status === 'rojo'
+        'state-rojo': ofert.status === 'rojo',
+        'state-verde': ofert.status === 'verde'
          }">
         <span *ngIf="ofert.status === 'amarillo'">
           <ion-card-header>
@@ -75,8 +76,68 @@
             </ion-card-content>
           </ion-card-header>
         </span>
+        <span *ngIf="ofert.status === 'verde'">
+          <ion-card-header>
+            <ion-card-subtitle text-wrap>Estado: En espera de respuesta</ion-card-subtitle>
+            <!-- Poner en notes Aceptado o Denagado -->
+            <ion-card-title text-wrap> Oferta Generada </ion-card-title>
+            <ion-card-content text-wrap>
+              <ion-item lines="none">
+                <ion-label text-wrap>
+                  <b>Oferta por:</b> ${{ofert.apartOfert}}.00
+                </ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-label text-wrap>
+                  <b>Propiedad:</b> {{ofert.property.name}}
+                </ion-label>
+              </ion-item>
+
+            </ion-card-content>
+          </ion-card-header>
+        </span>
       </ion-card>
     </ng-template>
+    <!-- con posibilidad de generar oferta -->
+    <div *ngIf="propForOfert.length > 0">
+      <ion-card *ngFor="let sbp of propForOfert; let i = index">
+        <ion-card-header>
+          <ion-card-subtitle text-wrap>Generar oferta para {{sbp.property.name}} </ion-card-subtitle>
+          <ion-card-title text-wrap>Crear Oferta</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-label text-wrap>Apartar <b> {{sbp.property.name}}</b> con:</ion-label>
+          <ion-item lines="none">
+            <ion-range #range id="range{{i}}" min="5000" max="50000" step="500" color="secondary" pin="true">
+              <ion-icon slot="start" size="small" name="cash"></ion-icon>
+              <ion-icon slot="end" name="cash"></ion-icon>
+            </ion-range>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-label text-wrap slot="end" *ngIf="range.value">Monto: {{'$' + range.value + '.00'}}</ion-label>
+          </ion-item>
+          <ion-item text-wrap lines="none">
+            <ion-label text-wrap>Forma de Pago</ion-label>
+            <ion-select #wayToBuy text-wrap placeholder="" cancelText="Cancelar">
+              <ion-select-option value="FOVISSTE">FOVISSTE</ion-select-option>
+              <ion-select-option value="IMSS">IMSS</ion-select-option>
+              <ion-select-option value="contado">contado</ion-select-option>
+              <ion-select-option value="PEMEX">PEMEX</ion-select-option>
+              <ion-select-option value="Infonavit">Infonavit</ion-select-option>
+              <ion-select-option value="otros">otros</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+        </ion-card-content>
+        <ion-item lines="none">
+          <ion-button [disabled]="!wayToBuy.value || !range.value " (click)="makeOfert(wayToBuy.value, range.value, sbp.property )"
+            color="secondary" fill="outline" slot="end">
+            Crear <ion-icon name="checkmark-circle"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+      </ion-card>
+    </div>
   </ng-template>
   <!-- no cargado -->
   <ng-template #elseTemplate>

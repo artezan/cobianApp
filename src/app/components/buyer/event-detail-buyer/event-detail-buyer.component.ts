@@ -18,6 +18,7 @@ import {
   LaunchNavigatorOptions
 } from '@ionic-native/launch-navigator/ngx';
 import { Platform } from '@ionic/angular';
+import { StatusBuyerPropertyService } from '../../../services/status-buyer-property.service';
 declare var launchnavigator: any;
 
 @Component({
@@ -39,7 +40,8 @@ export class EventDetailBuyerComponent implements OnInit {
     private adviserService: AdviserService,
     private oneSignalService: OnesignalService,
     private launchNavigator: LaunchNavigator,
-    private platform: Platform
+    private platform: Platform,
+    private statusBuyerPropertyService: StatusBuyerPropertyService
   ) {
     this.user = this.userSessionService.userSession.value;
     if (this.user.type === 'buyer') {
@@ -106,10 +108,20 @@ export class EventDetailBuyerComponent implements OnInit {
   }
   respondSchedule(str: string, scheduleId: string) {
     const schedule = this.schedule.find(s => s._id === scheduleId);
+    console.log(schedule);
     if (str === 'Aceptado') {
       schedule.status = 'amarillo';
       // noti schedule
       this.notificationBySchedule(schedule);
+      // subir de nivel
+      this.statusBuyerPropertyService
+        .searchSpecial(this.user.id, schedule.property._id)
+        .subscribe(sbp => {
+          this.statusBuyerPropertyService
+            .upgradeStatus(sbp._id, 'amarillo')
+            .subscribe();
+        });
+
       // Crear notif
       this.notification(
         'Respuesta de visita',

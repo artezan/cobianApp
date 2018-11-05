@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {
   TableColumsModel,
-  TableStatusChips,
+  TableStatusChips
 } from '../../../models/tableColums.model';
 import { IOfert } from '../../../models/ofert.model';
 import { OfertService } from '../../../services/ofert.service';
@@ -9,7 +9,7 @@ import {
   Platform,
   AlertController,
   ToastController,
-  NavController,
+  NavController
 } from '@ionic/angular';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { ICreditGet, ICredit } from '../../../models/credit.model';
@@ -17,7 +17,7 @@ import { ICreditGet, ICredit } from '../../../models/credit.model';
 @Component({
   selector: 'app-list-oferts-admin',
   templateUrl: './list-oferts-admin.component.html',
-  styleUrls: ['./list-oferts-admin.component.scss'],
+  styleUrls: ['./list-oferts-admin.component.scss']
 })
 export class ListOfertsAdminComponent implements OnInit {
   isLoading = false;
@@ -37,7 +37,7 @@ export class ListOfertsAdminComponent implements OnInit {
     public alertController: AlertController,
     public toastController: ToastController,
     public navCtr: NavController,
-    public route: ActivatedRoute,
+    public route: ActivatedRoute
   ) {
     this.isDesktop = platform.is('desktop');
     if (this.isDesktop) {
@@ -57,27 +57,27 @@ export class ListOfertsAdminComponent implements OnInit {
       {
         name: 'Nombre Consumidor',
         prop: 'buyer',
-        type: 'normal',
+        type: 'normal'
       },
       {
         name: 'Nombre Prop',
         prop: 'property',
-        type: 'normal',
+        type: 'normal'
       },
       {
         name: 'Notas',
         prop: 'notes',
-        type: 'normal',
+        type: 'normal'
       },
       {
         name: 'Modificado',
         prop: 'timestamp',
-        type: 'date',
+        type: 'date'
       },
       {
         name: 'Estado',
         prop: 'properties',
-        type: 'status',
+        type: 'status'
       },
 
       {
@@ -85,8 +85,8 @@ export class ListOfertsAdminComponent implements OnInit {
         prop: 'acction',
         type: 'buttons',
         buttonEdit: true,
-        buttonDeleted: true,
-      },
+        buttonDeleted: true
+      }
     ];
     this.getOfertAll();
   }
@@ -110,12 +110,17 @@ export class ListOfertsAdminComponent implements OnInit {
         if (ofert.status === 'amarillo') {
           properties.push({
             name: 'Negociación',
-            status: ofert.status,
+            status: ofert.status
           });
         } else if (ofert.status === 'rojo') {
           properties.push({
             name: 'Respuesta',
-            status: ofert.status,
+            status: ofert.status
+          });
+        } else if (ofert.status === 'verde') {
+          properties.push({
+            name: 'Nueva',
+            status: ofert.status
           });
         }
       }
@@ -125,7 +130,7 @@ export class ListOfertsAdminComponent implements OnInit {
         property: ofert.property.name,
         notes: ofert.notes,
         timestamp: ofert.timestamp,
-        properties: properties,
+        properties: properties
       });
     });
     this.rows = rows;
@@ -134,7 +139,7 @@ export class ListOfertsAdminComponent implements OnInit {
   edit(item) {
     console.log(item);
     const data: NavigationExtras = {
-      queryParams: { id: item._id },
+      queryParams: { id: item._id }
     };
     this.router.navigate(['new-edit-ofert'], data);
     // this.navCtr.navigateRoot('new-buyer', false, data);
@@ -158,7 +163,7 @@ export class ListOfertsAdminComponent implements OnInit {
           cssClass: 'secondary',
           handler: blah => {
             console.log('Confirm Cancel: blah');
-          },
+          }
         },
         {
           text: 'Sí',
@@ -166,9 +171,9 @@ export class ListOfertsAdminComponent implements OnInit {
           handler: () => {
             /* this.deleted(buyer);
             this.getBuyerAll(); */
-          },
-        },
-      ],
+          }
+        }
+      ]
     });
 
     await alert.present();
@@ -182,7 +187,7 @@ export class ListOfertsAdminComponent implements OnInit {
   async presentToast(message) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 2000,
+      duration: 2000
     });
     toast.present();
   }

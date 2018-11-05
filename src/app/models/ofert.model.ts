@@ -13,7 +13,7 @@ export interface IOfert {
   /**
    * aceptadas(rojo), rechazadas (rojo) , negociación (amarillo).
    */
-  status?: 'amarillo' | 'rojo';
+  status?: 'amarillo' | 'rojo' | 'verde';
   timestamp?: string;
   /**
    * Notas extra
@@ -27,4 +27,6 @@ export interface IOfert {
   _id?: string;
   isAccept?: boolean;
   notificationOneSignal?: string[];
+  apartOfert?: number;
+  wayToBuy?: string;
 }

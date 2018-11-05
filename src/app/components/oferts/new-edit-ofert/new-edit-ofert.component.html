@@ -60,14 +60,34 @@
               <!-- notas -->
               <mdc-textarea [(ngModel)]="ofert.notes" #w="ngModel" id="w" name="w" label="Notas" rows="8" cols="40"
                 required></mdc-textarea>
-              <!-- precio-->
+              <!-- waytobuy -->
               <mat-form-field appearance="outline">
-                <mat-label>Precio</mat-label>
-                <input matInput type="number" [(ngModel)]="ofert.ofertPrice" #space="ngModel" id="space" name="space"
-                  required>
-                <mat-error *ngIf="space.dirty || space.touched">Anotar Costo</mat-error>
+                <mat-label>Forma de Compra</mat-label>
+                <mat-select [(ngModel)]="ofert.wayToBuy" #way="ngModel" id="way" name="way" required>
+                  <mat-option value="FOVISSTE">FOVISSTE </mat-option>
+                  <mat-option value="IMSS">IMSS </mat-option>
+                  <mat-option value="contado">contado </mat-option>
+                  <mat-option value="PEMEX">PEMEX </mat-option>
+                  <mat-option value="Infonavit">Infonavit </mat-option>
+                  <mat-option value="otros">otros </mat-option>
+                </mat-select>
+                <mat-error *ngIf="bu.dirty || bu.touched">Selecciona</mat-error>
               </mat-form-field>
-
+              <!-- precios-->
+              <div class="cost">
+                <mat-form-field appearance="outline">
+                  <mat-label>Precio Apartado</mat-label>
+                  <input matInput type="number" [(ngModel)]="ofert.apartOfert" #apartOfert="ngModel" id="apartOfert"
+                    name="apartOfert">
+                  <mat-error *ngIf="apartOfert.dirty || apartOfert.touched">Anotar</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Precio Real </mat-label>
+                  <input matInput type="number" [(ngModel)]="ofert.ofertPrice" #space="ngModel" id="space" name="space"
+                    required>
+                  <mat-error *ngIf="space.dirty || space.touched">Anotar Costo</mat-error>
+                </mat-form-field>
+              </div>
             </div>
             <mat-card-actions align="end">
               <div style="margin-right: 2%">

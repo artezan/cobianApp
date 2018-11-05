@@ -118,6 +118,7 @@ import { CalendarSpecificComponent } from './components/general/calendar-specifi
 import { JwtInterceptor } from './_config/jwt.interceptor';
 import { ErrorInterceptor } from './_config/error.interceptor';
 import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
+import { MapsButtonComponent } from './components/general/maps-button/maps-button.component';
 
 @NgModule({
   declarations: [
@@ -182,7 +183,8 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
     MenuGeneralComponent,
     PopoverComponent,
     SearchSelectComponent,
-    CalendarSpecificComponent
+    CalendarSpecificComponent,
+    MapsButtonComponent
   ],
   entryComponents: [
     DialogGeneralComponent,

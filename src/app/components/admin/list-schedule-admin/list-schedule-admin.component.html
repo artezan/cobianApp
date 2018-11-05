@@ -230,7 +230,8 @@
                   <ion-label slot="start" text-wrap>
                     <p><b>Lugar:</b> </p>
                     <p>{{item.address}}</p>
-                    <a [href]="'http://maps.google.com/?q='+item.address+', Puebla'">Ver mapa</a>
+                    <!-- <a [href]="'http://maps.google.com/?q='+item.address+', Puebla'">Ver mapa</a> -->
+                    <app-maps-button slot="end" [address]="item.address"></app-maps-button>
                     <!-- <a (click)="openMaps(item.address)">Ver mapa</a> -->
                   </ion-label>
                 </ion-item>
