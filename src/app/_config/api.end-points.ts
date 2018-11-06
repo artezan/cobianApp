@@ -1,7 +1,7 @@
 // const ip = 'https://cobianback.herokuapp.com/';
 // const ip = 'http://localhost:3004/';
 // const ip = 'http://31.220.52.51:3004/';
-const ip = 'http://api.inmobiliariacobian.com/';
+const ip = 'http://31.220.58.194:3004/';
 
 const apiUrl = ip + 'api/v1/';
 const userSession = 'usersession/';

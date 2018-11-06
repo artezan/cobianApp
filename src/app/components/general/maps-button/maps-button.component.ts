@@ -44,7 +44,7 @@ export class MapsButtonComponent implements OnInit {
         };
 
         this.launchNavigator
-          .navigate(this.address, options)
+          .navigate(this.address)
           .then(
             success => console.log('Launched navigator'),
             error => console.log('Error launching navigator', error)
