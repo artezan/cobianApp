@@ -52,6 +52,14 @@ const onesignal = 'https://onesignal.com/api/v1/notifications';
 const mail = 'mail/';
 const mailAdd = 'add/';
 const mailFind = 'find/';
+const bybuyerid = 'bybuyerid/';
+const chat = 'chat/';
+const chatByProp = 'bypropertyid/';
+const chatByCity = 'bychatcity/';
+const addmessage = 'addmessage/';
+const addread = 'addread/';
+const bychatid = 'bychatid/';
+const files = '/files';
 
 export const END_POINT = {
   IP: ip,
@@ -72,6 +80,7 @@ export const END_POINT = {
   STATUS_UPGRADE: apiUrl + statusBuyerProperty + upgradeStatus,
   STATUS_SEARCH: apiUrl + statusBuyerProperty + sbpbypropertybuyer,
   STATUS_ID: apiUrl + statusBuyerProperty + bystatusid,
+  STATUS_FIND_BY_BUYER: apiUrl + statusBuyerProperty + bybuyerid,
   // credit
   CREDIT: apiUrl + credit,
   CREDIT_ID: apiUrl + credit + creditById,
@@ -119,5 +128,13 @@ export const END_POINT = {
   ONESIGNAL: onesignal,
   // Email
   EMAIL_ADD: apiUrl + mail + mailAdd,
-  EMAIL_FIND: apiUrl + mail + mailFind
+  EMAIL_FIND: apiUrl + mail + mailFind,
+  EMAIL_FILES: apiUrl + mail + files,
+  // chat
+  CHAT: apiUrl + chat,
+  CHAT_PROP_ID: apiUrl + chat + chatByProp,
+  CHAT_CITY_ID: apiUrl + chat + chatByCity,
+  CHAT_ID: apiUrl + chat + bychatid,
+  CHAT_ADD_MSG: apiUrl + chat + addmessage,
+  CHAT_ADD_READ: apiUrl + chat + addread
 };

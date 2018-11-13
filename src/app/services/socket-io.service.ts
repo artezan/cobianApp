@@ -4,6 +4,7 @@ import { INotification } from '../models/notification.model';
 import { END_POINT } from '../_config/api.end-points';
 import * as io from 'socket.io-client';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { IMessage } from '../models/chat.model';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,14 @@ export class SocketIoService {
       this.socket.on('NEW_NOTIFICATION', (newPost: INotification) =>
         observer.next(newPost),
       );
+    });
+  }
+  public onNewMsg(): Observable<string> {
+    return new Observable<string>(observer => {
+      this.socket.on('NEW_MESSAGE', chatid => {
+        console.log(chatid);
+        observer.next(chatid._id);
+      });
     });
   }
   public addNum() {

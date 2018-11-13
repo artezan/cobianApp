@@ -32,6 +32,7 @@ export interface INotification {
     | 'build'
     | 'buyer'
     | 'goal'
+    | 'msg'
     | 'celebrate';
   _id?: string;
 }

@@ -7,14 +7,14 @@ import { IProperty } from '../../../models/property.model';
 import { NavigationExtras, Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
 import { Observable, from } from 'rxjs';
-import { fuseAnimations } from '../../../_config/_animations';
+// import { fuseAnimations } from '../../../_config/_animations';
 import { map, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list-prop-buyer',
   templateUrl: './list-prop-buyer.component.html',
   styleUrls: ['./list-prop-buyer.component.scss'],
-  animations: fuseAnimations,
+  // animations: fuseAnimations,
 })
 export class ListPropBuyerComponent implements OnInit {
   properties: IProperty[] = [];

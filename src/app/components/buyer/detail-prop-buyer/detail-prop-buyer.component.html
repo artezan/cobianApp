@@ -45,6 +45,10 @@
               <ion-chip-icon class="icon-chip-detail" name="cart"></ion-chip-icon>
               <ion-label>Renta</ion-label>
             </ion-chip>
+            <ion-chip *ngIf="property.isRent" style="background-color: #F58634">
+              <ion-chip-icon class="icon-chip-detail" name="cart"></ion-chip-icon>
+              <ion-label>Renta</ion-label>
+            </ion-chip>
             <ion-chip *ngIf="!property.isRent" style="background-color: #F58634">
               <ion-chip-icon class="icon-chip-detail" name="cart"></ion-chip-icon>
               <ion-label>Venta</ion-label>

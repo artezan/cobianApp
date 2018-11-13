@@ -3,6 +3,7 @@ export interface TableColumsModel {
   prop?: string;
   type?: string;
   w?: boolean;
+  disabledSort?: boolean;
   buttonDetails?: boolean;
   buttonEdit?: boolean;
   buttonDeleted?: boolean;
@@ -12,4 +13,8 @@ export interface TableColumsModel {
 export interface TableStatusChips {
   name: string;
   status: string;
+}
+export interface TableTagStyle {
+  name: string;
+  style: string;
 }

@@ -46,6 +46,7 @@ import { ListOfficeAdminComponent } from './components/admin/list-office-admin/l
 import { NewEditOfficeComponent } from './components/office/new-edit-office/new-edit-office.component';
 import { ListNotificationComponent } from './components/notification/list-notification/list-notification.component';
 import { AuthGuardService } from './services/auth-guard.service';
+import { DocumentsComponent } from './components/documents/documents.component';
 
 const routes: Routes = [
   // Rutas
@@ -267,10 +268,6 @@ const routes: Routes = [
   {
     path: 'simulate-search-admin',
     component: SimulateSearchAdminComponent,
-    canActivate: [AuthGuardService],
-    data: {
-      rol: ['administrator', 'adviser', 'management', 'office'],
-    },
   },
   {
     path: 'list-build-admin',
@@ -361,6 +358,18 @@ const routes: Routes = [
     data: {
       rol: ['administrator', 'adviser', 'management', 'office'],
     }, */
+  },
+  {
+    path: 'chat',
+    loadChildren: './components/chat/chat.module#ChatPageModule',
+  },
+  {
+    path: 'documents',
+    component: DocumentsComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'management', 'office'],
+    },
   },
 ];
 

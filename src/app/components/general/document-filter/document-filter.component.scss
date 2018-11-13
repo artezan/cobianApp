@@ -1,0 +1,7 @@
+.flex-checkbox {
+  display: flex;
+  flex-direction: column;
+}
+.flex-checkbox > * {
+  margin: 5%;
+}

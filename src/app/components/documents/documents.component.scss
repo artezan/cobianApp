@@ -1,0 +1,50 @@
+.side-container {
+    height: 100%;
+    background-color: white;
+}
+
+.sidenav {
+    width: 230px;
+    margin-bottom: 1%;
+    margin-right: 0.1%;
+
+}
+
+@media (max-width: 900px) {
+    .sidenav {
+        width: 73%;
+        box-shadow: 3px 0 6px rgba(0, 0, 0, 0.24);
+    }
+}
+
+.label {
+    color: white;
+    padding: 8px;
+}
+
+.success {
+    background-color: #4CAF50;
+}
+
+/* Green */
+.info {
+    background-color: #2196F3;
+}
+
+/* Blue */
+.warning {
+    background-color: #ff9800;
+}
+
+/* Orange */
+.danger {
+    background-color: #f44336;
+}
+
+/* Red */
+.other {
+    background-color: #e7e7e7;
+    color: black;
+}
+
+/* Gray */

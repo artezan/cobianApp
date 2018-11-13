@@ -1,0 +1,105 @@
+<ion-header>
+  <!--
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ion-menu-button style="color: white !important"></ion-menu-button>
+      </ion-buttons>
+      <ion-title>
+        Asesores
+      </ion-title>
+
+
+    </ion-toolbar>
+  -->
+  <ion-header>
+    <app-menu-general
+      [isMenuButton]="'menu'"
+      [colorMenuButton]="'white'"
+      [titleMenu]="'Documentos'"
+      [buttonNotification]="'notifications'"
+      [buttonUser]="'person'"
+    ></app-menu-general>
+  </ion-header>
+</ion-header>
+<ion-content padding>
+  <ng-container *ngIf="isLoading; then: Load; else: noLoad"></ng-container>
+  <!-- contenido -->
+
+  <ng-template #Load class="my-contenet">
+    <mat-drawer-container class="side-container" autosize>
+      <!-- contenido de filtros -->
+      <mat-drawer
+        [class.mat-elevation-z1]="true"
+        position="end"
+        #drawer
+        class="sidenav"
+        [mode]="isDesktop ? 'side' : 'over'"
+        [opened]="openMenu"
+      >
+        <app-document-filter
+          (filters)="getFilters($event)"
+          (resetAll)="resetAll()"
+          (closeMenu)="drawer.close()"
+          [isDesktop]="isDesktop"
+        ></app-document-filter>
+      </mat-drawer>
+      <!-- /contenido de filtros -->
+      <!-- filtros boton -->
+      <ion-item *ngIf="!isDesktop" lines="none">
+        <ion-button
+          (click)="drawer.toggle()"
+          slot="end"
+          color="secondary"
+          fill="outline"
+        >
+          <ion-icon name="funnel"></ion-icon>Filtros({{ numOfFilters }})
+        </ion-button>
+      </ion-item>
+      <ion-item *ngIf="isDesktop" lines="none">
+        <ion-button
+          (click)="drawer.toggle()"
+          slot="end"
+          color="secondary"
+          fill="outline"
+        >
+          <ion-icon name="funnel"></ion-icon>Filtros
+          {{ (drawer.openedChange | async) ? 'cerrar' : 'abrir' }}
+        </ion-button>
+      </ion-item>
+
+      <!-- /filtros boton -->
+
+      <!-- Table -->
+      <h2>Tabla de Usuarios</h2>
+      <app-general-table
+        [columns]="columns"
+        [rows]="rows"
+        [isDesktop]="isDesktop"
+        (editButton)="edit($event)"
+        (deletedButton)="presentAlertConfirm($event)"
+        (checkbox)="userSelect($event)"
+        [showChips]="true"
+        [showLoader]="showLoader"
+      >
+      </app-general-table>
+      <!-- /Table -->
+    </mat-drawer-container>
+  </ng-template>
+  <!-- /contenido -->
+
+  <!-- Skeleton -->
+  <ng-template #noLoad>
+    <app-general-skeleton></app-general-skeleton>
+  </ng-template>
+</ion-content>
+<!-- fab placed to the bottom end -->
+<ion-fab vertical="bottom" horizontal="start" slot="fixed">
+  <ion-fab-button
+    [disabled]="!selectedUsers || selectedUsers.length === 0"
+    (click)="setEmail()"
+    *ngIf="isLoading"
+    color="secondary"
+  >
+    <ion-icon name="mail"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

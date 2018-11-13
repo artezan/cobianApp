@@ -1,4 +1,5 @@
 // http://ionicframework.com/docs/theming/
+@import '../node_modules/animate.css/animate.min.css';
 @import '~@ionic/angular/css/normalize.css';
 @import '~@ionic/angular/css/structure.css';
 @import '~@ionic/angular/css/typography.css';
@@ -23,7 +24,7 @@ $mdc-theme-secondary: #f5811e; // secondary color F58634
   @include mdc-states-base-color($mdc-theme-secondary);
 }
 
-.mdc-tab-indicator > .mdc-tab-indicator__content--underline {
+.mdc-tab-indicator>.mdc-tab-indicator__content--underline {
   background-color: $mdc-theme-secondary;
   background-color: $mdc-theme-secondary;
 }
@@ -36,11 +37,11 @@ app-refre {
   opacity: 1 !important;
 }
 
-.split-pane-md.split-pane-visible > .split-pane-side {
+.split-pane-md.split-pane-visible>.split-pane-side {
   max-width: 10% !important;
 }
 
-.split-pane-ios.split-pane-visible > .split-pane-side {
+.split-pane-ios.split-pane-visible>.split-pane-side {
   max-width: 10% !important;
 }
 
@@ -142,8 +143,17 @@ html {
   border-radius: 16px !important;
 }
 
+.my-contenet-chat {
+  margin: 3% 20% 2% 20% !important;
+}
+
+
 @media (max-width: 900px) {
   .my-contenet {
+    margin: 1% 1% 1% 1% !important;
+  }
+
+  .my-contenet-chat {
     margin: 1% 1% 1% 1% !important;
   }
 
@@ -179,9 +189,11 @@ html {
   right: 1px;
   overflow: visible !important;
 }
+
 .overscroll {
   --keyboard-offset: 0px !important;
 }
+
 /* ion-list {
   margin: 0;
   padding: 0;

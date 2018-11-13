@@ -9,7 +9,7 @@ import {
   EventEmitter,
   AfterViewInit,
   IterableDiffers,
-  DoCheck,
+  DoCheck
 } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
@@ -19,7 +19,7 @@ import { Observable } from 'rxjs/internal/Observable';
 @Component({
   selector: 'app-general-table',
   templateUrl: './general-table.component.html',
-  styleUrls: ['./general-table.component.scss'],
+  styleUrls: ['./general-table.component.scss']
 })
 export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
   months = [
@@ -34,7 +34,7 @@ export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
     'Septiembre',
     'Octubre',
     'Noviembre',
-    'Diciembre',
+    'Diciembre'
   ];
   displayedColumns: string[];
   dataSource: MatTableDataSource<any>;
@@ -50,6 +50,8 @@ export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
   rows: any[];
   @Input()
   showLoader: boolean;
+  @Input()
+  showChips: boolean;
   @Output()
   editButton = new EventEmitter<Array<any>>();
   @Output()
@@ -60,6 +62,8 @@ export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
   mailButton = new EventEmitter<Array<any>>();
   @Output()
   ratingButton = new EventEmitter<Array<any>>();
+  @Output()
+  checkbox = new EventEmitter<any>();
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
   @ViewChild(MatSort)
@@ -91,7 +95,7 @@ export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
     if (changes.columns) {
       if (changes.columns.currentValue) {
         this.displayedColumns = changes.columns.currentValue.map(
-          colum => colum.prop,
+          colum => colum.prop
         );
       }
     }
@@ -128,7 +132,7 @@ export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
               v
                 .toString()
                 .toLocaleLowerCase()
-                .indexOf(str.toLocaleLowerCase()) >= 0,
+                .indexOf(str.toLocaleLowerCase()) >= 0
           ).length > 0
         );
       };
@@ -139,7 +143,7 @@ export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
   filterByDay(day: number) {
     this.dataSource = new MatTableDataSource(this.realData);
     const dayFinded = this.dataSource.data.filter(
-      item => new Date(item.timestamp).getDate() === +day,
+      item => new Date(item.timestamp).getDate() === +day
     );
     this.dataSource = new MatTableDataSource(dayFinded);
     if (!day) {
@@ -149,7 +153,7 @@ export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
   filterByYear(year: number) {
     this.dataSource = new MatTableDataSource(this.realData);
     const dayFinded = this.dataSource.data.filter(
-      item => new Date(item.timestamp).getFullYear() === +year,
+      item => new Date(item.timestamp).getFullYear() === +year
     );
     this.dataSource = new MatTableDataSource(dayFinded);
     if (!year) {
@@ -159,7 +163,7 @@ export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
   filterByMonth(month: number) {
     this.dataSource = new MatTableDataSource(this.realData);
     const dayFinded = this.dataSource.data.filter(
-      item => new Date(item.timestamp).getMonth() === +month,
+      item => new Date(item.timestamp).getMonth() === +month
     );
     this.dataSource = new MatTableDataSource(dayFinded);
     if (isNaN(month)) {
@@ -172,7 +176,7 @@ export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
     } else {
       this.dataSource = new MatTableDataSource(this.realData);
       const stateFinded = this.dataSource.data.filter(
-        item => item.status.toLowerCase() === status.toLowerCase(),
+        item => item.status.toLowerCase() === status.toLowerCase()
       );
       this.dataSource = new MatTableDataSource(stateFinded);
     }
@@ -204,6 +208,12 @@ export class GeneralTableComponent implements OnInit, OnChanges, AfterViewInit {
   }
   detailsItem(item) {
     this.detailsButton.emit(item);
+  }
+  changeAllCheckbox(event: boolean) {
+    this.rows.map(r => (r.checkBox = event));
+    this.rows.forEach(row => {
+      this.checkbox.emit({ isChecked: event, row: row });
+    });
   }
   // sort despues de iniciar
   ngAfterViewInit() {

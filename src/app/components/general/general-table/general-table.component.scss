@@ -1,80 +1,117 @@
 table {
-    width: 100%;
+  width: 100%;
+}
+.row {
+  display: flex;
+  flex-direction: row;
 }
 
 .table-container {
-    height: 500px;
-    overflow: auto;
+  height: 500px;
+  overflow: auto;
 }
 
 .buttons-movile-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 30%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 30%;
 }
 
 td,
 th {
-    width: 15%;
+  width: 15%;
 }
 
 .customWidthClass {
-    flex: 0 0 6%
+  flex: 0 0 6%;
 }
 
 .red-icon {
-    color: red;
+  color: red;
 }
 
 .green-icon {
-    color: green;
+  color: green;
 }
 
 .yellow-icon {
-    size: 1px !important;
-    color: goldenrod;
+  size: 1px !important;
+  color: goldenrod;
 }
 
 .flexbox-ranking {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .flexbox-buttons {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .margin-ranking {
-    margin-right: 3px;
-    margin-left: 3px;
+  margin-right: 3px;
+  margin-left: 3px;
 }
 
 .center-cell {
-    justify-content: center;
+  justify-content: center;
 }
 
 .righ-cell {
-    justify-content: flex-end;
+  justify-content: flex-end;
 }
 
 .chip-yellow {
-    background-color: #FFE57F
+  background-color: #ffe57f;
 }
 
 .chip-green {
-    background-color: #B9F6CA;
+  background-color: #b9f6ca;
 }
 
 .chip-black {
-    background-color: #546E7A;
-    color: white;
+  background-color: #546e7a;
+  color: white;
 }
 
 .tag {
-    background-color: blue;
-    color: white;
-    border-radius: 25%
+  background-color: blue;
+  color: white;
+  border-radius: 25%;
 }
+
+.label {
+  color: white;
+  padding: 8px;
+  border-radius: 12px;
+}
+
+.success {
+  background-color: #f5bd8c;
+  color: black;
+}
+
+/* Green */
+.info {
+  background-color: #2196f3;
+}
+
+/* Blue */
+.warning {
+  background-color: #ff9800;
+}
+
+/* Orange */
+.danger {
+  background-color: #f44336;
+}
+
+/* Red */
+.other {
+  background-color: #47525d;
+}
+
+/* Gray */

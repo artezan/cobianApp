@@ -227,6 +227,8 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
       } else {
         this.router.navigate(['list-buyer-admin']);
       }
+    } else if (n.type === 'msg') {
+      this.router.navigate(['chat']);
     }
   }
   getNotificationRealTime() {
@@ -275,7 +277,8 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
       | 'build'
       | 'buyer'
       | 'goal'
-      | 'celebrate',
+      | 'celebrate'
+      | 'msg',
   ) {
     if (str === 'like') {
       return 'thumb_up';
@@ -295,6 +298,8 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
       return 'insert_chart';
     } else if (str === 'celebrate') {
       return 'check_circle_outline';
+    } else if (str === 'msg') {
+      return 'chat';
     }
   }
   onSectionChange(sectionId: string) {

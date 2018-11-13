@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="backOne()" slot="start">
+        <ion-icon style="color: white" slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> Chat {{ title }} </ion-title>
+  </ion-toolbar>
+  <ion-toolbar *ngIf="user.type !== 'buyer'">
+    <div>
+      <ion-chip *ngIf="buyer" color="secondary">
+        <ion-chip-icon class="icon-chip-detail" name="person"></ion-chip-icon>
+        <ion-label>{{buyer.name}} {{buyer.fatherLastName}}</ion-label>
+      </ion-chip>
+      <ion-chip color="secondary" *ngIf="seller !== undefined">
+        <ion-chip-icon class="icon-chip-detail" name="business"></ion-chip-icon>
+        <ion-label>{{seller.name}} </ion-label>
+      </ion-chip>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content padding>
+  <div class="my-contenet-chat">
+    <div *ngIf="isLoad">
+      <div class="flex-contenet" id="flex-contenet">
+        <!-- contenido de chat -->
+        <span class="item-bottom   " *ngFor="
+            let msg of chat.messages;
+            trackBy: trackByCreated;
+            let last = last;
+            let i = index
+          "
+          [ngClass]="{
+            'flex-item-me': user.id === msg.uid,
+            'flex-item-you': user.id !== msg.uid,
+            'animated zoomInUp delay-1s': isSending && last
+          }">
+          <ion-icon class="icon-flex" *ngIf="user.id !== msg.uid" name="contact"></ion-icon>
+          <div class="bubble " [ngClass]="{ you: user.id !== msg.uid, me: user.id === msg.uid }">
+            <div>{{ msg.content }}</div>
+          </div>
+
+          <small *ngIf="user.id !== msg.uid">{{
+            msg.typeOfUser === 'buyer'
+            ? 'comprador'
+            : msg.typeOfUser === 'seller'
+            ? 'vendedor'
+            : 'administrador'
+            }}</small>
+          {{ last ? lastScroll(i) : '' }}
+        </span>
+      </div>
+
+      <h5 *ngIf="chat.messages.length === 0">Escriba una pregunta</h5>
+    </div>
+  </div>
+</ion-content>
+<ion-footer>
+  <ion-toolbar color="primary">
+    <textarea #myInput id="myInput" rows="1" maxlength="500" (keyup)="textAreaKeyup()" [(ngModel)]="contentText" class="textarea-chat"
+      (keydown.enter)="submit()"></textarea>
+    <ion-buttons slot="end">
+      <ion-button (click)="submit();" *ngIf="isSending !== false">
+        <ion-icon slot="icon-only" name="send"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="isSending === false">
+        <ion-spinner slot="icon-only" name="dots" color="secondary"></ion-spinner>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

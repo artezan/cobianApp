@@ -119,6 +119,8 @@ import { JwtInterceptor } from './_config/jwt.interceptor';
 import { ErrorInterceptor } from './_config/error.interceptor';
 import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
 import { MapsButtonComponent } from './components/general/maps-button/maps-button.component';
+import { DocumentsComponent } from './components/documents/documents.component';
+import { DocumentFilterComponent } from './components/general/document-filter/document-filter.component';
 
 @NgModule({
   declarations: [
@@ -184,7 +186,9 @@ import { MapsButtonComponent } from './components/general/maps-button/maps-butto
     PopoverComponent,
     SearchSelectComponent,
     CalendarSpecificComponent,
-    MapsButtonComponent
+    MapsButtonComponent,
+    DocumentsComponent,
+    DocumentFilterComponent
   ],
   entryComponents: [
     DialogGeneralComponent,
