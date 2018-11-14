@@ -1,21 +1,52 @@
 <ion-list lines="none">
-  <ion-item lines="none" *ngFor="let session of sessions" [ngClass]="{'background-item-menu': session.id === user.id && sessions.length > 1}">
+  <ion-item
+    lines="none"
+    *ngFor="let session of sessions"
+    [ngClass]="{
+      'background-item-menu': session.id === user.id && sessions.length > 1
+    }"
+  >
     <!-- <ion-icon slot="start" name="contact"></ion-icon> -->
     <ion-label text-wrap>
-      <p>{{session.name}}</p><small>{{getType(session.type)}}</small>
+      <p>{{ session.name }}</p>
+      <small>{{ getType(session.type) }}</small>
     </ion-label>
-    <ion-button *ngIf="user.id === session.id" fill="outline" size="small" color="danger" slot="end" (click)="closeSession(session);presentPopover($event)">
-      Eliminar
+
+    <ion-button
+      size="small"
+      *ngIf="user.id === session.id"
+      fill="outline"
+      size="small"
+      color="danger"
+      slot="end"
+      (click)="closeSession(session); presentPopover($event)"
+    >
+      <!-- Eliminar -->
+      <ion-icon slot="icon-only" name="trash"></ion-icon>
     </ion-button>
-    <ion-button *ngIf="user.id !== session.id" fill="outline" size="small" color="success" slot="end" (click)="startSession(session);presentPopover($event)">
-      Iniciar
+    <ion-button
+      size="small"
+      *ngIf="user.id !== session.id"
+      fill="outline"
+      size="small"
+      color="success"
+      slot="end"
+      (click)="startSession(session); presentPopover($event)"
+    >
+      <!-- Iniciar -->
+      <ion-icon slot="icon-only" name="log-in"></ion-icon>
     </ion-button>
   </ion-item>
 </ion-list>
 <ion-footer>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button [routerLink]="['/user-session']" [routerDirection]="'forward'" (click)="presentPopover($event)" fill="solid">
+      <ion-button
+        [routerLink]="['/user-session']"
+        [routerDirection]="'forward'"
+        (click)="presentPopover($event)"
+        fill="solid"
+      >
         <ion-icon slot="start" name="person-add"></ion-icon>
         Agregar Cuenta
       </ion-button>

@@ -3,13 +3,13 @@ import {
   OnInit,
   EventEmitter,
   Inject,
-  ViewEncapsulation,
+  ViewEncapsulation
 } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {
   BuyersFilters,
   PropertyFilter,
-  OnlyDates,
+  OnlyDates
 } from '../../../_config/_helpers';
 import { BuyerService } from '../../../services/buyer.service';
 import { IBuyer } from '../../../models/buyer.model';
@@ -41,12 +41,13 @@ export interface SearchDialog {
   }[];
   itemsIdDisable?: string[];
   filtersDetail?: boolean;
+  selectedItems?: any[];
 }
 
 @Component({
   selector: 'app-search-select',
   templateUrl: './search-select.component.html',
-  styleUrls: ['./search-select.component.scss'],
+  styleUrls: ['./search-select.component.scss']
 })
 export class SearchSelectComponent implements OnInit {
   isLoad = true;
@@ -69,7 +70,7 @@ export class SearchSelectComponent implements OnInit {
     private buyerService: BuyerService,
     private propService: PropertyService,
     private makersService: MakerService,
-    private advService: AdviserService,
+    private advService: AdviserService
   ) {
     // recibe items
     this.dataInput = data;
@@ -93,8 +94,8 @@ export class SearchSelectComponent implements OnInit {
                 maker.buildName = <any>'';
               }
               return maker;
-            }),
-          ),
+            })
+          )
         )
         .subscribe(m => (this.makers = m));
     } else if (this.dataInput.typeFilter === 'filter-adv') {
@@ -110,8 +111,8 @@ export class SearchSelectComponent implements OnInit {
                 adviser.hourEnd
               }`;
               return adviser;
-            }),
-          ),
+            })
+          )
         )
         .subscribe(a => (this.advisers = a));
     }
@@ -134,7 +135,7 @@ export class SearchSelectComponent implements OnInit {
   }) {
     if (await this.getBuyerAll()) {
       const buyersFinded = this.dataInput.rows.filter(buyer =>
-        BuyersFilters(buyer, filters),
+        BuyersFilters(buyer, filters)
       );
       //  setea buyers
       this.dataInput.rows = buyersFinded;
@@ -220,7 +221,9 @@ export class SearchSelectComponent implements OnInit {
     } else {
       const index = this.arrSelect.findIndex(item => item._id);
       if (index !== -1) {
+        console.log(this.arrSelect);
         this.arrSelect.splice(index, 1);
+        console.log(this.arrSelect);
       }
     }
   }
@@ -248,7 +251,7 @@ export class SearchSelectComponent implements OnInit {
               v
                 .toString()
                 .toLocaleLowerCase()
-                .indexOf(str.toLocaleLowerCase()) >= 0,
+                .indexOf(str.toLocaleLowerCase()) >= 0
           ).length > 0
         );
       };

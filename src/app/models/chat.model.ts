@@ -33,5 +33,6 @@ export interface IMessage {
     | 'adviser'
     | 'management'
     | 'maker'
-    | 'office';
+    | 'office'
+    | 'preBuyer';
 }

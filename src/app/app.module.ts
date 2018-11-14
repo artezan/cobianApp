@@ -121,6 +121,11 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator/ngx';
 import { MapsButtonComponent } from './components/general/maps-button/maps-button.component';
 import { DocumentsComponent } from './components/documents/documents.component';
 import { DocumentFilterComponent } from './components/general/document-filter/document-filter.component';
+import { PreBuyerComponent } from './components/pre-buyer/pre-buyer.component';
+import { ListPreBuyerComponent } from './components/admin/list-pre-buyer/list-pre-buyer.component';
+import { DetailPreBuildComponent } from './components/admin/detail-pre-build/detail-pre-build.component';
+import { ListPreBuildComponent } from './components/admin/list-pre-build/list-pre-build.component';
+import { NewEditPreBuildComponent } from './components/pre-build/new-edit-pre-build/new-edit-pre-build.component';
 
 @NgModule({
   declarations: [
@@ -188,7 +193,12 @@ import { DocumentFilterComponent } from './components/general/document-filter/do
     CalendarSpecificComponent,
     MapsButtonComponent,
     DocumentsComponent,
-    DocumentFilterComponent
+    DocumentFilterComponent,
+    PreBuyerComponent,
+    ListPreBuyerComponent,
+    DetailPreBuildComponent,
+    ListPreBuildComponent,
+    NewEditPreBuildComponent
   ],
   entryComponents: [
     DialogGeneralComponent,

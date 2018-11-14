@@ -22,8 +22,8 @@
 </ion-header>
 <ion-content>
   <ion-grid fixed>
-    <h1 *ngIf="isNew">Nueva Obra</h1>
-    <h1 *ngIf="!isNew">Editar Obra</h1>
+    <h1 *ngIf="isNew">Nueva Preventa</h1>
+    <h1 *ngIf="!isNew">Editar Preventa</h1>
     <div class="container" style="margin-top: 3%">
       <form #newUserForm="ngForm">
         <mat-card>
@@ -32,23 +32,22 @@
             <!-- makers -->
             <div>
               <mat-form-field style="width: 100%" appearance="outline">
-                <mat-label>Constructores de la obra</mat-label>
+                <mat-label>Precompradores</mat-label>
                 <mat-select
-                  [(value)]="maker"
-                  [(ngModel)]="maker"
+                  [(value)]="pre"
+                  [(ngModel)]="pre"
                   #property="ngModel"
                   id="property"
                   name="property"
                   multiple
                 >
                   <mat-option
-                    [disabled]="prop.build"
-                    *ngFor="let prop of makers"
+                    *ngFor="let prop of preBuyerForSelect"
                     [value]="prop._id"
                   >
                     {{ prop.name }}
-                    <small *ngIf="prop.build"
-                      >Pertenece a: {{ prop.build.name }}
+                    <small *ngIf="prop.preBuild"
+                      >tiene: {{ prop.preBuild.length }} preventas
                     </small>
                   </mat-option>
                 </mat-select>
@@ -56,20 +55,22 @@
                   >Selcciona</mat-error
                 >
               </mat-form-field>
-              <div>
-                <button
-                  mat-raised-button
-                  color="primary"
-                  (click)="searchBuyers()"
-                >
-                  <ion-spinner
-                    *ngIf="isSpinner"
-                    style="color: white"
-                    name="bubbles"
-                  ></ion-spinner>
-                  Buscar Constructores
-                </button>
-              </div>
+              <!--
+                <div>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    (click)="searchBuyers()"
+                  >
+                    <ion-spinner
+                      *ngIf="isSpinner"
+                      style="color: white"
+                      name="bubbles"
+                    ></ion-spinner>
+                    Buscar Precompradores
+                  </button>
+                </div>
+              -->
             </div>
 
             <!-- name -->
@@ -78,7 +79,7 @@
               <input
                 matInput
                 placeholder=""
-                [(ngModel)]="build.name"
+                [(ngModel)]="preBuild.name"
                 #name="ngModel"
                 id="name"
                 name="name"
@@ -92,7 +93,7 @@
             <mat-form-field appearance="outline">
               <mat-label>Ciudad</mat-label>
               <mat-select
-                [(ngModel)]="build.city"
+                [(ngModel)]="preBuild.city"
                 #city="ngModel"
                 id="city"
                 name="city"
@@ -110,7 +111,7 @@
               <mat-label>Notas</mat-label>
               <textarea
                 matInput
-                [(ngModel)]="build.notes"
+                [(ngModel)]="preBuild.notes"
                 #notes="ngModel"
                 id="notes"
                 name="notes"
@@ -120,7 +121,7 @@
           <!-- faeses List -->
           <app-form-str-list
             [forms]="forms"
-            nameTitle="Fases de la Obra"
+            nameTitle="Fases de la Preventa"
             nameItems="Fase"
             nameItems2="Notas"
             (arrOutput)="getPhases($event)"
@@ -130,7 +131,6 @@
             [arrDate2]="arrDate2"
             [numOfItems]="isNew ? 2 : arrStr.length"
             [isDesktop]="isDesktop"
-            [isRequired]="true"
           ></app-form-str-list>
           <mat-card-actions align="end">
             <div style="margin-right: 2%">
@@ -154,7 +154,7 @@
                   id="submitUser"
                   mat-raised-button
                   color="primary"
-                  [disabled]="!newUserForm.form.valid || !isPhasesValid"
+                  [disabled]="!newUserForm.form.valid"
                   (click)="editCustomer()"
                 >
                   Editar

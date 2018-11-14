@@ -1,0 +1,139 @@
+<!--
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ion-menu-button style="color: white !important"></ion-menu-button>
+      </ion-buttons>
+      <ion-title>
+        Objetivo
+      </ion-title>
+
+    </ion-toolbar>
+  </ion-header>
+-->
+<ion-header>
+  <app-menu-general
+    [isMenuButton]="'back'"
+    [colorMenuButton]="'white'"
+    [titleMenu]="'Preventa'"
+    [buttonNotification]="'notifications'"
+    [buttonUser]="'person'"
+  ></app-menu-general>
+</ion-header>
+<ion-content>
+  <ion-grid fixed>
+    <ng-container *ngIf="isLoad; then: Load; else: NoLoad"></ng-container>
+    <ng-template #Load>
+      <h1>Detalles de: {{ preBuild.name }}</h1>
+      <ion-row>
+        <ion-col size-md="6" size-lg="6" size-xl="6">
+          <ion-card [ngClass]="{ 'desktop-card': isDesktop }">
+            <!-- [ngClass]="{'desktop-card': isDesktop }" -->
+            <ion-card-header>
+              <ion-card-title> Progreso </ion-card-title>
+              <ion-card-content>
+                <app-goal-progress
+                  subtitle="Progreso"
+                  [percent]="percent"
+                  [outerStrokeColor]="'#0091ea'"
+                ></app-goal-progress>
+                <ion-list lines="none">
+                  <ion-list-header>Constructores de la Obra</ion-list-header>
+                  <ion-item lines="none" *ngFor="let adv of preBuild.preBuyer">
+                    {{ adv.name }} {{ adv.lastName }}
+                  </ion-item>
+                </ion-list>
+              </ion-card-content>
+            </ion-card-header>
+          </ion-card>
+        </ion-col>
+        <ion-col size-md="6" size-lg="6" size-xl="6">
+          <ion-card [ngClass]="{ 'desktop-card': isDesktop }">
+            <ion-card-header>
+              <ion-card-title> Lista de Fases </ion-card-title>
+              <ion-card-subtitle *ngIf="checkAdminRol(user.type)"
+                >Seleccione una fase para completar</ion-card-subtitle
+              >
+            </ion-card-header>
+            <div *ngIf="checkAdminRol(user.type)" class="flex-container">
+              <mat-checkbox
+                (change)="changeStatus($event.checked)"
+                *ngFor="let item of preBuild.timeLine; let i = index"
+                [(ngModel)]="item.isComplete"
+              >
+                <h3>{{ item.namePhase }}</h3>
+                <div>{{ item.notes }}</div>
+                <div>
+                  Inicio:
+                  {{
+                    formatDates(
+                      item.yearToStart,
+                      item.monthToStart,
+                      item.dayToStart
+                    )
+                  }}
+                </div>
+                <div>
+                  Fin:
+                  {{
+                    formatDates(item.yearToEnd, item.monthToEnd, item.dayToEnd)
+                  }}
+                </div>
+              </mat-checkbox>
+            </div>
+            <span *ngIf="!checkAdminRol(user.type)">
+              <mat-list *ngFor="let item of preBuild.timeLine; let i = index">
+                <h3 matSubheader>
+                  <b> {{ item.namePhase }} </b>
+                </h3>
+                <mat-list-item>
+                  <mat-icon
+                    [ngClass]="{
+                      'color-complete': item.isComplete,
+                      'color-incomplete': !item.isComplete
+                    }"
+                    matListIcon
+                    >{{
+                      item.isComplete
+                        ? 'assignment_turned_in'
+                        : 'assignment_late'
+                    }}</mat-icon
+                  >
+                  <h4 matLine>
+                    <b>
+                      {{ item.isComplete ? 'Completada' : 'Sin Completar' }}
+                    </b>
+                  </h4>
+                  <p matLine>
+                    Inicio:
+                    {{
+                      formatDates(
+                        item.yearToStart,
+                        item.monthToStart,
+                        item.dayToStart
+                      )
+                    }}
+                  </p>
+                  <p matLine>
+                    Fin:
+                    {{
+                      formatDates(
+                        item.yearToEnd,
+                        item.monthToEnd,
+                        item.dayToEnd
+                      )
+                    }}
+                  </p>
+                  <p matLine>{{ item.notes }}</p>
+                </mat-list-item>
+              </mat-list>
+            </span>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ng-template>
+    <ng-template #NoLoad>
+      <app-general-skeleton></app-general-skeleton>
+    </ng-template>
+  </ion-grid>
+</ion-content>

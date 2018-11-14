@@ -6,7 +6,8 @@ export interface IUserSession {
     | 'adviser'
     | 'management'
     | 'maker'
-    | 'office';
+    | 'office'
+    | 'preBuyer';
   name?: string;
   id?: string;
   password?: string;

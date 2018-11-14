@@ -1,77 +1,115 @@
-<!-- <ion-header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-menu-button style="color: white !important"></ion-menu-button>
-    </ion-buttons>
-    <ion-title>
-      Notificaciones
-    </ion-title>
-  </ion-toolbar>
-</ion-header> -->
+<!--
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ion-menu-button style="color: white !important"></ion-menu-button>
+      </ion-buttons>
+      <ion-title>
+        Notificaciones
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+-->
 <ion-header>
-  <app-menu-general [isMenuButton]="'menu'" [colorMenuButton]="'white'" [titleMenu]="'Notificaciones'" [buttonUser]="'person'"></app-menu-general>
+  <app-menu-general
+    [isMenuButton]="'menu'"
+    [colorMenuButton]="'white'"
+    [titleMenu]="'Notificaciones'"
+    [buttonUser]="'person'"
+  ></app-menu-general>
 </ion-header>
 
-<ion-content (ionScroll)="onScroll($event)" [scrollEvents]="true" (sectionChange)="onSectionChange($event)">
-
-
+<ion-content
+  (ionScroll)="onScroll($event)"
+  [scrollEvents]="true"
+  (sectionChange)="onSectionChange($event)"
+>
   <div class="user-select-contenet">
-    <ng-container *ngIf="isLoad; then thenTemplate; else elseTemplate"></ng-container>
+    <ng-container
+      *ngIf="isLoad; then: thenTemplate; else: elseTemplate"
+    ></ng-container>
     <ng-template #thenTemplate>
-      <!-- <h3 *ngIf="notificationsNew.length > 0">
-        Nuevas
-      </h3> -->
-      <div *ngIf="notificationsNew.length > 0" style="text-align: center" id="Nuevas">
+      <!--
+        <h3 *ngIf="notificationsNew.length > 0">
+          Nuevas
+        </h3>
+      -->
+      <div
+        *ngIf="notificationsNew.length > 0"
+        style="text-align: center"
+        id="Nuevas"
+      >
         <ion-chip class="chips-detail" color="secondary">
           <ion-label>Nuevas</ion-label>
         </ion-chip>
       </div>
       <span *ngFor="let notification of notificationsNew">
-
         <!-- card -->
         <ion-card>
           <div class="card-noti-flex">
-
-            <div [class.mat-elevation-z3]=true class="card-icon-flex " [ngClass]="
-                     {'background-verde': notification.status === 'verde', 
-                    'background-amarillo':  notification.status === 'amarillo',
-                    'background-rojo':  notification.status === 'rojo',
-                    'background-gris': notification.status === 'gris',
-                    'background-azul':  notification.status === 'azul' }">
+            <div
+              [class.mat-elevation-z3]="true"
+              class="card-icon-flex "
+              [ngClass]="{
+                'background-verde': notification.status === 'verde',
+                'background-amarillo': notification.status === 'amarillo',
+                'background-rojo': notification.status === 'rojo',
+                'background-gris': notification.status === 'gris',
+                'background-azul': notification.status === 'azul'
+              }"
+            >
               <div class="card-icon ">
-                <mat-icon class="icon-size">{{trasforIcon(notification.type)}}</mat-icon>
+                <mat-icon class="icon-size">{{
+                  trasforIcon(notification.type)
+                }}</mat-icon>
               </div>
             </div>
 
-            <div style="width: 100%;" [ngClass]="
-                    {'background-verde-light': notification.status === 'verde', 
-                   'background-amarillo-light':  notification.status === 'amarillo',
-                   'background-rojo-light':  notification.status === 'rojo',
-                   'background-gris-light': notification.status === 'gris',
-                   'background-azul-light':  notification.status === 'azul' }">
+            <div
+              style="width: 100%;"
+              [ngClass]="{
+                'background-verde-light': notification.status === 'verde',
+                'background-amarillo-light': notification.status === 'amarillo',
+                'background-rojo-light': notification.status === 'rojo',
+                'background-gris-light': notification.status === 'gris',
+                'background-azul-light': notification.status === 'azul'
+              }"
+            >
               <ion-card-header>
-                <ion-card-subtitle>{{formatDates(notification.timestamp)}}</ion-card-subtitle>
-                <ion-card-title text-wrap>{{notification.title}}</ion-card-title>
+                <ion-card-subtitle>{{
+                  formatDates(notification.timestamp)
+                }}</ion-card-subtitle>
+                <ion-card-title text-wrap>{{
+                  notification.title
+                }}</ion-card-title>
               </ion-card-header>
-              <ion-card-content>
-                {{notification.message}}
-              </ion-card-content>
+              <ion-card-content> {{ notification.message }} </ion-card-content>
               <ion-item lines="none">
-                <ion-button (click)="goToDetails(notification)" color="secondary" slot="end">
+                <ion-button
+                  (click)="goToDetails(notification)"
+                  color="secondary"
+                  slot="end"
+                >
                   Detalles
                 </ion-button>
               </ion-item>
             </div>
-
           </div>
-
         </ion-card>
-        <!--/ card -->
+        <!-- / card -->
       </span>
-      <!--  <h3 *ngIf="notificationsOld.length > 0">
-        Leidas
-      </h3> -->
-      <div *ngIf="notificationsOld.length > 0" style="text-align: center" appScrollTitle id="Leidas" #algo>
+      <!--
+        <h3 *ngIf="notificationsOld.length > 0">
+          Leidas
+        </h3>
+      -->
+      <div
+        *ngIf="notificationsOld.length > 0"
+        style="text-align: center"
+        appScrollTitle
+        id="Leidas"
+        #algo
+      >
         <ion-chip class="chips-detail " color="secondary">
           <ion-label>Leidas</ion-label>
         </ion-chip>
@@ -80,80 +118,137 @@
         <!-- card -->
         <ion-card>
           <div class="card-noti-flex">
-
-            <div class="card-icon-flex " [ngClass]="
-                       {'state-verde': notification.status === 'verde', 
-                      'state-amarillo':  notification.status === 'amarillo',
-                      'state-rojo':  notification.status === 'rojo',
-                      'state-gris': notification.status === 'gris',
-                      'state-azul':  notification.status === 'azul' }">
+            <div
+              class="card-icon-flex "
+              [ngClass]="{
+                'state-verde': notification.status === 'verde',
+                'state-amarillo': notification.status === 'amarillo',
+                'state-rojo': notification.status === 'rojo',
+                'state-gris': notification.status === 'gris',
+                'state-azul': notification.status === 'azul'
+              }"
+            >
               <div class="card-icon ">
-                <mat-icon class="icon-size">{{trasforIcon(notification.type)}}</mat-icon>
+                <mat-icon class="icon-size">{{
+                  trasforIcon(notification.type)
+                }}</mat-icon>
               </div>
             </div>
 
             <div style="width: 100%;">
               <ion-card-header>
-                <ion-card-subtitle>Fecha: {{formatDates(notification.timestamp)}}</ion-card-subtitle>
-                <ion-card-title text-wrap>{{notification.title}}</ion-card-title>
+                <ion-card-subtitle
+                  >Fecha:
+                  {{ formatDates(notification.timestamp) }}</ion-card-subtitle
+                >
+                <ion-card-title text-wrap>{{
+                  notification.title
+                }}</ion-card-title>
               </ion-card-header>
-              <ion-card-content>
-                {{notification.message}}
-              </ion-card-content>
+              <ion-card-content> {{ notification.message }} </ion-card-content>
               <ion-item lines="none">
-                <ion-button (click)="goToDetails(notification)" color="secondary" slot="end">
+                <ion-button
+                  (click)="goToDetails(notification)"
+                  color="secondary"
+                  slot="end"
+                >
                   Detalles
                 </ion-button>
               </ion-item>
             </div>
-
           </div>
-
         </ion-card>
-        <!--/ card -->
+        <!-- / card -->
       </span>
       <div style="text-align: center;">
-        <ion-button *ngIf="user.type !== 'buyer'" (click)="loadMore(); demoTabBar.activateTab(0)" shape="round">
-          <ion-spinner *ngIf="isSpinner" style="color: white" name="bubbles"></ion-spinner>Cargar
-          más
+        <ion-button
+          *ngIf="user.type !== 'buyer'"
+          (click)="loadMore(); demoTabBar.activateTab(0)"
+          shape="round"
+        >
+          <ion-spinner
+            *ngIf="isSpinner"
+            style="color: white"
+            name="bubbles"
+          ></ion-spinner
+          >Cargar más
         </ion-button>
-        <ion-button *ngIf="user.type === 'buyer'" (click)="loadMore(); demoTabBar2.activateTab(0)" shape="round">
-          <ion-spinner *ngIf="isSpinner" style="color: white" name="bubbles"></ion-spinner>Cargar
-          más
+        <ion-button
+          *ngIf="user.type === 'buyer'"
+          (click)="loadMore(); demoTabBar2.activateTab(0)"
+          shape="round"
+        >
+          <ion-spinner
+            *ngIf="isSpinner"
+            style="color: white"
+            name="bubbles"
+          ></ion-spinner
+          >Cargar más
         </ion-button>
       </div>
     </ng-template>
     <ng-template #elseTemplate>
       <app-general-skeleton></app-general-skeleton>
     </ng-template>
-
-
   </div>
   <!-- /10 iniciales -->
-
-
 </ion-content>
 
 <!-- tab notification -->
-<ion-footer class="back-tab" [hidden]="user.type === 'buyer'">
+
+<ion-footer
+  class="back-tab"
+  [hidden]="
+    user.type === 'buyer' || user.type == 'preBuyer' || user.type == 'maker'
+  "
+>
   <mdc-tab-bar #demoTabBar (activated)="logTab($event)" stacked>
     <mdc-tab-scroller>
-      <mdc-tab class="tabs-color" label="Todos" icon="assignment_active"></mdc-tab>
+      <mdc-tab
+        class="tabs-color"
+        label="Todos"
+        icon="assignment_active"
+      ></mdc-tab>
       <mdc-tab class="tabs-color" label="Clientes" icon="people"></mdc-tab>
-      <mdc-tab class="tabs-color" label="Eventos" icon="calendar_today"></mdc-tab>
-      <mdc-tab class="tabs-color" label="Asesores" icon="supervised_user_circle"></mdc-tab>
+      <mdc-tab
+        class="tabs-color"
+        label="Eventos"
+        icon="calendar_today"
+      ></mdc-tab>
+      <mdc-tab
+        class="tabs-color"
+        label="Asesores"
+        icon="supervised_user_circle"
+      ></mdc-tab>
       <mdc-tab class="tabs-color" label="Propiedades" icon="business"></mdc-tab>
     </mdc-tab-scroller>
   </mdc-tab-bar>
 </ion-footer>
 <!-- buyer -->
-<ion-footer class="back-tab" [hidden]="user.type !== 'buyer'">
+<ion-footer
+  class="back-tab"
+  [hidden]="
+    user.type !== 'buyer' || user.type == 'preBuyer' || user.type == 'maker'
+  "
+>
   <mdc-tab-bar #demoTabBar2 (activated)="logTab2($event)" stacked>
     <mdc-tab-scroller>
-      <mdc-tab class="tabs-color" label="Todos" icon="assignment_active"></mdc-tab>
-      <mdc-tab class="tabs-color" label="Ofertas" icon="monetization_on"></mdc-tab>
+      <mdc-tab
+        class="tabs-color"
+        label="Todos"
+        icon="assignment_active"
+      ></mdc-tab>
+      <mdc-tab
+        class="tabs-color"
+        label="Ofertas"
+        icon="monetization_on"
+      ></mdc-tab>
       <mdc-tab class="tabs-color" label="Créditos" icon="payment"></mdc-tab>
-      <mdc-tab class="tabs-color" label="Eventos" icon="calendar_today"></mdc-tab>
+      <mdc-tab
+        class="tabs-color"
+        label="Eventos"
+        icon="calendar_today"
+      ></mdc-tab>
     </mdc-tab-scroller>
   </mdc-tab-bar>
 </ion-footer>

@@ -1,6 +1,7 @@
-// const ip = 'https://cobianback.herokuapp.com/';
 // const ip = 'http://localhost:3004/';
 // const ip = 'http://31.220.52.51:3004/';
+
+// prod
 const ip = 'http://31.220.58.194:3004/';
 
 const apiUrl = ip + 'api/v1/';
@@ -59,7 +60,9 @@ const chatByCity = 'bychatcity/';
 const addmessage = 'addmessage/';
 const addread = 'addread/';
 const bychatid = 'bychatid/';
-const files = '/files';
+const files = 'files/';
+const prebuyer = 'prebuyer/';
+const prebuild = 'prebuild/';
 
 export const END_POINT = {
   IP: ip,
@@ -136,5 +139,8 @@ export const END_POINT = {
   CHAT_CITY_ID: apiUrl + chat + chatByCity,
   CHAT_ID: apiUrl + chat + bychatid,
   CHAT_ADD_MSG: apiUrl + chat + addmessage,
-  CHAT_ADD_READ: apiUrl + chat + addread
+  CHAT_ADD_READ: apiUrl + chat + addread,
+  // PRE
+  PRE_BUYER: apiUrl + prebuyer,
+  PRE_BUILD: apiUrl + prebuild
 };

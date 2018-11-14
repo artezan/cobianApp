@@ -7,7 +7,7 @@ import { Storage } from '@ionic/storage';
 @Component({
   selector: 'app-popover',
   templateUrl: './popover.component.html',
-  styleUrls: ['./popover.component.scss'],
+  styleUrls: ['./popover.component.scss']
 })
 export class PopoverComponent implements OnInit {
   sessions: IUserSession[];
@@ -16,7 +16,7 @@ export class PopoverComponent implements OnInit {
   constructor(
     public popoverController: PopoverController,
     private userSession: UserSessionService,
-    private storage: Storage,
+    private storage: Storage
   ) {
     this.user = userSession.userSession.value;
     this.getSessions();
@@ -50,7 +50,8 @@ export class PopoverComponent implements OnInit {
       | 'adviser'
       | 'management'
       | 'maker'
-      | 'office',
+      | 'office'
+      | 'preBuyer'
   ) {
     if (type === 'administrator') {
       return 'Administrador';
@@ -66,6 +67,8 @@ export class PopoverComponent implements OnInit {
       return 'Oficinista';
     } else if (type === 'seller') {
       return 'Vendedor';
+    } else if (type === 'preBuyer') {
+      return 'Preventa';
     }
   }
 }

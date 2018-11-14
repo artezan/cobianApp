@@ -7,7 +7,7 @@ import {
   OnChanges,
   SimpleChanges,
   ViewChild,
-  ElementRef,
+  ElementRef
 } from '@angular/core';
 export interface FormStr {
   arrStr: string[];
@@ -20,7 +20,7 @@ export interface FormStr {
 @Component({
   selector: 'app-form-str-list',
   templateUrl: './form-str-list.component.html',
-  styleUrls: ['./form-str-list.component.scss'],
+  styleUrls: ['./form-str-list.component.scss']
 })
 export class FormStrListComponent implements OnInit, OnChanges {
   @ViewChild('newUserForm')
@@ -53,7 +53,7 @@ export class FormStrListComponent implements OnInit, OnChanges {
     arrStr: true,
     arrStr2: false,
     arrDate: false,
-    arrDate2: false,
+    arrDate2: false
   };
   @Input()
   isDesktop = true;
@@ -90,15 +90,13 @@ export class FormStrListComponent implements OnInit, OnChanges {
     this.arrInput = Array(num).fill(1);
   }
   getStr(itemStr?) {
-    console.log(this.newUserForm.valid);
-
     this.arrList.emit(this.arrStr);
     this.arrOutput.emit({
       arrStr: this.arrStr,
       arrStr2: this.arrStr2,
       arrDate: this.arrDate,
       arrDate2: this.arrDate2,
-      isValid: this.newUserForm.valid,
+      isValid: this.newUserForm.valid
     });
   }
   deleteItem(number) {
@@ -120,7 +118,7 @@ export class FormStrListComponent implements OnInit, OnChanges {
       this.arrDate[i] = new Date(
         event.value._i.year,
         event.value._i.month,
-        event.value._i.date,
+        event.value._i.date
       );
       this.getStr();
     }
@@ -130,7 +128,7 @@ export class FormStrListComponent implements OnInit, OnChanges {
       this.arrDate2[i] = new Date(
         event.value._i.year,
         event.value._i.month,
-        event.value._i.date,
+        event.value._i.date
       );
       this.getStr();
     }
