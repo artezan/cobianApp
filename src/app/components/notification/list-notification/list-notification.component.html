@@ -194,14 +194,13 @@
   <!-- /10 iniciales -->
 </ion-content>
 
-<!-- tab notification -->
+<!--
+  tab notification
+  || user.type === 'preBuyer' || user.type === 'maker'
+  || user.type === 'preBuyer' || user.type === 'maker'
+-->
 
-<ion-footer
-  class="back-tab"
-  [hidden]="
-    user.type === 'buyer' || user.type == 'preBuyer' || user.type == 'maker'
-  "
->
+<ion-footer class="back-tab" [hidden]="user.type === 'buyer'">
   <mdc-tab-bar #demoTabBar (activated)="logTab($event)" stacked>
     <mdc-tab-scroller>
       <mdc-tab
@@ -225,12 +224,7 @@
   </mdc-tab-bar>
 </ion-footer>
 <!-- buyer -->
-<ion-footer
-  class="back-tab"
-  [hidden]="
-    user.type !== 'buyer' || user.type == 'preBuyer' || user.type == 'maker'
-  "
->
+<ion-footer class="back-tab" [hidden]="user.type !== 'buyer'">
   <mdc-tab-bar #demoTabBar2 (activated)="logTab2($event)" stacked>
     <mdc-tab-scroller>
       <mdc-tab
