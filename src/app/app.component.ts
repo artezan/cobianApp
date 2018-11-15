@@ -88,6 +88,12 @@ export class AppComponent {
       userType: 'administrator'
     },
     {
+      title: 'Gerencia',
+      url: '/list-manager-admin',
+      icon: 'cog',
+      userType: 'administrator'
+    },
+    {
       title: 'Propiedades',
       url: '/list-prop-admin',
       icon: 'business',
@@ -360,6 +366,12 @@ export class AppComponent {
       title: 'Preventa',
       url: '/login-select-user',
       icon: 'construct',
+      userType: 'preBuyer'
+    },
+    {
+      title: 'Chat',
+      url: '/chat',
+      icon: 'chatbubbles',
       userType: 'preBuyer'
     },
     // list-notification

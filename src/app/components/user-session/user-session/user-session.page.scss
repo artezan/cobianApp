@@ -1,27 +1,38 @@
 .user-select-contenet {
-    margin: 10% 20% 2% 20%;
+  margin: 10% 20% 2% 20%;
 }
 
 .center-login {
-    display: flex;
-    justify-content: center;
-    // margin-top: -290px;
+  display: flex;
+  justify-content: center;
+  // margin-top: -290px;
 }
 
 .center-text {
-    text-align: center
+  text-align: center;
 }
 
 .form-center {
-    display: flex;
-    justify-content: center;
-    flex-wrap: nowrap;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+.alert {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
 }
 
-@media(max-width: 900px) {
-    .user-select-contenet {
-        margin: 1% 1% 1% 1%;
-    }
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
 
-
+@media (max-width: 900px) {
+  .user-select-contenet {
+    margin: 1% 1% 1% 1%;
+  }
 }

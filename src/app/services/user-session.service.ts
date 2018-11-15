@@ -45,6 +45,9 @@ export class UserSessionService {
       .pipe(map((data: any) => data.data));
   }
   public setUserSession(name, type, id, password, email: string, token): void {
+    if (type === 'management') {
+      type = 'office';
+    }
     const currentData: IUserSession = {
       type: type,
       name: name,

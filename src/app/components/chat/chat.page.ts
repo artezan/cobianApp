@@ -6,18 +6,20 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import {
   IStatusBuyerProperty,
-  IStatusBuyerPropertyGet,
+  IStatusBuyerPropertyGet
 } from '../../models/statusBuyerProperty.model';
 import { ChatService } from '../../services/chat.service';
 import { Router, NavigationExtras } from '@angular/router';
 import { IChat } from '../../models/chat.model';
 import { SellerService } from '../../services/seller.service';
 import { PropertyService } from '../../services/property.service';
+import { PreBuyerService } from '../../services/pre-buyer.service';
+import { PreBuildService } from '../../services/pre-build.service';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.page.html',
-  styleUrls: ['./chat.page.scss'],
+  styleUrls: ['./chat.page.scss']
 })
 export class ChatPage implements OnInit {
   user: IUserSession;
@@ -31,6 +33,8 @@ export class ChatPage implements OnInit {
     private router: Router,
     private sellerService: SellerService,
     private propertyService: PropertyService,
+    private preBuyerService: PreBuyerService,
+    private preBuildService: PreBuildService
   ) {
     this.user = userSessionService.userSession.value;
   }
@@ -38,9 +42,29 @@ export class ChatPage implements OnInit {
   ngOnInit() {
     if (this.user.type === 'buyer') {
       this.getStatus();
+    } else if (this.user.type === 'preBuyer') {
+      this.getPrebuyer();
     } else {
       this.getRoomChatsByUser();
     }
+  }
+  getPrebuyer() {
+    this.preBuyerService.getBuyerById(this.user.id).subscribe(buyer => {
+      const buildsToChat = buyer.preBuild.filter(
+        build => !build.timeLine.some(b => !b.isComplete)
+      );
+      console.log(buildsToChat);
+      if (buildsToChat.length > 0) {
+        buildsToChat.forEach(async build => {
+          this.propertiesBuyer.push({
+            status: 'azul',
+            property: { _id: build._id, name: build.name },
+            noRead: await this.getMsgNotReadByProp(build._id)
+          });
+        });
+        console.log(this.propertiesBuyer);
+      }
+    });
   }
   getStatus() {
     // por status azul
@@ -59,6 +83,9 @@ export class ChatPage implements OnInit {
   getRoomChatsByUser() {
     this.isLoad = false;
     this.chatService.getAll().subscribe(async chatsAll => {
+      chatsAll.forEach(chat => {
+        this.checkIsLive(chat.property, chat._id);
+      });
       // filtro por seller
       if (this.user.type === 'seller') {
         const seller = await this.getSeller();
@@ -96,6 +123,21 @@ export class ChatPage implements OnInit {
     return await this.sellerService.getSellerById(this.user.id).toPromise();
   }
   async getProperty(id) {
-    return await this.propertyService.getPropertyById(id).toPromise();
+    let prop = await this.propertyService.getPropertyById(id).toPromise();
+    if (prop !== null) {
+      return prop;
+    } else {
+      prop = await this.preBuildService.getBuildById(id).toPromise();
+      return prop;
+    }
+  }
+  async checkIsLive(propId, chatId) {
+    let prop = await this.propertyService.getPropertyById(propId).toPromise();
+    if (prop === null) {
+      prop = await this.preBuildService.getBuildById(propId).toPromise();
+      if (prop === null) {
+        this.chatService.deletedById(chatId).subscribe();
+      }
+    }
   }
 }

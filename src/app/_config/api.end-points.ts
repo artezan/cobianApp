@@ -63,6 +63,8 @@ const bychatid = 'bychatid/';
 const files = 'files/';
 const prebuyer = 'prebuyer/';
 const prebuild = 'prebuild/';
+const management = 'management/';
+const bymanagementid = 'bymanagementid/';
 
 export const END_POINT = {
   IP: ip,
@@ -142,5 +144,8 @@ export const END_POINT = {
   CHAT_ADD_READ: apiUrl + chat + addread,
   // PRE
   PRE_BUYER: apiUrl + prebuyer,
-  PRE_BUILD: apiUrl + prebuild
+  PRE_BUILD: apiUrl + prebuild,
+  //  management
+  MANAGER: apiUrl + management,
+  MANAGER_ID: apiUrl + management + bymanagementid
 };

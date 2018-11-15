@@ -27,4 +27,5 @@ export interface IPreBuild {
   city?: string;
   notes?: string;
   notificationOneSignal?: string[];
+  imgUrls?: string[];
 }

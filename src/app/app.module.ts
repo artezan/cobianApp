@@ -126,6 +126,8 @@ import { ListPreBuyerComponent } from './components/admin/list-pre-buyer/list-pr
 import { DetailPreBuildComponent } from './components/admin/detail-pre-build/detail-pre-build.component';
 import { ListPreBuildComponent } from './components/admin/list-pre-build/list-pre-build.component';
 import { NewEditPreBuildComponent } from './components/pre-build/new-edit-pre-build/new-edit-pre-build.component';
+import { ListManagerAdminComponent } from './components/admin/list-manager-admin/list-manager-admin.component';
+import { NewEditManagerComponent } from './components/manager/new-edit-manager/new-edit-manager.component';
 
 @NgModule({
   declarations: [
@@ -198,7 +200,9 @@ import { NewEditPreBuildComponent } from './components/pre-build/new-edit-pre-bu
     ListPreBuyerComponent,
     DetailPreBuildComponent,
     ListPreBuildComponent,
-    NewEditPreBuildComponent
+    NewEditPreBuildComponent,
+    ListManagerAdminComponent,
+    NewEditManagerComponent
   ],
   entryComponents: [
     DialogGeneralComponent,

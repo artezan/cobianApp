@@ -52,6 +52,8 @@ import { PreBuyerComponent } from './components/pre-buyer/pre-buyer.component';
 import { ListPreBuildComponent } from './components/admin/list-pre-build/list-pre-build.component';
 import { NewEditPreBuildComponent } from './components/pre-build/new-edit-pre-build/new-edit-pre-build.component';
 import { DetailPreBuildComponent } from './components/admin/detail-pre-build/detail-pre-build.component';
+import { ListManagerAdminComponent } from './components/admin/list-manager-admin/list-manager-admin.component';
+import { NewEditManagerComponent } from './components/manager/new-edit-manager/new-edit-manager.component';
 
 const routes: Routes = [
   // Rutas
@@ -352,6 +354,22 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     data: {
       rol: ['administrator', 'adviser', 'management', 'office']
+    }
+  },
+  {
+    path: 'list-manager-admin',
+    component: ListManagerAdminComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'management', 'office']
+    }
+  },
+  {
+    path: 'new-edit-manager',
+    component: NewEditManagerComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'management', 'office']
     }
   },
   { path: 'list-notification', component: ListNotificationComponent },

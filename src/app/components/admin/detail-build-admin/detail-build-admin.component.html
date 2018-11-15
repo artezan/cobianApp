@@ -1,37 +1,45 @@
-<!-- <ion-header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-menu-button style="color: white !important"></ion-menu-button>
-    </ion-buttons>
-    <ion-title>
-      Obra
-    </ion-title>
+<!--
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ion-menu-button style="color: white !important"></ion-menu-button>
+      </ion-buttons>
+      <ion-title>
+        Obra
+      </ion-title>
 
-  </ion-toolbar>
-</ion-header> -->
+    </ion-toolbar>
+  </ion-header>
+-->
 <ion-header>
-  <app-menu-general [isMenuButton]="'back'" [colorMenuButton]="'white'" [titleMenu]="'Detalle Obra'"
-    [buttonNotification]="'notifications'" [buttonUser]="'person'"></app-menu-general>
+  <app-menu-general
+    [isMenuButton]="user.type === 'maker' ? 'menu' : 'back'"
+    [colorMenuButton]="'white'"
+    [titleMenu]="'Detalle Obra'"
+    [buttonNotification]="'notifications'"
+    [buttonUser]="'person'"
+  ></app-menu-general>
 </ion-header>
 <ion-content>
   <ion-grid fixed>
-    <ng-container *ngIf="isLoad; then Load; else NoLoad"></ng-container>
+    <ng-container *ngIf="isLoad; then: Load; else: NoLoad"></ng-container>
     <ng-template #Load>
-      <h1>Detalles de: {{build.name}}</h1>
+      <h1>Detalles de: {{ build.name }}</h1>
       <ion-row>
         <ion-col size-md="6" size-lg="6" size-xl="6">
-          <ion-card [ngClass]="{'desktop-card': isDesktop }">
+          <ion-card [ngClass]="{ 'desktop-card': isDesktop }">
             <!-- [ngClass]="{'desktop-card': isDesktop }" -->
             <ion-card-header>
-              <ion-card-title>
-                Progreso
-              </ion-card-title>
+              <ion-card-title> Progreso </ion-card-title>
               <ion-card-content>
-                <app-goal-progress subtitle="Progreso" [percent]="percent"></app-goal-progress>
+                <app-goal-progress
+                  subtitle="Progreso"
+                  [percent]="percent"
+                ></app-goal-progress>
                 <ion-list lines="none">
                   <ion-list-header>Constructores de la Obra</ion-list-header>
                   <ion-item lines="none" *ngFor="let adv of build.maker">
-                    {{adv.name}} {{adv.lastName}}
+                    {{ adv.name }} {{ adv.lastName }}
                   </ion-item>
                 </ion-list>
               </ion-card-content>
@@ -39,53 +47,86 @@
           </ion-card>
         </ion-col>
         <ion-col size-md="6" size-lg="6" size-xl="6">
-          <ion-card [ngClass]="{'desktop-card': isDesktop }">
+          <ion-card [ngClass]="{ 'desktop-card': isDesktop }">
             <ion-card-header>
-              <ion-card-title>
-                Lista de Fases
-              </ion-card-title>
-              <ion-card-subtitle *ngIf="checkAdminRol(user.type)">Seleccione una fase para completar</ion-card-subtitle>
-
+              <ion-card-title> Lista de Fases </ion-card-title>
+              <ion-card-subtitle *ngIf="checkAdminRol(user.type)"
+                >Seleccione una fase para completar</ion-card-subtitle
+              >
             </ion-card-header>
             <div *ngIf="checkAdminRol(user.type)" class="flex-container">
-              <mat-checkbox (change)="changeGoal($event.checked)" *ngFor="let item of build.timeLine; let i=index"
-                [(ngModel)]="item.isComplete">
-                <h3>
-                  {{item.namePhase}}
-                </h3>
+              <mat-checkbox
+                (change)="changeGoal($event.checked)"
+                *ngFor="let item of build.timeLine; let i = index"
+                [(ngModel)]="item.isComplete"
+              >
+                <h3>{{ item.namePhase }}</h3>
+                <div>{{ item.notes }}</div>
                 <div>
-                  {{item.notes}}
+                  Inicio:
+                  {{
+                    formatDates(
+                      item.yearToStart,
+                      item.monthToStart,
+                      item.dayToStart
+                    )
+                  }}
                 </div>
                 <div>
-                  Inicio: {{formatDates(item.yearToStart,item.monthToStart, item.dayToStart)}}
-                </div>
-                <div>
-                  Fin: {{formatDates(item.yearToEnd,item.monthToEnd, item.dayToEnd)}}
+                  Fin:
+                  {{
+                    formatDates(item.yearToEnd, item.monthToEnd, item.dayToEnd)
+                  }}
                 </div>
               </mat-checkbox>
             </div>
             <span *ngIf="!checkAdminRol(user.type)">
-              <mat-list *ngFor="let item of build.timeLine; let i=index">
+              <mat-list *ngFor="let item of build.timeLine; let i = index">
                 <h3 matSubheader>
-                  <b>
-                    {{item.namePhase}}
-                  </b>
+                  <b> {{ item.namePhase }} </b>
                 </h3>
                 <mat-list-item>
-                  <mat-icon [ngClass]="{'color-complete': item.isComplete, 'color-incomplete':!item.isComplete}"
-                    matListIcon>{{item.isComplete ? 'assignment_turned_in':'assignment_late'}}</mat-icon>
+                  <mat-icon
+                    [ngClass]="{
+                      'color-complete': item.isComplete,
+                      'color-incomplete': !item.isComplete
+                    }"
+                    matListIcon
+                    >{{
+                      item.isComplete
+                        ? 'assignment_turned_in'
+                        : 'assignment_late'
+                    }}</mat-icon
+                  >
                   <h4 matLine>
                     <b>
-                      {{item.isComplete ? 'Completada':'Sin Completar'}}
+                      {{ item.isComplete ? 'Completada' : 'Sin Completar' }}
                     </b>
                   </h4>
-                  <p matLine> Inicio: {{formatDates(item.yearToStart,item.monthToStart, item.dayToStart)}} </p>
-                  <p matLine> Fin: {{formatDates(item.yearToEnd,item.monthToEnd, item.dayToEnd)}} </p>
-                  <p matLine> {{item.notes}} </p>
+                  <p matLine>
+                    Inicio:
+                    {{
+                      formatDates(
+                        item.yearToStart,
+                        item.monthToStart,
+                        item.dayToStart
+                      )
+                    }}
+                  </p>
+                  <p matLine>
+                    Fin:
+                    {{
+                      formatDates(
+                        item.yearToEnd,
+                        item.monthToEnd,
+                        item.dayToEnd
+                      )
+                    }}
+                  </p>
+                  <p matLine>{{ item.notes }}</p>
                 </mat-list-item>
               </mat-list>
             </span>
-
           </ion-card>
         </ion-col>
       </ion-row>
@@ -102,85 +143,124 @@
           </mat-button-toggle>
         </mat-button-toggle-group>
       </div>
-      <ng-container *ngIf="isList; then List; else Column"></ng-container>
+      <ng-container *ngIf="isList; then: List; else: Column"></ng-container>
       <ng-template #List>
-
         <!-- Contenedor List -->
         <ion-list style="margin-top: 1%">
           <ion-list-header>
-            {{build.timeLine[numOfCurrentFase].namePhase}}
+            {{ build.timeLine[numOfCurrentFase].namePhase }}
           </ion-list-header>
           <!-- img -->
-          <ion-item *ngFor="let imgData of build.timeLine[numOfCurrentFase].imagesData; let imgNumber=index">
+          <ion-item
+            *ngFor="
+              let imgData of build.timeLine[numOfCurrentFase].imagesData;
+              let imgNumber = index
+            "
+          >
             <ion-thumbnail slot="start">
               <ion-img [src]="imgData.url"></ion-img>
             </ion-thumbnail>
             <ion-label text-wrap>
-              <h3>{{build.timeLine[numOfCurrentFase].namePhase}}</h3>
-              <p><b>Notas: </b>{{imgData.notes}}</p>
-              <p><b>Fecha de Subida: </b>{{formatDates2(imgData.date)}}</p>
+              <h3>{{ build.timeLine[numOfCurrentFase].namePhase }}</h3>
+              <p><b>Notas: </b>{{ imgData.notes }}</p>
+              <p><b>Fecha de Subida: </b>{{ formatDates2(imgData.date) }}</p>
             </ion-label>
-            <ion-button (click)="presentAlertConfirm(imgData.url,numOfCurrentFase,imgNumber)" shape="round" fill="outline"
-              color="danger">
+            <ion-button
+              (click)="
+                presentAlertConfirm(imgData.url, numOfCurrentFase, imgNumber)
+              "
+              shape="round"
+              fill="outline"
+              color="danger"
+            >
               <ion-icon slot="start" name="trash"></ion-icon>
               Borrar
             </ion-button>
           </ion-item>
           <!-- img antes de subir -->
-          <span *ngFor="let prev of imgToUpload;  let ii=index">
+          <span *ngFor="let prev of imgToUpload; let ii = index">
             <ion-item>
               <ion-thumbnail slot="start">
                 <ion-img [src]="prev.srcPrev"></ion-img>
               </ion-thumbnail>
               <span>
-
                 <ion-label>
                   <h3>Subir Foto</h3>
                   <p></p>
                 </ion-label>
-                <ion-input [(ngModel)]="prev.notes" placeholder="Escribe algo referente"></ion-input>
-                <ion-button shape="round" fill="outline" (click)="uploadImg(prev, ii, prev.notes)" color="success">
+                <ion-input
+                  [(ngModel)]="prev.notes"
+                  placeholder="Escribe algo referente"
+                ></ion-input>
+                <ion-button
+                  shape="round"
+                  fill="outline"
+                  (click)="uploadImg(prev, ii, prev.notes)"
+                  color="success"
+                >
                   <ion-icon slot="start" name="checkmark-circle"></ion-icon>
                   Subir
                 </ion-button>
-                <ion-button (click)="discartImg(ii)" shape="round" fill="outline" color="danger">
+                <ion-button
+                  (click)="discartImg(ii)"
+                  shape="round"
+                  fill="outline"
+                  color="danger"
+                >
                   <ion-icon slot="start" name="trash"></ion-icon>
                   Descartar
                 </ion-button>
               </span>
-
             </ion-item>
           </span>
 
-          <input id="imagen1" accept="image/*" name="imagen1" type="file" hidden (change)="fileChangeEvent($event)">
-          <ion-button (click)="link(numOfCurrentFase)" shape="round" fill="outline" color="secondary">
+          <input
+            id="imagen1"
+            accept="image/*"
+            name="imagen1"
+            type="file"
+            hidden
+            (change)="fileChangeEvent($event)"
+          />
+          <ion-button
+            (click)="link(numOfCurrentFase)"
+            shape="round"
+            fill="outline"
+            color="secondary"
+          >
             <ion-icon slot="start" name="add"></ion-icon>
             Agregar
           </ion-button>
-          <ion-button *ngIf="isCordova" (click)="cameraIonic()" shape="round" fill="outline" color="secondary">
+          <ion-button
+            *ngIf="isCordova"
+            (click)="cameraIonic()"
+            shape="round"
+            fill="outline"
+            color="secondary"
+          >
             <ion-icon slot="start" name="camera"></ion-icon>
             Camara
           </ion-button>
-
-
-
         </ion-list>
-
       </ng-template>
       <ng-template #Column>
         <!-- Contenedor de fases -->
         <div class="conteiner-phases">
-
           <!-- fase titulo -->
-          <h2>{{build.timeLine[numOfCurrentFase].namePhase}}</h2>
+          <h2>{{ build.timeLine[numOfCurrentFase].namePhase }}</h2>
           <!-- contenedor imagenes -->
           <div class="flex-img">
-            <img *ngFor="let img of build.timeLine[numOfCurrentFase].imagesData" [src]="img.url">
+            <img
+              *ngFor="let img of build.timeLine[numOfCurrentFase].imagesData"
+              [src]="img.url"
+            />
           </div>
-          <!--  <button style="margin-left: 1%;" mat-stroked-button color="accent">
-            <mat-icon color="accent">add</mat-icon>
-            Agregar
-          </button> -->
+          <!--
+            <button style="margin-left: 1%;" mat-stroked-button color="accent">
+              <mat-icon color="accent">add</mat-icon>
+              Agregar
+            </button>
+          -->
           <!-- /contenedor imagenes -->
         </div>
 
@@ -190,11 +270,13 @@
     <ng-template #NoLoad>
       <app-general-skeleton></app-general-skeleton>
     </ng-template>
-    <!-- <img *ngIf="Test" [src]="Test" alt="">
-    <ion-label text-wrap>
-      {{Test}}
-    </ion-label>
-    
-    <input type="file" accept="image/*" capture="camera"> -->
+    <!--
+      <img *ngIf="Test" [src]="Test" alt="">
+      <ion-label text-wrap>
+        {{Test}}
+      </ion-label>
+
+      <input type="file" accept="image/*" capture="camera">
+    -->
   </ion-grid>
 </ion-content>

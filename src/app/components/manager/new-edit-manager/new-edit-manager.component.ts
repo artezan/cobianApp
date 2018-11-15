@@ -1,51 +1,45 @@
 import { Component, OnInit } from '@angular/core';
-import { IOffice } from '../../../models/office.model';
-import { OfficeService } from '../../../services/office.service';
-import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
-import { UserSessionService } from '../../../services/user-session.service';
+import { IManager } from '../../../models/manager.model';
 import { IUserSession } from '../../../models/userSession.model';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import { OfficeService } from '../../../services/office.service';
+import { UserSessionService } from '../../../services/user-session.service';
+import { ManagersService } from '../../../services/managers.service';
 
 @Component({
-  selector: 'app-new-edit-office',
-  templateUrl: './new-edit-office.component.html',
-  styleUrls: ['./new-edit-office.component.scss']
+  selector: 'app-new-edit-manager',
+  templateUrl: './new-edit-manager.component.html',
+  styleUrls: ['./new-edit-manager.component.scss']
 })
-export class NewEditOfficeComponent implements OnInit {
+export class NewEditManagerComponent implements OnInit {
   hide = true;
   companyId: string;
   isNew = true;
   errorToShow = '';
   errorToShowMat = 'Dato obligatorio';
-  office: IOffice = {};
-  files: string;
+  manager: IManager = {};
   isLoad: boolean;
   user: IUserSession;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private officeService: OfficeService,
-    private userSession: UserSessionService
+    private userSession: UserSessionService,
+    private managerService: ManagersService
   ) {
     this.user = userSession.userSession.value;
     this.isLoad = false;
     this.route.queryParams.subscribe(params => {
       if (params['id']) {
-        this.officeService.getOfficeById(params['id']).subscribe(office => {
-          this.office = office;
+        this.managerService.getManagerById(params['id']).subscribe(m => {
+          console.log(m);
+          this.manager = m;
           this.isLoad = true;
         });
         this.isNew = false;
       } else if (this.user && this.user.type === 'office') {
-        this.officeService.getOfficeById(this.user.id).subscribe(office => {
-          if (office === null) {
-            const q: NavigationExtras = {
-              queryParams: { id: params['id'] }
-            };
-            this.router.navigate(['new-edit-manager'], q);
-          } else {
-            this.office = office;
-            this.isLoad = true;
-          }
+        this.managerService.getManagerById(this.user.id).subscribe(office => {
+          this.manager = office;
+          this.isLoad = true;
         });
         this.isNew = false;
       } else {
@@ -56,30 +50,25 @@ export class NewEditOfficeComponent implements OnInit {
   }
 
   ngOnInit() {}
-  editOfert() {
-    this.officeService.putOffice(this.office).subscribe(office => {
+  edit() {
+    this.managerService.putManager(this.manager).subscribe(m => {
       const toast: NavigationExtras = {
-        queryParams: { res: 'Oficinista Editado' }
+        queryParams: { res: 'Gerente Editado' }
       };
-      // this.router.navigate(['list-credit-admin'], toast);
-      // this.navCtr.navigateRoot('list-ofert-admin', true, toast);
-      /**
-       * Es para recargar el componente previo
-       */
       this.router
         .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
-        .then(() => this.router.navigate(['list-office-admin'], toast));
+        .then(() => this.router.navigate(['list-manager-admin'], toast));
     });
   }
-  newOfert() {
-    this.officeService.newOffice(this.office).subscribe(o => {
+  add() {
+    this.managerService.newManager(this.manager).subscribe(o => {
       // this.navCtr.navigateRoot('list-ofert-admin', true);
       const toast: NavigationExtras = {
-        queryParams: { res: 'Oficinista Creado' }
+        queryParams: { res: 'Gerente Creado' }
       };
       this.router
         .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
-        .then(() => this.router.navigate(['list-office-admin'], toast));
+        .then(() => this.router.navigate(['list-manager-admin'], toast));
     });
   }
   getPopMessage(event) {

@@ -202,7 +202,7 @@
 
 <ion-footer class="back-tab" [hidden]="user.type === 'buyer'">
   <mdc-tab-bar #demoTabBar (activated)="logTab($event)" stacked>
-    <mdc-tab-scroller>
+    <mdc-tab-scroller *ngIf="user.type !== 'preBuyer' && user.type !== 'maker'">
       <mdc-tab
         class="tabs-color"
         label="Todos"

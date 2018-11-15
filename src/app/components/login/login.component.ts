@@ -92,6 +92,17 @@ export class LoginComponent implements OnInit {
               this.navController.navigateRoot('list-buyer-admin', false);
             }
           }
+          // **management
+          if (data.type === 'management') {
+            this.isLogin = true;
+            load.dismiss();
+            const noty = this.userSession.activateMenu.value;
+            if (noty && noty !== '') {
+              this.router.navigate([noty]);
+            } else {
+              this.navController.navigateRoot('list-buyer-admin', false);
+            }
+          }
           // adviser
           if (data.type === 'adviser') {
             this.isLogin = true;

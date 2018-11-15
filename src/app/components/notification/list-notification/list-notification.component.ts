@@ -16,7 +16,7 @@ import { END_POINT } from '../../../_config/api.end-points';
   selector: 'app-list-notification',
   templateUrl: './list-notification.component.html',
   styleUrls: ['./list-notification.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class ListNotificationComponent implements OnInit, OnDestroy {
   section = 0;
@@ -40,7 +40,7 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
     private oneSignalService: OnesignalService,
     private socketIOService: SocketIoService,
     private router: Router,
-    public dialog: MatDialog,
+    public dialog: MatDialog
   ) {
     this.isLoad = false;
     this.isDesktop = platform.is('desktop');
@@ -60,35 +60,35 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
           n.type === 'buyer' ||
           n.type === 'like' ||
           n.type === 'credit' ||
-          n.type === 'ofert',
+          n.type === 'ofert'
       );
       this.notificationsOld = this.notificationsOld.filter(
         n =>
           n.type === 'buyer' ||
           n.type === 'like' ||
           n.type === 'credit' ||
-          n.type === 'ofert',
+          n.type === 'ofert'
       );
     } else if (numTab === 2) {
       this.notificationsNew = this.notificationsNew.filter(
-        n => n.type === 'schedule',
+        n => n.type === 'schedule'
       );
       this.notificationsOld = this.notificationsOld.filter(
-        n => n.type === 'schedule',
+        n => n.type === 'schedule'
       );
     } else if (numTab === 3) {
       this.notificationsNew = this.notificationsNew.filter(
-        n => n.type === 'celebrate' || n.type === 'goal',
+        n => n.type === 'celebrate' || n.type === 'goal'
       );
       this.notificationsOld = this.notificationsOld.filter(
-        n => n.type === 'celebrate' || n.type === 'goal',
+        n => n.type === 'celebrate' || n.type === 'goal'
       );
     } else if (numTab === 4) {
       this.notificationsNew = this.notificationsNew.filter(
-        n => n.type === 'build' || n.type === 'property',
+        n => n.type === 'build' || n.type === 'property'
       );
       this.notificationsOld = this.notificationsOld.filter(
-        n => n.type === 'build' || n.type === 'property',
+        n => n.type === 'build' || n.type === 'property'
       );
     }
   }
@@ -98,24 +98,24 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
     const numTab = event.index;
     if (numTab === 1) {
       this.notificationsNew = this.notificationsNew.filter(
-        n => n.type === 'ofert',
+        n => n.type === 'ofert'
       );
       this.notificationsOld = this.notificationsOld.filter(
-        n => n.type === 'ofert',
+        n => n.type === 'ofert'
       );
     } else if (numTab === 2) {
       this.notificationsNew = this.notificationsNew.filter(
-        n => n.type === 'credit',
+        n => n.type === 'credit'
       );
       this.notificationsOld = this.notificationsOld.filter(
-        n => n.type === 'credit',
+        n => n.type === 'credit'
       );
     } else if (numTab === 3) {
       this.notificationsNew = this.notificationsNew.filter(
-        n => n.type === 'schedule',
+        n => n.type === 'schedule'
       );
       this.notificationsOld = this.notificationsOld.filter(
-        n => n.type === 'schedule',
+        n => n.type === 'schedule'
       );
     }
   }
@@ -131,17 +131,17 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
         } else {
           this.notificationsNew = [
             ...this.notificationsNew,
-            ...nts.filter(n => this.isNewTitle(n.readBy)),
+            ...nts.filter(n => this.isNewTitle(n.readBy))
           ];
           this.notificationsOld = [
             ...this.notificationsOld,
-            ...nts.filter(n => !this.isNewTitle(n.readBy)),
+            ...nts.filter(n => !this.isNewTitle(n.readBy))
           ];
           this.notificationsNewBack = this.notificationsNew;
           this.notificationsOldBack = this.notificationsOld;
         }
         const isCelebrate = this.notificationsNew.filter(
-          n => n.type === 'celebrate' || n.title === 'Propiedad Adquirida',
+          n => n.type === 'celebrate' || n.title === 'Propiedad Adquirida'
         );
         console.log('cele', isCelebrate);
         if (isCelebrate.length > 0) {
@@ -165,7 +165,7 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
     this.notificationsNew.forEach(n => {
       n.readBy.push({
         readAt: new Date(),
-        readerId: this.user.id,
+        readerId: this.user.id
       });
       this.oneSignalService.putNotification(n).subscribe();
     });
@@ -173,12 +173,12 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
   private markAsRead(noti: INotification) {
     noti.readBy.push({
       readAt: new Date(),
-      readerId: this.user.id,
+      readerId: this.user.id
     });
     this.oneSignalService.putNotification(noti).subscribe(() => {
       this.socketIOService.minusOne();
       const indexFind = this.notificationsNew.findIndex(
-        n => n._id === noti._id,
+        n => n._id === noti._id
       );
       if (indexFind !== -1) {
         this.notificationsNew.splice(indexFind, 1);
@@ -191,44 +191,50 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
 
   goToDetails(n: INotification) {
     this.markAsRead(n);
-    if (n.type === 'build') {
-      this.router.navigate(['list-build-admin']);
-    } else if (n.type === 'buyer') {
-      this.router.navigate(['list-buyer-admin']);
-    } else if (n.type === 'celebrate' || n.type === 'goal') {
-      this.router.navigate(['list-goals-admin']);
-    } else if (n.type === 'property') {
-      if (this.user.type === 'buyer') {
-        this.router.navigate(['inter-prop-buyer']);
-      } else {
-        this.router.navigate(['list-prop-admin']);
-      }
-    } else if (n.type === 'schedule') {
-      if (this.user.type === 'buyer') {
-        this.router.navigate(['calendar-buyer']);
-      } else {
-        this.router.navigate(['list-schedule-admin']);
-      }
-    } else if (n.type === 'ofert') {
-      if (this.user.type === 'buyer') {
-        this.router.navigate(['ofert-buyer']);
-      } else {
-        this.router.navigate(['list-ofert-admin']);
-      }
-    } else if (n.type === 'credit') {
-      if (this.user.type === 'buyer') {
-        this.router.navigate(['inter-prop-buyer']);
-      } else {
-        this.router.navigate(['list-credit-admin']);
-      }
-    } else if (n.type === 'like') {
-      if (this.user.type === 'buyer') {
-        this.router.navigate(['inter-prop-buyer']);
-      } else {
+    if (this.user.type === 'preBuyer') {
+      this.router.navigate(['login-select-user']);
+    } else if (this.user.type === 'maker') {
+      this.router.navigate(['detail-build-admin']);
+    } else {
+      if (n.type === 'build') {
+        this.router.navigate(['list-build-admin']);
+      } else if (n.type === 'buyer') {
         this.router.navigate(['list-buyer-admin']);
+      } else if (n.type === 'celebrate' || n.type === 'goal') {
+        this.router.navigate(['list-goals-admin']);
+      } else if (n.type === 'property') {
+        if (this.user.type === 'buyer') {
+          this.router.navigate(['inter-prop-buyer']);
+        } else {
+          this.router.navigate(['list-prop-admin']);
+        }
+      } else if (n.type === 'schedule') {
+        if (this.user.type === 'buyer') {
+          this.router.navigate(['calendar-buyer']);
+        } else {
+          this.router.navigate(['list-schedule-admin']);
+        }
+      } else if (n.type === 'ofert') {
+        if (this.user.type === 'buyer') {
+          this.router.navigate(['ofert-buyer']);
+        } else {
+          this.router.navigate(['list-ofert-admin']);
+        }
+      } else if (n.type === 'credit') {
+        if (this.user.type === 'buyer') {
+          this.router.navigate(['inter-prop-buyer']);
+        } else {
+          this.router.navigate(['list-credit-admin']);
+        }
+      } else if (n.type === 'like') {
+        if (this.user.type === 'buyer') {
+          this.router.navigate(['inter-prop-buyer']);
+        } else {
+          this.router.navigate(['list-buyer-admin']);
+        }
+      } else if (n.type === 'msg') {
+        this.router.navigate(['chat']);
       }
-    } else if (n.type === 'msg') {
-      this.router.navigate(['chat']);
     }
   }
   getNotificationRealTime() {
@@ -248,8 +254,8 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
         body: `<img src="${END_POINT.IP}celebrate.png">`,
         isform: false,
         hideButtonCancel: true,
-        okButton: 'Gracias',
-      },
+        okButton: 'Gracias'
+      }
     });
     const sub = dialogRef.componentInstance.buttons.subscribe(res => {
       this.markAsRead(n);
@@ -278,7 +284,7 @@ export class ListNotificationComponent implements OnInit, OnDestroy {
       | 'buyer'
       | 'goal'
       | 'celebrate'
-      | 'msg',
+      | 'msg'
   ) {
     if (str === 'like') {
       return 'thumb_up';

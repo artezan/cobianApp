@@ -4,7 +4,7 @@ import {
   ViewChild,
   ElementRef,
   AfterViewChecked,
-  OnDestroy,
+  OnDestroy
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChatService } from '../../../services/chat.service';
@@ -23,11 +23,12 @@ import { IProperty } from '../../../models/property.model';
 import { ISeller } from '../../../models/seller.model';
 import { BuyerService } from '../../../services/buyer.service';
 import { IBuyer } from '../../../models/buyer.model';
+import { PreBuildService } from '../../../services/pre-build.service';
 
 @Component({
   selector: 'app-chat-room',
   templateUrl: './chat-room.component.html',
-  styleUrls: ['./chat-room.component.scss'],
+  styleUrls: ['./chat-room.component.scss']
 })
 export class ChatRoomComponent implements OnInit, OnDestroy {
   property: IProperty;
@@ -54,20 +55,28 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     private chatService: ChatService,
     private userService: UserSessionService,
     private propertyService: PropertyService,
+    private preBuildService: PreBuildService,
     private socketService: SocketIoService,
     private oneSignalService: OnesignalService,
     private sellerService: SellerService,
     private router: Router,
-    private buyerService: BuyerService,
+    private buyerService: BuyerService
   ) {
     this.user = userService.userSession.value;
     this.route.queryParams.subscribe(async params => {
       if (params.id) {
-        this.getRoomById(params.id);
-        const prop = await this.getPropertyById(params.id);
-        this.seller = await this.getSellerOfProperty(params.id);
-        this.property = prop;
-        this.title = prop.name;
+        if (this.user.type === 'preBuyer') {
+          this.getRoomById(params.id);
+          const prop = await this.getprePropertyById(params.id);
+          this.property = prop;
+          this.title = prop.name;
+        } else {
+          this.getRoomById(params.id);
+          const prop = await this.getPropertyById(params.id);
+          this.seller = await this.getSellerOfProperty(params.id);
+          this.property = prop;
+          this.title = prop.name ? prop.name : '';
+        }
       }
     });
     this.socketService.onNewMsg().subscribe(chatId => {
@@ -89,13 +98,13 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
       // registra num de str si no esta en el arreglo
       this.stringHeigh.push({
         heigh: this.oldHeigh,
-        numOfstring: this.contentText.length - 1,
+        numOfstring: this.contentText.length - 1
       });
       // de nuevo valor para detectar cambio
       this.oldHeigh = this.myInput.nativeElement.scrollHeight;
     }
     const s = this.stringHeigh.findIndex(
-      sh => sh.numOfstring === this.contentText.length,
+      sh => sh.numOfstring === this.contentText.length
     );
     // si regresa da valor de altura antiguo
     if (s !== -1) {
@@ -133,8 +142,17 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
       console.log(chat);
     });
   }
-  async getPropertyById(propId) {
-    return await this.propertyService.getPropertyById(propId).toPromise();
+  async getPropertyById(id) {
+    let prop = await this.propertyService.getPropertyById(id).toPromise();
+    if (prop !== null) {
+      return prop;
+    } else {
+      prop = await this.preBuildService.getBuildById(id).toPromise();
+      return prop;
+    }
+  }
+  async getprePropertyById(propId) {
+    return await this.preBuildService.getBuildById(propId).toPromise();
   }
   async submit() {
     this.isSending = false;
@@ -143,7 +161,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
       createAt: new Date(),
       readBy: [this.user.id],
       uid: this.user.id,
-      typeOfUser: this.user.type,
+      typeOfUser: this.user.type
     };
     const res = await this.chatService
       .addMsg(this.chat._id, newMessage)
@@ -163,11 +181,11 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
       }
       this.notification(
         'Nuevo Mensaje',
-        this.contentText,
+        `${this.user.name}: ${this.contentText}`,
         'verde',
         'msg',
         ['office', 'management'],
-        arrToSendId,
+        arrToSendId
       );
     }
     if (this.stringHeigh.length > 0) {
@@ -209,7 +227,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     status,
     type,
     tags,
-    reciversId: string[],
+    reciversId: string[]
   ) {
     // notificacion
     const notification: INotification = {
@@ -219,7 +237,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
       receiversId: reciversId,
       senderId: this.userService.userSession.value.id,
       status: status,
-      type: type,
+      type: type
     };
     // onesignal
     this.oneSignalService
@@ -233,7 +251,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     return await this.sellerService
       .getSellerAll()
       .pipe(
-        map(sellers => sellers.find(s => !!s.property.find(p => p._id === id))),
+        map(sellers => sellers.find(s => !!s.property.find(p => p._id === id)))
       )
       .toPromise();
   }

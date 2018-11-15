@@ -131,6 +131,134 @@
           </ion-card>
         </ion-col>
       </ion-row>
+      <!-- Options grid -->
+      <div *ngIf="checkAdminRol(user.type)" class="conteiner-buttons">
+        <p style="text-align: left;">Fotos de Fase</p>
+        <mat-button-toggle-group (change)="changeGrid($event)">
+          <mat-button-toggle [checked]="!isList" value="column">
+            <mat-icon color="accent">view_column</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle [checked]="isList" color="primary" value="list">
+            <mat-icon color="accent">view_list</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+      <ng-container *ngIf="isList; then: List; else: Column"></ng-container>
+      <ng-template #List>
+        <!-- Contenedor List -->
+        <ion-list style="margin-top: 1%">
+          <ion-list-header> {{ getCurrentPhaseName() }} </ion-list-header>
+          <!-- img ya cargadas -->
+          <ion-item *ngFor="let img of preBuild.imgUrls">
+            <ion-thumbnail slot="start">
+              <ion-img [src]="img"></ion-img>
+            </ion-thumbnail>
+            <ion-label text-wrap>
+              <h3>{{ getCurrentPhaseData().namePhase }}</h3>
+              <p><b>Notas: </b>{{ getCurrentPhaseData().notes }}</p>
+            </ion-label>
+            <ion-button
+              (click)="presentAlertConfirm(img)"
+              shape="round"
+              fill="outline"
+              color="danger"
+            >
+              <ion-icon slot="start" name="trash"></ion-icon>
+              Borrar
+            </ion-button>
+          </ion-item>
+          <!-- /img ya cargadas -->
+          <!-- img antes de subir -->
+          <span *ngFor="let prev of imgToUpload; let ii = index">
+            <ion-item>
+              <ion-thumbnail slot="start">
+                <ion-img [src]="prev.srcPrev"></ion-img>
+              </ion-thumbnail>
+              <span>
+                <ion-label>
+                  <h3>Subir Foto</h3>
+                  <p></p>
+                </ion-label>
+                <!--
+                  <ion-input
+                    [(ngModel)]="prev.notes"
+                    placeholder="Escribe algo referente"
+                  ></ion-input>
+                -->
+                <ion-button
+                  shape="round"
+                  fill="outline"
+                  (click)="uploadImg(prev)"
+                  color="success"
+                >
+                  <ion-icon slot="start" name="checkmark-circle"></ion-icon>
+                  Subir
+                </ion-button>
+                <ion-button
+                  (click)="discartImg(ii)"
+                  shape="round"
+                  fill="outline"
+                  color="danger"
+                >
+                  <ion-icon slot="start" name="trash"></ion-icon>
+                  Descartar
+                </ion-button>
+              </span>
+            </ion-item>
+          </span>
+          <!-- /img antes de subir -->
+          <!-- boton para subir file -->
+          <input
+            id="imagen1"
+            accept="image/*"
+            name="imagen1"
+            type="file"
+            hidden
+            (change)="fileChangeEvent($event)"
+          />
+          <ion-button
+            (click)="link()"
+            shape="round"
+            fill="outline"
+            color="secondary"
+          >
+            <ion-icon slot="start" name="add"></ion-icon>
+            Agregar
+          </ion-button>
+          <!--
+            <ion-button
+              *ngIf="isCordova"
+              (click)="cameraIonic()"
+              shape="round"
+              fill="outline"
+              color="secondary"
+            >
+              <ion-icon slot="start" name="camera"></ion-icon>
+              Camara
+            </ion-button>
+          -->
+        </ion-list>
+      </ng-template>
+      <ng-template #Column>
+        <!-- Contenedor de fases -->
+        <div class="conteiner-phases">
+          <!-- fase titulo -->
+          <h2>{{ getCurrentPhaseName() }}</h2>
+          <!-- contenedor imagenes -->
+          <div class="flex-img">
+            <img *ngFor="let img of preBuild.imgUrls" [src]="img" />
+          </div>
+          <!--
+            <button style="margin-left: 1%;" mat-stroked-button color="accent">
+              <mat-icon color="accent">add</mat-icon>
+              Agregar
+            </button>
+          -->
+          <!-- /contenedor imagenes -->
+        </div>
+
+        <!-- /Contenedor de fases -->
+      </ng-template>
     </ng-template>
     <ng-template #NoLoad>
       <app-general-skeleton></app-general-skeleton>
