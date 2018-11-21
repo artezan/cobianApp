@@ -4,7 +4,7 @@ import {
   ViewChild,
   ElementRef,
   AfterViewChecked,
-  OnDestroy
+  OnDestroy,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChatService } from '../../../services/chat.service';
@@ -28,7 +28,7 @@ import { PreBuildService } from '../../../services/pre-build.service';
 @Component({
   selector: 'app-chat-room',
   templateUrl: './chat-room.component.html',
-  styleUrls: ['./chat-room.component.scss']
+  styleUrls: ['./chat-room.component.scss'],
 })
 export class ChatRoomComponent implements OnInit, OnDestroy {
   property: IProperty;
@@ -60,7 +60,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     private oneSignalService: OnesignalService,
     private sellerService: SellerService,
     private router: Router,
-    private buyerService: BuyerService
+    private buyerService: BuyerService,
   ) {
     this.user = userService.userSession.value;
     this.route.queryParams.subscribe(async params => {
@@ -98,13 +98,13 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
       // registra num de str si no esta en el arreglo
       this.stringHeigh.push({
         heigh: this.oldHeigh,
-        numOfstring: this.contentText.length - 1
+        numOfstring: this.contentText.length - 1,
       });
       // de nuevo valor para detectar cambio
       this.oldHeigh = this.myInput.nativeElement.scrollHeight;
     }
     const s = this.stringHeigh.findIndex(
-      sh => sh.numOfstring === this.contentText.length
+      sh => sh.numOfstring === this.contentText.length,
     );
     // si regresa da valor de altura antiguo
     if (s !== -1) {
@@ -161,7 +161,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
       createAt: new Date(),
       readBy: [this.user.id],
       uid: this.user.id,
-      typeOfUser: this.user.type
+      typeOfUser: this.user.type,
     };
     const res = await this.chatService
       .addMsg(this.chat._id, newMessage)
@@ -185,7 +185,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
         'verde',
         'msg',
         ['office', 'management'],
-        arrToSendId
+        arrToSendId,
       );
     }
     if (this.stringHeigh.length > 0) {
@@ -227,7 +227,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     status,
     type,
     tags,
-    reciversId: string[]
+    reciversId: string[],
   ) {
     // notificacion
     const notification: INotification = {
@@ -237,7 +237,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
       receiversId: reciversId,
       senderId: this.userService.userSession.value.id,
       status: status,
-      type: type
+      type: type,
     };
     // onesignal
     this.oneSignalService
@@ -251,7 +251,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     return await this.sellerService
       .getSellerAll()
       .pipe(
-        map(sellers => sellers.find(s => !!s.property.find(p => p._id === id)))
+        map(sellers => sellers.find(s => !!s.property.find(p => p._id === id))),
       )
       .toPromise();
   }

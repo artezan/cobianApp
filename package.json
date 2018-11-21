@@ -58,7 +58,8 @@
     "rxjs": "6.2.2",
     "socket.io-client": "^2.1.1",
     "uk.co.workingedge.phonegap.plugin.launchnavigator": "^4.2.2",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.26",
+    "cordova-plugin-camera": "~4.0.3"
   },
   "devDependencies": {
     "@angular/cli": "~6.1.1",
