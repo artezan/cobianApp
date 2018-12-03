@@ -1,11 +1,12 @@
-// const ip = 'http://localhost:3004/';
+const ip = 'http://localhost:3004/';
 // const ip = 'http://31.220.52.51:3004/';
 
 // prod
-const ip = 'http://31.220.58.194:3004/';
+// const ip = 'http://31.220.58.194:3004/';
 
 const apiUrl = ip + 'api/v1/';
 const userSession = 'usersession/';
+const userEmail = 'email/';
 const buyer = 'buyer/';
 const buyerId = 'bybuyerid/';
 const property = 'property/';
@@ -60,8 +61,10 @@ const chatByCity = 'bychatcity/';
 const addmessage = 'addmessage/';
 const addread = 'addread/';
 const bychatid = 'bychatid/';
+const byDefault = 'byDefault/';
 const files = 'files/';
 const msgMail = 'msg/';
+const resetPass = 'resetpass/';
 const prebuyer = 'prebuyer/';
 const prebuild = 'prebuild/';
 const management = 'management/';
@@ -71,6 +74,7 @@ export const END_POINT = {
   IP: ip,
   //   session
   USER_SESSION: apiUrl + userSession,
+  USER_RESET: apiUrl + userSession + userEmail,
   // buyer
   BUYER_ID: apiUrl + buyer + buyerId,
   BUYER: apiUrl + buyer,
@@ -137,11 +141,13 @@ export const END_POINT = {
   EMAIL_FIND: apiUrl + mail + mailFind,
   EMAIL_FILES: apiUrl + mail + files,
   EMAIL_MSG: apiUrl + mail + msgMail,
+  EMAIL_RESET_PASS: apiUrl + mail + resetPass,
   // chat
   CHAT: apiUrl + chat,
   CHAT_PROP_ID: apiUrl + chat + chatByProp,
   CHAT_CITY_ID: apiUrl + chat + chatByCity,
   CHAT_ID: apiUrl + chat + bychatid,
+  CHAT_DEFAULT: apiUrl + chat + byDefault,
   CHAT_ADD_MSG: apiUrl + chat + addmessage,
   CHAT_ADD_READ: apiUrl + chat + addread,
   // PRE

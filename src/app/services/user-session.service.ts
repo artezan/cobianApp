@@ -10,7 +10,7 @@ import { Platform } from '@ionic/angular';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserSessionService {
   public userSession = new BehaviorSubject<IUserSession>({});
@@ -35,13 +35,18 @@ export class UserSessionService {
   constructor(
     private http: HttpClient,
     private storage: Storage,
-    private platform: Platform
+    private platform: Platform,
   ) {}
 
   public logginUserSession(email, password): Observable<any> {
     const concatSession = btoa(email + ':' + password);
     return this.http
       .post(END_POINT.USER_SESSION, { base64: concatSession })
+      .pipe(map((data: any) => data.data));
+  }
+  public resetUserSession(email): Observable<any> {
+    return this.http
+      .post(END_POINT.USER_RESET, { email: email })
       .pipe(map((data: any) => data.data));
   }
   public setUserSession(name, type, id, password, email: string, token): void {
@@ -54,7 +59,7 @@ export class UserSessionService {
       id: id,
       password: password,
       email: email,
-      token
+      token,
     };
     this.userSession.next({
       name: name,
@@ -62,7 +67,7 @@ export class UserSessionService {
       id: id,
       password: password,
       email: email,
-      token
+      token,
     });
     // localStorage.setItem('userSession', JSON.stringify(currentData));
     this.storage.set('userSessionCurrent', currentData);
@@ -87,7 +92,7 @@ export class UserSessionService {
       type: undefined,
       id: undefined,
       password: undefined,
-      email: undefined
+      email: undefined,
     });
     this.platform.ready().then(c => {
       console.log(c);
@@ -106,7 +111,7 @@ export class UserSessionService {
       type: undefined,
       id: undefined,
       password: undefined,
-      email: undefined
+      email: undefined,
     });
     // reset al cambiar user
     this.activateMenu.next('');
@@ -124,7 +129,7 @@ export class UserSessionService {
     const isFind = keys.find(k => k === 'userSessionSaved');
     if (isFind) {
       const sessions: IUserSession[] = await this.storage.get(
-        'userSessionSaved'
+        'userSessionSaved',
       );
       const indexFinded = sessions.findIndex(s => s.id === newUser.id);
       if (indexFinded !== -1) {
@@ -167,7 +172,7 @@ export class UserSessionService {
                   data.data[0]._id,
                   data.data[0].password,
                   data.data[0].email,
-                  data.token
+                  data.token,
                 );
                 return resolve(true);
                 // usuario o contrasena caducada
@@ -194,27 +199,27 @@ export class UserSessionService {
         appId: CONST_GENERAL.ONESIGNAL_APP_ID,
         autoRegister: true,
         notifyButton: {
-          enable: false
+          enable: false,
         },
         promptOptions: {
           actionMessage:
             'Nos gustaría notificarle cuando se mande un nuevo programa',
           acceptButtonText: 'Permitir',
-          cancelButtonText: 'No gracias'
-        }
+          cancelButtonText: 'No gracias',
+        },
       });
       OneSignalDektop.getUserId(function(userId) {
         console.log('OneSignal User ID:', userId);
       });
       OneSignalDektop.sendTags({
         _id: id.toString(),
-        type: type
+        type: type,
       });
       OneSignalDektop.on('subscriptionChange', function(isSubscribed) {
         console.log('The user subscription state is now:', isSubscribed);
         OneSignalDektop.sendTags({
           _id: id.toString(),
-          type: type
+          type: type,
         });
       });
       OneSignalDektop.addListenerForNotificationOpened(function(data) {
@@ -234,7 +239,7 @@ export class UserSessionService {
         */
       });
       OneSignalDektop.setDefaultNotificationUrl(
-        'http://app.inmobiliariacobian.com/list-notification'
+        'http://app.inmobiliariacobian.com/list-notification',
       );
     });
     this.isInitOne = true;
@@ -243,7 +248,7 @@ export class UserSessionService {
     const oneSignal = window['plugins'].OneSignal;
     oneSignal.startInit(
       CONST_GENERAL.ONESIGNAL_APP_ID,
-      CONST_GENERAL.googleProjectNumber
+      CONST_GENERAL.googleProjectNumber,
     );
     oneSignal.handleNotificationOpened(() => {
       this.activateMenu.next('list-notification');
@@ -251,7 +256,7 @@ export class UserSessionService {
     oneSignal.inFocusDisplaying(oneSignal.OSInFocusDisplayOption.None);
     oneSignal.sendTags({
       _id: id.toString(),
-      type: type
+      type: type,
     });
     oneSignal.endInit();
   }

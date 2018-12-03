@@ -6,7 +6,7 @@ import { END_POINT } from '../_config/api.end-points';
 import { IChat, IMessage } from '../models/chat.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ChatService {
   constructor(private http: HttpClient) {}
@@ -28,6 +28,11 @@ export class ChatService {
       .get(END_POINT.CHAT_CITY_ID + cityId)
       .pipe(map((data: any) => data.data));
   }
+  public getByDefault(buyerId: string): Observable<IChat> {
+    return this.http
+      .post(END_POINT.CHAT_DEFAULT, { property: 'default', buyer: buyerId })
+      .pipe(map((data: any) => data.data));
+  }
   public addMsg(chatId: string, newMessages: IMessage): Observable<IChat> {
     const body = { _id: chatId, newMessages };
     return this.http
@@ -43,13 +48,13 @@ export class ChatService {
   public newChat(
     buyerId: string,
     propertyId: string,
-    city = 'Puebla'
+    city = 'Puebla',
   ): Observable<IChat> {
     const body = {
       buyer: buyerId,
       property: propertyId,
       city: city,
-      messages: []
+      messages: [],
     };
     return this.http
       .post(END_POINT.CHAT, body)

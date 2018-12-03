@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import {
   IStatusBuyerProperty,
-  IStatusBuyerPropertyGet
+  IStatusBuyerPropertyGet,
 } from '../../models/statusBuyerProperty.model';
 import { ChatService } from '../../services/chat.service';
 import { Router, NavigationExtras } from '@angular/router';
@@ -15,17 +15,19 @@ import { SellerService } from '../../services/seller.service';
 import { PropertyService } from '../../services/property.service';
 import { PreBuyerService } from '../../services/pre-buyer.service';
 import { PreBuildService } from '../../services/pre-build.service';
+import { BuyerService } from '../../services/buyer.service';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.page.html',
-  styleUrls: ['./chat.page.scss']
+  styleUrls: ['./chat.page.scss'],
 })
 export class ChatPage implements OnInit {
   user: IUserSession;
   propertiesBuyer = [];
   chats: any[] = [];
   isLoad: boolean;
+  num = 0;
   constructor(
     private userSessionService: UserSessionService,
     private statusBPService: StatusBuyerPropertyService,
@@ -34,7 +36,8 @@ export class ChatPage implements OnInit {
     private sellerService: SellerService,
     private propertyService: PropertyService,
     private preBuyerService: PreBuyerService,
-    private preBuildService: PreBuildService
+    private preBuildService: PreBuildService,
+    private buyerService: BuyerService,
   ) {
     this.user = userSessionService.userSession.value;
   }
@@ -42,6 +45,11 @@ export class ChatPage implements OnInit {
   ngOnInit() {
     if (this.user.type === 'buyer') {
       this.getStatus();
+      this.chatService.getByDefault(this.user.id).subscribe(async chat => {
+        if (chat !== null) {
+          this.num = await this.getMsgNotReadChatId(chat._id);
+        }
+      });
     } else if (this.user.type === 'preBuyer') {
       this.getPrebuyer();
     } else {
@@ -51,7 +59,7 @@ export class ChatPage implements OnInit {
   getPrebuyer() {
     this.preBuyerService.getBuyerById(this.user.id).subscribe(buyer => {
       const buildsToChat = buyer.preBuild.filter(
-        build => !build.timeLine.some(b => !b.isComplete)
+        build => !build.timeLine.some(b => !b.isComplete),
       );
       console.log(buildsToChat);
       if (buildsToChat.length > 0) {
@@ -59,7 +67,7 @@ export class ChatPage implements OnInit {
           this.propertiesBuyer.push({
             status: 'azul',
             property: { _id: build._id, name: build.name },
-            noRead: await this.getMsgNotReadByProp(build._id)
+            noRead: await this.getMsgNotReadByProp(build._id),
           });
         });
         console.log(this.propertiesBuyer);
@@ -84,7 +92,9 @@ export class ChatPage implements OnInit {
     this.isLoad = false;
     this.chatService.getAll().subscribe(async chatsAll => {
       chatsAll.forEach(chat => {
-        this.checkIsLive(chat.property, chat._id);
+        if (chat.property !== 'default') {
+          this.checkIsLive(chat.property, chat._id);
+        }
       });
       // filtro por seller
       if (this.user.type === 'seller') {
@@ -100,8 +110,12 @@ export class ChatPage implements OnInit {
         this.chats = chatsAll;
       }
       this.chats.map(async c => {
-        c['noRead'] = await this.getMsgNotReadByProp(c.property);
-        c['prop'] = await this.getProperty(c.property);
+        if (c.property !== 'default') {
+          c['noRead'] = await this.getMsgNotReadByProp(c.property);
+        } else {
+          c['noRead'] = await this.getMsgNotReadChatId(c._id);
+        }
+        c['prop'] = await this.getProperty(c.property, c.buyer);
       });
       this.isLoad = true;
     });
@@ -115,20 +129,48 @@ export class ChatPage implements OnInit {
       return 0;
     }
   }
-  goToRoom(id) {
-    const data: NavigationExtras = { queryParams: { id: id } };
+  async getMsgNotReadChatId(chatId) {
+    const chat = await this.chatService.getByChatId(chatId).toPromise();
+    if (chat !== null) {
+      return chat.messages.filter(m => !m.readBy.some(r => r === this.user.id))
+        .length;
+    } else {
+      return 0;
+    }
+  }
+  goToRoom(id, buyerid?) {
+    if (id !== 'default') {
+      const data: NavigationExtras = { queryParams: { id: id } };
+      this.router.navigate(['chat/room'], data);
+    } else {
+      this.goToRoomAndDefault(buyerid);
+    }
+  }
+  goToRoomAndDefault(buyerId) {
+    const data: NavigationExtras = { queryParams: { id: 'default', buyerId } };
     this.router.navigate(['chat/room'], data);
   }
   async getSeller() {
     return await this.sellerService.getSellerById(this.user.id).toPromise();
   }
-  async getProperty(id) {
-    let prop = await this.propertyService.getPropertyById(id).toPromise();
-    if (prop !== null) {
-      return prop;
+  async getProperty(id, buyerid?) {
+    if (id === 'default') {
+      console.log(buyerid);
+      const b = await this.buyerService.getBuyerById(buyerid).toPromise();
+      console.log(b);
+
+      return {
+        name: 'Chat de Información',
+        buyer: b,
+      };
     } else {
-      prop = await this.preBuildService.getBuildById(id).toPromise();
-      return prop;
+      let prop = await this.propertyService.getPropertyById(id).toPromise();
+      if (prop !== null) {
+        return prop;
+      } else if (id !== 'default') {
+        prop = await this.preBuildService.getBuildById(id).toPromise();
+        return prop;
+      }
     }
   }
   async checkIsLive(propId, chatId) {

@@ -24,6 +24,7 @@ import { ISeller } from '../../../models/seller.model';
 import { BuyerService } from '../../../services/buyer.service';
 import { IBuyer } from '../../../models/buyer.model';
 import { PreBuildService } from '../../../services/pre-build.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chat-room',
@@ -40,6 +41,7 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
   title: string;
   contentText: string;
   seller: ISeller;
+  sub: Subscription;
   private oldHeigh: number;
   /**
    * heigh altura eb el numero de str
@@ -65,21 +67,25 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
     this.user = userService.userSession.value;
     this.route.queryParams.subscribe(async params => {
       if (params.id) {
-        if (this.user.type === 'preBuyer') {
-          this.getRoomById(params.id);
-          const prop = await this.getprePropertyById(params.id);
-          this.property = prop;
-          this.title = prop.name;
+        if (params.id === 'default') {
+          this.searchDefault(params.buyerId);
         } else {
-          this.getRoomById(params.id);
-          const prop = await this.getPropertyById(params.id);
-          this.seller = await this.getSellerOfProperty(params.id);
-          this.property = prop;
-          this.title = prop.name ? prop.name : '';
+          if (this.user.type === 'preBuyer') {
+            this.getRoomById(params.id);
+            const prop = await this.getprePropertyById(params.id);
+            this.property = prop;
+            this.title = prop.name;
+          } else {
+            this.getRoomById(params.id);
+            const prop = await this.getPropertyById(params.id);
+            this.seller = await this.getSellerOfProperty(params.id);
+            this.property = prop;
+            this.title = prop.name ? prop.name : '';
+          }
         }
       }
     });
-    this.socketService.onNewMsg().subscribe(chatId => {
+    this.sub = this.socketService.onNewMsg().subscribe(chatId => {
       if (chatId === this.chat._id) {
         this.getRoomByChatId(this.chat._id);
       }
@@ -168,7 +174,10 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
       .toPromise();
     if (res) {
       // vendedor id notifica
-      const seller = await this.getSellerOfProperty(this.property._id);
+      let seller;
+      if (this.property) {
+        seller = await this.getSellerOfProperty(this.property._id);
+      }
       let arrToSendId = [];
       if (seller === undefined) {
         arrToSendId = [this.chat.buyer];
@@ -267,10 +276,28 @@ export class ChatRoomComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.readMsg();
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
   backOne() {
     this.router
       .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
       .then(() => this.router.navigate(['chat']));
+  }
+  searchDefault(buyerId) {
+    this.chatService.getByDefault(buyerId).subscribe(async chat => {
+      console.log('chat', chat);
+      this.title = 'de Información';
+      if (chat === null) {
+        this.newChat('default');
+      } else {
+        this.chat = chat;
+        this.buyer = await this.getBuyerOfId(chat.buyer);
+
+        this.scrollBottom();
+        this.isLoad = true;
+      }
+    });
   }
 }

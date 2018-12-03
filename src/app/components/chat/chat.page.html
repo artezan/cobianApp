@@ -7,85 +7,118 @@
   </ion-toolbar>
 </ion-header>
 <ion-content padding>
-  <ng-container
-    *ngIf="
+  <ng-container *ngIf="
       user.type === 'buyer' || user.type === 'preBuyer';
       then: Buyer;
       else: NoBuyer
-    "
-  ></ng-container>
+    "></ng-container>
   <ng-template #Buyer>
     <!-- En listar status azul -->
     <ng-container *ngIf="propertiesBuyer.length > 0; else: notBlue">
-      <ion-card
-        *ngFor="let item of propertiesBuyer"
-        [ngClass]="{
+      <ion-card *ngFor="let item of propertiesBuyer"
+                [ngClass]="{
           'state-verde': item.status === 'verde',
           'state-amarillo': item.status === 'amarillo',
           'state-rojo': item.status === 'rojo',
           'state-azul': item.status === 'azul'
         }"
-        (click)="goToRoom(item.property._id)"
-      >
+                (click)="goToRoom(item.property._id)">
         <ion-card-header>
           <ion-item lines="none">
-            <ion-card-title text-wrap>{{ item.property.name }}</ion-card-title>
-            <ion-icon *ngIf="item.noRead > 0" slot="end" name="mail"></ion-icon>
-            <ion-badge *ngIf="item.noRead > 0" id="badge" color="danger">{{
+            <ion-card-title text-wrap>{{ item.property.name
+              }}</ion-card-title>
+            <ion-icon *ngIf="item.noRead > 0"
+                      slot="end"
+                      name="mail"></ion-icon>
+            <ion-badge *ngIf="item.noRead > 0"
+                       id="badge"
+                       color="danger">{{
               item.noRead
-            }}</ion-badge>
+              }}</ion-badge>
           </ion-item>
         </ion-card-header>
         <ion-card-content class="content-card-chat">
           <ion-item lines="none">
-            <ion-icon
-              style="color:  #F5811E"
-              name="arrow-forward"
-              slot="end"
-            ></ion-icon>
+            <ion-icon style="color:  #F5811E"
+                      name="arrow-forward"
+                      slot="end"></ion-icon>
             <ion-label text-wrap>Chat de la propiedad</ion-label>
           </ion-item>
         </ion-card-content>
       </ion-card>
     </ng-container>
     <ng-template #notBlue>
-      <h5 *ngIf="propertiesBuyer.length === 0 && isLoad">
+      <!-- <h5 *ngIf="propertiesBuyer.length === 0 && isLoad">
         No cuentas con propiedades adquiridas para generar chat
-      </h5>
-      <ion-spinner
-        *ngIf="propertiesBuyer.length === 0 && !isLoad"
-        name="bubbles"
-      ></ion-spinner>
+      </h5> -->
+      <ion-spinner *ngIf="propertiesBuyer.length === 0 && !isLoad"
+                   name="bubbles"></ion-spinner>
     </ng-template>
+    <!-- chat linea directa -->
+    <ion-card class="state-verde"
+              (click)="goToRoomAndDefault(user.id)">
+      <ion-card-header>
+        <ion-item lines="none">
+          <ion-card-title text-wrap>Chat de Ayuda</ion-card-title>
+          <ion-icon *ngIf="num > 0"
+                    slot="end"
+                    name="mail"></ion-icon>
+          <ion-badge *ngIf="num > 0"
+                     id="badge"
+                     color="danger">{{
+            num
+            }}</ion-badge>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-card-subtitle text-wrap>Puedes pedir
+            informes a un asesor</ion-card-subtitle>
+        </ion-item>
+      </ion-card-header>
+      <ion-card-content class="content-card-chat">
+        <ion-item lines="none">
+          <ion-icon style="color:  #F5811E"
+                    name="arrow-forward"
+                    slot="end"></ion-icon>
+          <ion-label text-wrap>Chat de informes</ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
   </ng-template>
   <ng-template #NoBuyer>
     <!-- todos los chat para admin ofice -->
     <!-- filtrar los chat para seller y manag -->
-    <div *ngIf="isLoad" class="my-contenet">
-      <ion-card
-        *ngFor="let chat of chats"
-        class="state-azul"
-        (click)="goToRoom(chat.property)"
-      >
+    <div *ngIf="isLoad"
+         class="my-contenet">
+      <ion-card *ngFor="let chat of chats"
+                [ngClass]="{'state-azul': chat.property !=='default', 'state-verde': chat.property ==='default'}"
+                (click)="goToRoom(chat.property, chat.buyer)">
         <ion-card-header>
           <ion-item lines="none">
-            <ion-card-title *ngIf="chat.prop" text-wrap>{{
+            <ion-card-title *ngIf="chat.prop"
+                            text-wrap>{{
               chat.prop.name
-            }}</ion-card-title>
-            <ion-icon *ngIf="chat.noRead > 0" slot="end" name="mail"></ion-icon>
-            <ion-badge *ngIf="chat.noRead > 0" id="badge" color="danger">{{
+              }}</ion-card-title>
+            <ion-icon *ngIf="chat.noRead > 0"
+                      slot="end"
+                      name="mail"></ion-icon>
+            <ion-badge *ngIf="chat.noRead > 0"
+                       id="badge"
+                       color="danger">{{
               chat.noRead
-            }}</ion-badge>
+              }}</ion-badge>
           </ion-item>
         </ion-card-header>
         <ion-card-content class="content-card-chat">
           <ion-item lines="none">
-            <ion-icon
-              style="color:  #F5811E"
-              name="arrow-forward"
-              slot="end"
-            ></ion-icon>
-            <ion-label text-wrap>Chat de la propiedad</ion-label>
+            <ion-icon style="color:  #F5811E"
+                      name="arrow-forward"
+                      slot="end"></ion-icon>
+            <ion-label text-wrap
+                       *ngIf="chat.prop">{{chat.property
+              ===
+              'default' ? 'Cliente: ' +
+              chat.prop.buyer.name :
+              'Chat de la propiedad'}}</ion-label>
           </ion-item>
         </ion-card-content>
       </ion-card>

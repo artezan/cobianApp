@@ -33,4 +33,20 @@ export class MailService {
         .pipe(map((data: any) => data.data));
     }
   }
+  public resetPass(
+    email: string,
+    name: string,
+    password: string,
+  ): Observable<boolean> {
+    const pass = btoa(password);
+    const body = {
+      email,
+      name,
+      base64: pass,
+    };
+
+    return this.http
+      .post(END_POINT.EMAIL_RESET_PASS, body)
+      .pipe(map((data: any) => data.data));
+  }
 }
