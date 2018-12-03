@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {
   TableColumsModel,
   TableStatusChips,
-  TableTagStyle
+  TableTagStyle,
 } from '../../models/tableColums.model';
 import {
   Platform,
   AlertController,
   ToastController,
   NavController,
-  LoadingController
+  LoadingController,
 } from '@ionic/angular';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { IAdviser } from '../../models/adviser.model';
@@ -24,7 +24,7 @@ import { MailService } from '../../services/mail.service';
 @Component({
   selector: 'app-documents',
   templateUrl: './documents.component.html',
-  styleUrls: ['./documents.component.scss']
+  styleUrls: ['./documents.component.scss'],
 })
 export class DocumentsComponent implements OnInit {
   isLoading = false;
@@ -50,7 +50,7 @@ export class DocumentsComponent implements OnInit {
     public route: ActivatedRoute,
     public dialog: MatDialog,
     private mailService: MailService,
-    public loadingController: LoadingController
+    public loadingController: LoadingController,
   ) {
     this.isDesktop = platform.is('desktop');
     if (this.isDesktop) {
@@ -71,38 +71,38 @@ export class DocumentsComponent implements OnInit {
         name: '',
         prop: 'checkBox',
         type: 'checkBox',
-        disabledSort: true
+        disabledSort: true,
       },
       {
         name: 'Nombre',
         prop: 'name',
-        type: 'normal'
+        type: 'normal',
       },
       {
         name: 'Apellido',
         prop: 'lastName',
-        type: 'normal'
+        type: 'normal',
       },
       {
         name: 'Email',
         prop: 'email',
-        type: 'normal'
+        type: 'normal',
       },
       {
         name: 'Fecha Alta',
         prop: 'timestamp',
-        type: 'date'
+        type: 'date',
       },
       {
         name: 'Tipo Usuario',
         prop: 'type',
-        type: 'tags'
+        type: 'tags',
       },
       {
         name: 'Estado',
         prop: 'properties',
-        type: 'status'
-      }
+        type: 'status',
+      },
     ];
     this.getAllUsers();
   }
@@ -129,31 +129,31 @@ export class DocumentsComponent implements OnInit {
         user['lastName'] = user.fatherLastName;
         type = {
           name: 'Consumidor',
-          style: 'buyer'
+          style: 'buyer',
         };
         // propiedades
         if (user.statusBuyerProperty && user.statusBuyerProperty.length > 0) {
           user.statusBuyerProperty.forEach(sBP => {
             properties.push({
               name: sBP.property.name,
-              status: sBP.status
+              status: sBP.status,
             });
           });
         } else {
           properties.push({
             name: 'Sin interés',
-            status: 'gris'
+            status: 'gris',
           });
         }
       } else if (user.typeOfUser === 'adviser') {
         type = {
           name: 'Asesor',
-          style: 'adviser'
+          style: 'adviser',
         };
       } else if (user.typeOfUser === 'seller') {
         type = {
           name: 'Dueño',
-          style: 'seller'
+          style: 'seller',
         };
       }
 
@@ -167,7 +167,7 @@ export class DocumentsComponent implements OnInit {
         type: type,
         properties: properties,
         checkBox: false,
-        nameChip: user.name
+        nameChip: user.name,
       });
     });
     this.rows = rows;
@@ -189,13 +189,13 @@ export class DocumentsComponent implements OnInit {
   }
   newBuyer() {
     const data: NavigationExtras = {
-      queryParams: { id: 'new' }
+      queryParams: { id: 'new' },
     };
     this.router.navigate(['new-edit-adviser']);
   }
   edit(item) {
     const data: NavigationExtras = {
-      queryParams: { id: item._id }
+      queryParams: { id: item._id },
     };
     this.router.navigate(['new-edit-adviser'], data);
     // this.navCtr.navigateRoot('new-buyer', false, data);
@@ -203,14 +203,14 @@ export class DocumentsComponent implements OnInit {
   async presentToast(message) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 2000
+      duration: 2000,
     });
     toast.present();
   }
   async presentLoadingWithOptions() {
     const loading = await this.loadingController.create({
       message: 'Enviando...',
-      translucent: true
+      translucent: true,
     });
     return await loading;
   }
@@ -247,7 +247,7 @@ export class DocumentsComponent implements OnInit {
       if (filters.status !== undefined) {
         if (user.statusBuyerProperty && user.statusBuyerProperty.length > 0) {
           const isfinded = user.statusBuyerProperty.some(
-            p => p.status === filters.status
+            p => p.status === filters.status,
           );
           if (isfinded) {
             return true;
@@ -290,42 +290,64 @@ export class DocumentsComponent implements OnInit {
         subHeader: `Seleccione documentos a adjuntar`,
         isform: false,
         hasFileInput: true,
-        okButton: 'Siguiente'
-      }
+        isCheckList: true,
+        okButton: 'Siguiente',
+      },
     });
     const sub = dialogRef.componentInstance.buttons.subscribe(res => {
       if (res.button) {
-        this.sendEmail(res.formData);
+        console.log('su', res);
+        this.sendEmail(res.formData, res.template);
       }
     });
   }
-  private sendEmail(formData: FormData) {
+  private sendEmail(formData: FormData, template: string) {
     const arr = Array.from(formData.getAll('file'));
+    let body: string;
+    let isFile: boolean;
+    if (arr.length === 0) {
+      isFile = false;
+      body = `<p>⚠️ Se enviará un correo a ${
+        this.selectedUsers.length
+      } usuarios</p>`;
+    } else {
+      isFile = true;
+      body = `<p>⚠️ Se enviarán ${arr.length} archivos a ${
+        this.selectedUsers.length
+      } usuarios</p>`;
+    }
     const dialogRef = this.dialog.open(DialogGeneralComponent, {
       data: {
         header: 'Mensaje',
         subHeader: `Escriba un mensaje a los destinatarios`,
-        body: `<p>⚠️ Se enviarán ${arr.length} archivos a ${
-          this.selectedUsers.length
-        } usuarios</p>`,
+        body: body,
         isform: true,
         formLabel: 'Mensaje',
-        okButton: 'Enviar'
-      }
+        okButton: 'Enviar',
+      },
     });
     const sub = dialogRef.componentInstance.buttons.subscribe(async res => {
       if (res.button) {
         formData.append('msg', res.inputValue);
         formData.append(
           'mails',
-          this.selectedUsers.map(u => u.email).toString()
+          this.selectedUsers.map(u => u.email).toString(),
         );
-        console.log(formData.getAll('mails'));
+        formData.append(
+          'names',
+          this.selectedUsers.map(u => `${u.name} ${u.lastName}`).toString(),
+        );
+        formData.append('template', template);
+        /*  console.log(formData.getAll('mails'));
         console.log(formData.getAll('msg'));
         console.log(formData.getAll('file'));
+        console.log(formData.getAll('names'));
+        console.log(formData.getAll('template')); */
         const load = await this.presentLoadingWithOptions();
         load.present();
-        const isSend = await this.mailService.sendFiles(formData).toPromise();
+        const isSend = await this.mailService
+          .sendFiles(formData, isFile)
+          .toPromise();
         if (isSend) {
           load.dismiss();
           this.presentToast('Correo enviado');

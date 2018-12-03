@@ -61,6 +61,7 @@ const addmessage = 'addmessage/';
 const addread = 'addread/';
 const bychatid = 'bychatid/';
 const files = 'files/';
+const msgMail = 'msg/';
 const prebuyer = 'prebuyer/';
 const prebuild = 'prebuild/';
 const management = 'management/';
@@ -135,6 +136,7 @@ export const END_POINT = {
   EMAIL_ADD: apiUrl + mail + mailAdd,
   EMAIL_FIND: apiUrl + mail + mailFind,
   EMAIL_FILES: apiUrl + mail + files,
+  EMAIL_MSG: apiUrl + mail + msgMail,
   // chat
   CHAT: apiUrl + chat,
   CHAT_PROP_ID: apiUrl + chat + chatByProp,
@@ -147,5 +149,5 @@ export const END_POINT = {
   PRE_BUILD: apiUrl + prebuild,
   //  management
   MANAGER: apiUrl + management,
-  MANAGER_ID: apiUrl + management + bymanagementid
+  MANAGER_ID: apiUrl + management + bymanagementid,
 };

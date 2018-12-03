@@ -1,48 +1,59 @@
 <h2 mat-dialog-title>{{ dataInput.header }}</h2>
 <h3 mat-dialog-title>{{ dataInput.subHeader }}</h3>
 <mat-dialog-content>
-  <span *ngIf="dataInput.body" [innerHTML]="dataInput.body"></span>
+  <span *ngIf="dataInput.body"
+        [innerHTML]="dataInput.body"></span>
   <span *ngIf="dataInput.isform">
     <mat-form-field appearance="outline">
       <mat-label>{{ dataInput.formLabel }}</mat-label>
-      <input [(ngModel)]="inputValue" matInput placeholder="" />
+      <input [(ngModel)]="inputValue"
+             matInput
+             placeholder="" />
     </mat-form-field>
   </span>
   <span *ngIf="dataInput.hasFileInput">
-    <input
-      id="file1"
-      name="file1"
-      type="file"
-      hidden
-      multiple
-      (change)="fileChangeEvent($event)"
-    />
-    <button (click)="link()" mat-stroked-button color="accent">
-      Seleccionar <i class="material-icons"> folder_open </i>
+    <input id="file1"
+           name="file1"
+           type="file"
+           hidden
+           multiple
+           (change)="fileChangeEvent($event)" />
+    <button (click)="link()"
+            mat-stroked-button
+            color="accent">
+      Seleccionar <i class="material-icons"> folder_open
+      </i>
     </button>
     <mat-list>
-      <mat-list-item *ngFor="let item of files">{{ item.name }}</mat-list-item>
+      <mat-list-item *ngFor="let item of files">{{
+        item.name }}</mat-list-item>
     </mat-list>
+  </span>
+  <span *ngIf="dataInput.isCheckList">
+    <p>Seleccione un formato de correo</p>
+    <mat-radio-group [(ngModel)]="selectedTheme">
+      <mat-radio-button style="margin-right: 1%"
+                        value="theme1">tema 1</mat-radio-button>
+      <mat-radio-button style="margin-right: 1%"
+                        value="theme2">tema 2</mat-radio-button>
+      <mat-radio-button value="theme3">tema 3</mat-radio-button>
+    </mat-radio-group>
   </span>
 </mat-dialog-content>
 <mat-dialog-actions style="justify-content: flex-end;">
-  <button
-    color="accent"
-    (click)="buttonsResponse(true)"
-    mat-button
-    mat-flat-button
-    mat-dialog-close
-  >
+  <button color="accent"
+          (click)="buttonsResponse(true)"
+          mat-button
+          mat-flat-button
+          mat-dialog-close>
     {{ dataInput.okButton ? dataInput.okButton : 'Ok' }}
   </button>
-  <button
-    color="warn"
-    *ngIf="!dataInput.hideButtonCancel"
-    mat-button
-    mat-dialog-close
-    mat-stroked-button
-    (click)="buttonsResponse(false)"
-  >
+  <button color="warn"
+          *ngIf="!dataInput.hideButtonCancel"
+          mat-button
+          mat-dialog-close
+          mat-stroked-button
+          (click)="buttonsResponse(false)">
     Cancelar
   </button>
   <!--

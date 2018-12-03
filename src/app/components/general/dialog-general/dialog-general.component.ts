@@ -3,7 +3,7 @@ import {
   OnInit,
   Inject,
   EventEmitter,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
@@ -11,7 +11,7 @@ import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
   selector: 'app-dialog-general',
   templateUrl: './dialog-general.component.html',
   styleUrls: ['./dialog-general.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class DialogGeneralComponent implements OnInit {
   message: string;
@@ -22,6 +22,7 @@ export class DialogGeneralComponent implements OnInit {
   inputValue: string;
   files: FileList;
   formData: FormData = new FormData();
+  selectedTheme: string;
   private ratingStars;
   public dataInput: {
     header: string;
@@ -33,6 +34,7 @@ export class DialogGeneralComponent implements OnInit {
     formLabel?: string;
     okButton?: string;
     hasFileInput?: boolean;
+    isCheckList?: boolean;
   };
   constructor(
     public dialogRef: MatDialogRef<DialogGeneralComponent>,
@@ -47,7 +49,8 @@ export class DialogGeneralComponent implements OnInit {
       okButton?: string;
       formLabel?: string;
       hasFileInput?: boolean;
-    }
+      isCheckList?: boolean;
+    },
   ) {
     this.dataInput = data;
   }
@@ -58,12 +61,13 @@ export class DialogGeneralComponent implements OnInit {
     if (this.dataInput.hasFileInput) {
       this.buttons.emit({
         button: options,
-        formData: this.formData
+        formData: this.formData,
+        template: this.selectedTheme ? this.selectedTheme : 'theme1',
       });
     } else if (this.dataInput.isform) {
       this.buttons.emit({
         button: options,
-        inputValue: this.inputValue
+        inputValue: this.inputValue,
       });
     } else {
       this.buttons.emit(options);
