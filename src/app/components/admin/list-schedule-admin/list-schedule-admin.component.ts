@@ -6,14 +6,14 @@ import {
   NavController,
   AlertController,
   ToastController,
-  Platform
+  Platform,
 } from '@ionic/angular';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { ScheduleService } from '../../../services/schedule.service';
 import {
   FormatDatesFront,
   FormatHoursFront,
-  OpenGoogleMaps
+  OpenGoogleMaps,
 } from '../../../_config/_helpers';
 import { Storage } from '@ionic/storage';
 import { IUserSession } from '../../../models/userSession.model';
@@ -27,7 +27,7 @@ import { ISale } from '../../../models/sale.model';
 @Component({
   selector: 'app-list-schedule-admin',
   templateUrl: './list-schedule-admin.component.html',
-  styleUrls: ['./list-schedule-admin.component.scss']
+  styleUrls: ['./list-schedule-admin.component.scss'],
 })
 export class ListScheduleAdminComponent implements OnInit {
   month = [
@@ -42,7 +42,7 @@ export class ListScheduleAdminComponent implements OnInit {
     'Septiembre',
     'Octubre',
     'Noviembre',
-    'Diciembre'
+    'Diciembre',
   ];
   year: number;
   monthNumber: number;
@@ -76,7 +76,7 @@ export class ListScheduleAdminComponent implements OnInit {
     private oneSignalService: OnesignalService,
     private sellerService: SellerService,
     private saleService: SaleService,
-    public platform: Platform
+    public platform: Platform,
   ) {
     this.isDesktop = platform.is('desktop');
     console.log(this.isDesktop);
@@ -100,16 +100,16 @@ export class ListScheduleAdminComponent implements OnInit {
   }
   calendarSelect(
     item: { year: number; month: number; day: number },
-    islist?: boolean
+    islist?: boolean,
   ) {
     if (item.day !== 0) {
       const isFinded = this.schedule.filter(
         s =>
-          s.day === item.day && s.month === item.month && s.year === item.year
+          s.day === item.day && s.month === item.month && s.year === item.year,
       );
       if (isFinded.length > 0) {
         this.dateDaySelect = FormatDatesFront(
-          new Date(item.year, item.month, item.day)
+          new Date(item.year, item.month, item.day),
         );
         if (islist) {
           this.schedule = isFinded;
@@ -142,17 +142,17 @@ export class ListScheduleAdminComponent implements OnInit {
         this.schedule = schedules.filter(
           s =>
             (s.adviser && s.adviser._id === user.id) ||
-            (s.personal && s.personal === user.id)
+            (s.personal && s.personal === user.id),
         );
       } else if (user.type === 'office') {
         this.schedule = schedules.filter(
-          s => !s.administrator || (s.personal && s.personal === user.id)
+          s => !s.administrator || (s.personal && s.personal === user.id),
         );
       } else if (user.type === 'seller') {
         this.schedule = schedules.filter(
           s =>
             (s.seller && s.seller._id === user.id) ||
-            (s.personal && s.personal === user.id)
+            (s.personal && s.personal === user.id),
         );
       }
       this.schedule.sort((a, b) => {
@@ -160,7 +160,7 @@ export class ListScheduleAdminComponent implements OnInit {
         // to get a value that is either negative, positive, or zero.
         return <any>new Date(b.timestamp) - <any>new Date(a.timestamp);
       });
-      // console.log(this.schedule);
+      console.log(this.schedule);
       this.isLoad = true;
     });
   }
@@ -176,8 +176,8 @@ export class ListScheduleAdminComponent implements OnInit {
           day: date.day,
           month: date.month,
           year: date.year,
-          hour: date.hour
-        }
+          hour: date.hour,
+        },
       };
       this.router.navigate(['new-edit-schedule'], data);
     } else {
@@ -186,13 +186,13 @@ export class ListScheduleAdminComponent implements OnInit {
   }
   newEventById(id: string) {
     const data: NavigationExtras = {
-      queryParams: { id: id }
+      queryParams: { id: id },
     };
     this.router.navigate(['new-edit-schedule'], data);
   }
   editEventPersonalById(id: string) {
     const data: NavigationExtras = {
-      queryParams: { id: id }
+      queryParams: { id: id },
     };
     this.router.navigate(['personal-schedule'], data);
   }
@@ -220,7 +220,7 @@ export class ListScheduleAdminComponent implements OnInit {
           text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: blah => {}
+          handler: blah => {},
         },
         {
           text: 'Sí',
@@ -228,9 +228,9 @@ export class ListScheduleAdminComponent implements OnInit {
           handler: () => {
             /* this.deleted(buyer);
             this.getBuyerAll(); */
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();
@@ -253,40 +253,40 @@ export class ListScheduleAdminComponent implements OnInit {
           name: 'radio2',
           type: 'radio',
           label: 'No hay interés',
-          value: 'gris'
+          value: 'gris',
         },
         {
           name: 'radio3',
           type: 'radio',
           label: 'Poco interés',
-          value: 'verde'
+          value: 'verde',
         },
         {
           name: 'radio4',
           type: 'radio',
           label: 'Oportunidad de venta',
-          value: 'amarillo'
+          value: 'amarillo',
         },
         {
           name: 'radio5',
           type: 'radio',
           label: 'Venta muy probable',
-          value: 'rojo'
-        }
+          value: 'rojo',
+        },
       ],
       buttons: [
         {
           text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: () => {}
+          handler: () => {},
         },
         {
           text: 'Ok',
           role: 'ok',
-          handler: () => {}
-        }
-      ]
+          handler: () => {},
+        },
+      ],
     });
 
     await alert.present();
@@ -303,8 +303,8 @@ export class ListScheduleAdminComponent implements OnInit {
       .getSellerAll()
       .pipe(
         map(sellers =>
-          sellers.find(s => !!s.property.find(p => p._id === propId))
-        )
+          sellers.find(s => !!s.property.find(p => p._id === propId)),
+        ),
       )
       .toPromise();
   }
@@ -319,17 +319,17 @@ export class ListScheduleAdminComponent implements OnInit {
         schedule.scoreByAdviser === 'rojo'
           ? 'Venta muy probable'
           : schedule.scoreByAdviser === 'amarillo'
-            ? 'Oportunidad de venta'
-            : schedule.scoreByAdviser === 'verde'
-              ? 'Poco interés'
-              : 'Sin interés'
+          ? 'Oportunidad de venta'
+          : schedule.scoreByAdviser === 'verde'
+          ? 'Poco interés'
+          : 'Sin interés'
       }" la visita a la propiedad ${schedule.property.name} con el comprador ${
         schedule.buyer.name
       }`,
       'rojo',
       'schedule',
       ['administrator', 'office'],
-      seller === undefined ? undefined : [seller._id]
+      seller === undefined ? undefined : [seller._id],
     );
     this.scheduleService
       .putSchedule(schedule)
@@ -348,7 +348,7 @@ export class ListScheduleAdminComponent implements OnInit {
         position: 'bottom',
         closeButtonText: 'OK',
         cssClass: 'toast-alert',
-        duration: 5000
+        duration: 5000,
       });
       toast.present();
       toast.onWillDismiss().then(() => {
@@ -364,7 +364,7 @@ export class ListScheduleAdminComponent implements OnInit {
         position: 'bottom',
         showCloseButton: false,
         cssClass: 'toast-adv',
-        duration: 4000
+        duration: 4000,
       });
       toast.present();
       toast.onWillDismiss().then(() => {
@@ -375,7 +375,7 @@ export class ListScheduleAdminComponent implements OnInit {
   async presentToast(message) {
     const toast = await this.toastController.create({
       message: message,
-      duration: 2000
+      duration: 2000,
     });
     toast.present();
   }
@@ -436,7 +436,7 @@ export class ListScheduleAdminComponent implements OnInit {
     status,
     type,
     tags,
-    receiversId: string[]
+    receiversId: string[],
   ) {
     // notificacion
     const notification: INotification = {
@@ -446,7 +446,7 @@ export class ListScheduleAdminComponent implements OnInit {
       receiversId: receiversId,
       senderId: this.userSessionService.userSession.value.id,
       status: status,
-      type: type
+      type: type,
     };
     // onesignal
     this.oneSignalService

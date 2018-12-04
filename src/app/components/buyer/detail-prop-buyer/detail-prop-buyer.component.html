@@ -9,8 +9,11 @@
   </ion-toolbar>
 </ion-header> -->
 <ion-header>
-  <app-menu-general [isMenuButton]="'back'" [colorMenuButton]="'white'" [titleMenu]="'Detalles de Propiedad'"
-    [buttonUser]="'person'" [buttonNotification]="'notifications'"></app-menu-general>
+  <app-menu-general [isMenuButton]="'back'"
+                    [colorMenuButton]="'white'"
+                    [titleMenu]="'Detalles de Propiedad'"
+                    [buttonUser]="'person'"
+                    [buttonNotification]="'notifications'"></app-menu-general>
 </ion-header>
 <ion-content padding>
   <ng-container *ngIf="isLoad; then thenTemplate; else elseTemplate"></ng-container>
@@ -22,16 +25,20 @@
         <ion-badge *ngIf="property.numOfLikes > 0">
           {{property.numOfLikes}} me gusta
         </ion-badge>
-        <ion-button (click)="setLikeProperty(property._id)" color="secondary" [fill]="isLiked === true ? 'solid': 'outline'"
-          slot="end">
-          <ion-icon [name]="isLiked === true ? 'heart': 'heart-empty'" [color]="isLiked === true ? 'dark': 'secondary'"></ion-icon>{{isLiked
+        <ion-button (click)="setLikeProperty(property._id)"
+                    color="secondary"
+                    [fill]="isLiked === true ? 'solid': 'outline'"
+                    slot="end">
+          <ion-icon [name]="isLiked === true ? 'heart': 'heart-empty'"
+                    [color]="isLiked === true ? 'dark': 'secondary'"></ion-icon>{{isLiked
           === true ? 'Te gusta' :'Me gusta'}}
         </ion-button>
       </ion-item>
 
 
       <ion-card-header>
-        <ion-card-subtitle *ngIf="property.dateToApart && showApart">Apartada hasta:
+        <ion-card-subtitle *ngIf="property.dateToApart && showApart">Apartada
+          hasta:
           {{formatDates(property.dateToApart)}}
         </ion-card-subtitle>
         <ion-card-title> {{property.name}} </ion-card-title>
@@ -41,22 +48,23 @@
         <ion-row>
           <ion-col>
             <!-- Renta/venta -->
-            <ion-chip *ngIf="property.isRent" style="background-color: #F58634">
-              <ion-chip-icon class="icon-chip-detail" name="cart"></ion-chip-icon>
+            <ion-chip *ngIf="property.isRent"
+                      style="background-color: #F58634">
+              <ion-chip-icon class="icon-chip-detail"
+                             name="cart"></ion-chip-icon>
               <ion-label>Renta</ion-label>
             </ion-chip>
-            <ion-chip *ngIf="property.isRent" style="background-color: #F58634">
-              <ion-chip-icon class="icon-chip-detail" name="cart"></ion-chip-icon>
-              <ion-label>Renta</ion-label>
-            </ion-chip>
-            <ion-chip *ngIf="!property.isRent" style="background-color: #F58634">
-              <ion-chip-icon class="icon-chip-detail" name="cart"></ion-chip-icon>
+            <ion-chip *ngIf="!property.isRent"
+                      style="background-color: #F58634">
+              <ion-chip-icon class="icon-chip-detail"
+                             name="cart"></ion-chip-icon>
               <ion-label>Venta</ion-label>
             </ion-chip>
           </ion-col>
           <ion-col>
             <ion-chip style="background-color: #F58634">
-              <ion-chip-icon class="icon-chip-detail" name="expand"></ion-chip-icon>
+              <ion-chip-icon class="icon-chip-detail"
+                             name="expand"></ion-chip-icon>
               <ion-label>Espacio {{property.space}}</ion-label>
             </ion-chip>
           </ion-col>
@@ -64,13 +72,15 @@
         <ion-row>
           <ion-col>
             <ion-chip style="background-color: #F58634">
-              <ion-chip-icon class="icon-chip-detail" name="calendar"></ion-chip-icon>
+              <ion-chip-icon class="icon-chip-detail"
+                             name="calendar"></ion-chip-icon>
               <ion-label>Fecha {{property.dateToBuy}}</ion-label>
             </ion-chip>
           </ion-col>
           <ion-col>
             <ion-chip style="background-color: #F58634">
-              <ion-chip-icon class="icon-chip-detail" name="water"></ion-chip-icon>
+              <ion-chip-icon class="icon-chip-detail"
+                             name="water"></ion-chip-icon>
               <ion-label>Baños {{property.numBathrooms}}</ion-label>
             </ion-chip>
           </ion-col>
@@ -78,13 +88,15 @@
         <ion-row>
           <ion-col>
             <ion-chip style="background-color: #F58634">
-              <ion-chip-icon class="icon-chip-detail" name="cash"></ion-chip-icon>
+              <ion-chip-icon class="icon-chip-detail"
+                             name="cash"></ion-chip-icon>
               <ion-label>Max ${{property.maxPrice}}</ion-label>
             </ion-chip>
           </ion-col>
           <ion-col>
             <ion-chip style="background-color: #F58634">
-              <ion-chip-icon class="icon-chip-detail" name="cash"></ion-chip-icon>
+              <ion-chip-icon class="icon-chip-detail"
+                             name="cash"></ion-chip-icon>
               <ion-label>Min ${{property.minPrice}}</ion-label>
             </ion-chip>
           </ion-col>
@@ -92,13 +104,16 @@
         <ion-row>
           <ion-col>
             <ion-chip style="background-color: #F58634">
-              <ion-chip-icon class="icon-chip-detail" name="car"></ion-chip-icon>
-              <ion-label>Estacionamiento {{property.numCars}}</ion-label>
+              <ion-chip-icon class="icon-chip-detail"
+                             name="car"></ion-chip-icon>
+              <ion-label>Estacionamiento
+                {{property.numCars}}</ion-label>
             </ion-chip>
           </ion-col>
           <ion-col>
             <ion-chip style="background-color: #F58634">
-              <ion-chip-icon class="icon-chip-detail" name="bed"></ion-chip-icon>
+              <ion-chip-icon class="icon-chip-detail"
+                             name="bed"></ion-chip-icon>
               <ion-label>Cuartos {{property.numRooms}}</ion-label>
             </ion-chip>
           </ion-col>
@@ -107,27 +122,33 @@
       <!-- otros -->
       <ion-card-subtitle style="margin-left: 8%;">Otras</ion-card-subtitle>
       <ion-item *ngIf="property.allServices">
-        <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+        <ion-icon style="color:  #F5811E"
+                  name="radio-button-on"></ion-icon>
         <ion-label>Todos los servicios</ion-label>
       </ion-item>
       <ion-item *ngIf="property.hasElevator">
-        <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+        <ion-icon style="color:  #F5811E"
+                  name="radio-button-on"></ion-icon>
         <ion-label>Elevador</ion-label>
       </ion-item>
       <ion-item *ngIf="property.hasGarden">
-        <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+        <ion-icon style="color:  #F5811E"
+                  name="radio-button-on"></ion-icon>
         <ion-label>Jardin</ion-label>
       </ion-item>
       <ion-item *ngIf="property.isClose">
-        <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+        <ion-icon style="color:  #F5811E"
+                  name="radio-button-on"></ion-icon>
         <ion-label>Fraccionamineto Cerrado</ion-label>
       </ion-item>
       <ion-item *ngIf="!property.isOld">
-        <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+        <ion-icon style="color:  #F5811E"
+                  name="radio-button-on"></ion-icon>
         <ion-label>Nuevo</ion-label>
       </ion-item>
       <ion-item *ngIf="property.isLowLevel">
-        <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+        <ion-icon style="color:  #F5811E"
+                  name="radio-button-on"></ion-icon>
         <ion-label>Planta Baja</ion-label>
       </ion-item>
       <!-- tag -->
@@ -144,7 +165,8 @@
     </ion-card>
 
   </ng-template>
-  <ng-template #elseTemplate style="text-align: center">
+  <ng-template #elseTemplate
+               style="text-align: center">
     <ion-spinner name="bubbles"></ion-spinner>
 
   </ng-template>

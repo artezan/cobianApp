@@ -9,137 +9,186 @@
   </ion-toolbar>
 </ion-header> -->
 <ion-header>
-  <app-menu-general [isMenuButton]="'menu'" [colorMenuButton]="'white'" [titleMenu]="'Calendario'" [buttonNotification]="'notifications'"
-    [buttonUser]="'person'"></app-menu-general>
+  <app-menu-general [isMenuButton]="'menu'"
+                    [colorMenuButton]="'white'"
+                    [titleMenu]="'Calendario'"
+                    [buttonNotification]="'notifications'"
+                    [buttonUser]="'person'"></app-menu-general>
 </ion-header>
 <ion-header>
   <ion-toolbar color="secondary">
     <ion-buttons slot="start">
-      <ion-button *ngIf="showFullCalendar || showSpecific" (click)="backOne()" slot="start">
-        <ion-icon mode="ios" slot="icon-only" name="arrow-back"></ion-icon>
+      <ion-button *ngIf="showFullCalendar || showSpecific"
+                  (click)="backOne()"
+                  slot="start">
+        <ion-icon mode="ios"
+                  slot="icon-only"
+                  name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title style="text-align: center">
       {{showFullCalendar
       ? month[monthNumber] + ' ' + year
-      : month[titleNavBar.getMonth()] + ' ' + titleNavBar.getFullYear()}}</ion-title>
-    <ion-buttons *ngIf="isDesktop" slot="end">
+      : month[titleNavBar.getMonth()] + ' ' +
+      titleNavBar.getFullYear()}}</ion-title>
+    <ion-buttons *ngIf="isDesktop"
+                 slot="end">
       <!-- opciones de vista -->
       <!--  <button mat-icon-button>
         <mat-icon aria-label="Example icon-button with a heart icon">favorite</mat-icon> Primary
       </button> -->
 
-      <ion-button *ngIf="(showFullCalendar || showSpecific === false) && !dayItem " (click)="showFullCalendar = false; showSpecific = true"
-        slot="end">
+      <ion-button *ngIf="(showFullCalendar || showSpecific === false) && !dayItem "
+                  (click)="showFullCalendar = false; showSpecific = true"
+                  slot="end">
         Agenda
-        <i slot="icon-only" class="material-icons">assignment</i>
+        <i slot="icon-only"
+           class="material-icons">assignment</i>
 
       </ion-button>
       <!-- especial -->
-      <ion-button *ngIf="(showFullCalendar || showSpecific === false) && dayItem " (click)="showFullCalendar = false; showSpecific = true; getEvents()"
-        slot="end">
+      <ion-button *ngIf="(showFullCalendar || showSpecific === false) && dayItem "
+                  (click)="showFullCalendar = false; showSpecific = true; getEvents()"
+                  slot="end">
         Agenda
         <!-- <ion-icon slot="icon-only" name="clipboard"></ion-icon> -->
-        <i slot="icon-only" class="material-icons">assignment</i>
+        <i slot="icon-only"
+           class="material-icons">assignment</i>
 
       </ion-button>
       <!-- /especial -->
 
-      <ion-button *ngIf="(showFullCalendar || showSpecific === true) && !dayItem " (click)="showFullCalendar = false; showSpecific = false;"
-        slot="end">
+      <ion-button *ngIf="(showFullCalendar || showSpecific === true) && !dayItem "
+                  (click)="showFullCalendar = false; showSpecific = false;"
+                  slot="end">
         Lista
         <!-- <ion-icon slot="icon-only" name="reorder"></ion-icon> -->
-        <i slot="icon-only" class="material-icons">view_list</i>
+        <i slot="icon-only"
+           class="material-icons">view_list</i>
 
       </ion-button>
       <!-- especial -->
-      <ion-button *ngIf="!showFullCalendar && showSpecific === true && !showWeek && dayItem" (click)="showFullCalendar = false; showSpecific = false; calendarSelect(dayItem, true)"
-        slot="end">
+      <ion-button *ngIf="!showFullCalendar && showSpecific === true && !showWeek && dayItem"
+                  (click)="showFullCalendar = false; showSpecific = false; calendarSelect(dayItem, true)"
+                  slot="end">
         Lista Dia
         <!-- <ion-icon slot="icon-only" name="reorder"></ion-icon> -->
-        <i slot="icon-only" class="material-icons ">view_list</i>
+        <i slot="icon-only"
+           class="material-icons ">view_list</i>
       </ion-button>
       <!-- /especial -->
 
-      <ion-button *ngIf="!showFullCalendar" (click)="showFullCalendar = true; showSpecific = true; getEvents() " slot="end">
+      <ion-button *ngIf="!showFullCalendar"
+                  (click)="showFullCalendar = true; showSpecific = true; getEvents() "
+                  slot="end">
         Calendario
         <!-- <ion-icon slot="icon-only" name="calendar"></ion-icon> -->
-        <i slot="icon-only" class="material-icons ">date_range</i>
+        <i slot="icon-only"
+           class="material-icons ">date_range</i>
 
       </ion-button>
 
-      <ion-button *ngIf="!showFullCalendar && showSpecific " (click)="showWeek = !showWeek;" slot="end">{{showWeek
+      <ion-button *ngIf="!showFullCalendar && showSpecific "
+                  (click)="showWeek = !showWeek;"
+                  slot="end">{{showWeek
         ?
         'Día' :
         'Semana'}}
         <!-- <ion-icon slot="icon-only" [name]="showWeek ? 'today' : 'clipboard'"></ion-icon> -->
-        <i slot="icon-only" class="material-icons ">{{showWeek ? 'view_agenda' : 'view_week'}}</i>
+        <i slot="icon-only"
+           class="material-icons ">{{showWeek ?
+          'view_agenda' : 'view_week'}}</i>
 
 
 
       </ion-button>
-      <ion-button *ngIf="showFullCalendar || showSpecific" (click)="fowardOne()" slot="end">
-        <ion-icon mode="ios" slot="icon-only" name="arrow-forward"></ion-icon>
+      <ion-button *ngIf="showFullCalendar || showSpecific"
+                  (click)="fowardOne()"
+                  slot="end">
+        <ion-icon mode="ios"
+                  slot="icon-only"
+                  name="arrow-forward"></ion-icon>
       </ion-button>
     </ion-buttons>
     <!-- movil -->
-    <ion-buttons *ngIf="!isDesktop" slot="end">
-      <ion-button *ngIf="showFullCalendar || showSpecific" (click)="fowardOne()" slot="end">
-        <ion-icon mode="ios" slot="icon-only" name="arrow-forward"></ion-icon>
+    <ion-buttons *ngIf="!isDesktop"
+                 slot="end">
+      <ion-button *ngIf="showFullCalendar || showSpecific"
+                  (click)="fowardOne()"
+                  slot="end">
+        <ion-icon mode="ios"
+                  slot="icon-only"
+                  name="arrow-forward"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
   <!-- movil -->
-  <ion-toolbar *ngIf="!isDesktop" color="secondary">
+  <ion-toolbar *ngIf="!isDesktop"
+               color="secondary">
     <ion-buttons justify-content-center>
       <!-- opciones de vista -->
 
-      <ion-button *ngIf="(showFullCalendar || showSpecific === false) && !dayItem " (click)="showFullCalendar = false; showSpecific = true"
-        slot="end">
+      <ion-button *ngIf="(showFullCalendar || showSpecific === false) && !dayItem "
+                  (click)="showFullCalendar = false; showSpecific = true"
+                  slot="end">
         Agenda
         <!-- <ion-icon slot="icon-only" name="clipboard"></ion-icon> -->
-        <i slot="icon-only" class="material-icons">assignment</i>
+        <i slot="icon-only"
+           class="material-icons">assignment</i>
 
       </ion-button>
       <!-- especial -->
-      <ion-button *ngIf="(showFullCalendar || showSpecific === false) && dayItem " (click)="showFullCalendar = false; showSpecific = true; getEvents()"
-        slot="end">
+      <ion-button *ngIf="(showFullCalendar || showSpecific === false) && dayItem "
+                  (click)="showFullCalendar = false; showSpecific = true; getEvents()"
+                  slot="end">
         Agenda
         <!-- <ion-icon slot="icon-only" name="clipboard"></ion-icon> -->
-        <i slot="icon-only" class="material-icons">assignment</i>
+        <i slot="icon-only"
+           class="material-icons">assignment</i>
 
       </ion-button>
       <!-- /especial -->
 
-      <ion-button *ngIf="(showFullCalendar || showSpecific === true) && !dayItem " (click)="showFullCalendar = false; showSpecific = false;"
-        slot="end">
+      <ion-button *ngIf="(showFullCalendar || showSpecific === true) && !dayItem "
+                  (click)="showFullCalendar = false; showSpecific = false;"
+                  slot="end">
         Lista
         <!-- <ion-icon slot="icon-only" name="reorder"></ion-icon> -->
-        <i slot="icon-only" class="material-icons ">view_list</i>
+        <i slot="icon-only"
+           class="material-icons ">view_list</i>
 
       </ion-button>
       <!-- especial -->
-      <ion-button *ngIf="!showFullCalendar && showSpecific === true && !showWeek && dayItem" (click)="showFullCalendar = false; showSpecific = false; calendarSelect(dayItem, true)"
-        slot="end">
+      <ion-button *ngIf="!showFullCalendar && showSpecific === true && !showWeek && dayItem"
+                  (click)="showFullCalendar = false; showSpecific = false; calendarSelect(dayItem, true)"
+                  slot="end">
         Lista Dia
         <!-- <ion-icon slot="icon-only" name="reorder"></ion-icon> -->
-        <i slot="icon-only" class="material-icons ">view_list</i>
+        <i slot="icon-only"
+           class="material-icons ">view_list</i>
 
       </ion-button>
       <!-- /especial -->
 
-      <ion-button *ngIf="!showFullCalendar" (click)="showFullCalendar = true; showSpecific = true; getEvents() " slot="end">
+      <ion-button *ngIf="!showFullCalendar"
+                  (click)="showFullCalendar = true; showSpecific = true; getEvents() "
+                  slot="end">
         Calendario
         <!-- <ion-icon slot="icon-only" name="calendar"></ion-icon> -->
-        <i slot="icon-only" class="material-icons ">date_range</i>
+        <i slot="icon-only"
+           class="material-icons ">date_range</i>
 
       </ion-button>
-      <ion-button *ngIf="!showFullCalendar && showSpecific " (click)="showWeek = !showWeek;" slot="end">{{showWeek
+      <ion-button *ngIf="!showFullCalendar && showSpecific "
+                  (click)="showWeek = !showWeek;"
+                  slot="end">{{showWeek
         ?
         'Día' :
         'Semana'}}
         <!-- <ion-icon slot="icon-only" [name]="showWeek ? 'today' : 'clipboard'"></ion-icon> -->
-        <i slot="icon-only" class="material-icons ">{{showWeek ? 'view_agenda' : 'view_week'}}</i>
+        <i slot="icon-only"
+           class="material-icons ">{{showWeek ?
+          'view_agenda' : 'view_week'}}</i>
 
       </ion-button>
     </ion-buttons>
@@ -147,38 +196,60 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-grid fixed style="height: 100%;">
+  <ion-grid fixed
+            style="height: 100%;">
     <span *ngIf="isLoad">
       <ng-container *ngIf="showFullCalendar; then thenTemplate; else elseTemplate"></ng-container>
       <ng-template #thenTemplate>
         <!-- calendario general -->
-        <app-general-calendar [year]="year" [month]="monthNumber" [schedules]="schedule" (calendarSelect)="calendarSelect($event)"
-          (alertOfToday)="toastPresent()"></app-general-calendar>
+        <app-general-calendar [year]="year"
+                              [month]="monthNumber"
+                              [schedules]="schedule"
+                              (calendarSelect)="calendarSelect($event)"
+                              (alertOfToday)="toastPresent()"></app-general-calendar>
       </ng-template>
       <ng-template #elseTemplate>
         <ng-container *ngIf="showSpecific; then Specific; else EventsList"></ng-container>
         <ng-template #Specific>
 
           <!-- Calendario especifico -->
-          <app-calendar-specific [currentWeek]="currentWeek" (newEvent)="newEventByDate($event)" (editPersonalEvent)="editEventPersonalById($event)"
-            (editEvent)="newEventById($event)" (deletedEvent)="presentAlertConfirm($event)" [isWeek]="showWeek"
-            [schedules]="schedule" [add]="fowarkWeek" [remove]="backWeek" (titleNavBar)="titleNavBar = $event"></app-calendar-specific>
+          <app-calendar-specific [currentWeek]="currentWeek"
+                                 (newEvent)="newEventByDate($event)"
+                                 (editPersonalEvent)="editEventPersonalById($event)"
+                                 (editEvent)="newEventById($event)"
+                                 (deletedEvent)="presentAlertConfirm($event)"
+                                 [isWeek]="showWeek"
+                                 [schedules]="schedule"
+                                 [add]="fowarkWeek"
+                                 [remove]="backWeek"
+                                 (titleNavBar)="titleNavBar = $event"></app-calendar-specific>
           <!-- /Calendario especifico -->
 
         </ng-template>
         <ng-template #EventsList>
           <h2 *ngIf="isAll">Todos los Eventos</h2>
-          <h2 *ngIf="!isAll">Mostrando Eventos del {{dateDaySelect}}</h2>
+          <h2 *ngIf="!isAll">Mostrando Eventos del
+            {{dateDaySelect}}</h2>
           <ion-item lines="none">
-            <ion-button *ngIf="!isAll" shape="round" color="secondary" (click)="getEvents(); isAll=true; ">Mostrar
+            <ion-button *ngIf="!isAll"
+                        shape="round"
+                        color="secondary"
+                        (click)="getEvents(); isAll=true; ">Mostrar
               todos</ion-button>
-            <ion-button *ngIf="!isAll" shape="round" (click)="newEventByDate(dayItem)">Crear Evento este
+            <ion-button *ngIf="!isAll"
+                        shape="round"
+                        (click)="newEventByDate(dayItem)">Crear
+              Evento este
               día</ion-button>
-            <ion-button *ngIf="isAll" shape="round" (click)="newEventByDate()">Crear Evento Nuevo</ion-button>
+            <ion-button *ngIf="isAll"
+                        shape="round"
+                        (click)="newEventByDate()">Crear
+              Evento Nuevo</ion-button>
           </ion-item>
 
           <!-- Eventos -->
-          <mat-accordion *ngFor="let item of schedule" style="margin: 1%">
+          <mat-accordion *ngFor="let item of schedule"
+                         style="margin: 1%">
             <mat-expansion-panel [ngClass]="{'state-verde': item.status === 'verde', 
                 'state-amarillo':  item.status === 'amarillo',
                 'state-rojo':  item.status === 'rojo',
@@ -188,8 +259,9 @@
                 <mat-panel-title>
                   <b>{{formatState(item.status)}}</b>
                 </mat-panel-title>
-                <mat-panel-description *ngIf=" !item.administrator && !item.personal ">
-                  {{item.buyer.name}} {{item.adviser ? 'con ' + item.adviser.name : ''}}
+                <mat-panel-description *ngIf=" !item.administrator && !item.personal && item.buyer ">
+                  {{item.buyer.name}} {{item.adviser ? 'con
+                  ' + item.adviser.name : ''}}
                 </mat-panel-description>
                 <mat-panel-description *ngIf="item.administrator || item.personal ">
                   {{item.title}}
@@ -197,54 +269,84 @@
               </mat-expansion-panel-header>
               <!-- listado -->
               <ion-list lines="none">
-                <ion-item lines="none" *ngIf="item.buyer">
-                  <ion-icon slot="start" class="color-item-secondary" name="contact"></ion-icon>
-                  <ion-label slot="start" text-wrap>
+                <ion-item lines="none"
+                          *ngIf="item.buyer">
+                  <ion-icon slot="start"
+                            class="color-item-secondary"
+                            name="contact"></ion-icon>
+                  <ion-label slot="start"
+                             text-wrap>
                     <p><b>Cliente:</b> </p>
                     <p>{{item.buyer.name}}</p>
                   </ion-label>
                 </ion-item>
-                <ion-item lines="none" *ngIf="item.adviser">
-                  <ion-icon slot="start" class="color-item-secondary" name="contact"></ion-icon>
-                  <ion-label slot="start" text-wrap>
+                <ion-item lines="none"
+                          *ngIf="item.adviser">
+                  <ion-icon slot="start"
+                            class="color-item-secondary"
+                            name="contact"></ion-icon>
+                  <ion-label slot="start"
+                             text-wrap>
                     <p><b>Asesor:</b> </p>
                     <p>{{item.adviser.name}}</p>
                   </ion-label>
                 </ion-item>
-                <ion-item lines="none" *ngIf="item.seller">
-                  <ion-icon slot="start" class="color-item-secondary" name="contact"></ion-icon>
-                  <ion-label slot="start" text-wrap>
+                <ion-item lines="none"
+                          *ngIf="item.seller">
+                  <ion-icon slot="start"
+                            class="color-item-secondary"
+                            name="contact"></ion-icon>
+                  <ion-label slot="start"
+                             text-wrap>
                     <p><b>Propietario:</b> </p>
                     <p>{{item.seller.name}}</p>
                   </ion-label>
                 </ion-item>
-                <ion-item lines="none" *ngIf="item.property">
-                  <ion-icon slot="start" class="color-item-secondary" name="home"></ion-icon>
-                  <ion-label slot="start" text-wrap>
+                <ion-item lines="none"
+                          *ngIf="item.property">
+                  <ion-icon slot="start"
+                            class="color-item-secondary"
+                            name="home"></ion-icon>
+                  <ion-label slot="start"
+                             text-wrap>
                     <p><b>Propiedad:</b> </p>
                     <p>{{item.property.name}}</p>
                   </ion-label>
                 </ion-item>
-                <ion-item lines="none" *ngIf="item.address">
-                  <ion-icon slot="start" class="color-item-secondary" name="pin"></ion-icon>
-                  <ion-label slot="start" text-wrap>
+                <ion-item lines="none"
+                          *ngIf="item.address">
+                  <ion-icon slot="start"
+                            class="color-item-secondary"
+                            name="pin"></ion-icon>
+                  <ion-label slot="start"
+                             text-wrap>
                     <p><b>Lugar:</b> </p>
                     <p>{{item.address}}</p>
                     <!-- <a [href]="'http://maps.google.com/?q='+item.address+', Puebla'">Ver mapa</a> -->
-                    <app-maps-button slot="end" [address]="item.address"></app-maps-button>
+                    <app-maps-button slot="end"
+                                     [address]="item.address"></app-maps-button>
                     <!-- <a (click)="openMaps(item.address)">Ver mapa</a> -->
                   </ion-label>
                 </ion-item>
-                <ion-item lines="none" *ngIf="item.day">
-                  <ion-icon slot="start" class="color-item-secondary" name="calendar"></ion-icon>
-                  <ion-label slot="start" text-wrap>
+                <ion-item lines="none"
+                          *ngIf="item.day">
+                  <ion-icon slot="start"
+                            class="color-item-secondary"
+                            name="calendar"></ion-icon>
+                  <ion-label slot="start"
+                             text-wrap>
                     <p><b>Fecha del Evento:</b> </p>
-                    <p>{{item.day}}/{{item.month + 1}}/{{item.year}}</p>
+                    <p>{{item.day}}/{{item.month +
+                      1}}/{{item.year}}</p>
                   </ion-label>
                 </ion-item>
-                <ion-item lines="none" *ngIf="item.day">
-                  <ion-icon slot="start" class="color-item-secondary" name="time"></ion-icon>
-                  <ion-label slot="start" text-wrap>
+                <ion-item lines="none"
+                          *ngIf="item.day">
+                  <ion-icon slot="start"
+                            class="color-item-secondary"
+                            name="time"></ion-icon>
+                  <ion-label slot="start"
+                             text-wrap>
                     <p><b>Hora del Evento:</b> </p>
                     <p>{{formatHours(item.hour,item.minute)}}</p>
                   </ion-label>
@@ -259,14 +361,19 @@
                             <p *ngIf="item.status === 'rojo'">Visitada</p>
                           </ion-label>
                         </ion-item> -->
-                <ion-item *ngIf="item.note" lines="none">
-                  <ion-icon slot="start" class="color-item-secondary" name="clipboard"></ion-icon>
-                  <ion-label slot="start" text-wrap>
+                <ion-item *ngIf="item.note"
+                          lines="none">
+                  <ion-icon slot="start"
+                            class="color-item-secondary"
+                            name="clipboard"></ion-icon>
+                  <ion-label slot="start"
+                             text-wrap>
                     <p><b>Notas:</b> </p>
                     <p>{{item.note}}</p>
                   </ion-label>
                 </ion-item>
-                <ion-item *ngIf="item.scoreByAdviser" lines="none">
+                <ion-item *ngIf="item.scoreByAdviser"
+                          lines="none">
                   <ion-chip [ngClass]="
                             {
                             'background-verde': item.scoreByAdviser === 'verde', 
@@ -275,28 +382,46 @@
                             'background-gris': item.scoreByAdviser === 'gris',
                             'background-azul':  item.scoreByAdviser === 'azul'
                           }">
-                    <ion-chip-icon class="icon-chip-detail" name="eye"></ion-chip-icon>
-                    <ion-label *ngIf="item.scoreByAdviser ===  'verde'">Poco interés</ion-label>
-                    <ion-label *ngIf="item.scoreByAdviser ===  'amarillo'">Oportunidad de venta</ion-label>
-                    <ion-label *ngIf="item.scoreByAdviser ===  'rojo'">Venta muy probable</ion-label>
-                    <ion-label *ngIf="item.scoreByAdviser ===  'gris'">No hay interés</ion-label>
-                    <ion-label *ngIf="item.scoreByAdviser ===  'azul'">Muy bien</ion-label>
+                    <ion-chip-icon class="icon-chip-detail"
+                                   name="eye"></ion-chip-icon>
+                    <ion-label *ngIf="item.scoreByAdviser ===  'verde'">Poco
+                      interés</ion-label>
+                    <ion-label *ngIf="item.scoreByAdviser ===  'amarillo'">Oportunidad
+                      de venta</ion-label>
+                    <ion-label *ngIf="item.scoreByAdviser ===  'rojo'">Venta
+                      muy probable</ion-label>
+                    <ion-label *ngIf="item.scoreByAdviser ===  'gris'">No
+                      hay interés</ion-label>
+                    <ion-label *ngIf="item.scoreByAdviser ===  'azul'">Muy
+                      bien</ion-label>
                   </ion-chip>
                 </ion-item>
                 <ion-item lines="none">
                   <ion-button *ngIf="!item.administrator && !item.personal && user.type === 'adviser' && item.status === 'amarillo' && comparateDate(item.year, item.month, item.day) "
-                    (click)="presentAlertVisit(item)" color="warning" fill="outline" slot="end">
+                              (click)="presentAlertVisit(item)"
+                              color="warning"
+                              fill="outline"
+                              slot="end">
                     Calificar <ion-icon name="clipboard"></ion-icon>
                   </ion-button>
-                  <ion-button *ngIf="!item.administrator && !item.personal" (click)="newEventById(item._id)" color="success"
-                    fill="outline" slot="end">
+                  <ion-button *ngIf="!item.administrator && !item.personal"
+                              (click)="newEventById(item._id)"
+                              color="success"
+                              fill="outline"
+                              slot="end">
                     Editar <ion-icon name="create"></ion-icon>
                   </ion-button>
-                  <ion-button *ngIf="item.administrator || item.personal " (click)="editEventPersonalById(item._id)"
-                    color="success" fill="outline" slot="end">
+                  <ion-button *ngIf="item.administrator || item.personal "
+                              (click)="editEventPersonalById(item._id)"
+                              color="success"
+                              fill="outline"
+                              slot="end">
                     Editar Evento Personal <ion-icon name="create"></ion-icon>
                   </ion-button>
-                  <ion-button (click)="presentAlertConfirm(item._id)" color="danger" fill="outline" slot="end">
+                  <ion-button (click)="presentAlertConfirm(item._id)"
+                              color="danger"
+                              fill="outline"
+                              slot="end">
                     Borrar <ion-icon name="trash"></ion-icon>
                   </ion-button>
 
@@ -328,8 +453,11 @@
 <ion-footer *ngIf="(user.type === 'adviser' || user.type === 'seller') && sales">
   <ion-toolbar>
     <ion-buttons slot="end">
-      <ion-button (click)="sendToTotalSales()" fill="solid" color="secondary">
-        Ventas<ion-badge color="dark" style=" margin-left: 2%;">{{sales.length}}</ion-badge>
+      <ion-button (click)="sendToTotalSales()"
+                  fill="solid"
+                  color="secondary">
+        Ventas<ion-badge color="dark"
+                   style=" margin-left: 2%;">{{sales.length}}</ion-badge>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
