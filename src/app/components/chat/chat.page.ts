@@ -109,13 +109,18 @@ export class ChatPage implements OnInit {
       } else {
         this.chats = chatsAll;
       }
-      this.chats.map(async c => {
+      this.chats.map(async (c, i) => {
         if (c.property !== 'default') {
           c['noRead'] = await this.getMsgNotReadByProp(c.property);
         } else {
           c['noRead'] = await this.getMsgNotReadChatId(c._id);
         }
         c['prop'] = await this.getProperty(c.property, c.buyer);
+        if (c['prop'] === null) {
+          this.chatService.deletedById(c._id).subscribe(() => {
+            this.chats.splice(i, 1);
+          });
+        }
       });
       this.isLoad = true;
     });
@@ -158,11 +163,14 @@ export class ChatPage implements OnInit {
       console.log(buyerid);
       const b = await this.buyerService.getBuyerById(buyerid).toPromise();
       console.log(b);
-
-      return {
-        name: 'Chat de Información',
-        buyer: b,
-      };
+      if (b !== null) {
+        return {
+          name: 'Chat de Información',
+          buyer: b,
+        };
+      } else {
+        return null;
+      }
     } else {
       let prop = await this.propertyService.getPropertyById(id).toPromise();
       if (prop !== null) {
