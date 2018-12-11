@@ -26,6 +26,7 @@ export class FilterAdviserComponent implements OnInit {
   yearInput: number;
   hourStartInput: number;
   hourEndInput: number;
+  city: string;
   @Output()
   filters = new EventEmitter();
   @Output()
@@ -46,6 +47,7 @@ export class FilterAdviserComponent implements OnInit {
       status: this.status,
       hourEnd: this.hourEndInput,
       hourStart: this.hourStartInput,
+      city: this.city,
     });
   }
   reset() {
@@ -56,6 +58,7 @@ export class FilterAdviserComponent implements OnInit {
     this.hourEndInput = null;
     this.hourStartInput = null;
     this.status = undefined;
+    this.city = undefined;
   }
   goBack() {
     if (!this.isDesktop) {

@@ -616,8 +616,8 @@ export class NewEditScheduleComponent implements OnInit {
     const buyers = await this.buyerService.getBuyerAll().toPromise();
     this.isSpinner = false;
     const dialogRef = this.dialog.open(SearchSelectComponent, {
-      /*  maxWidth: '50%',
-      minWidth: '20%', */
+      height: '400px',
+      width: '600px',
       data: <SearchDialog>{
         header: 'Buscar clientes para cita, seleccione uno o varios',
         hideButtonCancel: true,

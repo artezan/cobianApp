@@ -60,7 +60,7 @@ import {
   MatProgressBarModule,
   MatStepperModule,
   MatVerticalStepper,
-  MatStep
+  MatStep,
 } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { GeneralTableComponent } from './components/general/general-table/general-table.component';
@@ -128,6 +128,8 @@ import { ListPreBuildComponent } from './components/admin/list-pre-build/list-pr
 import { NewEditPreBuildComponent } from './components/pre-build/new-edit-pre-build/new-edit-pre-build.component';
 import { ListManagerAdminComponent } from './components/admin/list-manager-admin/list-manager-admin.component';
 import { NewEditManagerComponent } from './components/manager/new-edit-manager/new-edit-manager.component';
+import { ListSubmanagerAdminComponent } from './components/admin/list-submanager-admin/list-submanager-admin.component';
+import { NewEditSubmanagerAdminComponent } from './components/subman/new-edit-submanager-admin/new-edit-submanager-admin.component';
 
 @NgModule({
   declarations: [
@@ -202,12 +204,14 @@ import { NewEditManagerComponent } from './components/manager/new-edit-manager/n
     ListPreBuildComponent,
     NewEditPreBuildComponent,
     ListManagerAdminComponent,
-    NewEditManagerComponent
+    NewEditManagerComponent,
+    ListSubmanagerAdminComponent,
+    NewEditSubmanagerAdminComponent,
   ],
   entryComponents: [
     DialogGeneralComponent,
     PopoverComponent,
-    SearchSelectComponent
+    SearchSelectComponent,
   ],
   imports: [
     BrowserModule,
@@ -256,8 +260,8 @@ import { NewEditManagerComponent } from './components/manager/new-edit-manager/n
     MatStepperModule,
     NgCircleProgressModule.forRoot({
       showInnerStroke: false,
-      responsive: true
-    })
+      responsive: true,
+    }),
   ],
   providers: [
     StatusBar,
@@ -270,12 +274,12 @@ import { NewEditManagerComponent } from './components/manager/new-edit-manager/n
       useFactory: (check: UserSessionService) => () =>
         check.checkValidSession(),
       deps: [UserSessionService],
-      multi: true
+      multi: true,
     },
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

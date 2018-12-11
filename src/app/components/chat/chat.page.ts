@@ -61,7 +61,6 @@ export class ChatPage implements OnInit {
       const buildsToChat = buyer.preBuild.filter(
         build => !build.timeLine.some(b => !b.isComplete),
       );
-      console.log(buildsToChat);
       if (buildsToChat.length > 0) {
         buildsToChat.forEach(async build => {
           this.propertiesBuyer.push({
@@ -70,7 +69,6 @@ export class ChatPage implements OnInit {
             noRead: await this.getMsgNotReadByProp(build._id),
           });
         });
-        console.log(this.propertiesBuyer);
       }
     });
   }
@@ -122,7 +120,9 @@ export class ChatPage implements OnInit {
           });
         }
       });
-      this.isLoad = true;
+      setTimeout(() => {
+        this.isLoad = true;
+      }, 1000);
     });
   }
   async getMsgNotReadByProp(propId: string) {
@@ -169,7 +169,15 @@ export class ChatPage implements OnInit {
           buyer: b,
         };
       } else {
-        return null;
+        const bb = await this.preBuyerService.getBuyerById(buyerid).toPromise();
+        if (bb !== null) {
+          return {
+            name: 'Chat de Información',
+            buyer: bb,
+          };
+        } else {
+          return null;
+        }
       }
     } else {
       let prop = await this.propertyService.getPropertyById(id).toPromise();

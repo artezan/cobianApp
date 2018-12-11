@@ -68,6 +68,7 @@ const resetPass = 'resetpass/';
 const prebuyer = 'prebuyer/';
 const prebuild = 'prebuild/';
 const management = 'management/';
+const submanagement = 'submanagement/';
 const bymanagementid = 'bymanagementid/';
 
 export const END_POINT = {
@@ -156,4 +157,7 @@ export const END_POINT = {
   //  management
   MANAGER: apiUrl + management,
   MANAGER_ID: apiUrl + management + bymanagementid,
+  //  sub  management
+  SUBMANAGER: apiUrl + submanagement,
+  SUBMANAGER_ID: apiUrl + submanagement + bymanagementid,
 };

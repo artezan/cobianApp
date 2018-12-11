@@ -123,6 +123,19 @@ export class LoginComponent implements OnInit {
               this.navController.navigateRoot('list-buyer-admin', false);
             }
           }
+          // **submanagement
+          if (data.type === 'subManagement') {
+            this.isLogin = true;
+            load.dismiss();
+            // header de ciudad
+            this.userSession.city = data.data[0].city;
+            const noty = this.userSession.activateMenu.value;
+            if (noty && noty !== '') {
+              this.router.navigate([noty]);
+            } else {
+              this.navController.navigateRoot('list-buyer-admin', false);
+            }
+          }
           // adviser
           if (data.type === 'adviser') {
             this.isLogin = true;

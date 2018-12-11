@@ -10,13 +10,20 @@
   </ion-toolbar>
 </ion-header> -->
 <ion-header>
-  <app-menu-general [isMenuButton]="'back'" [colorMenuButton]="'white'" [titleMenu]="'Evento'" [buttonNotification]="'notifications'"
-    [buttonUser]="'person'"></app-menu-general>
+  <app-menu-general [isMenuButton]="'back'"
+                    [colorMenuButton]="'white'"
+                    [titleMenu]="'Evento'"
+                    [buttonNotification]="'notifications'"
+                    [buttonUser]="'person'"></app-menu-general>
 </ion-header>
 <ion-content>
   <ion-grid fixed>
-    <div class="container" style="margin-top: 3%">
-      <ion-button style="margin-bottom: 2%" shape="round" color="secondary" [routerLink]="['/personal-schedule']">Crear
+    <div class="container"
+         style="margin-top: 3%">
+      <ion-button style="margin-bottom: 2%"
+                  shape="round"
+                  color="secondary"
+                  [routerLink]="['/personal-schedule']">Crear
         Evento Personal</ion-button>
       <form #newUserForm="ngForm">
         <mat-card>
@@ -25,68 +32,121 @@
             <!-- title -->
             <mat-form-field appearance="outline">
               <mat-label>Titulo del evento</mat-label>
-              <input matInput [(ngModel)]="schedule.title" #title="ngModel" id="title" name="title" required>
-              <mat-error *ngIf="title.dirty || title.touched">Anotar Titulo</mat-error>
+              <input matInput
+                     [(ngModel)]="schedule.title"
+                     #title="ngModel"
+                     id="title"
+                     name="title"
+                     required>
+              <mat-error *ngIf="title.dirty || title.touched">Anotar
+                Titulo</mat-error>
 
             </mat-form-field>
             <!-- note -->
             <mat-form-field appearance="outline">
               <mat-label>Notas</mat-label>
-              <textarea matInput [(ngModel)]="schedule.note" #note="ngModel" id="note" name="note"></textarea>
+              <textarea matInput
+                        [(ngModel)]="schedule.note"
+                        #note="ngModel"
+                        id="note"
+                        name="note"></textarea>
             </mat-form-field>
             <!-- buyer -->
             <mat-form-field appearance="outline">
               <mat-label>Cliente</mat-label>
-              <mat-select [disabled]="!isNew" (selectionChange)="getAdvByBuyer()" [(ngModel)]="schedule.buyer" #b="ngModel"
-                id="b" name="b" required>
-                <mat-option *ngFor="let buyer of buyers$ | async" [value]="buyer._id">
+              <mat-select [disabled]="!isNew"
+                          (selectionChange)="getAdvByBuyer()"
+                          [(ngModel)]="schedule.buyer"
+                          #b="ngModel"
+                          id="b"
+                          name="b"
+                          required>
+                <mat-option *ngFor="let buyer of buyers$ | async"
+                            [value]="buyer._id">
                   {{buyer.name}} {{buyer.fatherLastName}}
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="b.dirty || b.touched">Anotar Comprador</mat-error>
+              <mat-error *ngIf="b.dirty || b.touched">Anotar
+                Comprador</mat-error>
             </mat-form-field>
             <div>
-              <button [disabled]="!isNew" mat-stroked-button color="accent" (click)="searchBuyers()">
-                <ion-spinner *ngIf="isSpinner" color="secondary" name="bubbles"></ion-spinner>
+              <button [disabled]="!isNew"
+                      mat-stroked-button
+                      color="accent"
+                      (click)="searchBuyers()">
+                <ion-spinner *ngIf="isSpinner"
+                             color="secondary"
+                             name="bubbles"></ion-spinner>
                 Buscar Clientes
               </button>
             </div>
             <!-- lista de asesores -->
             <div *ngIf="b.value && (user.type !== 'adviser' && user.type !== 'seller') && (schedule && !schedule.seller )">
-              <mat-radio-group style="margin-bottom: 2%;" (change)="getAdvAll(ad.value)" class="example-radio-group"
-                [(ngModel)]="item" #ad="ngModel" id="ad" name="ad" required>
-                <span class="example-radio-group" *ngIf="(buyerSelect$ | async)?.adviser && (buyerSelect$ | async)?.adviser.length > 0">
-                  <mat-radio-button [checked]="schedule.adviser === adv._id" class="example-radio-button" *ngFor="let adv of (buyerSelect$ | async)?.adviser"
-                    [value]="adv._id">
+              <mat-radio-group style="margin-bottom: 2%;"
+                               (change)="getAdvAll(ad.value)"
+                               class="example-radio-group"
+                               [(ngModel)]="item"
+                               #ad="ngModel"
+                               id="ad"
+                               name="ad"
+                               required>
+                <span class="example-radio-group"
+                      *ngIf="(buyerSelect$ | async)?.adviser && (buyerSelect$ | async)?.adviser.length > 0">
+                  <mat-radio-button [checked]="schedule.adviser === adv._id"
+                                    class="example-radio-button"
+                                    *ngFor="let adv of (buyerSelect$ | async)?.adviser"
+                                    [value]="adv._id">
                     {{adv.name}} {{adv.lastName}}
-                    <small> Disponible de {{adv.hourStart}} a {{adv.hourEnd}}</small>
+                    <small> Disponible de {{adv.hourStart}}
+                      a {{adv.hourEnd}}</small>
                   </mat-radio-button>
                 </span>
 
-                <mat-radio-button class="example-radio-button" value="other">
+                <mat-radio-button class="example-radio-button"
+                                  value="other">
                   Asignar nuevo Asesor
                 </mat-radio-button>
               </mat-radio-group>
             </div>
 
             <!-- new adv to buyer -->
-            <mat-label style="margin: 3%;" *ngIf=" item === 'other'">Se agregará un nuevo asesor al cliente:</mat-label>
-            <mat-form-field *ngIf=" item === 'other'" appearance="outline">
+            <mat-label style="margin: 3%;"
+                       *ngIf=" item === 'other'">Se
+              agregará un nuevo asesor al cliente:</mat-label>
+            <mat-form-field *ngIf=" item === 'other'"
+                            appearance="outline">
               <mat-label>Asesores</mat-label>
-              <mat-select [(ngModel)]="schedule.adviser" #ad2="ngModel" id="ad2" name="ad2">
-                <mat-option *ngFor="let adviser of advisers$ | async" [value]="adviser._id">
-                  {{adviser.name}} {{adviser.lastName}} <small> Disponible de {{adviser.hourStart}} a
+              <mat-select [(ngModel)]="schedule.adviser"
+                          #ad2="ngModel"
+                          id="ad2"
+                          name="ad2">
+                <mat-option *ngFor="let adviser of advisers$ | async"
+                            [value]="adviser._id">
+                  {{adviser.name}} {{adviser.lastName}}
+                  <small> Disponible de
+                    {{adviser.hourStart}} a
                     {{adviser.hourEnd}}</small>
                 </mat-option>
               </mat-select>
-              <button mat-button *ngIf="ad2.value" matSuffix mat-icon-button aria-label="Clear" (click)="schedule.adviser=undefined">
+              <button mat-button
+                      *ngIf="ad2.value"
+                      matSuffix
+                      mat-icon-button
+                      aria-label="Clear"
+                      (click)="schedule.adviser=undefined">
                 <mat-icon>close</mat-icon>
               </button>
-              <mat-error *ngIf="ad2.dirty || ad2.touched">Anotar Asesor</mat-error>
+              <mat-error *ngIf="ad2.dirty || ad2.touched">Anotar
+                Asesor</mat-error>
             </mat-form-field>
             <div>
-              <button *ngIf=" item === 'other'" mat-stroked-button color="accent" (click)="searchAdv()">
-                <ion-spinner *ngIf="isSpinner" color="secondary" name="bubbles"></ion-spinner>
+              <button *ngIf=" item === 'other'"
+                      mat-stroked-button
+                      color="accent"
+                      (click)="searchAdv()">
+                <ion-spinner *ngIf="isSpinner"
+                             color="secondary"
+                             name="bubbles"></ion-spinner>
                 Buscar Asesor
               </button>
             </div>
@@ -94,17 +154,29 @@
             <!-- prop -->
             <mat-form-field appearance="outline">
               <mat-label>Propiedad a visitar</mat-label>
-              <mat-select [disabled]="user.type !== 'seller' && schedule.seller" (selectionChange)="getAddress(property.value)"
-                [(ngModel)]="schedule.property" #property="ngModel" id="property" name="property" required>
-                <mat-option *ngFor="let prop of properties$ | async" [value]="prop._id">
+              <mat-select [disabled]="user.type !== 'seller' && schedule.seller"
+                          (selectionChange)="getAddress(property.value)"
+                          [(ngModel)]="schedule.property"
+                          #property="ngModel"
+                          id="property"
+                          name="property"
+                          required>
+                <mat-option *ngFor="let prop of properties$ | async"
+                            [value]="prop._id">
                   {{prop.name}}
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="property.dirty ">Anotar Propiedad</mat-error>
+              <mat-error *ngIf="property.dirty ">Anotar
+                Propiedad</mat-error>
             </mat-form-field>
             <div>
-              <button [disabled]="user.type !== 'seller' && schedule.seller" mat-stroked-button color="accent" (click)="searchProp()">
-                <ion-spinner *ngIf="isSpinner" color="secondary" name="bubbles"></ion-spinner>
+              <button [disabled]="user.type !== 'seller' && schedule.seller"
+                      mat-stroked-button
+                      color="accent"
+                      (click)="searchProp()">
+                <ion-spinner *ngIf="isSpinner"
+                             color="secondary"
+                             name="bubbles"></ion-spinner>
                 Buscar Propiedad
               </button>
             </div>
@@ -112,33 +184,63 @@
             <!-- address -->
             <mat-form-field appearance="outline">
               <mat-label>Dirección</mat-label>
-              <textarea matInput [(ngModel)]="schedule.address" #address="ngModel" id="address" name="address" required></textarea>
-              <mat-error *ngIf="address.dirty || address.touched">Anotar Dirección</mat-error>
+              <textarea matInput
+                        [(ngModel)]="schedule.address"
+                        #address="ngModel"
+                        id="address"
+                        name="address"
+                        required></textarea>
+              <mat-error *ngIf="address.dirty || address.touched">Anotar
+                Dirección</mat-error>
             </mat-form-field>
             <!-- Fecha -->
             <mat-form-field appearance="outline">
-              <input (dateChange)="dateSelect($event)" (focus)="picker.open()" [value]="getDate(schedule.day, schedule.month, schedule.year)"
-                matInput [matDatepicker]="picker" placeholder="Selecciona Fecha" required>
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <input (dateChange)="dateSelect($event)"
+                     (focus)="picker.open()"
+                     [value]="getDate(schedule.day, schedule.month, schedule.year)"
+                     matInput
+                     [matDatepicker]="picker"
+                     placeholder="Selecciona Fecha"
+                     required>
+              <mat-datepicker-toggle matSuffix
+                                     [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
             <!-- hora -->
-            <mat-label style="margin-bottom: 2%;">Anote Hora </mat-label>
+            <mat-label style="margin-bottom: 2%;">Anote
+              Hora </mat-label>
             <div>
-              <mat-form-field style="width: 70px;" appearance="outline">
-                <input max=24 min=0 type="number" style="text-align: right;" matInput [(ngModel)]="schedule.hour" #hour="ngModel"
-                  id="hour" name="hour" required>
+              <mat-form-field style="width: 70px;"
+                              appearance="outline">
+                <input max=24
+                       min=0
+                       type="number"
+                       style="text-align: right;"
+                       matInput
+                       [(ngModel)]="schedule.hour"
+                       #hour="ngModel"
+                       id="hour"
+                       name="hour"
+                       required>
 
               </mat-form-field>
               :
-              <mat-form-field style="width: 70px;" appearance="outline">
-                <input type="number" matInput [(ngModel)]="schedule.minute" #minute="ngModel" id="minute" name="minute"
-                  required>
+              <mat-form-field style="width: 70px;"
+                              appearance="outline">
+                <input type="number"
+                       matInput
+                       [(ngModel)]="schedule.minute"
+                       #minute="ngModel"
+                       id="minute"
+                       name="minute"
+                       required>
               </mat-form-field>
               <!-- pm/am -->
               <mat-form-field style="width: 71px;
-              margin-left: 1%;" appearance="outline">
-                <mat-select (selectionChange)="hourFormat(ampm.value)" #ampm>
+              margin-left: 1%;"
+                              appearance="outline">
+                <mat-select (selectionChange)="hourFormat(ampm.value)"
+                            #ampm>
                   <mat-option value="pm">
                     PM
                   </mat-option>
@@ -156,16 +258,30 @@
 
               <!-- no seller -->
 
-              <button *ngIf="isNew && user.type !== 'seller'" id="submitUser" mat-raised-button color="primary" (click)="dialogs(true,'new','admin')"
-                [disabled]="!newUserForm.form.valid">Crear</button>
+              <button *ngIf="isNew && user.type !== 'seller'"
+                      id="submitUser"
+                      mat-raised-button
+                      color="primary"
+                      (click)="dialogs(true,'new','admin')"
+                      [disabled]="!newUserForm.form.valid || hour.value >24  || minute.value >60">Crear</button>
 
-              <button *ngIf="!isNew && (user.type !== 'seller' && !schedule.seller)" id="submitUser" mat-raised-button
-                color="primary" (click)="dialogs(true,'edit','admin')">Editar</button>
+              <button *ngIf="!isNew && (user.type !== 'seller' && !schedule.seller)"
+                      id="submitUser"
+                      mat-raised-button
+                      color="primary"
+                      [disabled]=" hour.value >24  || minute.value >60"
+                      (click)="dialogs(true,'edit','admin')">Editar</button>
               <!-- seller -->
-              <button *ngIf="isNew && (user.type === 'seller')" id="submitUser" mat-raised-button color="primary"
-                (click)="dialogs(false,'new','seller')" [disabled]="!newUserForm.form.valid">Crear</button>
-              <button *ngIf="!isNew && (user.type === 'seller' || schedule.seller )" mat-raised-button color="accent"
-                (click)="dialogs(false,'edit','seller')">Editar</button>
+              <button *ngIf="isNew && (user.type === 'seller')"
+                      id="submitUser"
+                      mat-raised-button
+                      color="primary"
+                      (click)="dialogs(false,'new','seller')"
+                      [disabled]="!newUserForm.form.valid || hour.value >24  || minute.value >60">Crear</button>
+              <button *ngIf="!isNew && (user.type === 'seller' || schedule.seller )"
+                      mat-raised-button
+                      color="accent"
+                      (click)="dialogs(false,'edit','seller')">Editar</button>
             </div>
 
 

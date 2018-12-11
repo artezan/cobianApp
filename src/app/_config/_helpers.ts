@@ -12,7 +12,7 @@ import { IBuild } from '../models/build.model';
 export function CalcPercentage(
   buyer: IBuyer,
   properties: IProperty[],
-  percentage: number
+  percentage: number,
 ) {
   const propertiesMatch: IProperty[] = [];
   properties.forEach(property => {
@@ -82,7 +82,7 @@ export function CalcPercentage(
       buyer.tag.forEach(tag => {
         items++;
         const isFind = property.tag.find(
-          t => t.toLocaleLowerCase().trim() === tag.toLocaleLowerCase().trim()
+          t => t.toLocaleLowerCase().trim() === tag.toLocaleLowerCase().trim(),
         );
         if (isFind) {
           sumTotal++;
@@ -111,14 +111,14 @@ export function BuyersFilters(
     year: number;
     status: string;
     property: string;
-  }
+  },
 ) {
   let isOK = true;
   const buyerDate = new Date(buyer.timestamp);
   // si existe prop
   if (filtersApply.property !== undefined && filtersApply.property !== null) {
     const isFind = buyer.statusBuyerProperty.some(
-      sbp => sbp.property.name === filtersApply.property
+      sbp => sbp.property.name === filtersApply.property,
     );
     if (!isFind) {
       isOK = false;
@@ -146,7 +146,7 @@ export function BuyersFilters(
   if (filtersApply.status !== undefined && filtersApply.status !== null) {
     if (buyer.statusBuyerProperty && buyer.statusBuyerProperty.length > 0) {
       const isFinded = buyer.statusBuyerProperty.findIndex(
-        sbp => sbp.status === filtersApply.status
+        sbp => sbp.status === filtersApply.status,
       );
       if (isFinded === -1) {
         isOK = false;
@@ -170,7 +170,7 @@ export function OnlyDates(
     year: number;
     hourStart?: number;
     hourEnd?: number;
-  }
+  },
 ) {
   console.log('fil', filtersApply);
   console.log('some', some);
@@ -210,6 +210,58 @@ export function OnlyDates(
   // end filters
   return isOK;
 }
+// filtro Asesores
+export function AdvFilter(
+  some: any,
+  filtersApply: {
+    day: number;
+    month: number;
+    year: number;
+    hourStart?: number;
+    hourEnd?: number;
+    city: string;
+  },
+) {
+  let isOK = true;
+  const buyerDate = new Date(some.timestamp);
+  // si existe
+  if (filtersApply.day !== undefined && filtersApply.day !== null) {
+    if (buyerDate.getDate() !== filtersApply.day) {
+      isOK = false;
+    }
+  }
+  // si existe
+  if (filtersApply.month !== undefined && filtersApply.month !== null) {
+    if (buyerDate.getMonth() !== filtersApply.month) {
+      isOK = false;
+    }
+  }
+  // si existe
+  if (filtersApply.year !== undefined && filtersApply.year !== null) {
+    if (buyerDate.getFullYear() !== filtersApply.year) {
+      isOK = false;
+    }
+  }
+  // si existe
+  if (filtersApply.hourEnd !== undefined && filtersApply.hourEnd !== null) {
+    if (some.hourEnd < filtersApply.hourEnd) {
+      isOK = false;
+    }
+  }
+  // si existe
+  if (filtersApply.hourStart !== undefined && filtersApply.hourStart !== null) {
+    if (some.hourStart > filtersApply.hourStart) {
+      isOK = false;
+    }
+  }
+  if (filtersApply.city !== undefined && filtersApply.city !== null) {
+    if (some.city !== filtersApply.city) {
+      isOK = false;
+    }
+  }
+  // end filters
+  return isOK;
+}
 
 // filtro dates
 export function SellerFilter(
@@ -219,7 +271,7 @@ export function SellerFilter(
     month: number;
     year: number;
     isRenter: boolean;
-  }
+  },
 ) {
   let isOK = true;
   const buyerDate = new Date(some.timestamp);
@@ -406,7 +458,7 @@ export function GetPercentGoal(
       nameGoal: string;
       isComplete: boolean;
     }
-  ]
+  ],
 ): number {
   let numOfComplete = 0;
   goals.forEach(goal => {
@@ -426,7 +478,7 @@ export function FilerBuild(
     month2: number;
     year2: number;
     isComplete: boolean;
-  }
+  },
 ) {
   let isOK = true;
   let buildDateEnd;
@@ -438,7 +490,7 @@ export function FilerBuild(
       buildDateEnd = new Date(
         lastPhase.yearToEnd,
         lastPhase.monthToEnd,
-        lastPhase.dayToEnd
+        lastPhase.dayToEnd,
       );
     }
   }
@@ -515,6 +567,6 @@ export function OpenGoogleMaps(schedule, city = 'Puebla') {
   window.open(
     'https://www.google.com/maps/search/?api=1&&q=' + schedule + ',' + city,
     '_system',
-    'location=yes'
+    'location=yes',
   );
 }

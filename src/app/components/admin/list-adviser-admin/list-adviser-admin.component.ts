@@ -13,7 +13,7 @@ import {
   NavController,
 } from '@ionic/angular';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
-import { OnlyDates } from '../../../_config/_helpers';
+import { OnlyDates, AdvFilter } from '../../../_config/_helpers';
 import { SaleService } from '../../../services/sale.service';
 import { ISale } from '../../../models/sale.model';
 
@@ -214,8 +214,9 @@ export class ListAdviserAdminComponent implements OnInit {
     status: string;
     hourStart?: number;
     hourEnd?: number;
+    city: string;
   }) {
-    const advFinded = this.adviser.filter(adv => OnlyDates(adv, filters));
+    const advFinded = this.adviser.filter(adv => AdvFilter(adv, filters));
     console.log(advFinded);
     //  setea buyers
     this.setRows(advFinded);

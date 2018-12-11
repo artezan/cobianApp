@@ -19,7 +19,7 @@ import {
   DiffDays,
   OpenGoogleMaps,
 } from '../../../_config/_helpers';
-import { map, timeInterval } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-main-admin',
@@ -87,6 +87,7 @@ export class MainAdminComponent implements OnInit {
   ngOnInit() {}
   getAll(pageNumber) {
     this.adminService.getAdminEvents(pageNumber).subscribe(allData => {
+      console.log(allData);
       if (allData.length > 0) {
         if (pageNumber === 1) {
           this.allData = <any>allData;

@@ -13,4 +13,5 @@ export interface IUserSession {
   password?: string;
   email?: string;
   token?: string;
+  isCity?: boolean;
 }

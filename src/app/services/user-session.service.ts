@@ -32,6 +32,10 @@ export class UserSessionService {
    * solo para preBuyer
    */
   public preBuild: string;
+  /**
+   * solo para submanager
+   */
+  public city: string;
   constructor(
     private http: HttpClient,
     private storage: Storage,
@@ -50,7 +54,8 @@ export class UserSessionService {
       .pipe(map((data: any) => data.data));
   }
   public setUserSession(name, type, id, password, email: string, token): void {
-    if (type === 'management') {
+    console.log(type);
+    if (type === 'management' || type === 'subManagement') {
       type = 'office';
     }
     const currentData: IUserSession = {
