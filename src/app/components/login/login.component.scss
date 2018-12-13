@@ -1,9 +1,19 @@
 .grandParentContaniner {
-    display: flex;
-    justify-content: center;
-    // margin-top: -301px;
     height: 100%;
+    margin: 0% 30% 10% 30%;
+
 }
+
+.button-ingresar {
+    color: white;
+    margin-top: 15%
+}
+
+.button-ingresar>* {
+    font-size: 16px;
+}
+
+
 
 .parentContainer {
     // display: table-cell;
@@ -11,7 +21,7 @@
 
 .center-login {
     text-align: center;
-    // margin-top: -290px;
+    margin-top: 5%;
 }
 
 .alert {
@@ -26,4 +36,79 @@
     color: #721c24;
     background-color: #f8d7da;
     border-color: #f5c6cb;
+}
+
+.bg-img {
+    background-image: url('/assets/fondo_login.jpg');
+    background-size: cover;
+    height: 100%;
+}
+
+.box {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+
+}
+
+.box-body {
+    padding: 10%;
+}
+
+.input-login {
+    color: white;
+    border: 1px solid;
+    border-radius: 5px;
+    width: 100%;
+}
+
+
+
+a {
+    color: white
+}
+
+.login-a {
+    text-align: center;
+    text-align: center;
+    margin: 10%;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.login-a2 {
+    text-align: center;
+    text-align: center;
+    margin: 10%;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+
+
+@media (max-width: 900px) {
+    .grandParentContaniner {
+        height: 100%;
+        margin: 5%;
+    }
+
+    .login-a {
+        text-align: center;
+        text-align: center;
+        margin: 4%;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    .login-a2 {
+        text-align: center;
+        text-align: center;
+        margin: 1% 1% 0% 1%;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    .button-ingresar {
+        color: white;
+        margin-top: 0%
+    }
 }

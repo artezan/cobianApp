@@ -10,8 +10,8 @@
   </ion-toolbar>
 </ion-header> -->
 <ion-header>
-  <app-menu-general [isMenuButton]="'back'" [colorMenuButton]="'white'" [titleMenu]="'Oficinista'" [buttonNotification]="'notifications'"
-    [buttonUser]="'person'"></app-menu-general>
+  <app-menu-general [isMenuButton]="'back'" [colorMenuButton]="'white'" [titleMenu]="'Oficinista'" [buttonNotification]="'assets/iconos/notificaciones.svg'"
+    [buttonUser]="'assets/iconos/usuario_blanco.svg'"></app-menu-general>
 </ion-header>
 <ion-content>
   <ng-container *ngIf="isLoad; then thenTemplate; else elseTemplate"></ng-container>

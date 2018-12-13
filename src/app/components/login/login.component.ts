@@ -90,6 +90,7 @@ export class LoginComponent implements OnInit {
             data.token,
           );
           this.isFind = true;
+          this.userSession.city = undefined;
           // seller
           if (data.type === 'seller') {
             this.isLogin = true;
@@ -203,6 +204,7 @@ export class LoginComponent implements OnInit {
         } else {
           load.dismiss();
           this.isFind = false;
+          this.presentAlert();
         }
       });
   }
@@ -212,6 +214,15 @@ export class LoginComponent implements OnInit {
       translucent: true,
     });
     return await loading;
+  }
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: 'Usuario y/o contraseña inválido',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
   newUser() {
     this.navController.navigateForward('new-buyer', false);

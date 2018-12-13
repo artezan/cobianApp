@@ -7,8 +7,11 @@
     </ion-title>
   </ion-toolbar> -->
 <ion-header>
-  <app-menu-general [isMenuButton]="'back'" [colorMenuButton]="'white'" [titleMenu]="'Movimientos Clientes'"
-    [buttonNotification]="'notifications'" [buttonUser]="'person'"></app-menu-general>
+  <app-menu-general [isMenuButton]="'back'"
+                    [colorMenuButton]="'white'"
+                    [titleMenu]="'Movimientos Clientes'"
+                    [buttonNotification]="'assets/iconos/notificaciones.svg'"
+                    [buttonUser]="'assets/iconos/usuario_blanco.svg'"></app-menu-general>
 </ion-header>
 
 <ion-content padding>
@@ -21,8 +24,10 @@
 
 
         <ion-card-header>
-          <ion-card-subtitle> {{buyer.name}} {{buyer.fatherLastName}} </ion-card-subtitle>
-          <ion-card-subtitle> Edad {{buyer.years}} </ion-card-subtitle>
+          <ion-card-subtitle> {{buyer.name}}
+            {{buyer.fatherLastName}} </ion-card-subtitle>
+          <ion-card-subtitle> Edad {{buyer.years}}
+          </ion-card-subtitle>
           <ion-card-title> {{buyer.name}} </ion-card-title>
         </ion-card-header>
         <!-- Principales -->
@@ -30,61 +35,64 @@
           <ion-row>
             <ion-col>
               <!-- Renta/venta -->
-              <ion-chip *ngIf="buyer.isRenter" style="background-color: #F58634">
-                <ion-chip-icon class="icon-chip-detail" name="cart"></ion-chip-icon>
+              <ion-chip *ngIf="buyer.isRenter"
+                        color="tertiary">
+                <ion-chip-icon src="assets/iconos/venta_renta.svg"></ion-chip-icon>
                 <ion-label>Renta</ion-label>
               </ion-chip>
-              <ion-chip *ngIf="!buyer.isRenter" style="background-color: #F58634">
-                <ion-chip-icon class="icon-chip-detail" name="cart"></ion-chip-icon>
+              <ion-chip *ngIf="!buyer.isRenter"
+                        color="tertiary">
+                <ion-chip-icon src="assets/iconos/venta_renta.svg"></ion-chip-icon>
                 <ion-label>Venta</ion-label>
               </ion-chip>
             </ion-col>
             <ion-col>
-              <ion-chip style="background-color: #F58634">
-                <ion-chip-icon class="icon-chip-detail" name="expand"></ion-chip-icon>
-                <ion-label><b>{{buyer.space}}</b> Espacio </ion-label>
+              <ion-chip color="tertiary">
+                <ion-chip-icon src="assets/iconos/m2.svg"></ion-chip-icon>
+                <ion-label>Espacio {{buyer.space}}</ion-label>
               </ion-chip>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-chip style="background-color: #F58634">
-                <ion-chip-icon class="icon-chip-detail" name="calendar"></ion-chip-icon>
-                <ion-label>Fecha <b>{{buyer.dateToBuy}}</b></ion-label>
+              <ion-chip color="tertiary">
+                <ion-chip-icon src="assets/iconos/calendario.svg"></ion-chip-icon>
+                <ion-label>Fecha {{buyer.dateToBuy}}</ion-label>
               </ion-chip>
             </ion-col>
             <ion-col>
-              <ion-chip style="background-color: #F58634">
-                <ion-chip-icon class="icon-chip-detail" name="water"></ion-chip-icon>
-                <ion-label><b>{{buyer.numBathrooms}}</b> Baños </ion-label>
-              </ion-chip>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <ion-chip style="background-color: #F58634">
-                <ion-chip-icon class="icon-chip-detail" name="cash"></ion-chip-icon>
-                <ion-label>Max <b>${{buyer.maxPrice}}</b></ion-label>
-              </ion-chip>
-            </ion-col>
-            <ion-col>
-              <ion-chip style="background-color: #F58634">
-                <ion-chip-icon class="icon-chip-detail" name="cash"></ion-chip-icon>
-                <ion-label>Min <b> ${{buyer.minPrice}}</b></ion-label>
+              <ion-chip color="tertiary">
+                <ion-chip-icon src="assets/iconos/baños.svg"></ion-chip-icon>
+                <ion-label>Baños {{buyer.numBathrooms}}</ion-label>
               </ion-chip>
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col>
-              <ion-chip style="background-color: #F58634">
-                <ion-chip-icon class="icon-chip-detail" name="car"></ion-chip-icon>
-                <ion-label><b>{{buyer.numCars}}</b> Estacionamiento </ion-label>
+              <ion-chip color="tertiary">
+                <ion-chip-icon src="assets/iconos/precio.svg"></ion-chip-icon>
+                <ion-label>Max ${{buyer.maxPrice}}</ion-label>
               </ion-chip>
             </ion-col>
             <ion-col>
-              <ion-chip style="background-color: #F58634">
-                <ion-chip-icon class="icon-chip-detail" name="bed"></ion-chip-icon>
-                <ion-label><b>{{buyer.numRooms}}</b> Cuartos </ion-label>
+              <ion-chip color="tertiary">
+                <ion-chip-icon src="assets/iconos/precio.svg"></ion-chip-icon>
+                <ion-label>Min ${{buyer.minPrice}}</ion-label>
+              </ion-chip>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-chip color="tertiary">
+                <ion-chip-icon src="assets/iconos/cochera.svg"></ion-chip-icon>
+                <ion-label>Estacionamiento
+                  {{buyer.numCars}}</ion-label>
+              </ion-chip>
+            </ion-col>
+            <ion-col>
+              <ion-chip color="tertiary">
+                <ion-chip-icon src="assets/iconos/recamara.svg"></ion-chip-icon>
+                <ion-label>Cuartos {{buyer.numRooms}}</ion-label>
               </ion-chip>
             </ion-col>
           </ion-row>
@@ -93,71 +101,90 @@
         <ion-card-subtitle style="margin-left: 8%;">Otras</ion-card-subtitle>
         <div class="container-details-buyer">
           <ion-item *ngIf="buyer.allServices">
-            <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+            <ion-icon style="color:  #C4C156"
+                      name="radio-button-on"></ion-icon>
             <ion-label>Todos los servicios</ion-label>
           </ion-item>
           <ion-item *ngIf="!buyer.allServices">
-            <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+            <ion-icon style="color:  #C4C156"
+                      name="radio-button-on"></ion-icon>
             <ion-label>Sin los servicios</ion-label>
           </ion-item>
           <ion-item *ngIf="buyer.hasElevator">
-            <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+            <ion-icon style="color:  #C4C156"
+                      name="radio-button-on"></ion-icon>
             <ion-label>Elevador</ion-label>
           </ion-item>
           <ion-item *ngIf="!buyer.hasElevator">
-            <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+            <ion-icon style="color:  #C4C156"
+                      name="radio-button-on"></ion-icon>
             <ion-label>Sin Elevador</ion-label>
           </ion-item>
           <ion-item *ngIf="buyer.hasGarden">
-            <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+            <ion-icon style="color:  #C4C156"
+                      name="radio-button-on"></ion-icon>
             <ion-label>Jardin</ion-label>
           </ion-item>
           <ion-item *ngIf="!buyer.hasGarden">
-            <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+            <ion-icon style="color:  #C4C156"
+                      name="radio-button-on"></ion-icon>
             <ion-label>Sin Jardin</ion-label>
           </ion-item>
           <ion-item *ngIf="buyer.isClose">
-            <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+            <ion-icon style="color:  #C4C156"
+                      name="radio-button-on"></ion-icon>
             <ion-label>Fraccionamineto Cerrado</ion-label>
           </ion-item>
           <ion-item *ngIf="!buyer.isClose">
-            <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+            <ion-icon style="color:  #C4C156"
+                      name="radio-button-on"></ion-icon>
             <ion-label>Sin Fraccionamineto Cerrado</ion-label>
           </ion-item>
           <ion-item *ngIf="!buyer.isOld">
-            <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+            <ion-icon style="color:  #C4C156"
+                      name="radio-button-on"></ion-icon>
             <ion-label>Nuevo</ion-label>
           </ion-item>
           <ion-item *ngIf="buyer.isOld">
-            <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+            <ion-icon style="color:  #C4C156"
+                      name="radio-button-on"></ion-icon>
             <ion-label>Usado</ion-label>
           </ion-item>
           <ion-item *ngIf="buyer.isLowLevel">
-            <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+            <ion-icon style="color:  #C4C156"
+                      name="radio-button-on"></ion-icon>
             <ion-label>Planta Baja</ion-label>
           </ion-item>
           <ion-item *ngIf="!buyer.isLowLevel">
-            <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+            <ion-icon style="color:  #C4C156"
+                      name="radio-button-on"></ion-icon>
             <ion-label>Cualquier num de piso</ion-label>
           </ion-item>
           <ion-item *ngIf="buyer.wayToBuy">
-            <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
-            <ion-label text-wrap> Forma de Compra: {{buyer.wayToBuy}}</ion-label>
+            <ion-icon style="color:  #C4C156"
+                      name="radio-button-on"></ion-icon>
+            <ion-label text-wrap> Forma de Compra:
+              {{buyer.wayToBuy}}</ion-label>
           </ion-item>
           <ion-item *ngIf="buyer.zone">
-            <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+            <ion-icon style="color:  #C4C156"
+                      name="radio-button-on"></ion-icon>
             <ion-label text-wrap>Zona: {{buyer.zone}}</ion-label>
           </ion-item>
           <ion-item *ngIf="buyer.typeOfProperty">
-            <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
-            <ion-label text-wrap>Tipo de Propiedad: {{buyer.typeOfProperty}}</ion-label>
+            <ion-icon style="color:  #C4C156"
+                      name="radio-button-on"></ion-icon>
+            <ion-label text-wrap>Tipo de Propiedad:
+              {{buyer.typeOfProperty}}</ion-label>
           </ion-item>
           <ion-item *ngIf="buyer.email">
-            <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+            <ion-icon style="color:  #C4C156"
+                      name="radio-button-on"></ion-icon>
             <ion-label text-wrap>Email: {{buyer.email}}</ion-label>
           </ion-item>
           <ion-item *ngIf="buyer.city">
-            <ion-icon style="color:  #F5811E" name="radio-button-on"></ion-icon>
+            <ion-icon style="color:  #C4C156"
+                      name="radio-button-on"></ion-icon>
             <ion-label text-wrap>Ciudad: {{buyer.city}}</ion-label>
           </ion-item>
         </div>
@@ -172,19 +199,24 @@
 
 
       </ion-card>
-      <h1 *ngIf="buyer.statusBuyerProperty && buyer.statusBuyerProperty.length > 0"> Propiedades que le interesan </h1>
-      <ion-card *ngFor="let sbp  of buyer.statusBuyerProperty " [ngClass]="{'state-verde': sbp.status === 'verde', 
+      <h1 *ngIf="buyer.statusBuyerProperty && buyer.statusBuyerProperty.length > 0">
+        Propiedades que le interesan </h1>
+      <ion-card *ngFor="let sbp  of buyer.statusBuyerProperty "
+                [ngClass]="{'state-verde': sbp.status === 'verde', 
         'state-amarillo': sbp.status === 'amarillo',
         'state-rojo': sbp.status === 'rojo',
         'state-azul': sbp.status === 'azul' }">
         <ion-card-header>
-          <ion-card-subtitle>Fecha {{formatDates(sbp.timestamp)}}</ion-card-subtitle>
+          <ion-card-subtitle>Fecha
+            {{formatDates(sbp.timestamp)}}</ion-card-subtitle>
           <ion-card-title>{{sbp.property.name}}</ion-card-title>
         </ion-card-header>
       </ion-card>
       <!-- citas -->
-      <h1 *ngIf="buyer.schedule && buyer.schedule.length > 0"> Citas </h1>
-      <ion-card *ngFor="let schedule  of buyer.schedule " [ngClass]="{'state-verde': schedule.status === 'verde', 
+      <h1 *ngIf="buyer.schedule && buyer.schedule.length > 0">
+        Citas </h1>
+      <ion-card *ngFor="let schedule  of buyer.schedule "
+                [ngClass]="{'state-verde': schedule.status === 'verde', 
         'state-amarillo': schedule.status === 'amarillo',
         'state-rojo': schedule.status === 'rojo',
         'state-azul': schedule.status === 'azul' }">
@@ -192,16 +224,21 @@
           <ion-label>Propiedad {{schedule.property.name}}</ion-label>
         </ion-item>
         <ion-item>
-          <ion-label>Fecha {{schedule.day}}/{{schedule.month + 1}}/{{schedule.year}}</ion-label>
+          <ion-label>Fecha
+            {{schedule.day}}/{{schedule.month +
+            1}}/{{schedule.year}}</ion-label>
         </ion-item>
-        <ion-item text-wrap>Hora: {{formatHours(schedule.hour, schedule.minute)}}</ion-item>
+        <ion-item text-wrap>Hora:
+          {{formatHours(schedule.hour, schedule.minute)}}</ion-item>
         <ion-item>
           <ion-label>Lugar {{schedule.address}}</ion-label>
         </ion-item>
       </ion-card>
       <!-- Ofertas -->
-      <h1 *ngIf="buyer.ofert && buyer.ofert.length > 0"> Ofertas </h1>
-      <ion-card *ngFor="let ofert  of buyer.ofert " [ngClass]="{'state-verde': ofert.status === 'verde', 
+      <h1 *ngIf="buyer.ofert && buyer.ofert.length > 0">
+        Ofertas </h1>
+      <ion-card *ngFor="let ofert  of buyer.ofert "
+                [ngClass]="{'state-verde': ofert.status === 'verde', 
          'state-amarillo': ofert.status === 'amarillo',
          'state-rojo': ofert.status === 'rojo',
          'state-azul': ofert.status === 'azul' }">
@@ -219,8 +256,10 @@
         </ion-card-content>
       </ion-card>
       <!-- credito -->
-      <h1 *ngIf="credits && credits.length > 0"> Crédito </h1>
-      <ion-card *ngFor="let credit  of credits " [ngClass]="{'state-verde': credit.status === 'verde', 
+      <h1 *ngIf="credits && credits.length > 0"> Crédito
+      </h1>
+      <ion-card *ngFor="let credit  of credits "
+                [ngClass]="{'state-verde': credit.status === 'verde', 
           'state-amarillo': credit.status === 'amarillo',
           'state-rojo': credit.status === 'rojo',
           'state-azul': credit.status === 'azul',
@@ -229,7 +268,8 @@
           <ion-label>Propiedad {{credit.property.name}}</ion-label>
         </ion-item>
         <ion-item>
-          <ion-label>Fecha {{formatDates(credit.timestamp)}}</ion-label>
+          <ion-label>Fecha
+            {{formatDates(credit.timestamp)}}</ion-label>
         </ion-item>
         <ion-card-content>
           Notas {{credit.notes}}
@@ -238,7 +278,8 @@
 
 
     </ng-template>
-    <ng-template #elseTemplate style="text-align: center">
+    <ng-template #elseTemplate
+                 style="text-align: center">
       <ion-spinner name="bubbles"></ion-spinner>
 
     </ng-template>

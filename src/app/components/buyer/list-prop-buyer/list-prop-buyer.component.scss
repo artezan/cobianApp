@@ -9,3 +9,18 @@
 .low {
     background-color: #989aa2
 }
+
+
+
+.sg {
+    height: 45px;
+
+    ion-segment {
+        height: 100%;
+    }
+
+    ion-segment-button {
+        height: 100%;
+
+    }
+}

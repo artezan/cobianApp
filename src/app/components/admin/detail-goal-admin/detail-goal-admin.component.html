@@ -10,8 +10,11 @@
   </ion-toolbar>
 </ion-header> -->
 <ion-header>
-  <app-menu-general [isMenuButton]="'back'" [colorMenuButton]="'white'" [titleMenu]="'Objetivo'" [buttonNotification]="'notifications'"
-    [buttonUser]="'person'"></app-menu-general>
+  <app-menu-general [isMenuButton]="'back'"
+                    [colorMenuButton]="'white'"
+                    [titleMenu]="'Objetivo'"
+                    [buttonNotification]="'assets/iconos/notificaciones.svg'"
+                    [buttonUser]="'assets/iconos/usuario_blanco.svg'"></app-menu-general>
 </ion-header>
 <ion-content>
   <ion-grid fixed>
@@ -19,7 +22,9 @@
     <ng-template #Load>
       <h1>Detalles de: {{goal.title}}</h1>
       <ion-row>
-        <ion-col size-md="6" size-lg="6" size-xl="6">
+        <ion-col size-md="6"
+                 size-lg="6"
+                 size-xl="6">
           <ion-card [ngClass]="{'desktop-card': isDesktop }">
             <!-- [ngClass]="{'desktop-card': isDesktop }" -->
             <ion-card-header>
@@ -27,10 +32,12 @@
                 Progreso
               </ion-card-title>
               <ion-card-content>
-                <app-goal-progress subtitle="Progreso" [percent]="percent"></app-goal-progress>
+                <app-goal-progress subtitle="Progreso"
+                                   [percent]="percent"></app-goal-progress>
                 <ion-list lines="none">
                   <ion-list-header>Asesores del Objetivo</ion-list-header>
-                  <ion-item lines="none" *ngFor="let adv of goal.adviser">
+                  <ion-item lines="none"
+                            *ngFor="let adv of goal.adviser">
                     {{adv.name}} {{adv.lastName}}
                   </ion-item>
                 </ion-list>
@@ -38,7 +45,9 @@
             </ion-card-header>
           </ion-card>
         </ion-col>
-        <ion-col size-md="6" size-lg="6" size-xl="6">
+        <ion-col size-md="6"
+                 size-lg="6"
+                 size-xl="6">
           <ion-card [ngClass]="{'desktop-card': isDesktop }">
             <ion-card-header>
               <ion-card-title text-wrap>
@@ -46,11 +55,16 @@
               </ion-card-title>
 
             </ion-card-header>
-            <div *ngIf="goal.typeOfGoal === 'goals'" class="flex-container">
-              <mat-checkbox [disabled]="user.type === 'adviser' && goal.isByManagement" (change)="changeGoal($event)"
-                *ngFor="let item of goal.goals; let i=index" [(ngModel)]="goal.goals[i].isComplete">{{item.nameGoal}}</mat-checkbox>
+            <div *ngIf="goal.typeOfGoal === 'goals'"
+                 class="flex-container">
+              <mat-checkbox [disabled]="user.type === 'adviser' && goal.isByManagement"
+                            (change)="changeGoal($event)"
+                            *ngFor="let item of goal.goals; let i=index"
+                            [(ngModel)]="goal.goals[i].isComplete">{{item.nameGoal}}</mat-checkbox>
             </div>
-            <ion-list *ngIf="goal.typeOfGoal === 'goals'" style="padding: 5%;" lines="none">
+            <ion-list *ngIf="goal.typeOfGoal === 'goals'"
+                      style="padding: 5%;"
+                      lines="none">
               <ion-list-header>Otros Datos</ion-list-header>
               <ion-item lines="none">
                 <ion-label>
@@ -76,57 +90,78 @@
               <ion-item lines="none">
                 <ion-label>
                   <p><b>Fecha Fin</b></p>
-                  <p>{{fortmatDate2(goal.year, goal.month, goal.day)}}</p>
+                  <p>{{fortmatDate2(goal.year, goal.month,
+                    goal.day)}}</p>
                 </ion-label>
               </ion-item>
 
             </ion-list>
 
-            <div class="goals-number" *ngIf="goal.typeOfGoal !== 'goals' && isMoney">
+            <div class="goals-number"
+                 *ngIf="goal.typeOfGoal !== 'goals' && isMoney">
               <h4>Total a Cumplir </h4>
-              <ion-chip class="chips-detail" color="secondary">
-                <ion-chip-icon class="icon-chip-detail" name="cash"></ion-chip-icon>
+              <ion-chip class="chips-detail"
+                        color="secondary">
+                <ion-chip-icon class="icon-chip-detail"
+                               name="cash"></ion-chip-icon>
                 <ion-label>${{goal.quantitative}}</ion-label>
               </ion-chip>
               <h4>Total Cumplido </h4>
-              <ion-chip class="chips-detail" color="dark">
-                <ion-chip-icon class="icon-chip-detail" name="cash"></ion-chip-icon>
+              <ion-chip class="chips-detail"
+                        color="dark">
+                <ion-chip-icon class="icon-chip-detail"
+                               name="cash"></ion-chip-icon>
                 <ion-label>${{totalCurrent}}</ion-label>
               </ion-chip>
               <h4>Fecha de Inicio </h4>
-              <ion-chip class="chips-detail" color="medium">
-                <ion-chip-icon class="icon-chip-detail" name="calendar"></ion-chip-icon>
+              <ion-chip class="chips-detail"
+                        color="medium">
+                <ion-chip-icon class="icon-chip-detail"
+                               name="calendar"></ion-chip-icon>
                 <ion-label>{{formatDates(goal.timestamp)}}</ion-label>
               </ion-chip>
               <h4>Fecha de Fin </h4>
-              <ion-chip class="chips-detail" color="medium">
-                <ion-chip-icon class="icon-chip-detail" name="calendar"></ion-chip-icon>
-                <ion-label>{{fortmatDate2(goal.year, goal.month, goal.day)}}</ion-label>
+              <ion-chip class="chips-detail"
+                        color="medium">
+                <ion-chip-icon class="icon-chip-detail"
+                               name="calendar"></ion-chip-icon>
+                <ion-label>{{fortmatDate2(goal.year,
+                  goal.month, goal.day)}}</ion-label>
               </ion-chip>
 
             </div>
 
-            <div class="goals-number" *ngIf="goal.typeOfGoal !== 'goals' && !isMoney">
+            <div class="goals-number"
+                 *ngIf="goal.typeOfGoal !== 'goals' && !isMoney">
 
               <h4>Total a Cumplir </h4>
-              <ion-chip class="chips-detail" color="secondary">
-                <ion-chip-icon class="icon-chip-detail" name="checkmark-circle"></ion-chip-icon>
+              <ion-chip class="chips-detail"
+                        color="secondary">
+                <ion-chip-icon class="icon-chip-detail"
+                               name="checkmark-circle"></ion-chip-icon>
                 <ion-label>{{goal.quantitative}} ventas</ion-label>
               </ion-chip>
               <h4>Total Cumplido </h4>
-              <ion-chip class="chips-detail" color="dark">
-                <ion-chip-icon class="icon-chip-detail" name="clipboard"></ion-chip-icon>
+              <ion-chip class="chips-detail"
+                        color="dark">
+                <ion-chip-icon class="icon-chip-detail"
+                               name="clipboard"></ion-chip-icon>
                 <ion-label>{{totalCurrent}} ventas</ion-label>
               </ion-chip>
               <h4>Fecha de Inicio </h4>
-              <ion-chip class="chips-detail" color="medium">
-                <ion-chip-icon class="icon-chip-detail" name="calendar"></ion-chip-icon>
+              <ion-chip class="chips-detail"
+                        color="medium">
+                <ion-chip-icon class="icon-chip-detail"
+                               name="calendar"></ion-chip-icon>
                 <ion-label>{{formatDates(goal.timestamp)}}</ion-label>
               </ion-chip>
               <h4>Fecha de Fin </h4>
-              <ion-chip class="chips-detail" color="medium">
-                <ion-chip-icon class="icon-chip-detail" name="calendar"></ion-chip-icon>
-                <ion-label>{{fortmatDate2(goal.year, goal.month, goal.day)}}</ion-label>
+              <ion-chip class="chips-detail"
+                        color="medium">
+                <ion-chip-icon class="icon-chip-detail"
+                               name="calendar"></ion-chip-icon>
+                <ion-label>{{fortmatDate2(goal.year,
+                  goal.month, goal.day)}}</ion-label>
               </ion-chip>
             </div>
 

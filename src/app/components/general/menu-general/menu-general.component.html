@@ -1,20 +1,30 @@
-<ion-toolbar color="primary">
+<ion-toolbar color="five">
   <ion-buttons slot="start">
-    <ion-back-button *ngIf="isMenuButton === 'back'" [ngStyle]="{'color': colorMenuButton }"></ion-back-button>
-    <ion-menu-button *ngIf="isMenuButton === 'menu'" [ngStyle]="{'color': colorMenuButton }"></ion-menu-button>
+    <ion-back-button *ngIf="isMenuButton === 'back'"
+                     [ngStyle]="{'color': colorMenuButton }"></ion-back-button>
+    <ion-menu-button *ngIf="isMenuButton === 'menu'"
+                     [ngStyle]="{'color': colorMenuButton }"></ion-menu-button>
   </ion-buttons>
   <ion-title>
     {{titleMenu}}
   </ion-title>
   <ion-buttons slot="end">
-    <ion-button *ngIf="buttonNotification &&  (numOfNewNoti | async) > 0 && !isDesktop" id="cart-btn" [routerDirection]="'root'"
-      routerLink="/list-notification">
-      <ion-icon slot="icon-only" [name]="buttonNotification">
+    <ion-button *ngIf="buttonNotification &&  (numOfNewNoti | async) > 0 && !isDesktop"
+                id="cart-btn"
+                [routerDirection]="'root'"
+                routerLink="/list-notification">
+      <ion-icon slot="icon-only"
+                [src]="buttonNotification">
       </ion-icon>
-      <ion-badge *ngIf=" (numOfNewNoti | async) > 0" id="cart-badge" color="danger">{{(numOfNewNoti | async)}}</ion-badge>
+      <ion-badge *ngIf=" (numOfNewNoti | async) > 0"
+                 id="cart-badge"
+                 color="danger">{{(numOfNewNoti | async)}}</ion-badge>
     </ion-button>
-    <ion-button (click)="presentPopover($event)" *ngIf="buttonUser" [ngStyle]="{'color': colorMenuButton }">
-      <ion-icon slot="icon-only" [name]="buttonUser"></ion-icon>
+    <ion-button (click)="presentPopover($event)"
+                *ngIf="buttonUser"
+                [ngStyle]="{'color': colorMenuButton }">
+      <ion-icon slot="icon-only"
+                [src]="buttonUser"></ion-icon>
     </ion-button>
   </ion-buttons>
 </ion-toolbar>

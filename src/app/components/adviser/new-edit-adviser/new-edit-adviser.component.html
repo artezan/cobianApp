@@ -1,11 +1,15 @@
 <ion-header>
-  <app-menu-general [isMenuButton]="'back'" [colorMenuButton]="'white'" [titleMenu]="isNew ? 'Nuevo Asesor': 'Editar Asesor'"
-    [buttonNotification]="'notifications'" [buttonUser]="'person'"></app-menu-general>
+  <app-menu-general [isMenuButton]="'menu'"
+                    [colorMenuButton]="'white'"
+                    [titleMenu]="isNew ? 'Nuevo Asesor': 'Editar Asesor'"
+                    [buttonNotification]="'assets/iconos/notificaciones.svg'"
+                    [buttonUser]="'assets/iconos/usuario_blanco.svg'"></app-menu-general>
 </ion-header>
 
 <ion-content>
   <ion-grid fixed>
-    <div class="container" style="margin-top: 3%">
+    <div class="container"
+         style="margin-top: 3%">
       <form #newUserForm="ngForm">
         <mat-card>
           <mat-card-title>Complete los campos</mat-card-title>
@@ -13,39 +17,78 @@
             <!-- name -->
             <mat-form-field appearance="outline">
               <mat-label>Nombre</mat-label>
-              <input matInput placeholder="" [(ngModel)]="adviser.name" #name="ngModel" id="name" name="name" required>
-              <mat-error *ngIf="name.dirty || name.touched">Anotar Nombre</mat-error>
+              <input matInput
+                     placeholder=""
+                     [(ngModel)]="adviser.name "
+                     #name="ngModel"
+                     id="name"
+                     name="name"
+                     [disabled]="user.type === 'adviser'"
+                     required>
+              <mat-error *ngIf="name.dirty || name.touched">Anotar
+                Nombre</mat-error>
             </mat-form-field>
             <!-- lastname -->
             <mat-form-field appearance="outline">
               <mat-label>Apellido</mat-label>
-              <input matInput [(ngModel)]="adviser.lastName" #lastName="ngModel" id="lastName" name="lastName" required>
-              <mat-error *ngIf="lastName.dirty || lastName.touched">Anotar Apellido</mat-error>
+              <input matInput
+                     [(ngModel)]="adviser.lastName"
+                     #lastName="ngModel"
+                     id="lastName"
+                     name="lastName"
+                     [disabled]="user.type === 'adviser'"
+                     required>
+              <mat-error *ngIf="lastName.dirty || lastName.touched">Anotar
+                Apellido</mat-error>
             </mat-form-field>
             <!-- email -->
             <mat-form-field appearance="outline">
               <mat-label>Correo</mat-label>
-              <input matInput [(ngModel)]="adviser.email" #email="ngModel" id="email" name="email" required>
-              <mat-error *ngIf="email.dirty || email.touched">Anotar Correo</mat-error>
+              <input matInput
+                     [(ngModel)]="adviser.email"
+                     #email="ngModel"
+                     id="email"
+                     [disabled]="user.type === 'adviser'"
+                     name="email"
+                     required>
+              <mat-error *ngIf="email.dirty || email.touched">Anotar
+                Correo</mat-error>
             </mat-form-field>
             <!-- hora inicio -->
             <mat-form-field appearance="outline">
               <mat-label>Hora de Inicio (24Hrs)</mat-label>
-              <input matInput type="number" [(ngModel)]="adviser.hourStart" #hourStart="ngModel" id="hourStart" name="hourStart"
-                required>
-              <mat-error *ngIf="hourStart.dirty || hourStart.touched">Anotar Horas</mat-error>
+              <input matInput
+                     type="number"
+                     [(ngModel)]="adviser.hourStart"
+                     #hourStart="ngModel"
+                     id="hourStart"
+                     name="hourStart"
+                     required>
+              <mat-error *ngIf="hourStart.dirty || hourStart.touched">Anotar
+                Horas</mat-error>
             </mat-form-field>
             <!-- hora fin -->
             <mat-form-field appearance="outline">
               <mat-label>Hora Fin (24Hrs)</mat-label>
-              <input matInput type="number" [(ngModel)]="adviser.hourEnd" #hourEnd="ngModel" id="hourEnd" name="hourEnd"
-                required>
-              <mat-error *ngIf="hourEnd.dirty || hourEnd.touched">Anotar Horas</mat-error>
+              <input matInput
+                     type="number"
+                     [(ngModel)]="adviser.hourEnd"
+                     #hourEnd="ngModel"
+                     id="hourEnd"
+                     name="hourEnd"
+                     required>
+              <mat-error *ngIf="hourEnd.dirty || hourEnd.touched">Anotar
+                Horas</mat-error>
             </mat-form-field>
             <!-- city -->
             <mat-form-field appearance="outline">
               <mat-label>Ciudad</mat-label>
-              <mat-select [(ngModel)]="adviser.city" #city="ngModel" id="city" name="city" required>
+              <mat-select [(ngModel)]="adviser.city"
+                          #city="ngModel"
+                          id="city"
+                          name="city"
+                          [disabled]="user.type === 'adviser'"
+                          required>
                 <mat-option value="puebla">
                   Puebla
                 </mat-option>
@@ -53,25 +96,37 @@
                   México
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="city.dirty || city.touched">Anotar Ciudad</mat-error>
+              <mat-error *ngIf="city.dirty || city.touched">Anotar
+                Ciudad</mat-error>
             </mat-form-field>
             <!-- pass -->
             <mat-form-field appearance="outline">
               <mat-label>Contraseña</mat-label>
-              <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="adviser.password" #password="ngModel" id="password"
-                name="password" required>
-              <mat-error *ngIf="password.dirty || password.touched">Anotar Contraseña</mat-error>
-              <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+              <input matInput
+                     [type]="hide ? 'password' : 'text'"
+                     [(ngModel)]="adviser.password"
+                     #password="ngModel"
+                     id="password"
+                     name="password"
+                     required>
+              <mat-error *ngIf="password.dirty || password.touched">Anotar
+                Contraseña</mat-error>
+              <mat-icon matSuffix
+                        (click)="hide = !hide">{{hide ?
+                'visibility' : 'visibility_off'}}</mat-icon>
             </mat-form-field>
             <!-- buyers -->
-            <div *ngIf="user.type !== 'adviser'" class="flex-container2">
+            <div *ngIf="user.type !== 'adviser'"
+                 class="flex-container2">
               <div *ngIf="adviser.buyer && adviser.buyer.length > 0">
                 <mat-list role="list">
                   <h3 mat-subheader>Clientes del Asesor</h3>
-                  <mat-list-item role="listitem" *ngFor="let buyer of adviser.buyer">
+                  <mat-list-item role="listitem"
+                                 *ngFor="let buyer of adviser.buyer">
                     {{buyer.name}}
                     <!-- <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="schedule.adviser=undefined"></button> -->
-                    <button mat-icon-button (click)="deleteBuyer(buyer._id)">
+                    <button mat-icon-button
+                            (click)="deleteBuyer(buyer._id)">
                       <mat-icon color="warn">clear</mat-icon>
                     </button>
                   </mat-list-item>
@@ -87,19 +142,27 @@
                 </mat-select>
               </mat-form-field> -->
               <mat-list>
-                <h3 mat-subheader>{{buyerInput.length === 0 ? 'Asignar Nuevos clientes' : 'Clientes Nuevos
+                <h3 mat-subheader>{{buyerInput.length === 0
+                  ? 'Asignar Nuevos clientes' : 'Clientes
+                  Nuevos
                   Seleccionados'}}
                 </h3>
-                <mat-list-item *ngFor="let buyer of buyerInput; let i=index">{{ buyer.name }} {{ buyer.fatherLastName
+                <mat-list-item *ngFor="let buyer of buyerInput; let i=index">{{
+                  buyer.name }} {{ buyer.fatherLastName
                   }}
-                  <button mat-icon-button (click)="buyerInput.splice(i, 1)">
+                  <button mat-icon-button
+                          (click)="buyerInput.splice(i, 1)">
                     <mat-icon color="warn">clear</mat-icon>
                   </button>
                 </mat-list-item>
               </mat-list>
               <div style="margin-bottom: 1%;">
-                <button mat-stroked-button color="accent" (click)="searchBuyers()">
-                  <ion-spinner *ngIf="isSpinner" color="secondary" name="bubbles"></ion-spinner>
+                <button mat-stroked-button
+                        color="accent"
+                        (click)="searchBuyers()">
+                  <ion-spinner *ngIf="isSpinner"
+                               color="secondary"
+                               name="bubbles"></ion-spinner>
                   Buscar Clientes
                 </button>
               </div>
@@ -109,10 +172,20 @@
           </div>
           <mat-card-actions align="end">
             <div style="margin-right: 2%">
-              <span [matTooltip]=errorToShow [matTooltipClass]="'tooltip-size'" (mouseenter)="getPopMessage($event)">
-                <button *ngIf="isNew" id="submitUser" mat-raised-button color="primary" (click)="newCustomer()"
-                  [disabled]="!newUserForm.form.valid">Crear</button>
-                <button *ngIf="!isNew" id="submitUser" mat-raised-button color="primary" (click)="editCustomer()">Editar</button>
+              <span [matTooltip]=errorToShow
+                    [matTooltipClass]="'tooltip-size'"
+                    (mouseenter)="getPopMessage($event)">
+                <button *ngIf="isNew"
+                        id="submitUser"
+                        mat-raised-button
+                        color="primary"
+                        (click)="newCustomer()"
+                        [disabled]="!newUserForm.form.valid">Crear</button>
+                <button *ngIf="!isNew"
+                        id="submitUser"
+                        mat-raised-button
+                        color="primary"
+                        (click)="editCustomer()">Editar</button>
               </span>
             </div>
 

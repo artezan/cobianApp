@@ -2,27 +2,26 @@
 :root {
   /* Set the background of the entire app */
   // --ion-background-color: #fafafa;
-  /** primary **/
   --ion-color-primary: #000000;
   --ion-color-primary-rgb: 0, 0, 0;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
   --ion-color-primary-shade: #000000;
   --ion-color-primary-tint: #1a1a1a;
-  /** secondary **/
-  --ion-color-secondary: #f5811e;
-  --ion-color-secondary-rgb: 245, 129, 30;
+
+  --ion-color-secondary: #F58634;
+  --ion-color-secondary-rgb: 245, 134, 52;
   --ion-color-secondary-contrast: #000000;
   --ion-color-secondary-contrast-rgb: 0, 0, 0;
-  --ion-color-secondary-shade: #d8721a;
-  --ion-color-secondary-tint: #f68e35;
-  /** tertiary **/
-  --ion-color-tertiary: #ffb251;
-  --ion-color-tertiary-rgb: 255, 178, 81;
-  --ion-color-tertiary-contrast: #000000;
-  --ion-color-tertiary-contrast-rgb: 0, 0, 0;
-  --ion-color-tertiary-shade: #e09d47;
-  --ion-color-tertiary-tint: #ffba62;
+  --ion-color-secondary-shade: #d8762e;
+  --ion-color-secondary-tint: #f69248;
+
+  --ion-color-tertiary: #15949D;
+  --ion-color-tertiary-rgb: 21, 148, 157;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #12828a;
+  --ion-color-tertiary-tint: #2c9fa7;
   /** success **/
   --ion-color-success: #10dc60;
   --ion-color-success-rgb: 16, 220, 96;
@@ -67,4 +66,16 @@
   --ion-color-light-tint: #f5f6f9;
   /** blue **/
   --ion-color-blue: #0091ea;
+  --ion-font-family: 'Dosis';
+  font-family: 'Dosis';
+  --ion-color-four: #333D54;
+  --ion-color-five: #2B2B2B;
+  --ion-color-six: #CCD9E2;
+  --ion-color-seven: #C4C156;
+  --ion-color-eight: #D89803;
+  --ion-color-nine: #FFCC29;
+  --ion-color-ten: #A8A68C;
+  --ion-color-eleven: #C2272C;
+  --ion-color-twelve: #E6ECF1;
+
 }

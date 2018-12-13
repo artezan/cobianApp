@@ -8,11 +8,16 @@
     </ion-title>
 
   </ion-toolbar> -->
-  <app-menu-general [isMenuButton]="'menu'" [colorMenuButton]="'white'" [titleMenu]="'Administrador'"
-    [buttonNotification]="'notifications'" [buttonUser]="'person'"></app-menu-general>
-  <ion-toolbar [ngClass]="{'desktop-tabs': isDesktop}" color="primary">
-    <ion-segment color="secondary" (ionChange)="segmentChanged($event)">
-      <ion-segment-button checked value="movementsSegment">
+  <app-menu-general [isMenuButton]="'menu'"
+                    [colorMenuButton]="'white'"
+                    [titleMenu]="'Administrador'"
+                    [buttonNotification]="'assets/iconos/notificaciones.svg'"
+                    [buttonUser]="'assets/iconos/usuario_blanco.svg'"></app-menu-general>
+  <ion-toolbar [ngClass]="{'desktop-tabs': isDesktop}"
+               color="five">
+    <ion-segment (ionChange)="segmentChanged($event)">
+      <ion-segment-button checked
+                          value="movementsSegment">
         Movimientos
       </ion-segment-button>
       <ion-segment-button value="eventsSegment">
@@ -34,14 +39,17 @@
         <span *ngSwitchCase="'movementsSegment'">
           <!-- titulos -->
           <h2>Movimientos en el Sistema </h2>
-          <p>Se muestra cada acción realizada en el sistema con su estado</p>
+          <p>Se muestra cada acción realizada en el sistema
+            con su estado</p>
           <!-- filtros -->
           <div class="filters-conteiner">
             <div class="filters-day">
               <mat-form-field appearance="fill">
                 <mat-label>Filtrar por tiempo</mat-label>
-                <mat-select #time [(ngModel)]="filterTime" (valueChange)="filterTime = time.value; getFiltersGeneral()"
-                  placeholder="Fitrar Días">
+                <mat-select #time
+                            [(ngModel)]="filterTime"
+                            (valueChange)="filterTime = time.value; getFiltersGeneral()"
+                            placeholder="Fitrar Días">
                   <mat-option value=7>
                     7 Días
                   </mat-option>
@@ -55,31 +63,50 @@
                     Rango de Fecha
                   </mat-option>
                 </mat-select>
-                <button mat-button *ngIf="filterTime" matSuffix mat-icon-button aria-label="Clear" (click)="filterTime = undefined; startDate= undefined; endDate= undefined; getFiltersGeneral()">
+                <button mat-button
+                        *ngIf="filterTime"
+                        matSuffix
+                        mat-icon-button
+                        aria-label="Clear"
+                        (click)="filterTime = undefined; startDate= undefined; endDate= undefined; getFiltersGeneral()">
                   <mat-icon>close</mat-icon>
                 </button>
               </mat-form-field>
               <!-- inicio -->
-              <mat-form-field *ngIf="isCalendar" appearance="fill">
+              <mat-form-field *ngIf="isCalendar"
+                              appearance="fill">
                 <mat-label>Fecha Inicio</mat-label>
-                <input (dateChange)="dateSelectStart($event)" (focus)="picker.open()" matInput [matDatepicker]="picker"
-                  placeholder="Selecciona Fecha" required>
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <input (dateChange)="dateSelectStart($event)"
+                       (focus)="picker.open()"
+                       matInput
+                       [matDatepicker]="picker"
+                       placeholder="Selecciona Fecha"
+                       required>
+                <mat-datepicker-toggle matSuffix
+                                       [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
               <!-- fecha fin -->
 
-              <mat-form-field *ngIf="isCalendar" appearance="fill">
+              <mat-form-field *ngIf="isCalendar"
+                              appearance="fill">
                 <mat-label>Fecha Fin</mat-label>
-                <input (dateChange)="dateSelectEnd($event)" (focus)="pickerEnd.open()" matInput [matDatepicker]="pickerEnd"
-                  placeholder="Selecciona Fecha" required>
-                <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+                <input (dateChange)="dateSelectEnd($event)"
+                       (focus)="pickerEnd.open()"
+                       matInput
+                       [matDatepicker]="pickerEnd"
+                       placeholder="Selecciona Fecha"
+                       required>
+                <mat-datepicker-toggle matSuffix
+                                       [for]="pickerEnd"></mat-datepicker-toggle>
                 <mat-datepicker #pickerEnd></mat-datepicker>
               </mat-form-field>
             </div>
 
             <div class="filters-toogle">
-              <mat-button-toggle-group [value]="matButtonToggleGroup" style="flex-wrap: wrap" (change)="matButtonToggleGroup = $event.value; getFiltersGeneral(); ">
+              <mat-button-toggle-group [value]="matButtonToggleGroup"
+                                       style="flex-wrap: wrap"
+                                       (change)="matButtonToggleGroup = $event.value; getFiltersGeneral(); ">
                 <mat-button-toggle value="schedule">Citas</mat-button-toggle>
                 <mat-button-toggle value="ofert">Ofertas</mat-button-toggle>
                 <mat-button-toggle value="sbp">Estados</mat-button-toggle>
@@ -93,7 +120,11 @@
 
           <!-- <ion-row justify-content-around> -->
           <ion-row>
-            <ion-col size="12" size-md="6" size-lg="6" size-xl="6" *ngFor="let item of allData">
+            <ion-col size="12"
+                     size-md="6"
+                     size-lg="6"
+                     size-xl="6"
+                     *ngFor="let item of allData">
               <!-- 
               decide que carta
               ofert
@@ -125,29 +156,41 @@
                       <!-- listado -->
                       <ion-list lines="none">
                         <ion-item lines="none">
-                          <ion-icon slot="start" class="color-item-secondary" name="clipboard"></ion-icon>
-                          <ion-label slot="start" text-wrap>
+                          <ion-icon slot="start"
+                                    class="color-item-secondary"
+                                    name="clipboard"></ion-icon>
+                          <ion-label slot="start"
+                                     text-wrap>
                             <p><b>Notas:</b> </p>
                             <p>{{item.data.oferts.notes}}</p>
                           </ion-label>
                         </ion-item>
                         <ion-item lines="none">
-                          <ion-icon slot="start" class="color-item-secondary" name="cash"></ion-icon>
-                          <ion-label slot="start" text-wrap>
+                          <ion-icon slot="start"
+                                    class="color-item-secondary"
+                                    name="cash"></ion-icon>
+                          <ion-label slot="start"
+                                     text-wrap>
                             <p><b>Precio:</b> </p>
                             <p>${{item.data.oferts.ofertPrice}}</p>
                           </ion-label>
                         </ion-item>
                         <ion-item lines="none">
-                          <ion-icon slot="start" class="color-item-secondary" name="contact"></ion-icon>
-                          <ion-label slot="start" text-wrap>
+                          <ion-icon slot="start"
+                                    class="color-item-secondary"
+                                    name="contact"></ion-icon>
+                          <ion-label slot="start"
+                                     text-wrap>
                             <p><b>Cliente:</b> </p>
                             <p>{{item.data.oferts.buyer.name}}</p>
                           </ion-label>
                         </ion-item>
                         <ion-item lines="none">
-                          <ion-icon slot="start" class="color-item-secondary" name="home"></ion-icon>
-                          <ion-label slot="start" text-wrap>
+                          <ion-icon slot="start"
+                                    class="color-item-secondary"
+                                    name="home"></ion-icon>
+                          <ion-label slot="start"
+                                     text-wrap>
                             <p><b>Propiedad:</b> </p>
                             <p>{{item.data.oferts.property.name}}</p>
                           </ion-label>
@@ -181,69 +224,111 @@
                       </mat-expansion-panel-header>
                       <!-- listado -->
                       <ion-list lines="none">
-                        <ion-item lines="none" *ngIf="item.data.schedules.buyer">
-                          <ion-icon slot="start" class="color-item-secondary" name="contact"></ion-icon>
-                          <ion-label slot="start" text-wrap>
+                        <ion-item lines="none"
+                                  *ngIf="item.data.schedules.buyer">
+                          <ion-icon slot="start"
+                                    class="color-item-secondary"
+                                    name="contact"></ion-icon>
+                          <ion-label slot="start"
+                                     text-wrap>
                             <p><b>Cliente:</b> </p>
                             <p>{{item.data.schedules.buyer.name}}</p>
                           </ion-label>
                         </ion-item>
-                        <ion-item lines="none" *ngIf="item.data.schedules.adviser">
-                          <ion-icon slot="start" class="color-item-secondary" name="contact"></ion-icon>
-                          <ion-label slot="start" text-wrap>
+                        <ion-item lines="none"
+                                  *ngIf="item.data.schedules.adviser">
+                          <ion-icon slot="start"
+                                    class="color-item-secondary"
+                                    name="contact"></ion-icon>
+                          <ion-label slot="start"
+                                     text-wrap>
                             <p><b>Asesor:</b> </p>
                             <p>{{item.data.schedules.adviser.name}}</p>
                           </ion-label>
                         </ion-item>
-                        <ion-item lines="none" *ngIf="item.data.schedules.seller">
-                          <ion-icon slot="start" class="color-item-secondary" name="cash"></ion-icon>
-                          <ion-label slot="start" text-wrap>
+                        <ion-item lines="none"
+                                  *ngIf="item.data.schedules.seller">
+                          <ion-icon slot="start"
+                                    class="color-item-secondary"
+                                    name="cash"></ion-icon>
+                          <ion-label slot="start"
+                                     text-wrap>
                             <p><b>Vendedor:</b> </p>
                             <p>{{item.data.schedules.seller.name}}</p>
                           </ion-label>
                         </ion-item>
-                        <ion-item lines="none" *ngIf="item.data.schedules.property">
-                          <ion-icon slot="start" class="color-item-secondary" name="home"></ion-icon>
-                          <ion-label slot="start" text-wrap>
+                        <ion-item lines="none"
+                                  *ngIf="item.data.schedules.property">
+                          <ion-icon slot="start"
+                                    class="color-item-secondary"
+                                    name="home"></ion-icon>
+                          <ion-label slot="start"
+                                     text-wrap>
                             <p><b>Propiedad:</b> </p>
                             <p>{{item.data.schedules.property.name}}</p>
                           </ion-label>
                         </ion-item>
-                        <ion-item lines="none" *ngIf="item.data.schedules.address">
-                          <ion-icon slot="start" class="color-item-secondary" name="pin"></ion-icon>
-                          <ion-label slot="start" text-wrap>
+                        <ion-item lines="none"
+                                  *ngIf="item.data.schedules.address">
+                          <ion-icon slot="start"
+                                    class="color-item-secondary"
+                                    name="pin"></ion-icon>
+                          <ion-label slot="start"
+                                     text-wrap>
                             <p><b>Lugar:</b> </p>
                             <p>{{item.data.schedules.address}}</p>
                           </ion-label>
                         </ion-item>
-                        <ion-item lines="none" *ngIf="item.data.schedules.day">
-                          <ion-icon slot="start" class="color-item-secondary" name="calendar"></ion-icon>
-                          <ion-label slot="start" text-wrap>
+                        <ion-item lines="none"
+                                  *ngIf="item.data.schedules.day">
+                          <ion-icon slot="start"
+                                    class="color-item-secondary"
+                                    name="calendar"></ion-icon>
+                          <ion-label slot="start"
+                                     text-wrap>
                             <p><b>Fecha del Evento:</b> </p>
-                            <p>{{item.data.schedules.day}}/{{item.data.schedules.month +
+                            <p>{{item.data.schedules.day}}/{{item.data.schedules.month
+                              +
                               1}}/{{item.data.schedules.year}}</p>
                           </ion-label>
                         </ion-item>
-                        <ion-item lines="none" *ngIf="item.data.schedules.hour">
-                          <ion-icon slot="start" class="color-item-secondary" name="time"></ion-icon>
-                          <ion-label slot="start" text-wrap>
+                        <ion-item lines="none"
+                                  *ngIf="item.data.schedules.hour">
+                          <ion-icon slot="start"
+                                    class="color-item-secondary"
+                                    name="time"></ion-icon>
+                          <ion-label slot="start"
+                                     text-wrap>
                             <p><b>Hora del Evento:</b> </p>
-                            <p> {{formatHours(item.data.schedules.hour,item.data.schedules.minute)}} </p>
+                            <p>
+                              {{formatHours(item.data.schedules.hour,item.data.schedules.minute)}}
+                            </p>
                           </ion-label>
                         </ion-item>
-                        <ion-item lines="none" *ngIf="item.data.schedules.status">
-                          <ion-icon slot="start" class="color-item-secondary" name="cash"></ion-icon>
-                          <ion-label slot="start" text-wrap>
+                        <ion-item lines="none"
+                                  *ngIf="item.data.schedules.status">
+                          <ion-icon slot="start"
+                                    class="color-item-secondary"
+                                    name="cash"></ion-icon>
+                          <ion-label slot="start"
+                                     text-wrap>
                             <p><b>Estado:</b> </p>
-                            <p *ngIf="item.data.schedules.status === 'gris'">Cita Generada</p>
-                            <p *ngIf="item.data.schedules.status === 'verde'">Propuesta Cita</p>
-                            <p *ngIf="item.data.schedules.status === 'amarillo'">Esperando Visita</p>
+                            <p *ngIf="item.data.schedules.status === 'gris'">Cita
+                              Generada</p>
+                            <p *ngIf="item.data.schedules.status === 'verde'">Propuesta
+                              Cita</p>
+                            <p *ngIf="item.data.schedules.status === 'amarillo'">Esperando
+                              Visita</p>
                             <p *ngIf="item.data.schedules.status === 'rojo'">Visitada</p>
                           </ion-label>
                         </ion-item>
-                        <ion-item *ngIf="item.data.schedules.note" lines="none">
-                          <ion-icon slot="start" class="color-item-secondary" name="clipboard"></ion-icon>
-                          <ion-label slot="start" text-wrap>
+                        <ion-item *ngIf="item.data.schedules.note"
+                                  lines="none">
+                          <ion-icon slot="start"
+                                    class="color-item-secondary"
+                                    name="clipboard"></ion-icon>
+                          <ion-label slot="start"
+                                     text-wrap>
                             <p><b>Notas:</b> </p>
                             <p>{{item.data.schedules.note}}</p>
                           </ion-label>
@@ -281,16 +366,24 @@
 
                       <!-- listado -->
                       <ion-list lines="none">
-                        <ion-item lines="none" *ngIf="item.data.credits.buyer">
-                          <ion-icon slot="start" class="color-item-secondary" name="contact"></ion-icon>
-                          <ion-label slot="start" text-wrap>
+                        <ion-item lines="none"
+                                  *ngIf="item.data.credits.buyer">
+                          <ion-icon slot="start"
+                                    class="color-item-secondary"
+                                    name="contact"></ion-icon>
+                          <ion-label slot="start"
+                                     text-wrap>
                             <p><b>Cliente:</b> </p>
                             <p>{{item.data.credits.buyer.name}}</p>
                           </ion-label>
                         </ion-item>
-                        <ion-item lines="none" *ngIf="item.data.credits.property">
-                          <ion-icon slot="start" class="color-item-secondary" name="home"></ion-icon>
-                          <ion-label slot="start" text-wrap>
+                        <ion-item lines="none"
+                                  *ngIf="item.data.credits.property">
+                          <ion-icon slot="start"
+                                    class="color-item-secondary"
+                                    name="home"></ion-icon>
+                          <ion-label slot="start"
+                                     text-wrap>
                             <p><b>Propiedad:</b> </p>
                             <p>{{item.data.credits.property.name}}</p>
                           </ion-label>
@@ -329,16 +422,24 @@
 
                       <!-- listado -->
                       <ion-list lines="none">
-                        <ion-item lines="none" *ngIf="item.data.sbps.buyer">
-                          <ion-icon slot="start" class="color-item-secondary" name="contact"></ion-icon>
-                          <ion-label slot="start" text-wrap>
+                        <ion-item lines="none"
+                                  *ngIf="item.data.sbps.buyer">
+                          <ion-icon slot="start"
+                                    class="color-item-secondary"
+                                    name="contact"></ion-icon>
+                          <ion-label slot="start"
+                                     text-wrap>
                             <p><b>Cliente:</b> </p>
                             <p>{{item.data.sbps.buyer.name}}</p>
                           </ion-label>
                         </ion-item>
-                        <ion-item lines="none" *ngIf="item.data.sbps.property">
-                          <ion-icon slot="start" class="color-item-secondary" name="home"></ion-icon>
-                          <ion-label slot="start" text-wrap>
+                        <ion-item lines="none"
+                                  *ngIf="item.data.sbps.property">
+                          <ion-icon slot="start"
+                                    class="color-item-secondary"
+                                    name="home"></ion-icon>
+                          <ion-label slot="start"
+                                     text-wrap>
                             <p><b>Propiedad:</b> </p>
                             <p>{{item.data.sbps.property.name}}</p>
                           </ion-label>
@@ -347,36 +448,45 @@
                         <p><b>Progreso:</b> </p>
                         <ng-container *ngIf="isiOS; then thenTemplate; else elseTemplate"></ng-container>
                         <ng-template #thenTemplate>
-                          <p> <span class="status-point" [ngClass]="
+                          <p> <span class="status-point"
+                                  [ngClass]="
                             {'background-verde': item.data.sbps.status === 'verde', 
                            'background-amarillo': item.data.sbps.status === 'amarillo',
                            'background-rojo':  item.data.sbps.status === 'rojo',
                            'background-gris': item.data.sbps.status === 'gris',
                            'background-azul':  item.data.sbps.status === 'azul' }"></span>
                             {{item.data.sbps.status
-                            === 'rojo' ? 'Cierre' : item.data.sbps.status
-                            === 'verde' ? 'Interés': item.data.sbps.status
-                            === 'amarillo' ? 'Seguimiento': item.data.sbps.status
-                            === 'azul' ? 'Post Venta' : ''}}</p>
+                            === 'rojo' ? 'Cierre' :
+                            item.data.sbps.status
+                            === 'verde' ? 'Interés':
+                            item.data.sbps.status
+                            === 'amarillo' ? 'Seguimiento':
+                            item.data.sbps.status
+                            === 'azul' ? 'Post Venta' :
+                            ''}}</p>
                         </ng-template>
                         <ng-template #elseTemplate>
                           <div class="container">
                             <ul class="progressbar">
-                              <li class="item " [ngClass]="
+                              <li class="item "
+                                  [ngClass]="
                                   {'active-verde': item.data.sbps.status === 'verde', 
                             'active-amarillo':  item.data.sbps.status === 'amarillo',
                             'active-rojo':  item.data.sbps.status === 'rojo',
                             'active-azul':  item.data.sbps.status === 'azul' }">Información</li>
-                              <li class="item" [ngClass]="
+                              <li class="item"
+                                  [ngClass]="
                                   { 
                             'active-amarillo':  item.data.sbps.status === 'amarillo',
                             'active-rojo':  item.data.sbps.status === 'rojo',
                             'active-azul':  item.data.sbps.status === 'azul' }">Seguimiento</li>
-                              <li class="item" [ngClass]="
+                              <li class="item"
+                                  [ngClass]="
                                   {
                             'active-rojo':  item.data.sbps.status === 'rojo',
                             'active-azul':  item.data.sbps.status === 'azul' }">Cierre</li>
-                              <li class="item" [ngClass]="
+                              <li class="item"
+                                  [ngClass]="
                                   {
                             'active-azul':  item.data.sbps.status === 'azul' }">PostVenta</li>
                             </ul>
@@ -398,8 +508,11 @@
           </ion-row>
           <!-- Cargar mas -->
           <div style="text-align: center; margin-top: 1%">
-            <ion-button (click)="loadMore();getFiltersGeneral()" shape="round">
-              <ion-spinner *ngIf="isSpinner" style="color: white" name="bubbles"></ion-spinner>
+            <ion-button (click)="loadMore();getFiltersGeneral()"
+                        shape="round">
+              <ion-spinner *ngIf="isSpinner"
+                           style="color: white"
+                           name="bubbles"></ion-spinner>
               {{titleButton}}
             </ion-button>
           </div>
@@ -411,12 +524,15 @@
           <ng-template #showSchedule>
             <h2>Citas Personales </h2>
 
-            <ion-list lines="none" *ngIf="!isOne">
+            <ion-list lines="none"
+                      *ngIf="!isOne">
               <ion-item lines="none">
-                <ion-button (click)="isAll = !isAll;getAllSchedule(); ">{{isAll ? 'Mostrar Citas de hoy':'Mostrar
+                <ion-button (click)="isAll = !isAll;getAllSchedule(); ">{{isAll
+                  ? 'Mostrar Citas de hoy':'Mostrar
                   todos'}}</ion-button>
               </ion-item>
-              <ion-item lines="none" *ngIf="!isAll">
+              <ion-item lines="none"
+                        *ngIf="!isAll">
                 <ion-chip color="secondary">
                   <ion-label>Mostrando Citas de hoy
                   </ion-label>
@@ -426,33 +542,49 @@
             </ion-list>
             <ion-grid>
               <ion-row>
-                <ion-col size-sm="6" size-md="6" size-lg="6" size-xl="6" size="12" *ngFor="let schedule of scheduleToShow">
+                <ion-col size-sm="6"
+                         size-md="6"
+                         size-lg="6"
+                         size-xl="6"
+                         size="12"
+                         *ngFor="let schedule of scheduleToShow">
                   <ion-card [ngClass]="{
                 'desktop-card': isDesktop  }">
                     <ion-card-header>
-                      <ion-card-subtitle text-wrap>Fecha del Cita:
-                        {{schedule.day}}/{{schedule.month + 1}}/{{schedule.year}}</ion-card-subtitle>
-                      <ion-card-subtitle>Hora: {{formatHours(schedule.hour,schedule.minute)}} </ion-card-subtitle>
+                      <ion-card-subtitle text-wrap>Fecha
+                        del Cita:
+                        {{schedule.day}}/{{schedule.month +
+                        1}}/{{schedule.year}}</ion-card-subtitle>
+                      <ion-card-subtitle>Hora:
+                        {{formatHours(schedule.hour,schedule.minute)}}
+                      </ion-card-subtitle>
 
                       <ion-card-title text-wrap>{{schedule.title}}</ion-card-title>
                     </ion-card-header>
                     <ion-card-content text-wrap>
                       <ion-item lines="none">
-                        <ion-icon slot="start" class="color-item-secondary" name="clipboard"></ion-icon>
-                        <ion-label text-wrap><b>Detalles del evento:</b>
+                        <ion-icon slot="start"
+                                  class="color-item-secondary"
+                                  name="clipboard"></ion-icon>
+                        <ion-label text-wrap><b>Detalles
+                            del evento:</b>
                           <p>
                             {{schedule.note}}
                           </p>
                         </ion-label>
                       </ion-item>
                       <ion-item lines="none">
-                        <ion-icon slot="start" class="color-item-secondary" name="pin"></ion-icon>
-                        <ion-label text-wrap><b>Dirección: </b>
+                        <ion-icon slot="start"
+                                  class="color-item-secondary"
+                                  name="pin"></ion-icon>
+                        <ion-label text-wrap><b>Dirección:
+                          </b>
                           <p>{{schedule.address}}</p>
                           <!-- <a [href]="'http://maps.google.com/?q='+schedule.address+', Puebla'">Ver mapa</a> -->
                           <!-- <a (click)="openMaps(schedule.address)">Ver mapa</a> -->
                           <!-- https://www.google.com/maps/search/?api=1&parameters -->
-                          <app-maps-button slot="end" [address]="schedule.address"></app-maps-button>
+                          <app-maps-button slot="end"
+                                           [address]="schedule.address"></app-maps-button>
                         </ion-label>
                       </ion-item>
 
@@ -465,9 +597,11 @@
 
           </ng-template>
           <ng-template #noShow>
-            <ion-list lines="none" *ngIf="!isOne">
+            <ion-list lines="none"
+                      *ngIf="!isOne">
               <ion-item lines="none">
-                <ion-button (click)="isAll = !isAll;getAllSchedule(); ">Mostrar Todos</ion-button>
+                <ion-button (click)="isAll = !isAll;getAllSchedule(); ">Mostrar
+                  Todos</ion-button>
               </ion-item>
             </ion-list>
             <ion-card>
@@ -493,8 +627,12 @@
 
 </ion-content>
 <!-- fab placed to the bottom end -->
-<ion-fab vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button [routerLink]="['/personal-schedule']" *ngIf="segment === 'eventsSegment'" color="secondary">
+<ion-fab vertical="bottom"
+         horizontal="end"
+         slot="fixed">
+  <ion-fab-button [routerLink]="['/personal-schedule']"
+                  *ngIf="segment === 'eventsSegment'"
+                  color="secondary">
     <ion-icon name="calendar"></ion-icon>
   </ion-fab-button>
 </ion-fab>

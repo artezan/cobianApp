@@ -12,21 +12,18 @@
   </ion-header>
 -->
 <ion-header>
-  <app-menu-general
-    [isMenuButton]="'back'"
-    [colorMenuButton]="'white'"
-    [titleMenu]="'Usuario'"
-    [buttonNotification]="'notifications'"
-    [buttonUser]="'person'"
-  ></app-menu-general>
+  <app-menu-general [isMenuButton]="'back'"
+                    [colorMenuButton]="'white'"
+                    [titleMenu]="'Usuario'"
+                    [buttonNotification]="'assets/iconos/notificaciones.svg'"
+                    [buttonUser]="'assets/iconos/usuario_blanco.svg'"></app-menu-general>
 </ion-header>
 <ion-content>
   <ion-grid fixed>
-    <ng-container
-      *ngIf="isLoad; then: thenTemplate; else: elseTemplate"
-    ></ng-container>
+    <ng-container *ngIf="isLoad; then: thenTemplate; else: elseTemplate"></ng-container>
     <ng-template #thenTemplate>
-      <div class="container" style="margin-top: 3%">
+      <div class="container"
+           style="margin-top: 3%">
         <form #newUserForm="ngForm">
           <mat-card>
             <mat-card-title>Complete los campos</mat-card-title>
@@ -34,130 +31,108 @@
               <!-- name -->
               <mat-form-field appearance="outline">
                 <mat-label>Nombre</mat-label>
-                <input
-                  matInput
-                  placeholder=""
-                  [(ngModel)]="preBuyer.name"
-                  #name="ngModel"
-                  id="name"
-                  name="name"
-                  required
-                />
-                <mat-error *ngIf="name.dirty || name.touched"
-                  >Anotar Nombre</mat-error
-                >
+                <input matInput
+                       placeholder=""
+                       [(ngModel)]="preBuyer.name"
+                       #name="ngModel"
+                       id="name"
+                       name="name"
+                       required />
+                <mat-error *ngIf="name.dirty || name.touched">Anotar
+                  Nombre</mat-error>
               </mat-form-field>
               <!-- lastname -->
               <mat-form-field appearance="outline">
                 <mat-label>Apellido</mat-label>
-                <input
-                  matInput
-                  [(ngModel)]="preBuyer.lastName"
-                  #lastName="ngModel"
-                  id="lastName"
-                  name="lastName"
-                  required
-                />
-                <mat-error *ngIf="lastName.dirty || lastName.touched"
-                  >Anotar Apellido</mat-error
-                >
+                <input matInput
+                       [(ngModel)]="preBuyer.lastName"
+                       #lastName="ngModel"
+                       id="lastName"
+                       name="lastName"
+                       required />
+                <mat-error *ngIf="lastName.dirty || lastName.touched">Anotar
+                  Apellido</mat-error>
               </mat-form-field>
               <!-- email -->
               <mat-form-field appearance="outline">
                 <mat-label>Correo</mat-label>
-                <input
-                  matInput
-                  [(ngModel)]="preBuyer.email"
-                  #email="ngModel"
-                  id="email"
-                  name="email"
-                  required
-                />
-                <mat-error *ngIf="email.dirty || email.touched"
-                  >Anotar Correo</mat-error
-                >
+                <input matInput
+                       [(ngModel)]="preBuyer.email"
+                       #email="ngModel"
+                       id="email"
+                       name="email"
+                       required />
+                <mat-error *ngIf="email.dirty || email.touched">Anotar
+                  Correo</mat-error>
               </mat-form-field>
               <!-- phone -->
               <mat-form-field appearance="outline">
                 <mat-label>Teléfono</mat-label>
-                <input
-                  matInput
-                  [(ngModel)]="preBuyer.phone"
-                  #phone="ngModel"
-                  id="phone"
-                  name="phone"
-                  required
-                />
-                <mat-error *ngIf="phone.dirty || phone.touched"
-                  >Anotar Teléfono</mat-error
-                >
+                <input matInput
+                       [(ngModel)]="preBuyer.phone"
+                       #phone="ngModel"
+                       id="phone"
+                       name="phone"
+                       required />
+                <mat-error *ngIf="phone.dirty || phone.touched">Anotar
+                  Teléfono</mat-error>
               </mat-form-field>
               <!-- pass -->
               <mat-form-field appearance="outline">
                 <mat-label>Contraseña</mat-label>
-                <input
-                  matInput
-                  [type]="hide ? 'password' : 'text'"
-                  [(ngModel)]="preBuyer.password"
-                  #password="ngModel"
-                  id="password"
-                  name="password"
-                  required
-                />
-                <mat-error *ngIf="password.dirty || password.touched"
-                  >Anotar Contraseña</mat-error
-                >
-                <mat-icon matSuffix (click)="hide = !hide">{{
+                <input matInput
+                       [type]="hide ? 'password' : 'text'"
+                       [(ngModel)]="preBuyer.password"
+                       #password="ngModel"
+                       id="password"
+                       name="password"
+                       required />
+                <mat-error *ngIf="password.dirty || password.touched">Anotar
+                  Contraseña</mat-error>
+                <mat-icon matSuffix
+                          (click)="hide = !hide">{{
                   hide ? 'visibility' : 'visibility_off'
-                }}</mat-icon>
+                  }}</mat-icon>
               </mat-form-field>
 
               <!-- prop -->
               <mat-form-field appearance="outline">
                 <mat-label>Preventa</mat-label>
-                <mat-select
-                  [(value)]="pre"
-                  (selectionChange)="flag = true"
-                  [(ngModel)]="pre"
-                  #property="ngModel"
-                  id="property"
-                  name="property"
-                  multiple
-                >
-                  <mat-option *ngFor="let prop of buildings" [value]="prop._id">
+                <mat-select [(value)]="pre"
+                            (selectionChange)="flag = true"
+                            [(ngModel)]="pre"
+                            #property="ngModel"
+                            id="property"
+                            name="property"
+                            multiple>
+                  <mat-option *ngFor="let prop of buildings"
+                              [value]="prop._id">
                     {{ prop.name }}
                   </mat-option>
                 </mat-select>
-                <mat-error *ngIf="property.dirty || property.touched"
-                  >Anotar Preventa</mat-error
-                >
+                <mat-error *ngIf="property.dirty || property.touched">Anotar
+                  Preventa</mat-error>
               </mat-form-field>
             </div>
             <mat-card-actions align="end">
               <div style="margin-right: 2%">
-                <span
-                  [matTooltip]="errorToShow"
-                  [matTooltipClass]="'tooltip-size'"
-                  (mouseenter)="getPopMessage($event)"
-                >
-                  <button
-                    *ngIf="isNew"
-                    id="submitUser"
-                    mat-raised-button
-                    color="primary"
-                    (click)="newCustomer()"
-                    [disabled]="!newUserForm.form.valid"
-                  >
+                <span [matTooltip]="errorToShow"
+                      [matTooltipClass]="'tooltip-size'"
+                      (mouseenter)="getPopMessage($event)">
+                  <button *ngIf="isNew"
+                          id="submitUser"
+                          mat-raised-button
+                          color="primary"
+                          (click)="newCustomer()"
+                          [disabled]="!newUserForm.form.valid">
                     Crear
                   </button>
-                  <button
-                    *ngIf="!isNew"
-                    id="submitUser"
-                    mat-raised-button
-                    color="primary"
-                    [disabled]="!newUserForm.form.valid"
-                    (click)="editCustomer()"
-                  >
+                  <button *ngIf="!isNew"
+                          id="submitUser"
+                          mat-raised-button
+                          color="primary"
+                          [disabled]="!newUserForm.form.valid"
+                          (click)="editCustomer()">
                     Editar
                   </button>
                 </span>

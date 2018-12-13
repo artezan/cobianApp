@@ -4,48 +4,78 @@
       <ion-menu-button style="color: white !important"></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Propiedades
+      Propiedades\
     </ion-title>
   </ion-toolbar>
 </ion-header> -->
 <ion-header>
-  <app-menu-general [buttonNotification]="'notifications'" [isMenuButton]="'menu'" [colorMenuButton]="'white'"
-    [titleMenu]="'Propiedades'" [buttonUser]="'person'"></app-menu-general>
+  <app-menu-general [buttonNotification]="'assets/iconos/notificaciones.svg'"
+                    [isMenuButton]="'menu'"
+                    [colorMenuButton]="'white'"
+                    [titleMenu]="'Propiedades'"
+                    [buttonUser]="'assets/iconos/usuario_blanco.svg'"></app-menu-general>
 </ion-header>
+<div class="sg">
+  <ion-segment (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="match"
+                        checked>
+      <span class="font-size-16 "
+            text-uppercase>Sugeridas</span>
+    </ion-segment-button>
+    <ion-segment-button value="search">
+      <span class="font-size-16 "
+            text-uppercase>Todas</span>
+    </ion-segment-button>
+  </ion-segment>
+</div>
 <ion-content padding>
   <!-- cargar o no -->
   <ng-container *ngIf="isLoad; then thenTemplate; else elseTemplate"></ng-container>
   <ng-template #thenTemplate>
     <!--  Segment -->
-    <ion-segment (ionChange)="segmentChanged($event)" color="secondary">
-      <ion-segment-button value="match" checked>
-        Sugeridas
-      </ion-segment-button>
-      <ion-segment-button value="search">
-        Todas
-      </ion-segment-button>
-    </ion-segment>
 
     <!-- match -->
     <ng-container *ngIf="segment === 'match'; then matchTemplate; else searchTemplate"></ng-container>
     <ng-template #matchTemplate>
-      <h1>Propiedades Sugeridas</h1>
-      <ion-label>Se muestran las coincidencias con tu perfil</ion-label>
+      <h2><b>Propiedades Sugeridas</b></h2>
+      <p>Se muestran las coincidencias con tu
+        perfil</p>
       <ion-list lines="full">
-        <ion-item lines="inset" detail *ngFor="let property of properties" (click)="itemDetail(property)">
-          <ion-icon *ngIf="property.typeOfProperty === 'departamento'" style="color: #F5811E" name="business" slot="start"></ion-icon>
-          <ion-icon *ngIf="property.typeOfProperty === 'casa'" style="color: #F5811E" name="home" slot="start"></ion-icon>
+        <ion-item lines="full"
+                  detail
+                  *ngFor="let property of properties"
+                  (click)="itemDetail(property)">
+          <!-- icons -->
+          <ion-icon *ngIf="property.typeOfProperty === 'departamento'"
+                    src="assets/iconos/departamentos.svg"
+                    slot="start"></ion-icon>
+          <ion-icon *ngIf="property.typeOfProperty === 'casa'"
+                    src="assets/iconos/casa.svg"
+                    slot="start"></ion-icon>
+          <ion-icon *ngIf="property.typeOfProperty === 'desarrollo'"
+                    src="assets/iconos/Desarrollo.svg"
+                    slot="start"></ion-icon>
+          <ion-icon *ngIf="property.typeOfProperty === 'terreno'"
+                    src="assets/iconos/terreno.svg"
+                    slot="start"></ion-icon>
+
           <ion-label text-wrap>
             <h2>{{property.name}}</h2>
             <p>{{property.zone}}</p>
-            <ion-chip *ngIf="property.percentage > 60" class="high">
-              <ion-label>{{property.percentage.toFixed(0)}}% de coincidencia</ion-label>
+            <ion-chip *ngIf="property.percentage > 60"
+                      color="tertiary">
+              <ion-label>{{property.percentage.toFixed(0)}}%
+                de coincidencia</ion-label>
             </ion-chip>
-            <ion-chip *ngIf="property.percentage <= 60 && property.percentage > 30 " class="medium">
-              <ion-label>{{property.percentage.toFixed(0)}}% de coincidencia</ion-label>
+            <ion-chip *ngIf="property.percentage <= 60 && property.percentage > 30 "
+                      color="eight">
+              <ion-label>{{property.percentage.toFixed(0)}}%
+                de coincidencia</ion-label>
             </ion-chip>
-            <ion-chip *ngIf="property.percentage <= 30" class="low">
-              <ion-label>{{property.percentage.toFixed(0)}}% de coincidencia</ion-label>
+            <ion-chip *ngIf="property.percentage <= 30"
+                      color="ten">
+              <ion-label>{{property.percentage.toFixed(0)}}%
+                de coincidencia</ion-label>
             </ion-chip>
           </ion-label>
         </ion-item>
@@ -56,8 +86,12 @@
     <ng-template #searchTemplate>
 
       <!-- menu end -->
-      <ion-menu contentId="menu-end" menuId="filters" side="end" type="overlay">
-        <app-general-filters (filters)="getFilters($event)" (resetAll)="getAllProperty()"></app-general-filters>
+      <ion-menu contentId="menu-end"
+                menuId="filters"
+                side="end"
+                type="overlay">
+        <app-general-filters (filters)="getFilters($event)"
+                             (resetAll)="getAllProperty()"></app-general-filters>
       </ion-menu>
 
 
@@ -65,16 +99,32 @@
       <div id='menu-end'>
         <h1>Todas las Propiedades </h1>
         <ion-item lines="none">
-          <ion-button (click)="menuCtr.open('filters')" color="secondary" fill="outline" slot="end">
+          <ion-button (click)="menuCtr.open('filters')"
+                      color="secondary"
+                      fill="outline"
+                      slot="end">
             <ion-icon name="funnel"></ion-icon>Filtros({{numOfFilers}})
           </ion-button>
         </ion-item>
         <ng-container *ngIf=" (allProperties | async)?.length ; then dataDisplay; else noDataDisplay "></ng-container>
         <ng-template #dataDisplay>
           <ion-list lines="full">
-            <ion-item lines="inset" detail *ngFor="let property of allProperties | async" (click)="itemDetail(property)">
-              <ion-icon *ngIf="property.typeOfProperty === 'departamento'" style="color: #F5811E" name="business" slot="start"></ion-icon>
-              <ion-icon *ngIf="property.typeOfProperty === 'casa'" style="color: #F5811E" name="home" slot="start"></ion-icon>
+            <ion-item lines="inset"
+                      detail
+                      *ngFor="let property of allProperties | async"
+                      (click)="itemDetail(property)">
+              <ion-icon *ngIf="property.typeOfProperty === 'departamento'"
+                        src="assets/iconos/departamentos.svg"
+                        slot="start"></ion-icon>
+              <ion-icon *ngIf="property.typeOfProperty === 'casa'"
+                        src="assets/iconos/casa.svg"
+                        slot="start"></ion-icon>
+              <ion-icon *ngIf="property.typeOfProperty === 'desarrollo'"
+                        src="assets/iconos/Desarrollo.svg"
+                        slot="start"></ion-icon>
+              <ion-icon *ngIf="property.typeOfProperty === 'terreno'"
+                        src="assets/iconos/terreno.svg"
+                        slot="start"></ion-icon>
               <ion-label text-wrap>
                 <h2>{{property.name}}</h2>
                 <p>{{property.zone}}</p>

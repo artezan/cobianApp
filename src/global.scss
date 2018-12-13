@@ -9,13 +9,136 @@
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
+// @import './assets/DOSIS_FAMILY/';
 $mdc-theme-primary: #000000; // primary color
 $mdc-theme-secondary: #f5811e; // secondary color F58634
 @import '~@angular-mdc/theme/material';
 
+:root[mode='md'],
+:root[mode='ios'] {
+  /*  --ion-font-family: "Roboto", "Helvetica Neue", sans-serif;
+  font-family: "Roboto", "Helvetica Neue", sans-serif; */
+  --ion-font-family: 'Dosis';
+  font-family: 'Dosis';
+}
+
+.font-size-16 {
+  font-size: 16px
+}
+
+.ion-color-blue {
+  --ion-color-base: #0091ea;
+  --ion-color-base-rgb: 0, 145, 234;
+  --ion-color-contrast: #ffffff;
+  --ion-color-contrast-rgb: 255, 255, 255;
+  --ion-color-shade: #0080ce;
+  --ion-color-tint: #0080ce;
+}
+
+.ion-color-four {
+  --ion-color-base: #333D54;
+  --ion-color-base-rgb: 51, 61, 84;
+  --ion-color-contrast: #ffffff;
+  --ion-color-contrast-rgb: 255, 255, 255;
+  --ion-color-shade: #2d364a;
+  --ion-color-tint: #475065;
+}
+
+.ion-color-five {
+  --ion-color-base: #2B2B2B;
+  --ion-color-base-rgb: 43, 43, 43;
+  --ion-color-contrast: #ffffff;
+  --ion-color-contrast-rgb: 255, 255, 255;
+  --ion-color-shade: #262626;
+  --ion-color-tint: #404040;
+}
+
+.ion-color-six {
+  --ion-color-base: #CCD9E2;
+  --ion-color-base-rgb: 204, 217, 226;
+  --ion-color-contrast: #000000;
+  --ion-color-contrast-rgb: 0, 0, 0;
+  --ion-color-shade: #b4bfc7;
+  --ion-color-tint: #d1dde5;
+}
+
+.ion-color-seven {
+  --ion-color-base: #C4C156;
+  --ion-color-base-rgb: 196, 193, 86;
+  --ion-color-contrast: #000000;
+  --ion-color-contrast-rgb: 0, 0, 0;
+  --ion-color-shade: #acaa4c;
+  --ion-color-tint: #cac767;
+}
+
+.ion-color-eight {
+  --ion-color-base: #D89803;
+  --ion-color-base-rgb: 216, 152, 3;
+  --ion-color-contrast: #000000;
+  --ion-color-contrast-rgb: 0, 0, 0;
+  --ion-color-shade: #be8603;
+  --ion-color-tint: #dca21c;
+}
+
+.ion-color-nine {
+  --ion-color-base: #FFCC29;
+  --ion-color-base-rgb: 255, 204, 41;
+  --ion-color-contrast: #000000;
+  --ion-color-contrast-rgb: 0, 0, 0;
+  --ion-color-shade: #e0b424;
+  --ion-color-tint: #ffd13e;
+}
+
+.ion-color-ten {
+  --ion-color-base: #A8A68C;
+  --ion-color-base-rgb: 168, 166, 140;
+  --ion-color-contrast: #000000;
+  --ion-color-contrast-rgb: 0, 0, 0;
+  --ion-color-shade: #94927b;
+  --ion-color-tint: #b1af98;
+}
+
+.ion-color-eleven {
+  --ion-color-base: #C2272C;
+  --ion-color-base-rgb: 194, 39, 44;
+  --ion-color-contrast: #ffffff;
+  --ion-color-contrast-rgb: 255, 255, 255;
+  --ion-color-shade: #ab2227;
+  --ion-color-tint: #c83d41;
+}
+
+.ion-color-twelve {
+  --ion-color-base: #E6ECF1;
+  --ion-color-base-rgb: 230, 236, 241;
+  --ion-color-contrast: #000000;
+  --ion-color-contrast-rgb: 0, 0, 0;
+  --ion-color-shade: #cad0d4;
+  --ion-color-tint: #e9eef2;
+}
+
+
+
 .mdc-tab__ripple::before,
 .mdc-tab__ripple::after {
   background-color: var(--ion-color-secondary);
+}
+
+ion-segment {
+  --background-checked: var(--ion-color-six);
+  --background: var(--ion-color-twelve);
+  --color: black;
+  --color-checked: black;
+  --border-color: transparent;
+  --border-color-checked: transparent;
+}
+
+ion-chip {
+  border-radius: 4px !important;
+  background-color: transparent !important;
+  font-size: 16px !important;
+  border: 2px solid;
+  border-color: var(--ion-color-base);
+  color: var(--ion-color-base) !important;
 }
 
 .tabs-color {
@@ -48,7 +171,7 @@ app-refre {
 body,
 html {
   height: 100%;
-  // font-family: 'Dosis' !important
+  font-family: 'Dosis' !important;
 }
 
 .space-buttons {
@@ -146,7 +269,6 @@ html {
 .my-contenet-chat {
   margin: 3% 20% 2% 20% !important;
 }
-
 
 @media (max-width: 900px) {
   .my-contenet {

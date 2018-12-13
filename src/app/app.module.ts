@@ -217,7 +217,7 @@ import { NewEditSubmanagerAdminComponent } from './components/subman/new-edit-su
     BrowserModule,
     BrowserAnimationsModule,
     //  IonicModule.forRoot({ backButtonText: '', mode: 'ios' }),
-    IonicModule.forRoot({ backButtonText: '' }),
+    IonicModule.forRoot({ backButtonText: '', scrollAssist: false }),
     IonicStorageModule.forRoot(),
     AppRoutingModule,
     FormsModule,

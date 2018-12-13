@@ -1,16 +1,23 @@
 <ng-container *ngIf="isDesktop; then: Desktop; else: Device"></ng-container>
 <ng-template #Desktop>
-  <mat-card [class.mat-elevation-z0]="true" class="border-filter">
+  <mat-card [class.mat-elevation-z0]="true"
+            class="border-filter">
     <mat-card-title>Búsqueda General</mat-card-title>
     <div class="row">
-      <mat-form-field style="margin-right: 1%" appearance="fill">
+      <mat-form-field style="margin-right: 1%"
+                      appearance="fill">
         <mat-label>Buscar en toda la tabla </mat-label>
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar..." />
+        <input matInput
+               (keyup)="applyFilter($event.target.value)"
+               placeholder="Buscar..." />
       </mat-form-field>
       <div>
         <mat-chip-list *ngIf="showChips">
           <span *ngFor="let row of rows">
-            <mat-chip *ngIf="row.checkBox" [removable]="true" [selectable]="true" (removed)="
+            <mat-chip *ngIf="row.checkBox"
+                      [removable]="true"
+                      [selectable]="true"
+                      (removed)="
                 checkbox.emit({ isChecked: false, row: row });
                 row.checkBox = false
               ">{{
@@ -22,23 +29,38 @@
       </div>
     </div>
   </mat-card>
-  <div style="margin: 1%" class="mat-elevation-z8">
-    <mat-progress-bar *ngIf="showLoader" mode="indeterminate" color="accent"></mat-progress-bar>
-    <div class="table-container" style="overflow-x:auto; " *ngIf="rows && dataSource">
-      <table mat-table [dataSource]="dataSource" matSort>
-        <ng-container *ngFor="let column of columns" [cdkColumnDef]="column.prop">
-          <th mat-header-cell mat-sort-header="{{column.prop}}" disabled="{{column.disabledSort ? column.disabledSort : false}}"
-            [ngClass]="{ customWidthClass: column.w }" *cdkHeaderCellDef>
+  <div style="margin: 1%"
+       class="mat-elevation-z8">
+    <mat-progress-bar *ngIf="showLoader"
+                      mode="indeterminate"
+                      color="accent"></mat-progress-bar>
+    <div class="table-container"
+         style="overflow-x:auto; "
+         *ngIf="rows && dataSource">
+      <table mat-table
+             [dataSource]="dataSource"
+             matSort>
+        <ng-container *ngFor="let column of columns"
+                      [cdkColumnDef]="column.prop">
+          <th mat-header-cell
+              mat-sort-header="{{column.prop}}"
+              disabled="{{column.disabledSort ? column.disabledSort : false}}"
+              [ngClass]="{ customWidthClass: column.w }"
+              *cdkHeaderCellDef>
             {{ column.name }}
             <!-- checkbox all -->
-            <mat-checkbox #CheckboxAll (change)="changeAllCheckbox($event.checked)" *ngIf="column.type === 'checkBox'">
+            <mat-checkbox #CheckboxAll
+                          (change)="changeAllCheckbox($event.checked)"
+                          *ngIf="column.type === 'checkBox'">
             </mat-checkbox>
           </th>
 
           <!-- check -->
           <span *ngIf="column.type === 'checkBox'">
-            <td mat-cell *cdkCellDef="let row">
-              <mat-checkbox [checked]="row[column.prop]" (change)="
+            <td mat-cell
+                *cdkCellDef="let row">
+              <mat-checkbox [checked]="row[column.prop]"
+                            (change)="
                   checkbox.emit({ isChecked: $event.checked, row: row });
                   row[column.prop] = $event.checked
                 "></mat-checkbox>
@@ -46,13 +68,18 @@
           </span>
           <!-- normal -->
           <span *ngIf="column.type === 'normal'">
-            <td mat-cell [ngClass]="{ customWidthClass: column.w }" *cdkCellDef="let row">
+            <td mat-cell
+                [ngClass]="{ customWidthClass: column.w }"
+                *cdkCellDef="let row">
               {{ row[column.prop] }}
             </td>
           </span>
           <!-- date -->
           <div *ngIf="column.type === 'date'">
-            <td mat-cell style="padding: 0% 1% 0% 1%" [ngClass]="{ customWidthClass: column.w }" *cdkCellDef="let row">
+            <td mat-cell
+                style="padding: 0% 1% 0% 1%"
+                [ngClass]="{ customWidthClass: column.w }"
+                *cdkCellDef="let row">
               {{ formatDates(row[column.prop]) }}
             </td>
           </div>
@@ -62,52 +89,82 @@
             status
           -->
           <span *ngIf="column.type === 'status'">
-            <td mat-cell class="center-cell " [ngClass]="{ customWidthClass: column.w }" *cdkCellDef="let row">
-              <ion-chip *ngFor="let property of row[column.prop]" [ngClass]="{
+            <td mat-cell
+                class="center-cell "
+                [ngClass]="{ customWidthClass: column.w }"
+                *cdkCellDef="let row">
+              <!-- <ion-chip *ngFor="let property of row[column.prop]" [ngClass]="{
                   'background-gris': property.status === 'gris',
                   'background-verde': property.status === 'verde',
                   'background-amarillo': property.status === 'amarillo',
                   'background-rojo': property.status === 'rojo',
                   'background-azul': property.status === 'azul'
-                }">
+                }"> -->
+              <ion-chip *ngFor="let property of row[column.prop]"
+                        [color]="property.status === 'gris' ? 'medium'
+              : property.status === 'verde' ? 'success'
+              : property.status === 'amarillo' ? 'warning'
+              : property.status === 'rojo'? 'eleven'
+              : property.status === 'azul' ? 'blue' : 'primary' ">
                 <ion-label>{{ property.name }}</ion-label>
               </ion-chip>
             </td>
           </span>
           <!-- boolean -->
           <span *ngIf="column.type === 'boolean'">
-            <td mat-cell class="center-cell" [ngClass]="{ customWidthClass: column.w }" *cdkCellDef="let row">
+            <td mat-cell
+                class="center-cell"
+                [ngClass]="{ customWidthClass: column.w }"
+                *cdkCellDef="let row">
               <span class="margin-ranking ">
-                <button *ngIf="row[column.prop]" (click)="onSelect(row)" mat-icon-button>
-                  <mat-icon class="secondary-text" class="green-icon">check_circle</mat-icon>
+                <button *ngIf="row[column.prop]"
+                        (click)="onSelect(row)"
+                        mat-icon-button>
+                  <mat-icon class="secondary-text"
+                            class="green-icon">check_circle</mat-icon>
                 </button>
-                <button *ngIf="!row[column.prop]" (click)="onSelect(row)" mat-icon-button>
-                  <mat-icon class="secondary-text" class="red-icon">cancel</mat-icon>
+                <button *ngIf="!row[column.prop]"
+                        (click)="onSelect(row)"
+                        mat-icon-button>
+                  <mat-icon class="secondary-text"
+                            class="red-icon">cancel</mat-icon>
                 </button>
               </span>
             </td>
           </span>
           <!-- ranking -->
           <span *ngIf="column.type === 'ranking'">
-            <td mat-cell [ngClass]="{ customWidthClass: column.w }" class="margin-ranking" *cdkCellDef="let row">
+            <td mat-cell
+                [ngClass]="{ customWidthClass: column.w }"
+                class="margin-ranking"
+                *cdkCellDef="let row">
               <div class="flexbox-ranking">
                 <span *ngIf="row[column.prop] > 0">
-                  <mat-icon *ngFor="let starts of getArray(row[column.prop])" class="secondary-text" class="yellow-icon">star_rate</mat-icon>
+                  <mat-icon *ngFor="let starts of getArray(row[column.prop])"
+                            class="secondary-text"
+                            class="yellow-icon">star_rate</mat-icon>
                 </span>
-                <span *ngIf="row[column.prop] === 0"> Sin calificar </span>
+                <span *ngIf="row[column.prop] === 0"> Sin
+                  calificar </span>
               </div>
             </td>
           </span>
           <!-- money -->
           <span *ngIf="column.type === 'money'">
-            <td mat-cell class="center-cell" [ngClass]="{ customWidthClass: column.w }" *cdkCellDef="let row">
+            <td mat-cell
+                class="center-cell"
+                [ngClass]="{ customWidthClass: column.w }"
+                *cdkCellDef="let row">
               $ {{ row[column.prop].toFixed(2) }}
             </td>
           </span>
           <!-- number -->
           <span *ngIf="column.type === 'number'">
-            <td mat-cell class="center-cell" style="text-align: center" [ngClass]="{ customWidthClass: column.w }"
-              *cdkCellDef="let row">
+            <td mat-cell
+                class="center-cell"
+                style="text-align: center"
+                [ngClass]="{ customWidthClass: column.w }"
+                *cdkCellDef="let row">
               {{ row[column.prop] }}
             </td>
           </span>
@@ -116,14 +173,22 @@
             <a href="tel:+13174562564">317-456-2564</a>
           -->
           <span *ngIf="column.type === 'phone'">
-            <td mat-cell class="center-cell" [ngClass]="{ customWidthClass: column.w }" *cdkCellDef="let row">
-              <a [href]="'tel:' + row[column.prop]">{{ row[column.prop] }}</a>
+            <td mat-cell
+                class="center-cell"
+                [ngClass]="{ customWidthClass: column.w }"
+                *cdkCellDef="let row">
+              <a [href]="'tel:' + row[column.prop]">{{
+                row[column.prop] }}</a>
             </td>
           </span>
           <!-- tags -->
           <span *ngIf="column.type === 'tags'">
-            <td mat-cell class="center-cell " [ngClass]="{ customWidthClass: column.w }" *cdkCellDef="let row">
-              <span class="label" [ngClass]="{
+            <td mat-cell
+                class="center-cell "
+                [ngClass]="{ customWidthClass: column.w }"
+                *cdkCellDef="let row">
+              <span class="label"
+                    [ngClass]="{
                   success: row[column.prop].style == 'buyer',
                   info: row[column.prop].style == 'adviser',
                   other: row[column.prop].style == 'seller'
@@ -134,26 +199,49 @@
           </span>
           <!-- butons -->
           <span *ngIf="column.type === 'buttons'">
-            <td mat-cell [ngClass]="{ customWidthClass: column.w }" *cdkCellDef="let row" style="justify-content: center;">
+            <td mat-cell
+                [ngClass]="{ customWidthClass: column.w }"
+                *cdkCellDef="let row"
+                style="justify-content: center;">
               <div class="flexbox-buttons">
-                <button mat-icon-button matTooltip="Detalles" matTooltipPosition="above" color="primary" *ngIf="column.buttonDetails"
-                  (click)="detailsItem(row)">
+                <button mat-icon-button
+                        matTooltip="Detalles"
+                        matTooltipPosition="above"
+                        color="primary"
+                        *ngIf="column.buttonDetails"
+                        (click)="detailsItem(row)">
                   <mat-icon class="secondary-text">info</mat-icon>
                 </button>
-                <button mat-icon-button color="primary" matTooltip="Editar" matTooltipPosition="above" *ngIf="column.buttonEdit"
-                  (click)="editItem(row)">
+                <button mat-icon-button
+                        color="primary"
+                        matTooltip="Editar"
+                        matTooltipPosition="above"
+                        *ngIf="column.buttonEdit"
+                        (click)="editItem(row)">
                   <mat-icon class="secondary-text">create</mat-icon>
                 </button>
-                <button mat-icon-button color="warn" matTooltip="Borrar" matTooltipPosition="above" *ngIf="column.buttonDeleted"
-                  (click)="deletedItem(row)">
+                <button mat-icon-button
+                        color="warn"
+                        matTooltip="Borrar"
+                        matTooltipPosition="above"
+                        *ngIf="column.buttonDeleted"
+                        (click)="deletedItem(row)">
                   <mat-icon class="secondary-text">delete</mat-icon>
                 </button>
-                <button mat-icon-button color="primary" matTooltip="Mensaje" matTooltipPosition="above" *ngIf="column.buttonMail"
-                  (click)="mailItem(row)">
+                <button mat-icon-button
+                        color="primary"
+                        matTooltip="Mensaje"
+                        matTooltipPosition="above"
+                        *ngIf="column.buttonMail"
+                        (click)="mailItem(row)">
                   <mat-icon class="secondary-text">mail</mat-icon>
                 </button>
-                <button mat-icon-button color="primary" matTooltip="Calificar" matTooltipPosition="above" *ngIf="column.buttonRating && row.status === 'Cerrado'"
-                  (click)="ratingItem(row)">
+                <button mat-icon-button
+                        color="primary"
+                        matTooltip="Calificar"
+                        matTooltipPosition="above"
+                        *ngIf="column.buttonRating && row.status === 'Cerrado'"
+                        (click)="ratingItem(row)">
                   <mat-icon class="secondary-text">stars</mat-icon>
                 </button>
               </div>
@@ -163,23 +251,35 @@
         <!--
           <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
         -->
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr mat-header-row
+            *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row
+            *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
     </div>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="10"></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
+                   [pageSize]="10"></mat-paginator>
   </div>
   <br />
 </ng-template>
 <!-- Celular lista -->
 <ng-template #Device>
   <!-- Default Searchbar -->
-  <ion-searchbar (ionClear)="serach(undefined)" (keyup)="serach(Search.value)" placeholder="Buscar..." #Search animated
-    showCancelButton cancelButtonText="Cancelar"></ion-searchbar>
+  <ion-searchbar (ionClear)="serach(undefined)"
+                 (keyup)="serach(Search.value)"
+                 placeholder="Buscar..."
+                 #Search
+                 animated
+                 showCancelButton
+                 cancelButtonText="Cancelar"></ion-searchbar>
   <ion-list>
-    <ion-item lines="inset" *ngFor="let row of dataSource.data">
-      <ion-icon *ngIf="isIcon" style="color: #F5811E" [name]="row.iconName" slot="start"></ion-icon>
+    <ion-item lines="inset"
+              *ngFor="let row of dataSource.data">
+      <ion-icon *ngIf="isIcon"
+                style="color: #F5811E"
+                [name]="row.iconName"
+                slot="start"></ion-icon>
       <!--
         <ion-icon  style="color: #F5811E" name="home" slot="start"></ion-icon>
       -->
@@ -191,32 +291,42 @@
           </h2>
           <!-- normal -->
           <p *ngIf="column.type === 'normal' && ii !== 0">
-            <b> {{ column.name }}: </b>{{ row[column.prop] }}
+            <b> {{ column.name }}: </b>{{ row[column.prop]
+            }}
           </p>
           <!-- number -->
           <p *ngIf="column.type === 'number'">
-            <b> {{ column.name }}: </b>{{ row[column.prop] }}
+            <b> {{ column.name }}: </b>{{ row[column.prop]
+            }}
           </p>
 
           <!-- fecha -->
           <p *ngIf="column.type === 'date'">
-            <b> {{ column.name }}: </b> {{ formatDates(row[column.prop]) }}
+            <b> {{ column.name }}: </b> {{
+            formatDates(row[column.prop]) }}
           </p>
           <!-- boolean -->
           <span *ngIf="column.type === 'boolean'">
-            <button *ngIf="row[column.prop]" (click)="onSelect(row)" mat-icon-button>
+            <button *ngIf="row[column.prop]"
+                    (click)="onSelect(row)"
+                    mat-icon-button>
               <b> {{ column.name }} </b>
-              <mat-icon class="secondary-text" class="green-icon">check_circle</mat-icon>
+              <mat-icon class="secondary-text"
+                        class="green-icon">check_circle</mat-icon>
             </button>
-            <button *ngIf="!row[column.prop]" (click)="onSelect(row)" mat-icon-button>
+            <button *ngIf="!row[column.prop]"
+                    (click)="onSelect(row)"
+                    mat-icon-button>
               <b> {{ column.name }} </b>
-              <mat-icon class="secondary-text" class="red-icon">cancel</mat-icon>
+              <mat-icon class="secondary-text"
+                        class="red-icon">cancel</mat-icon>
             </button>
           </span>
           <!-- money -->
           <span *ngIf="column.type === 'money'">
             <p>
-              <b>{{ column.name }}: </b>$ {{ row[column.prop].toFixed(2) }}
+              <b>{{ column.name }}: </b>$ {{
+              row[column.prop].toFixed(2) }}
             </p>
           </span>
 
@@ -227,13 +337,12 @@
 
           <!-- status -->
           <span *ngIf="column.type === 'status'">
-            <ion-chip *ngFor="let property of row[column.prop]" [ngClass]="{
-                'background-gris': property.status === 'gris',
-                'background-verde': property.status === 'verde',
-                'background-amarillo': property.status === 'amarillo',
-                'background-rojo': property.status === 'rojo',
-                'background-azul': property.status === 'azul'
-              }">
+            <ion-chip *ngFor="let property of row[column.prop]"
+                      [color]="property.status === 'gris' ? 'medium'
+            : property.status === 'verde' ? 'success'
+            : property.status === 'amarillo' ? 'warning'
+            : property.status === 'rojo'? 'eleven'
+            : property.status === 'azul' ? 'blue' : 'primary' ">
               <ion-label>{{ property.name }}</ion-label>
             </ion-chip>
           </span>
@@ -241,20 +350,30 @@
       </ion-label>
       <!-- botones -->
       <div *ngFor="let column of columns">
-        <button *ngIf="column.type === 'buttons' && column.buttonDetails" mat-icon-button color="primary" (click)="detailsItem(row)">
+        <button *ngIf="column.type === 'buttons' && column.buttonDetails"
+                mat-icon-button
+                color="primary"
+                (click)="detailsItem(row)">
           <mat-icon>info</mat-icon>
         </button>
-        <a *ngIf="column.type === 'phone'" mat-icon-button color="primary" [href]="'tel:' + row[column.prop]">
+        <a *ngIf="column.type === 'phone'"
+           mat-icon-button
+           color="primary"
+           [href]="'tel:' + row[column.prop]">
           <mat-icon>phone</mat-icon>
         </a>
-        <button *ngIf="column.type === 'buttons' && column.buttonEdit" mat-icon-button color="primary" (click)="editItem(row)">
+        <button *ngIf="column.type === 'buttons' && column.buttonEdit"
+                mat-icon-button
+                color="primary"
+                (click)="editItem(row)">
           <mat-icon>create</mat-icon>
         </button>
-        <mat-checkbox [checked]="row[column.prop]" (change)="
+        <mat-checkbox [checked]="row[column.prop]"
+                      (change)="
             checkbox.emit({ isChecked: $event.checked, row: row });
             row[column.prop] = $event.checked
           "
-          *ngIf="column.type === 'checkBox'"></mat-checkbox>
+                      *ngIf="column.type === 'checkBox'"></mat-checkbox>
       </div>
     </ion-item>
   </ion-list>

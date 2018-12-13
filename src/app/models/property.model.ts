@@ -6,7 +6,7 @@ export interface IProperty {
   timestamp?: Date;
   name?: string;
   /**
-   * tipo de propiedad departamento casa
+   * tipo de propiedad  casa, departamento, desarrollo, terreno
    */
   typeOfProperty?: string;
   /**
