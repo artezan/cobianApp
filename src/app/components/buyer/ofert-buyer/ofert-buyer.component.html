@@ -9,8 +9,11 @@
   </ion-toolbar>
 </ion-header> -->
 <ion-header>
-  <app-menu-general [isMenuButton]="'menu'" [colorMenuButton]="'white'" [titleMenu]="'Ofertas'" [buttonUser]="'assets/iconos/usuario_blanco.svg'"
-    [buttonNotification]="'assets/iconos/notificaciones.svg'"></app-menu-general>
+  <app-menu-general [isMenuButton]="'menu'"
+                    [colorMenuButton]="'white'"
+                    [titleMenu]="'Ofertas'"
+                    [buttonUser]="'assets/iconos/usuario_blanco.svg'"
+                    [buttonNotification]="'assets/iconos/notificaciones.svg'"></app-menu-general>
 </ion-header>
 <ion-content padding>
   <!-- cargar -->
@@ -23,14 +26,17 @@
       <ion-card>
         <ion-card-header>
           <ion-card-subtitle>Sin Ofertas</ion-card-subtitle>
-          <ion-card-title text-wrap>Puede generar una oferta cuando haga una visita a la propiedad de interés</ion-card-title>
+          <ion-card-title text-wrap>Puede generar una
+            oferta cuando haga una visita a la propiedad de
+            interés</ion-card-title>
 
         </ion-card-header>
       </ion-card>
     </ng-template>
     <!-- con oferta -->
     <ng-template #Ofert>
-      <ion-card *ngFor="let ofert of oferts" [ngClass]="
+      <ion-card *ngFor="let ofert of oferts"
+                [ngClass]="
         {
         'state-amarillo': ofert.status === 'amarillo',
         'state-rojo': ofert.status === 'rojo',
@@ -42,21 +48,31 @@
             <ion-card-title text-wrap>Favor de Responder</ion-card-title>
           </ion-card-header>
           <ion-card-content text-wrap>
-            <ion-label text-wrap>Oferta para la propiedad: <b>{{ofert.property.name}}</b></ion-label>
+            <ion-label text-wrap>Oferta para la propiedad:
+              <b>{{ofert.property.name}}</b></ion-label>
             <ion-label text-wrap>Oferta por: <b>${{ofert.ofertPrice}}</b></ion-label>
-            <ion-label text-wrap>Detalles de la oferta : {{ofert.notes}}</ion-label>
+            <ion-label text-wrap>Detalles de la oferta :
+              {{ofert.notes}}</ion-label>
             <ion-list lines="none">
-              <ion-list-header text-wrap> Documentos Requeridos:</ion-list-header>
-              <ion-item lines="none" *ngFor="let doc of ofert.files">{{doc}}</ion-item>
+              <ion-list-header text-wrap> Documentos
+                Requeridos:</ion-list-header>
+              <ion-item lines="none"
+                        *ngFor="let doc of ofert.files">{{doc}}</ion-item>
             </ion-list>
           </ion-card-content>
           <!-- Poner en notes Aceptado o Denagado -->
 
           <ion-item lines="none">
-            <ion-button (click)="respondOfert('Aceptada', ofert, true)" color="success" fill="outline" slot="end">
+            <ion-button (click)="respondOfert('Aceptada', ofert, true)"
+                        color="success"
+                        fill="outline"
+                        slot="end">
               Aceptar <ion-icon name="checkmark-circle"></ion-icon>
             </ion-button>
-            <ion-button (click)="respondOfert('Denagada', ofert, false)" color="danger" fill="outline" slot="end">
+            <ion-button (click)="respondOfert('Denagada', ofert, false)"
+                        color="danger"
+                        fill="outline"
+                        slot="end">
               Denegar <ion-icon name="close-circle"></ion-icon>
             </ion-button>
 
@@ -67,9 +83,12 @@
           <ion-card-header>
             <ion-card-subtitle>Estado: Respuesta de Oferta</ion-card-subtitle>
             <!-- Poner en notes Aceptado o Denagado -->
-            <ion-card-title text-wrap> Oferta: {{ofert.notes}}</ion-card-title>
+            <ion-card-title text-wrap> Oferta:
+              {{ofert.notes}}</ion-card-title>
             <ion-card-content text-wrap>
-              <ion-label text-wrap *ngIf="ofert.notes === 'Aceptada' "> Propiedad <b>{{ofert.property.name
+              <ion-label text-wrap
+                         *ngIf="ofert.notes === 'Aceptada' ">
+                Propiedad <b>{{ofert.property.name
                   }}</b>
                 Apartada</ion-label>
 
@@ -78,13 +97,16 @@
         </span>
         <span *ngIf="ofert.status === 'verde'">
           <ion-card-header>
-            <ion-card-subtitle text-wrap>Estado: En espera de respuesta</ion-card-subtitle>
+            <ion-card-subtitle text-wrap>Estado: En espera
+              de respuesta</ion-card-subtitle>
             <!-- Poner en notes Aceptado o Denagado -->
-            <ion-card-title text-wrap> Oferta Generada </ion-card-title>
+            <ion-card-title text-wrap> Oferta Generada
+            </ion-card-title>
             <ion-card-content text-wrap>
               <ion-item lines="none">
                 <ion-label text-wrap>
-                  <b>Oferta por:</b> ${{ofert.apartOfert}}.00
+                  <b>Oferta por:</b>
+                  ${{ofert.apartOfert}}.00
                 </ion-label>
               </ion-item>
               <ion-item lines="none">
@@ -99,26 +121,46 @@
       </ion-card>
     </ng-template>
     <!-- con posibilidad de generar oferta -->
+    <div *ngIf="propForOfert.length === 0">Podrás solicitar
+      una oferta cuando visites una propiedad</div>
     <div *ngIf="propForOfert.length > 0">
       <ion-card *ngFor="let sbp of propForOfert; let i = index">
         <ion-card-header>
-          <ion-card-subtitle text-wrap>Generar oferta para {{sbp.property.name}} </ion-card-subtitle>
+          <ion-card-subtitle text-wrap>Generar oferta para
+            {{sbp.property.name}} </ion-card-subtitle>
           <ion-card-title text-wrap>Crear Oferta</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <ion-label text-wrap>Apartar <b> {{sbp.property.name}}</b> con:</ion-label>
+          <ion-label text-wrap>Apartar <b>
+              {{sbp.property.name}}</b> con:</ion-label>
           <ion-item lines="none">
-            <ion-range #range id="range{{i}}" min="5000" max="50000" step="500" color="secondary" pin="true">
-              <ion-icon slot="start" size="small" name="cash"></ion-icon>
-              <ion-icon slot="end" name="cash"></ion-icon>
+            <ion-range #range
+                       id="range{{i}}"
+                       min="5000"
+                       max="50000"
+                       step="500"
+                       color="secondary"
+                       pin="true">
+              <ion-icon slot="start"
+                        size="small"
+                        name="cash"></ion-icon>
+              <ion-icon slot="end"
+                        name="cash"></ion-icon>
             </ion-range>
           </ion-item>
           <ion-item lines="none">
-            <ion-label text-wrap slot="end" *ngIf="range.value">Monto: {{'$' + range.value + '.00'}}</ion-label>
+            <ion-label text-wrap
+                       slot="end"
+                       *ngIf="range.value">Monto: {{'$' +
+              range.value + '.00'}}</ion-label>
           </ion-item>
-          <ion-item text-wrap lines="none">
+          <ion-item text-wrap
+                    lines="none">
             <ion-label text-wrap>Forma de Pago</ion-label>
-            <ion-select #wayToBuy text-wrap placeholder="" cancelText="Cancelar">
+            <ion-select #wayToBuy
+                        text-wrap
+                        placeholder=""
+                        cancelText="Cancelar">
               <ion-select-option value="FOVISSTE">FOVISSTE</ion-select-option>
               <ion-select-option value="IMSS">IMSS</ion-select-option>
               <ion-select-option value="contado">contado</ion-select-option>
@@ -130,8 +172,11 @@
 
         </ion-card-content>
         <ion-item lines="none">
-          <ion-button [disabled]="!wayToBuy.value || !range.value " (click)="makeOfert(wayToBuy.value, range.value, sbp.property )"
-            color="secondary" fill="outline" slot="end">
+          <ion-button [disabled]="!wayToBuy.value || !range.value "
+                      (click)="makeOfert(wayToBuy.value, range.value, sbp.property )"
+                      color="secondary"
+                      fill="outline"
+                      slot="end">
             Crear <ion-icon name="checkmark-circle"></ion-icon>
           </ion-button>
         </ion-item>

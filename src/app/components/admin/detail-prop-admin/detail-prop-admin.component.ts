@@ -12,6 +12,7 @@ import { AlertInput } from '@ionic/core';
 import { INotification } from '../../../models/notification.model';
 import { OnesignalService } from '../../../services/onesignal.service';
 import { FormatDatesFront } from '../../../_config/_helpers';
+import { ExportXLS, PdfColum } from '../../../_config/excel-generator';
 
 @Component({
   selector: 'app-detail-prop-admin',
@@ -159,7 +160,49 @@ export class DetailPropAdminComponent implements OnInit {
         this.oneSignalService.newNotification(notification).subscribe();
       });
   }
-  dateFormat(date: string) {
+  dateFormat(date: any) {
     return FormatDatesFront(new Date(date));
+  }
+  getReport() {
+    const columns: PdfColum[] = [
+      {
+        name: 'Nombre',
+        prop: 'name',
+      },
+      {
+        name: 'Cliente',
+        prop: 'nameBuyer',
+      },
+      {
+        name: 'Estado',
+        prop: 'status',
+      },
+      {
+        name: 'Fecha',
+        prop: 'date',
+      },
+    ];
+    const rows = this.sbp.map(sb => {
+      const name = sb.property.name;
+      const nameBuyer = sb.buyer.name;
+      const status =
+        sb.status === 'rojo'
+          ? 'Cierre'
+          : sb.status === 'verde'
+          ? 'Interés'
+          : sb.status === 'amarillo'
+          ? 'Seguimiento'
+          : sb.status === 'azul'
+          ? 'Post Venta'
+          : '';
+      const date = this.dateFormat(sb.timestamp);
+      return {
+        name,
+        nameBuyer,
+        status,
+        date,
+      };
+    });
+    ExportXLS(rows, columns, this.property.name);
   }
 }

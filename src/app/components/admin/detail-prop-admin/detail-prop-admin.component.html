@@ -20,6 +20,7 @@
     <ng-container *ngIf="isLoad; then thenTemplate; else elseTemplate"></ng-container>
     <ng-template #thenTemplate>
       <h1> Característica </h1>
+      <ion-button (click)="getReport()">Exportar Excel</ion-button>
 
       <ion-card>
 
