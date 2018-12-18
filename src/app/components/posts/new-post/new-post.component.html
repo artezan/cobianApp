@@ -1,0 +1,176 @@
+<ion-header>
+  <ion-toolbar color="five">
+    <ion-buttons slot="start">
+      <ion-button (click)="backOne()" slot="start">
+        <ion-icon
+          style="color: white"
+          slot="icon-only"
+          name="arrow-back"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> Nota Nombre </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container
+    *ngIf="isLoad; then: thenTemplate; else: elseTemplate"
+  ></ng-container>
+  <ng-template #thenTemplate>
+    <ion-grid fixed>
+      <h1>Nota</h1>
+      <div class="container" style="margin-top: 3%">
+        <form #newUserForm="ngForm">
+          <mat-card>
+            <mat-card-title>Complete los campos</mat-card-title>
+            <div class="flex-container">
+              <!-- title -->
+              <mat-form-field appearance="outline">
+                <mat-label>Título</mat-label>
+                <input
+                  matInput
+                  placeholder=""
+                  [(ngModel)]="post.title"
+                  #name="ngModel"
+                  id="name"
+                  name="name"
+                  required
+                />
+                <mat-error *ngIf="name.dirty || name.touched"
+                  >Anotar Título</mat-error
+                >
+              </mat-form-field>
+              <!-- contenido -->
+              <mat-form-field appearance="outline">
+                <mat-label>Contenido</mat-label>
+                <textarea
+                  matInput
+                  placeholder=""
+                  [(ngModel)]="post.content"
+                  #lastname="ngModel"
+                  id="lastname"
+                  name="lastname"
+                  required
+                ></textarea>
+                <mat-error *ngIf="lastname.dirty || lastname.touched"
+                  >Anotar Contenido</mat-error
+                >
+              </mat-form-field>
+              <!-- status -->
+              <mat-form-field appearance="outline">
+                <mat-label>Estatus</mat-label>
+                <mat-select
+                  [(ngModel)]="post.status"
+                  #status="ngModel"
+                  id="status"
+                  name="status"
+                  required
+                >
+                  <mat-option value="gris"> Gris </mat-option>
+                  <mat-option value="verde"> Verde </mat-option>
+                  <mat-option value="amarillo"> Amarillo </mat-option>
+                  <mat-option value="rojo"> Rojo </mat-option>
+                  <mat-option value="azul"> Azul </mat-option>
+                </mat-select>
+                <mat-error *ngIf="status.dirty || status.touched"
+                  >Anotar Estado</mat-error
+                >
+              </mat-form-field>
+
+              <!-- city -->
+              <mat-form-field appearance="outline">
+                <mat-label>Ciudad</mat-label>
+                <mat-select
+                  [(ngModel)]="post.city"
+                  #city="ngModel"
+                  id="city"
+                  name="city"
+                  multiple
+                >
+                  <mat-option value="puebla"> Puebla </mat-option>
+                  <mat-option value="mexico"> México </mat-option>
+                </mat-select>
+                <button
+                  mat-button
+                  *ngIf="city"
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Clear"
+                  (click)="post.city = ''"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+              <!-- tag -->
+              <div class="check-margin">
+                <h5>Visible Para:</h5>
+                <mat-checkbox
+                  #adv="ngModel"
+                  id="adv"
+                  name="adv"
+                  [(ngModel)]="isAdviser"
+                  >Asesores</mat-checkbox
+                >
+                <mat-checkbox
+                  #mng="ngModel"
+                  id="mng"
+                  name="mng"
+                  [(ngModel)]="isManagement"
+                  >Gerentes</mat-checkbox
+                >
+                <mat-checkbox
+                  #subm="ngModel"
+                  id="subm"
+                  name="subm"
+                  [(ngModel)]="isSubManagement"
+                  >Subgerentes</mat-checkbox
+                >
+                <mat-checkbox
+                  #adm="ngModel"
+                  id="adm"
+                  name="adm"
+                  class="example-margin"
+                  [(ngModel)]="isAdministrator"
+                  >Administrador</mat-checkbox
+                >
+                <mat-checkbox
+                  #ofc="ngModel"
+                  id="ofc"
+                  name="ofc"
+                  [(ngModel)]="isOffice"
+                  >Oficinista</mat-checkbox
+                >
+              </div>
+            </div>
+            <mat-card-actions align="end">
+              <div style="margin-right: 2%">
+                <button
+                  *ngIf="isNew"
+                  id="submitUser"
+                  mat-raised-button
+                  color="primary"
+                  (click)="newPost()"
+                  [disabled]="!newUserForm.form.valid"
+                >
+                  Crear
+                </button>
+                <button
+                  *ngIf="!isNew"
+                  id="submitUser"
+                  mat-raised-button
+                  color="primary"
+                  [disabled]="!newUserForm.form.valid"
+                  (click)="editPost()"
+                >
+                  Editar
+                </button>
+              </div>
+            </mat-card-actions>
+          </mat-card>
+        </form>
+      </div>
+    </ion-grid>
+  </ng-template>
+  <ng-template #elseTemplate> </ng-template>
+</ion-content>

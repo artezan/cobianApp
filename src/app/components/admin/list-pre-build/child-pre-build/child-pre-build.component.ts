@@ -1,28 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import { FilerBuild } from '../../../_config/_helpers';
-import { TableColumsModel } from '../../../models/tableColums.model';
-import { IPreBuild } from '../../../models/preBuild';
+
 import { Platform, AlertController, ToastController } from '@ionic/angular';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
-import { PreBuildService } from '../../../services/pre-build.service';
-import { IFatherPre } from '../../../models/fatherPreBuild.model';
+import { PreBuildService } from '../../../../services/pre-build.service';
+import { TableColumsModel } from '../../../../models/tableColums.model';
+import { IPreBuild } from '../../../../models/preBuild';
+import { FilerBuild } from '../../../../_config/_helpers';
+import { map } from 'rxjs/operators';
+import { IFatherPre } from '../../../../models/fatherPreBuild.model';
 
 @Component({
-  selector: 'app-list-pre-build',
-  templateUrl: './list-pre-build.component.html',
-  styleUrls: ['./list-pre-build.component.scss'],
+  selector: 'app-pre-build',
+  templateUrl: './child-pre-build.component.html',
+  styleUrls: ['./child-pre-build.component.scss'],
 })
-export class ListPreBuildComponent implements OnInit {
+export class ChildPreBuildComponent implements OnInit {
   isLoading = false;
   columns: TableColumsModel[];
   rows: any[] = [];
   isDesktop = false;
   openMenu: boolean;
   // buildings
-  buildings: IFatherPre[] = [];
+  buildings: IPreBuild[] = [];
   // numofFilters
   numOfFilters = 0;
-
+  fatherId;
+  father: IFatherPre;
   constructor(
     private platform: Platform,
     private router: Router,
@@ -38,12 +41,19 @@ export class ListPreBuildComponent implements OnInit {
       this.openMenu = false;
     }
   }
+  getFather(id) {
+    this.preBuildService.getFatherBuildById(id).subscribe(res => {
+      this.father = res;
+    });
+  }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       if (params['res']) {
         this.presentToast(params['res']);
       }
+      this.fatherId = params['id'];
+      this.getFather(params['id']);
     });
     this.columns = [
       {
@@ -60,6 +70,21 @@ export class ListPreBuildComponent implements OnInit {
         name: 'Ciudad',
         prop: 'city',
         type: 'normal',
+      },
+      {
+        name: 'Fecha Inicio',
+        prop: 'timestamp',
+        type: 'date',
+      },
+      {
+        name: 'Fecha Fin',
+        prop: 'dateToEnd',
+        type: 'date',
+      },
+      {
+        name: 'Completado',
+        prop: 'isComplete',
+        type: 'boolean',
       },
       {
         name: 'notas',
@@ -79,36 +104,61 @@ export class ListPreBuildComponent implements OnInit {
   }
   getBuildAll() {
     this.numOfFilters = 0;
-    this.preBuildService.getAllFather().subscribe(buildings => {
-      this.buildings = buildings;
-      console.log(buildings);
-      this.setRows(this.buildings);
-    });
+    this.preBuildService
+      .getAll()
+      .pipe(map(dd => dd.filter(prop => prop.fatherPreBuild === this.fatherId)))
+      .subscribe(buildings => {
+        this.buildings = buildings;
+        console.log(buildings);
+        this.setRows(this.buildings);
+      });
   }
-  setRows(buildings: IFatherPre[]) {
+  setRows(buildings: IPreBuild[]) {
     const rows = [];
 
     buildings.forEach(build => {
+      let dateToEnd = new Date();
+      let isComplete = true;
+      if (build.timeLine) {
+        const lastIndex = build.timeLine.length - 1;
+        if (build.timeLine.length > 0) {
+          build.timeLine.forEach(tl => {
+            if (tl.isComplete === false || tl.isComplete === undefined) {
+              isComplete = false;
+            }
+          });
+          const lastPhase = build.timeLine[lastIndex];
+          dateToEnd = new Date(
+            lastPhase.yearToEnd,
+            lastPhase.monthToEnd,
+            lastPhase.dayToEnd,
+          );
+        } else {
+          isComplete = false;
+        }
+      }
       rows.push({
         _id: build._id,
         name: build.name,
+        preBuyer: build.preBuyer.length,
         city: build.city,
-        preBuyer: build.numOfChild,
         notes: build.notes,
         timestamp: build.timestamp,
+        dateToEnd: dateToEnd,
+        isComplete: isComplete,
       });
     });
     this.rows = rows;
     this.isLoading = true;
   }
   newBuild() {
-    this.router.navigate(['new-edit-father']);
+    this.router.navigate(['new-edit-prebuild']);
   }
   edit(item) {
     const data: NavigationExtras = {
       queryParams: { id: item._id },
     };
-    this.router.navigate(['new-edit-father'], data);
+    this.router.navigate(['new-edit-prebuild'], data);
     // this.navCtr.navigateRoot('new-buyer', false, data);
   }
   deleted(prop: IPreBuild) {
@@ -123,7 +173,7 @@ export class ListPreBuildComponent implements OnInit {
     const data: NavigationExtras = {
       queryParams: { id: prop._id },
     };
-    this.router.navigate(['list-prechild-admin'], data);
+    this.router.navigate(['detail-prebuild-admin'], data);
   }
   async presentAlertConfirm(prop: IPreBuild) {
     const alert = await this.alertController.create({
@@ -143,7 +193,7 @@ export class ListPreBuildComponent implements OnInit {
           role: 'ok',
           handler: () => {
             /* this.deleted(buyer);
-            this.getBuyerAll(); */
+              this.getBuyerAll(); */
           },
         },
       ],

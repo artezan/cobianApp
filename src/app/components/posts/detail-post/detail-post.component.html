@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar color="five">
+    <ion-buttons slot="start">
+      <ion-button (click)="backOne()"
+                  slot="start">
+        <ion-icon style="color: white"
+                  slot="icon-only"
+                  name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title> Nota Nombre </ion-title>
+  </ion-toolbar>
+  <ion-toolbar id="tool"
+               [color]="post.status === 'gris' ? 'medium'
+  : post.status === 'verde' ? 'success'
+  : post.status === 'amarillo' ? 'eight'
+  : post.status === 'rojo'? 'eleven'
+  : post.status === 'azul' ? 'blue' : 'primary' ">
+    <div>
+      <!--  <ion-chip *ngIf="buyer"
+                color="secondary">
+        <ion-chip-icon class="icon-chip-detail"
+                       name="person"></ion-chip-icon>
+        <ion-label>{{ buyer.name }} {{
+          buyer.fatherLastName
+          }}</ion-label>
+      </ion-chip>
+      <ion-chip color="secondary"
+                *ngIf="seller !== undefined">
+        <ion-chip-icon class="icon-chip-detail"
+                       name="business"></ion-chip-icon>
+        <ion-label>{{ seller.name }} </ion-label>
+      </ion-chip> -->
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ng-container *ngIf="isLoad; else elseTemplate">
+    <mat-card class="card-margin">
+      <mat-card-header>
+        <mat-card-title> <span class="status-point"
+                [ngClass]="{'card-gris': post.status === 'gris',
+    'card-verde': post.status === 'verde',
+    'card-amarillo': post.status === 'amarillo',
+    'card-rojo': post.status === 'rojo',
+    'card-azul': post.status === 'azul'
+  }"></span>
+          {{post.title}}</mat-card-title>
+        <mat-card-subtitle>Fecha:
+          {{formatDates(post.timestamp)}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        {{post.content}}
+      </mat-card-content>
+      <mat-card-actions>
+        <button color="warn"
+                (click)="presentAlertConfirm(post._id)"
+                mat-button>Eliminar</button>
+      </mat-card-actions>
+    </mat-card>
+  </ng-container>
+  <ng-template #elseTemplate>
+
+  </ng-template>
+
+
+
+
+</ion-content>

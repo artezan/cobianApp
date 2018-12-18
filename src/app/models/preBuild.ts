@@ -2,7 +2,7 @@ import { IPreBuyer } from './preBuyer';
 
 export interface IPreBuild {
   _id?: string;
-
+  fatherPreBuild?: string;
   name?: any;
   timestamp?: Date;
   preBuyer?: IPreBuyer[];

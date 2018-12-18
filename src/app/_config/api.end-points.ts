@@ -1,8 +1,8 @@
-// const ip = 'http://localhost:3004/';
+const ip = 'http://localhost:3004/';
 // const ip = 'http://31.220.52.51:3004/';
 
 // prod
-const ip = 'http://31.220.58.194:3004/';
+// const ip = 'http://31.220.58.194:3004/';
 
 const apiUrl = ip + 'api/v1/';
 const userSession = 'usersession/';
@@ -70,6 +70,8 @@ const prebuild = 'prebuild/';
 const management = 'management/';
 const submanagement = 'submanagement/';
 const bymanagementid = 'bymanagementid/';
+const father = 'father/';
+const post = 'post/';
 
 export const END_POINT = {
   IP: ip,
@@ -154,10 +156,13 @@ export const END_POINT = {
   // PRE
   PRE_BUYER: apiUrl + prebuyer,
   PRE_BUILD: apiUrl + prebuild,
+  PRE_BUILD_FATHER: apiUrl + father,
   //  management
   MANAGER: apiUrl + management,
   MANAGER_ID: apiUrl + management + bymanagementid,
   //  sub  management
   SUBMANAGER: apiUrl + submanagement,
   SUBMANAGER_ID: apiUrl + submanagement + bymanagementid,
+  POST: apiUrl + post,
+  POST_SEARCH: apiUrl + post + 'search',
 };

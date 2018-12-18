@@ -55,7 +55,13 @@ export class UserSessionService {
   }
   public setUserSession(name, type, id, password, email: string, token): void {
     console.log(type);
+    let tag = type;
+    let subType;
     if (type === 'management' || type === 'subManagement') {
+      subType = type;
+      if (type === 'subManagement') {
+        tag = this.city;
+      }
       type = 'office';
     }
     const currentData: IUserSession = {
@@ -65,6 +71,7 @@ export class UserSessionService {
       password: password,
       email: email,
       token,
+      subType,
     };
     this.userSession.next({
       name: name,
@@ -73,6 +80,7 @@ export class UserSessionService {
       password: password,
       email: email,
       token,
+      subType,
     });
     // localStorage.setItem('userSession', JSON.stringify(currentData));
     this.storage.set('userSessionCurrent', currentData);
@@ -80,9 +88,9 @@ export class UserSessionService {
     // onesignal
     this.platform.ready().then(c => {
       if (this.platform.is('cordova')) {
-        this.oneSignalCordova(id, type);
+        this.oneSignalCordova(id, tag);
       } else if (environment.production && !this.isInitOne) {
-        this.oneSignalDesktop(id, type);
+        this.oneSignalDesktop(id, tag);
       }
     });
   }
@@ -179,6 +187,9 @@ export class UserSessionService {
                   data.data[0].email,
                   data.token,
                 );
+                if (data.type === 'subManagement') {
+                  this.city = data.data[0].city;
+                }
                 return resolve(true);
                 // usuario o contrasena caducada
               } else {

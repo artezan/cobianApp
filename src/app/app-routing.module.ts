@@ -56,6 +56,8 @@ import { ListManagerAdminComponent } from './components/admin/list-manager-admin
 import { NewEditManagerComponent } from './components/manager/new-edit-manager/new-edit-manager.component';
 import { ListSubmanagerAdminComponent } from './components/admin/list-submanager-admin/list-submanager-admin.component';
 import { NewEditSubmanagerAdminComponent } from './components/subman/new-edit-submanager-admin/new-edit-submanager-admin.component';
+import { ChildPreBuildComponent } from './components/admin/list-pre-build/child-pre-build/child-pre-build.component';
+import { NewEditFatherComponent } from './components/admin/list-pre-build/new-edit-father/new-edit-father.component';
 
 const routes: Routes = [
   // Rutas
@@ -438,8 +440,24 @@ const routes: Routes = [
     },
   },
   {
+    path: 'list-prechild-admin',
+    component: ChildPreBuildComponent,
+    canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'management', 'office'],
+    },
+  },
+  {
     path: 'new-edit-prebuild',
     component: NewEditPreBuildComponent,
+    /* canActivate: [AuthGuardService],
+    data: {
+      rol: ['administrator', 'management', 'office']
+    } */
+  },
+  {
+    path: 'new-edit-father',
+    component: NewEditFatherComponent,
     /* canActivate: [AuthGuardService],
     data: {
       rol: ['administrator', 'management', 'office']
@@ -452,6 +470,10 @@ const routes: Routes = [
     data: {
       rol: ['administrator', 'management', 'office']
     } */
+  },
+  {
+    path: 'posts',
+    loadChildren: './components/posts/posts.module#PostsPageModule',
   },
 ];
 

@@ -130,6 +130,8 @@ import { ListManagerAdminComponent } from './components/admin/list-manager-admin
 import { NewEditManagerComponent } from './components/manager/new-edit-manager/new-edit-manager.component';
 import { ListSubmanagerAdminComponent } from './components/admin/list-submanager-admin/list-submanager-admin.component';
 import { NewEditSubmanagerAdminComponent } from './components/subman/new-edit-submanager-admin/new-edit-submanager-admin.component';
+import { ChildPreBuildComponent } from './components/admin/list-pre-build/child-pre-build/child-pre-build.component';
+import { NewEditFatherComponent } from './components/admin/list-pre-build/new-edit-father/new-edit-father.component';
 
 @NgModule({
   declarations: [
@@ -207,6 +209,8 @@ import { NewEditSubmanagerAdminComponent } from './components/subman/new-edit-su
     NewEditManagerComponent,
     ListSubmanagerAdminComponent,
     NewEditSubmanagerAdminComponent,
+    ChildPreBuildComponent,
+    NewEditFatherComponent,
   ],
   entryComponents: [
     DialogGeneralComponent,

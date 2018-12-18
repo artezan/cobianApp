@@ -10,7 +10,7 @@ import { FormStr } from '../../general/form-str-list/form-str-list.component';
 import { map } from 'rxjs/operators';
 import {
   SearchSelectComponent,
-  SearchDialog
+  SearchDialog,
 } from '../../general/search-select/search-select.component';
 import { INotification } from '../../../models/notification.model';
 import { FormatDatesFront } from '../../../_config/_helpers';
@@ -20,7 +20,7 @@ import { PreBuildService } from '../../../services/pre-build.service';
 @Component({
   selector: 'app-new-edit-pre-build',
   templateUrl: './new-edit-pre-build.component.html',
-  styleUrls: ['./new-edit-pre-build.component.scss']
+  styleUrls: ['./new-edit-pre-build.component.scss'],
 })
 export class NewEditPreBuildComponent implements OnInit {
   hide = true;
@@ -34,7 +34,7 @@ export class NewEditPreBuildComponent implements OnInit {
     arrStr: true,
     arrStr2: true,
     arrDate: true,
-    arrDate2: true
+    arrDate2: true,
   };
   arrStr = [];
   arrStr2 = [];
@@ -54,7 +54,7 @@ export class NewEditPreBuildComponent implements OnInit {
     private oneSignalService: OnesignalService,
     public dialog: MatDialog,
     private preBuyerService: PreBuyerService,
-    private preBuildService: PreBuildService
+    private preBuildService: PreBuildService,
   ) {
     this.isDesktop = platform.is('desktop');
   }
@@ -73,10 +73,10 @@ export class NewEditPreBuildComponent implements OnInit {
           this.arrStr = build.timeLine.map(tl => tl.namePhase);
           this.arrStr2 = build.timeLine.map(tl => tl.notes);
           this.arrDate = build.timeLine.map(
-            tl => new Date(tl.yearToStart, tl.monthToStart, tl.dayToStart)
+            tl => new Date(tl.yearToStart, tl.monthToStart, tl.dayToStart),
           );
           this.arrDate2 = build.timeLine.map(
-            tl => new Date(tl.yearToEnd, tl.monthToEnd, tl.dayToEnd)
+            tl => new Date(tl.yearToEnd, tl.monthToEnd, tl.dayToEnd),
           );
         });
         this.isNew = false;
@@ -111,7 +111,7 @@ export class NewEditPreBuildComponent implements OnInit {
           : undefined,
         yearToEnd: phases.arrDate2[i]
           ? phases.arrDate2[i].getFullYear()
-          : undefined
+          : undefined,
       };
       if (
         this.preBuild &&
@@ -134,7 +134,7 @@ export class NewEditPreBuildComponent implements OnInit {
           'verde',
           'build',
           undefined,
-          <any>b.preBuyer.map(pb => pb._id)
+          <any>b.preBuyer.map(pb => pb._id),
         );
         if (b.preBuyer.length > 0) {
           b.preBuyer.forEach(async buyer => {
@@ -148,11 +148,11 @@ export class NewEditPreBuildComponent implements OnInit {
       }); */
 
       const toast: NavigationExtras = {
-        queryParams: { res: 'Nuevo Obra Agregada' }
+        queryParams: { res: 'Nuevo Obra Agregada', id: b.fatherPreBuild },
       };
       this.router
         .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
-        .then(() => this.router.navigate(['list-prebuild-admin'], toast));
+        .then(() => this.router.navigate(['list-prechild-admin'], toast));
     });
   }
   editCustomer() {
@@ -169,11 +169,11 @@ export class NewEditPreBuildComponent implements OnInit {
     this.preBuild.preBuyer = <any>this.pre;
     this.preBuildService.putBuild(this.preBuild).subscribe(() => {
       const toast: NavigationExtras = {
-        queryParams: { res: 'Obra Editada' }
+        queryParams: { res: 'Obra Editada', id: this.preBuild.fatherPreBuild },
       };
       this.router
         .navigateByUrl('/RefrshComponent', { skipLocationChange: true })
-        .then(() => this.router.navigate(['list-prebuild-admin'], toast));
+        .then(() => this.router.navigate(['list-prechild-admin'], toast));
     });
   }
   addPrebuildToByer(buyer: IPreBuyer, prebuildid: string) {
@@ -227,25 +227,25 @@ export class NewEditPreBuildComponent implements OnInit {
           {
             name: 'Nombre',
             prop: 'name',
-            type: 'normal'
+            type: 'normal',
           },
           {
             name: 'Apellido',
             prop: 'lastName',
-            type: 'normal'
+            type: 'normal',
           },
           {
             name: 'Fecha Alta',
             prop: 'timestamp',
-            type: 'date'
+            type: 'date',
           },
           {
             name: 'Obra',
             prop: 'buildName',
-            type: 'normal'
-          }
-        ]
-      }
+            type: 'normal',
+          },
+        ],
+      },
     });
     const sub = dialogRef.componentInstance.buttons.subscribe(res => {
       console.log(res);
@@ -286,7 +286,7 @@ export class NewEditPreBuildComponent implements OnInit {
     status,
     type,
     tags,
-    receiversId: string[]
+    receiversId: string[],
   ) {
     // notificacion
     const notification: INotification = {
@@ -296,7 +296,7 @@ export class NewEditPreBuildComponent implements OnInit {
       receiversId: receiversId,
       senderId: this.userSessionService.userSession.value.id,
       status: status,
-      type: type
+      type: type,
     };
     // onesignal
     this.oneSignalService

@@ -183,6 +183,12 @@ export class AppComponent {
       icon: 'build',
       userType: 'administrator',
     },
+    {
+      title: 'Notas',
+      url: '/posts',
+      icon: 'build',
+      userType: 'administrator',
+    },
     // asesores
     {
       title: 'Consumidores',
@@ -218,6 +224,12 @@ export class AppComponent {
       title: 'Simulador Match',
       url: '/simulate-search-admin',
       icon: 'heart-empty',
+      userType: 'adviser',
+    },
+    {
+      title: 'Notas',
+      url: '/posts',
+      icon: 'build',
       userType: 'adviser',
     },
     // Seller
@@ -357,6 +369,12 @@ export class AppComponent {
     {
       title: 'Obras Preventa',
       url: '/list-prebuild-admin',
+      icon: 'build',
+      userType: 'office',
+    },
+    {
+      title: 'Notas',
+      url: '/posts',
       icon: 'build',
       userType: 'office',
     },
