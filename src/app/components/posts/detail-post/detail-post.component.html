@@ -10,14 +10,14 @@
     </ion-buttons>
     <ion-title> Nota Nombre </ion-title>
   </ion-toolbar>
-  <ion-toolbar id="tool"
+  <!--   <ion-toolbar id="tool"
                [color]="post.status === 'gris' ? 'medium'
   : post.status === 'verde' ? 'success'
   : post.status === 'amarillo' ? 'eight'
   : post.status === 'rojo'? 'eleven'
   : post.status === 'azul' ? 'blue' : 'primary' ">
     <div>
-      <!--  <ion-chip *ngIf="buyer"
+      <ion-chip *ngIf="buyer"
                 color="secondary">
         <ion-chip-icon class="icon-chip-detail"
                        name="person"></ion-chip-icon>
@@ -30,9 +30,9 @@
         <ion-chip-icon class="icon-chip-detail"
                        name="business"></ion-chip-icon>
         <ion-label>{{ seller.name }} </ion-label>
-      </ion-chip> -->
+      </ion-chip>
     </div>
-  </ion-toolbar>
+  </ion-toolbar> -->
 </ion-header>
 <ion-content>
   <ng-container *ngIf="isLoad; else elseTemplate">
