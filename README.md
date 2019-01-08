@@ -15,3 +15,9 @@ Ejecutar en la carpeta de la apk
 `jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore HelloWorld-release-unsigned.apk alias_name`
 
 `zipalign -v 4 HelloWorld-release-unsigned.apk HelloWorld.apk`
+
+# Helper
+
+Si hay error:
+
+`cordova clean`

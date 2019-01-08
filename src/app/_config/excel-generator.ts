@@ -1,4 +1,4 @@
-import * as XLSX from 'xlsx';
+/* import * as XLSX from 'xlsx';
 export interface PdfColum {
   name: string;
   prop: string;
@@ -24,3 +24,4 @@ function changeKeys(json: any[], columns: PdfColum[]): any[] {
   });
   return arrExcel;
 }
+ */

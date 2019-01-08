@@ -12,7 +12,7 @@ import { AlertInput } from '@ionic/core';
 import { INotification } from '../../../models/notification.model';
 import { OnesignalService } from '../../../services/onesignal.service';
 import { FormatDatesFront } from '../../../_config/_helpers';
-import { ExportXLS, PdfColum } from '../../../_config/excel-generator';
+// import { ExportXLS, PdfColum } from '../../../_config/excel-generator';
 
 @Component({
   selector: 'app-detail-prop-admin',
@@ -164,7 +164,7 @@ export class DetailPropAdminComponent implements OnInit {
     return FormatDatesFront(new Date(date));
   }
   getReport() {
-    const columns: PdfColum[] = [
+    /*    const columns: PdfColum[] = [
       {
         name: 'Nombre',
         prop: 'name',
@@ -203,6 +203,6 @@ export class DetailPropAdminComponent implements OnInit {
         date,
       };
     });
-    ExportXLS(rows, columns, this.property.name);
+    ExportXLS(rows, columns, this.property.name); */
   }
 }
